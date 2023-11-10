@@ -10,7 +10,7 @@ import { SampleNavBar } from "../layouts/SampleNavBar";
 const LoginScreen = () => {
   return (
     <div>
-      Sample login screen
+      login page is done
       <SampleNavBar />
     </div>
   );

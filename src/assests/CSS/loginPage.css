@@ -1,0 +1,121 @@
+@import url("https://fonts.googleapis.com/css2?family=Karla:wght@300;400;500;600;700&family=Poppins:wght@100;200;300;400;500&display=swap");
+.login-container{
+    max-width: 1280px;
+    width: 100%;
+    margin: 0 auto;
+    position: relative;
+}
+
+.login-container .top-header {
+  display: flex;
+  justify-content: space-between;
+  max-width: 1000px;
+  width: 100%;
+  margin: 10px auto;
+}
+.login-container .top-header h2 {
+  font-family: "Karla", sans-serif;
+  font-size: 48px;
+  font-weight: 400;
+  text-align: center;
+}
+.login-container .top-header p {
+    font-family: "Karla", sans-serif;
+    font-weight: 400;
+    font-size: 36px;
+}
+
+.input-containers{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1092px;
+    width: 100%;
+    margin: auto;
+}
+.input-containers .right-side-input-container .email-inputs .email-icon,.input-containers .right-side-input-container .password-inputs .password-icon{
+    display: flex;
+}
+.input-containers .right-side-input-container .email-inputs .email-icon .email-sybmbol,.input-containers .right-side-input-container .password-inputs .password-icon .password-sybmbol {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-radius: 5px 0px 0px 5px;
+    border: 1px solid #3F88D8;
+    color: #223F64;
+
+}
+.input-containers .right-side-input-container .email-inputs .email-icon .email-feild,.input-containers .right-side-input-container .password-inputs .password-icon .password-feild {
+    border-radius: 0px 5px 5px 0px;
+    border: 1px solid #3F88D8;
+   
+}
+
+.right-side-input-container label{
+    font-size: 24px;
+    font-family: "Karla", sans-serif;
+     line-height: 35px;
+
+}
+
+.right-side-input-container {
+    flex: auto;
+    max-width: 507px;
+    width: 100%;
+}
+/* .password-inputs{
+    margin-top: 25px;
+    margin-bottom: 25px;
+} */
+
+.input-containers a{
+
+    display: block;
+    margin-bottom: 25px;
+    margin-top: 6px;
+    font-size: 20px;
+    font-family: "Karla", sans-serif;
+    color: #223F64;
+
+}
+.login-btn-container{
+    display: flex;
+    justify-content: center;
+   
+}
+.login-btn-container .login-btn{
+    padding: 7px 158px 6px 156px;
+    font-size: 20px;
+    font-family: "Karla", sans-serif;
+    background-color: #223F64;
+    color: white;
+    outline: none;
+    border: none;
+    border-radius: 5px;
+}
+.right-side-input-container .error-message{
+    margin-top: 8px;
+    height: 20px;
+    color: red;
+    font-family: "Karla", sans-serif;
+    font-weight: 400;
+}
+
+.requirements-list{
+    border: 1px solid #223F64;
+    border: 1px solid #223F64;
+    position: absolute;
+    top: 331px;
+    right: 630px;
+    padding: 10px;
+}
+.requirements-list{
+    background-color: white;
+}
+.password-check-points li{
+   display: flex;
+   gap: 10px;
+   font-size: 16px;
+   font-family: "Karla", sans-serif;
+    font-weight: 400;
+}

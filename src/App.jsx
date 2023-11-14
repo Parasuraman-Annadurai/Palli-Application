@@ -1,5 +1,5 @@
 import { Routes, Route } from "react-router-dom";
-import LoginScreen from "./pages/SampleLoginScreen";
+import LoginScreen from "./pages/LoginScreen/LoginScreen"
 
 
 //Define your routes for APP here

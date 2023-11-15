@@ -1,7 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import LoginScreen from "./pages/SampleLoginScreen";
-import Forgotpassword from "./pages/ForgotScreen";
-import ResetPassword from "./pages/ResetPasswordScreen";
+import ForgotPassword from "../src/pages/ForgotPage/ForgotScreen";
+import ChangePassword from "../src/pages/ChangePasswordPage/ResetPasswordScreen";
 
 //Define your routes for APP here
 
@@ -9,8 +9,8 @@ const App = () => {
   return (
     <Routes>
       <Route path="/" element={<LoginScreen />}></Route>
-      <Route path="/forgot-password" element={<Forgotpassword />}></Route>
-      <Route path="/rest-password" element={<ResetPassword />}></Route>
+      <Route path="/forgot/password" element={<ForgotPassword />}></Route>
+      <Route path="/change/password" element={<ChangePassword />}></Route>
     </Routes>
   );
 };

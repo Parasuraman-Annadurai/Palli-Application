@@ -1,10 +1,38 @@
-// Import necessary dependencies
-import React from "react";
-import ForgotPasswordImage from "../assets/images/Forgot-password.png";
-import "/home/dckap/Palli-Application/Palli-Application/src/assets/css/forgotPage.css";
+import React, { useState } from "react";
+import ForgotPasswordImage from "../../assets/images/ForgotPasswordImage.png";
+import "../ForgotPage/ForgotPage.css";
 
-// Define a functional component for the Forgot Password page
-const Forgotpassword = () => {
+const ForgotPassword = () => {
+  const [email, setEmail] = useState("");
+  const [emailError, setEmailError] = useState("");
+
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
+    // Reset the email error when the user starts typing
+    setEmailError("");
+  };
+
+  const validateEmail = () => {
+    // Simple email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setEmailError("Invalid email address");
+    }
+  };
+
+  const handleResetPassword = () => {
+    validateEmail();
+
+    // If there's an email error, prevent further actions
+    if (emailError) {
+      return;
+    }
+
+    // Add logic for handling password reset here
+    // This is where you would typically send a request to your server
+    // to initiate the password reset process.
+  };
+
   return (
     <div className="forgot-container">
       {/* Left side container with an image */}
@@ -35,13 +63,21 @@ const Forgotpassword = () => {
             </label>
             <div className="emailAndicon">
               <span className="material-symbols-outlined">mail</span>
-              <input type="email" />
+              <input
+                type="email"
+                value={email}
+                onChange={handleEmailChange}
+                onBlur={validateEmail}
+              />
+             
             </div>
+            
+            <p className="error-message">{emailError ? emailError : ""}</p>
           </div>
 
           {/* Reset password button */}
           <div className="resetpassword">
-            <button>Reset Password</button>
+            <button onClick={handleResetPassword}>Reset Password</button>
           </div>
 
           {/* Back link to go back */}
@@ -57,5 +93,4 @@ const Forgotpassword = () => {
   );
 };
 
-// Export the Forgotpassword component for use in other files
-export default Forgotpassword;
+export default ForgotPassword;

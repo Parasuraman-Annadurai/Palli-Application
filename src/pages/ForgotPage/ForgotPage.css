@@ -72,6 +72,7 @@
 /* Styling for the container with email input and icon */
 .emailAndicon {
     display: flex;
+    margin-bottom: 10px;
 }
 
 /* Styling for email input label */
@@ -85,12 +86,12 @@
     max-width: 428px;
     width: 100%;
     margin: auto;
-    padding-bottom: 35px;
+    margin-bottom: 10px;
 }
 
 /* Styling for the email input and its associated icon */
 .emailAndicon span {
-    padding: 5px 20px;
+    padding: 10px 20px;
     border: 2px solid #3F88D8;
     border-radius: 10px 0 0 10px;
     color: var(--text-primary-color);
@@ -112,19 +113,19 @@ input[type="email"] {
 .resetpassword {
     display: flex;
     justify-content: center;
-    padding-bottom: 50px;
+    margin-bottom: 20px;
 }
 
 .resetpassword button {
     display: inline-flex;
-    padding: 6px 87px 7px 88px;
+    padding: 6px 120px 6px 120px;
     justify-content: center;
     align-items: center;
     border-radius: 15px;
     background-color: var(--primary-color);
     color: #FFF;
     font-family: var(--font-family);
-    font-size: 32px;
+    font-size: 24px;
     border: none;
     cursor: pointer;
 }
@@ -143,5 +144,10 @@ input[type="email"] {
 
 /* Styling for a symbol indicating required input in red */
 .email-input .required-symbole {
+    color: red;
+}
+
+.error-message{
+    height: 20px;
     color: red;
 }

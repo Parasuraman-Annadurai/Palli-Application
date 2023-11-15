@@ -72,14 +72,15 @@
 
 /* Styling for the reset password button */
 .reset-password button {
-    padding: 6px 60px 6px 60px;
-    justify-content: center;
-    align-items: center;
+    margin-top: 10px;
+    padding: 6px 100px 6px 100px;
+    /* justify-content: center;
+    align-items: center; */
     border-radius: 15px;
     background-color: var(--primary-color);
     color: var(--text-secondray-color);
     font-family: var(--font-family);
-    font-size: 32px;
+    font-size: 20px;
     border: none;
     cursor: pointer;
 }
@@ -90,16 +91,17 @@
 }
 
 /* Additional margin for better spacing in the reset password input section */
-.rest-password-input {
-    margin-bottom: 30px;
-}
+
 
 /* Styling for the input field within the reset password section */
-.ant-input-affix-wrapper>input.ant-input {
-    padding: 6px 0px 6px 10px;
-    border-radius: 15px;
+.rest-password-input input {
+   
+    padding: 6px 25px 6px 10px;
+    border-radius: 10px;
     font-family: var(--font-family);
     font-size: 16px;
+    display: flex;
+    border: 2px solid var(--secondray-color);
 }
 
 /* Styling for the image in the left-side container */
@@ -107,4 +109,8 @@
     padding: 30px;
     width: 500px;
     margin: 30px;
+}
+
+.input-field{
+    margin-bottom: 10px;
 }

@@ -1,7 +1,4 @@
 import React, { useState } from 'react';
-import { faCheckCircle, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
  const PasswordRequirements = ({ password }) => {
   // Define your password requirements here
   const minLength = 8;
@@ -19,20 +16,20 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
         <li style={password.length >= minLength ? correctStyle : wrongStyle}>
           
           {password.length >= minLength && (
-            <FontAwesomeIcon icon={faCheckCircle}  />
+           <i className="fa-regular fa-circle-check"></i>
           )}
           {password.length < minLength && (
-            <FontAwesomeIcon icon={faTimesCircle}  />
+            <i className="fa-regular fa-circle-xmark" style={{color: "#ff0000"}}></i>
           )}
           {`Minimum 8 characters`}
         </li>
 
         <li style={UpperCase ? correctStyle : wrongStyle}>
           {UpperCase && (
-            <FontAwesomeIcon icon={faCheckCircle}  />
+             <i className="fa-regular fa-circle-check"></i>
           )}
           {!UpperCase && (
-            <FontAwesomeIcon icon={faTimesCircle}  />
+            <i className="fa-regular fa-circle-xmark" style={{color: "#ff0000"}}></i>
           )}
           {`At least one uppercase letter`}
 
@@ -41,10 +38,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
         <li style={LowerCase ? correctStyle : wrongStyle} >
           
           {LowerCase && (
-            <FontAwesomeIcon icon={faCheckCircle}  />
+             <i className="fa-regular fa-circle-check"></i>
           )}
           {!LowerCase && (
-            <FontAwesomeIcon icon={faTimesCircle}  />
+            <i className="fa-regular fa-circle-xmark" style={{color: "#ff0000"}}></i>
           )}
           {`At least one lowercase letter`}
         </li>
@@ -52,20 +49,20 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
         <li style={atLeastOneNumber ? correctStyle : wrongStyle}>
           
           {atLeastOneNumber && (
-            <FontAwesomeIcon icon={faCheckCircle}  />
+             <i className="fa-regular fa-circle-check"></i>
           )}
           {!atLeastOneNumber && (
-            <FontAwesomeIcon icon={faTimesCircle}  />
+            <i className="fa-regular fa-circle-xmark" style={{color: "#ff0000"}}></i>
           )}
           {`At least one digit`}
         </li>
 
         <li style={SpecialChar ? correctStyle : wrongStyle}>
           {SpecialChar && (
-            <FontAwesomeIcon icon={faCheckCircle}  />
+             <i className="fa-regular fa-circle-check"></i>
           )}
           {!SpecialChar && (
-            <FontAwesomeIcon icon={faTimesCircle}  />
+            <i className="fa-regular fa-circle-xmark" style={{color: "#ff0000"}}></i>
           )}
           {`At least one special character`}
         </li>

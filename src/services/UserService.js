@@ -13,7 +13,7 @@ export default {
   postUser: async function (userData) {
     try {
       //perform api request and return the data here
-      const response = await axios.post('http://127.0.0.1:8000/api/accounts/login/', userData);
+      const response = await axios.post('http://13.232.90.154:8000/api/accounts/login/', userData);
       return response.data;
 
    

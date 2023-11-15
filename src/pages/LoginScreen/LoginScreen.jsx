@@ -1,11 +1,11 @@
 //Remove this file
 import { useState } from "react";
-import "../../../src/assests/CSS/loginPage.css"
+import "../../../src/assests/CSS/loginPage.css";
 import useAuth from "../../context/AuthContext";
 import { SampleNavBar } from "../../layouts/SampleNavBar";
 import axios from "axios";
 import UserService from "../../services/UserService";
-import palliLogo from "../../../src/assests/images/dckap-palli-tamil-logo-1 1.png"
+import palliLogo from "../../../src/assests/images/dckap-palli-tamil-logo-1 1.png";
 import loginLogo from "../../../src/assests/images/Seminar-bro 1.png";
 import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
 import { isEmailValid, isPasswordValid } from "../../utils/loginPageValidation";
@@ -14,18 +14,17 @@ import PasswordRequirements from "../../components/PasswordRequirement";
 import { SampleButton } from "../../components/SampleButton";
 const LoginScreen = () => {
   //while typing the password show password check list to user
-  const [showPasswordCheckList,setshowPasswordCheckList] = useState(false);
+  const [showPasswordCheckList, setshowPasswordCheckList] = useState(false);
 
-  //this state collect the user details 
+  //this state collect the user details
   const [loginUserData, setloginUserData] = useState({
     email: "",
     password: "",
   });
 
-  //user give wrong value then show error message 
+  //user give wrong value then show error message
   const [error, setError] = useState({});
 
-  
   //handlechange used to set user email and password in logindata state
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -55,10 +54,9 @@ const LoginScreen = () => {
   const handleLoginSubmit = (e) => {
     e.preventDefault();
     if (validate(loginUserData)) {
-      //after post user data the backend show the cross error solved
-      axios.post("http://13.232.90.154:8000/api/accounts/login/",loginUserData).then(res=>{
+      UserService.postUser(loginUserData).then((res) => {
         console.log(res);
-      })
+      });
     }
   };
 
@@ -81,7 +79,7 @@ const LoginScreen = () => {
           <div className="right-side-input-container">
             <form action="" onSubmit={handleLoginSubmit} className="login-form">
               <div className="email-inputs">
-                <label htmlFor="">Email Id</label>
+                <label htmlFor="">Email Id <span className="required-feild">*</span></label>
                 <div className="email-icon">
                   <span className="material-symbols-outlined email-sybmbol">
                     mail
@@ -100,7 +98,7 @@ const LoginScreen = () => {
               </div>
 
               <div className="password-inputs">
-                <label htmlFor="">Password</label>
+                <label htmlFor="">Password  <span className="required-feild">*</span></label>
                 <div className="password-icon">
                   <span className="material-symbols-outlined password-sybmbol">
                     lock
@@ -111,8 +109,8 @@ const LoginScreen = () => {
                     name="password"
                     value={loginUserData.password}
                     onChange={handleChange}
-                    onFocus={()=>setshowPasswordCheckList(true)}
-                    onBlur={()=>setshowPasswordCheckList(false)}
+                    onFocus={() => setshowPasswordCheckList(true)}
+                    onBlur={() => setshowPasswordCheckList(false)}
                     iconRender={(visible) =>
                       visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
                     }
@@ -122,15 +120,17 @@ const LoginScreen = () => {
                   {error.password ? error.password : ""}
                 </p>
               </div>
-              <div className="requirements-list" style={{display : showPasswordCheckList ? "block" :"none" }}>
+              <div
+                className="requirements-list"
+                style={{ display: showPasswordCheckList ? "block" : "none" }}
+              >
                 {/* this is the password check list component */}
-                <PasswordRequirements  password={loginUserData.password}/>
+                <PasswordRequirements password={loginUserData.password} />
               </div>
               <a href="">Forgot password ?</a>
               <div className="login-btn-container ">
-
                 {/* separate sample button components */}
-                <SampleButton  buttonText={"login"}/>
+                <SampleButton buttonText={"login"} />
               </div>
             </form>
           </div>

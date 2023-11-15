@@ -85,59 +85,59 @@ const LoginScreen = () => {
 
   return (
     <div>
-      <div className="login-container">
-        <div className="top-header">
-          <div className="left-side-header">
+      <div className="login__container">
+        <div className="top__header">
+          <div className="left__side__header">
             <h2>Manager Login</h2>
             <p>Make Sure Your Account is Secure</p>
           </div>
-          <div className="right-side-header">
+          <div className="right__side--header">
             <img src={DckapPalliLogo} alt="" />
           </div>
         </div>
-        <div className="input-containers">
-          <div className="left-side-image-container">
+        <div className="input__containers">
+          <div className="left__side__image__container">
             <img src={ManagerLoginLogo} alt="" />
           </div>
-          <div className="right-side-input-container">
+          <div className="right__side-input__container">
             <form action="" onSubmit={handleLoginSubmit} className="login-form">
-              <div className="email-inputs">
+              <div className="email__inputs">
                 <label htmlFor="">
                   Email Id <span className="required-feild">*</span>
                 </label>
-                <div className="email-icon">
+                <div className="email__icon">
                   <span className="material-symbols-outlined email-sybmbol">
                     mail
                   </span>
-                  <div className="input-component">
+                  <div className="input__component">
                     <input
                       placeholder="Enter the Email Id"
                       value={loginUserData.email}
                       name="email"
                       onChange={handleChange}
-                      className="email-feild"
+                      className="email__feild"
                     />
                   </div>
                 </div>
-                <p className="error-message">
+                <p className="error__message">
                   {erros.email ? erros.email : ""}
                 </p>
               </div>
 
-              <div className="password-inputs">
+              <div className="password__inputs">
                 <label htmlFor="">
-                  Password <span className="required-feild">*</span>
+                  Password <span className="required__feild">*</span>
                 </label>
-                <div className="password-icon">
+                <div className="password__icon">
                   <span className="material-symbols-outlined password-sybmbol">
                     lock
                   </span>
 
-                  <div className="input-component">
+                  <div className="input__component">
                     <input
                       type={showPassword ? "text" : "password"}
                       placeholder="Enter password"
-                      className="password-feild"
+                      className="password__feild"
                       name="password"
                       value={loginUserData.password}
                       onChange={handleChange}
@@ -147,29 +147,29 @@ const LoginScreen = () => {
                     {
                       <span
                         onClick={() => setShowPassword(!showPassword)}
-                        className="material-symbols-outlined eye-icon"
+                        className="material-symbols-outlined eye__icon"
                       >
                         {showPassword ? "visibility" : "visibility_off"}
                       </span>
                     }
                   </div>
                 </div>
-                <p className="error-message">
+                <p className="error__message">
                   {erros.password ? erros.password : ""}
                 </p>
               </div>
               <div
                 className={`${
                   showPasswordCheckList
-                    ? "requirements-list show"
-                    : "requirements-list"
+                    ? "requirements__list show"
+                    : "requirements__list"
                 }`}
               >
                 {/* this is the password check list component */}
                 <PasswordRequirements password={loginUserData.password} />
               </div>
               <a href="/forgot/password">Forgot password ?</a>
-              <div className="login-btn-container ">
+              <div className="login__btn__container">
                 {/* separate sample button components */}
                 <SampleButton buttonText={"login"} />
               </div>

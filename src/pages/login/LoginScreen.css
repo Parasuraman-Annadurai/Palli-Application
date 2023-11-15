@@ -8,35 +8,35 @@
     --h1-font-size:32px;
     --p-font-size:24px;
 }
-.login-container{
+.login__container{
     max-width: 1280px;
     width: 100%;
     margin: 0 auto;
     position: relative;
 }
 
-.login-container .top-header {
+.login__container .top__header {
   display: flex;
   justify-content: space-between;
   max-width: 1000px;
   width: 100%;
   margin: 10px auto;
 }
-.login-container .top-header h2 {
+.login__container .top__header h2 {
   font-family: var(--font-family);
   font-size: var(--h1-font-size);
   font-weight: 400;
   text-align: center;
   color: var(--text-primary-color);
 }
-.login-container .top-header p {
+.login__container .top__header p {
     font-family: var(--font-family);
     font-weight: 400;
     font-size: var(--p-font-size);
     color: var(--text-primary-color);
 }
 
-.input-containers{
+.input__containers{
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -44,10 +44,10 @@
     width: 100%;
     margin:50px auto;
 }
-.input-containers .right-side-input-container .email-inputs .email-icon,.input-containers .right-side-input-container .password-inputs .password-icon{
+.input__containers .right__side-input__container .email__inputs .email__icon,.input__containers .right__side-input__container .password__inputs .password__icon{
     display: flex;
 }
-.input-containers .right-side-input-container .email-inputs .email-icon .email-sybmbol,.input-containers .right-side-input-container .password-inputs .password-icon .password-sybmbol {
+.input__containers .right__side-input__container .email__inputs .email__icon .email-sybmbol,.input__containers .right__side-input__container .password__inputs .password__icon .password-sybmbol {
     display: flex;
     align-items: center;
     padding: 10px;
@@ -56,7 +56,7 @@
     color: var(--text-primary-color);
 
 }
-.input-containers .right-side-input-container .email-inputs .email-icon .email-feild,.input-containers .right-side-input-container .password-inputs .password-icon .password-feild {
+.input__containers .right__side-input__container .email__inputs .email__icon .email__feild,.input__containers .right__side-input__container .password__inputs .password__icon .password__feild {
     border-radius: 0px 5px 5px 0px;
     border: 1px solid var(--secondray-color);
     width: 100%;
@@ -66,7 +66,7 @@
    
 }
 
-.right-side-input-container label{
+.right__side-input__container label{
     font-size: 24px;
     font-family: var(--font-family);
      line-height: 35px;
@@ -74,13 +74,13 @@
 
 }
 
-.right-side-input-container {
+.right__side-input__container {
     flex: auto;
     max-width: 507px;
     width: 100%;
 }
 
-.input-containers a{
+.input__containers a{
 
     display: block;
     margin-bottom: 25px;
@@ -90,12 +90,12 @@
     color: var(--text-primary-color);
 
 }
-.login-btn-container{
+.login__btn__container{
     display: flex;
     justify-content: center;
    
 }
-.login-btn-container .login-btn{
+.login__btn__container .login-btn{
     padding: 7px 158px 6px 156px;
     font-size: 20px;
     font-family: var(--font-family);
@@ -105,7 +105,7 @@
     border: none;
     border-radius: 5px;
 }
-.right-side-input-container .error-message{
+.right__side-input__container .error__message{
     margin-top: 8px;
     height: 20px;
     color: red;
@@ -113,7 +113,7 @@
     font-weight: 400;
 }
 
-.requirements-list{
+.requirements__list{
     border: 1px solid var(--text-primary-color);
     border: 1px solid var(--text-primary-color);
     position: absolute;
@@ -122,10 +122,10 @@
     padding: 10px;
     display: none;
 }
-.requirements-list.show{
+.requirements__list.show{
     display: block;
 }
-.requirements-list{
+.requirements__list{
     background-color: var(--text-secondray-color);
 }
 .password-check-points li{
@@ -135,14 +135,14 @@
    font-family: var(--font-family);
     font-weight: 400;
 }
-.required-feild{
+.required__feild{
     color: red;
 }
 
-.password-icon{
+.password__icon{
     position: relative;
 }
-.eye-icon{
+.eye__icon{
     position: absolute;
     position: absolute;
     right: 0px;
@@ -150,6 +150,6 @@
     color: var(--primary-color);
     cursor: pointer;
 }
-.input-component{
+.input__component{
     width: 100%;
 }

@@ -1,0 +1,274 @@
+/* * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'karla';
+
+}
+
+:root {
+    --primary-color: #223F64;
+}
+
+.resetImage img {
+    padding: 20px;
+    width: 500px;
+    
+    margin: 60px;
+}
+
+.forgot-container {
+    display: flex;
+}
+
+.circle span.material-symbols-outlined {
+    font-size: 48px;
+}
+
+.right-side .circle span.material-symbols-outlined {
+    margin: 55px 270px;
+    color: var(--primary-color);
+    background-color: #DBECFF;
+    padding: 38px;
+    border-radius: 50%;
+    rotate: -30deg;
+}
+
+.header h3 {
+    color: var(--primary-color);
+    color: #223F64;
+    font-family: Karla;
+    font-size: 32px;
+    padding-bottom: 20px;
+}
+
+.header {
+    max-width: 428px;
+    width: 100%;
+    margin: auto;
+    padding-bottom: 35px;
+}
+
+.header p {
+    color: var(--Primary-colour, #223F64);
+    font-family: Karla;
+    font-size: 24px;
+
+
+}
+
+.emailAndicon {
+    display: flex;
+}
+
+.email-input label {
+    color: var(--Primary-colour, #223F64);
+    font-family: Karla;
+    font-size: 24px;
+}
+
+.email-input {
+    max-width: 428px;
+    width: 100%;
+    margin: auto;
+    padding-bottom: 35px;
+}
+
+.emailAndicon span {
+    padding: 5px 20px;
+    border: 2px solid #3F88D8;
+    border-radius: 10px 0 0 10px;
+    color: var(--primary-color);
+}
+
+input[type="email"] {
+    width: 425px;
+    border: 2px solid #3F88D8;
+    border-left: 0px;
+    border-radius: 0 10px 10px 0;
+    padding-left: 10px;
+    outline: 0;
+    font-size: 16px;
+    color: var(--primary-color);
+}
+
+.resetpassword {
+    display: flex;
+    justify-content: center;
+    padding-bottom: 50px;
+}
+
+.resetpassword button {
+    display: inline-flex;
+    padding: 6px 87px 7px 88px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 15px;
+    background-color: var(--primary-color);
+    color: #FFF;
+    font-family: Karla;
+    font-size: 32px;
+    border: none;
+    cursor: pointer;
+
+}
+
+.input-container .back {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    color: var(--Text-Secondary-colour, #96969C);
+    font-family: Karla;
+    font-size: 16px;
+    cursor: pointer;
+
+}
+
+.email-input .required-symbole {
+    color: red;
+  } */
+
+
+
+
+
+  /* Resetting default styles for all elements */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'karla';
+}
+
+/* Defining custom root variables, such as primary color */
+:root {
+    --primary-color: #223F64;
+}
+
+/* Styling for image reset within a container */
+.resetImage img {
+    padding: 20px;
+    width: 500px;
+    margin: 60px;
+}
+
+/* Styling for the forgot password container using flexbox */
+.forgot-container {
+    display: flex;
+}
+
+/* Styling for a circle element with an icon inside */
+.circle span.material-symbols-outlined {
+    font-size: 48px;
+}
+
+/* Styling for a circle on the right side with specific positioning and colors */
+.right-side .circle span.material-symbols-outlined {
+    margin: 55px 270px;
+    color: var(--primary-color);
+    background-color: #DBECFF;
+    padding: 38px;
+    border-radius: 50%;
+    rotate: -30deg; /* Note: 'rotate' property is misspelled, it should be 'transform: rotate(-30deg)' */
+}
+
+/* Styling for the header section */
+.header h3 {
+    color: var(--primary-color);
+    color: #223F64; /* Note: Duplicate color property */
+    font-family: Karla;
+    font-size: 32px;
+    padding-bottom: 20px;
+}
+
+.header {
+    max-width: 428px;
+    width: 100%;
+    margin: auto;
+    padding-bottom: 35px;
+}
+
+/* Styling for header paragraphs */
+.header p {
+    color: var(--Primary-colour, #223F64);
+    font-family: Karla;
+    font-size: 16px;
+}
+
+/* Styling for the container with email input and icon */
+.emailAndicon {
+    display: flex;
+}
+
+/* Styling for email input label */
+.email-input label {
+    color: var(--Primary-colour, #223F64);
+    font-family: Karla;
+    font-size: 24px;
+}
+
+.email-input {
+    max-width: 428px;
+    width: 100%;
+    margin: auto;
+    padding-bottom: 35px;
+}
+
+/* Styling for the email input and its associated icon */
+.emailAndicon span {
+    padding: 5px 20px;
+    border: 2px solid #3F88D8;
+    border-radius: 10px 0 0 10px;
+    color: var(--primary-color);
+}
+
+/* Styling for the email input field */
+input[type="email"] {
+    width: 425px;
+    border: 2px solid #3F88D8;
+    border-left: 0px;
+    border-radius: 0 10px 10px 0;
+    padding-left: 10px;
+    outline: 0;
+    font-size: 16px;
+    color: var(--primary-color);
+}
+
+/* Styling for the reset password button and its container */
+.resetpassword {
+    display: flex;
+    justify-content: center;
+    padding-bottom: 50px;
+}
+
+.resetpassword button {
+    display: inline-flex;
+    padding: 6px 87px 7px 88px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 15px;
+    background-color: var(--primary-color);
+    color: #FFF;
+    font-family: Karla;
+    font-size: 32px;
+    border: none;
+    cursor: pointer;
+}
+
+/* Styling for the back link within an input container */
+.input-container .back {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    color: var(--Text-Secondary-colour, #96969C);
+    font-family: Karla;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+/* Styling for a symbol indicating required input in red */
+.email-input .required-symbole {
+    color: red;
+}

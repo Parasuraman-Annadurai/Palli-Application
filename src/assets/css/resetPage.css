@@ -1,0 +1,179 @@
+/* :root {
+    --primary-color: #223F64;
+}
+
+.reset-container {
+    max-width: 1205px;
+    width: 100%;
+    margin: auto;
+    justify-content: center;
+}
+
+.left-side-container .logo {
+    width: 250px;
+}
+
+.left-side-container .logo {
+    padding: 40px 0px 40px 40px;
+}
+
+.heding {
+    padding-left: 100px;
+}
+
+.reset-container {
+    display: flex;
+    justify-content: space-between
+}
+
+.headings h3 {
+    color: var(--primary-color);
+    color: #223F64;
+    font-family: Karla;
+    font-size: 32px;
+    font-weight: bold;
+    padding-bottom: 10px;
+}
+
+.headings p {
+    color: var(--Primary-colour, #223F64);
+    font-family: Karla;
+    font-size: 16px;
+    padding-bottom: 20px;
+}
+
+.rest-password-input label {
+    color: var(--Primary-colour, #223F64);
+    font-family: Karla;
+    font-size: 24px;
+}
+
+.reset-password button {
+    padding: 6px 60px 6px 60px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 15px;
+    background-color: var(--primary-color);
+    color: #FFF;
+    font-family: Karla;
+    font-size: 32px;
+    border: none;
+    cursor: pointer;
+}
+
+.rest-password-input .required-symbole {
+    color: red;
+}
+
+.rest-password-input {
+    margin-bottom: 30px;
+}
+
+
+.ant-input-affix-wrapper >input.ant-input { 
+    padding: 6px 70px 6px 10px;
+    border-radius: 15px;
+    font-family: Karla;
+    font-size: 16px;
+}
+.left-side img {
+    padding: 30px;
+    width: 500px;
+    margin: 30px;
+} */
+
+
+
+
+/* Define a custom primary color variable */
+:root {
+    --primary-color: #223F64;
+}
+
+/* Styling for the reset container */
+.reset-container {
+    max-width: 1205px;
+    width: 100%;
+    margin: auto;
+    justify-content: center; /* Center the content horizontally */
+}
+
+/* Styling for the logo in the left-side container */
+.left-side-container .logo {
+    width: 250px;
+    padding: 40px 0px 40px 40px; /* Adjust padding for the logo */
+}
+
+/* Styling for the heading */
+.heding {
+    padding-left: 100px;
+}
+
+/* Additional styling for the reset container using flexbox */
+.reset-container {
+    display: flex;
+    justify-content: space-between; /* Space evenly between child elements */
+}
+
+/* Styling for headings, such as reset password title and description */
+.headings h3 {
+    color: var(--primary-color);
+    color: #223F64; /* Duplicate color property */
+    font-family: Karla;
+    font-size: 32px;
+    font-weight: bold;
+    padding-bottom: 10px;
+}
+
+.headings p {
+    color: var(--Primary-colour, #223F64);
+    font-family: Karla;
+    font-size: 16px;
+    padding-bottom: 20px;
+}
+
+/* Styling for labels within the reset password input section */
+.rest-password-input label {
+    color: var(--Primary-colour, #223F64);
+    font-family: Karla;
+    font-size: 24px;
+}
+
+/* Styling for the reset password button */
+.reset-password button {
+    padding: 6px 60px 6px 60px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 15px;
+    background-color: var(--primary-color);
+    color: #FFF;
+    font-family: Karla;
+    font-size: 32px;
+    border: none;
+    cursor: pointer;
+}
+
+/* Styling for the required symbol within the reset password input */
+.rest-password-input .required-symbole {
+    color: red;
+}
+
+/* Additional margin for better spacing in the reset password input section */
+.rest-password-input {
+    margin-bottom: 30px;
+}
+
+/* Styling for the input field within the reset password section */
+.ant-input-affix-wrapper >input.ant-input {
+    padding: 6px 70px 6px 10px;
+    border-radius: 15px;
+    font-family: Karla;
+    font-size: 16px;
+}
+
+/* Styling for the image in the left-side container */
+.left-side img {
+    padding: 30px;
+    width: 500px;
+    margin: 30px;
+}

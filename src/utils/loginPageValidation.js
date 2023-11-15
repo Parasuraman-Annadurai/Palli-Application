@@ -31,3 +31,24 @@ export let isPasswordValid = (password) => {
     }
   
 }
+
+
+export const validate = (loginUserData, setError) => {
+  let errors = {};
+  let isValid = true;
+
+  const emailError = isEmailValid(loginUserData.email);
+  if (emailError) {
+    errors.email = emailError;
+    isValid = false;
+  }
+
+  const passwordError = isPasswordValid(loginUserData.password);
+  if (passwordError) {
+    errors.password = passwordError;
+    isValid = false;
+  }
+
+  setError(errors);
+  return isValid;
+};

@@ -5,7 +5,7 @@ import useAuth from "../../context/AuthContext";
 import UserService from "../../services/UserService";
 import DckapPalliLogo from "../../../src/assests/images/DckapPalliLogo.png";
 import ManagerLoginLogo from "../../../src/assests/images/ManagerLoginLogo.png";
-import { isEmailValid, isPasswordValid } from "../../utils/loginPageValidation";
+import { isEmailValid, isPasswordValid,validate } from "../../utils/loginPageValidation";
 import PasswordRequirements from "../../components/PasswordRequirement";
 import { SampleButton } from "../../components/SampleButton";
 import { notification } from "antd";
@@ -23,39 +23,40 @@ const LoginScreen = () => {
     password: "",
   });
 
-  //user give wrong value then show error message
-  const [error, setError] = useState({});
+  //user give wrong value then show erros message
+  const [erros, seterros] = useState({});
 
   //handlechange used to set user email and password in logindata state
   const handleChange = (e) => {
     const { name, value } = e.target;
     setloginUserData({ ...loginUserData, [name]: value });
-    if (error[name]) delete error[name];
+    if (erros[name]) delete erros[name];
   };
 
   //this validate function used to user give the email and password vaild or not
-  const validate = (loginUserData) => {
-    let errors = {};
-    let isVaild = true;
+  // const validate = (loginUserData) => {
+  //   let erross = {};
+  //   let isVaild = true;
 
-    if (isEmailValid(loginUserData.email)) {
-      errors.email = isEmailValid(loginUserData.email);
-      isVaild = false;
-    }
-    if (isPasswordValid(loginUserData.password)) {
-      errors.password = isPasswordValid(loginUserData.password);
-      isVaild = false;
-    }
+  //   if (isEmailValid(loginUserData.email)) {
+  //     erross.email = isEmailValid(loginUserData.email);
+  //     isVaild = false;
+  //   }
+  //   if (isPasswordValid(loginUserData.password)) {
+  //     erross.password = isPasswordValid(loginUserData.password);
+  //     isVaild = false;
+  //   }
 
-    setError(errors);
-    return isVaild;
-  };
+  //   seterros(erross);
+  //   return isVaild;
+  // };
 
   //after validate the user email and password and check user already exits or not
   const handleLoginSubmit = (e) => {
     e.preventDefault();
-    if (validate(loginUserData)) {
-      //this user service used to user login and go to home page
+
+    let isVaild = validate(loginUserData,seterros);
+    if(isVaild){
       UserService.postUser(loginUserData)
       .then((res) => {
         //user give correct credentail go to home page
@@ -71,18 +72,15 @@ const LoginScreen = () => {
           navigate("/home/page");
         }
       })
-      .catch((error) => {
+      .catch((erros) => {
         //user give the wrong credentail stay with login page
         notification.error({
-          message: error.response.data.message,
+          message: erros.response.data.message,
           duration:2
         });
         navigate("/");
       });
     }
-
- 
-   
   };
 
   return (
@@ -122,7 +120,7 @@ const LoginScreen = () => {
                   </div>
                 </div>
                 <p className="error-message">
-                  {error.email ? error.email : ""}
+                  {erros.email ? erros.email : ""}
                 </p>
               </div>
 
@@ -157,7 +155,7 @@ const LoginScreen = () => {
                   </div>
                 </div>
                 <p className="error-message">
-                  {error.password ? error.password : ""}
+                  {erros.password ? erros.password : ""}
                 </p>
               </div>
               <div

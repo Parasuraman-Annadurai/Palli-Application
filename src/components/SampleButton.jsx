@@ -2,6 +2,6 @@
 
 //keep components  like button, Modal, input fields etc in this folder
 
-export const SampleButton = () => {
-  return <div>Sample Button</div>;
+export const SampleButton = ({buttonText}) => {
+  return  <button className="login-btn">{buttonText}</button>;
 };

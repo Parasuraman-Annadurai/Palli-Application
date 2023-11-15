@@ -31,7 +31,7 @@
     align-items: center;
     max-width: 1092px;
     width: 100%;
-    margin: auto;
+    margin:50px auto;
 }
 .input-containers .right-side-input-container .email-inputs .email-icon,.input-containers .right-side-input-container .password-inputs .password-icon{
     display: flex;
@@ -105,7 +105,7 @@
     border: 1px solid #223F64;
     border: 1px solid #223F64;
     position: absolute;
-    top: 331px;
+    top: 275px;
     right: 630px;
     padding: 10px;
 }

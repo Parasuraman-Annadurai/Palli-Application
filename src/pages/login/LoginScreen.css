@@ -1,4 +1,13 @@
-@import url("https://fonts.googleapis.com/css2?family=Karla:wght@300;400;500;600;700&family=Poppins:wght@100;200;300;400;500&display=swap");
+
+:root{
+    --primary-color:#223F64;
+    --secondray-color:#3F88D8;
+    --text-primary-color:#24384F;
+    --font-family: 'Poppins', sans-serif;
+    --text-secondray-color: white;
+    --h1-font-size:32px;
+    --p-font-size:24px;
+}
 .login-container{
     max-width: 1280px;
     width: 100%;
@@ -14,15 +23,17 @@
   margin: 10px auto;
 }
 .login-container .top-header h2 {
-  font-family: "Karla", sans-serif;
-  font-size: 48px;
+  font-family: var(--font-family);
+  font-size: var(--h1-font-size);
   font-weight: 400;
   text-align: center;
+  color: var(--text-primary-color);
 }
 .login-container .top-header p {
-    font-family: "Karla", sans-serif;
+    font-family: var(--font-family);
     font-weight: 400;
-    font-size: 36px;
+    font-size: var(--p-font-size);
+    color: var(--text-primary-color);
 }
 
 .input-containers{
@@ -41,20 +52,25 @@
     align-items: center;
     padding: 10px;
     border-radius: 5px 0px 0px 5px;
-    border: 1px solid #3F88D8;
-    color: #223F64;
+    border: 1px solid var(--secondray-color);
+    color: var(--text-primary-color);
 
 }
 .input-containers .right-side-input-container .email-inputs .email-icon .email-feild,.input-containers .right-side-input-container .password-inputs .password-icon .password-feild {
     border-radius: 0px 5px 5px 0px;
-    border: 1px solid #3F88D8;
+    border: 1px solid var(--secondray-color);
+    width: 100%;
+    outline: none;
+    padding: 13px;
+    font-family: var(--font-family);
    
 }
 
 .right-side-input-container label{
     font-size: 24px;
-    font-family: "Karla", sans-serif;
+    font-family: var(--font-family);
      line-height: 35px;
+
 
 }
 
@@ -63,10 +79,6 @@
     max-width: 507px;
     width: 100%;
 }
-/* .password-inputs{
-    margin-top: 25px;
-    margin-bottom: 25px;
-} */
 
 .input-containers a{
 
@@ -74,8 +86,8 @@
     margin-bottom: 25px;
     margin-top: 6px;
     font-size: 20px;
-    font-family: "Karla", sans-serif;
-    color: #223F64;
+    font-family: var(--font-family);
+    color: var(--text-primary-color);
 
 }
 .login-btn-container{
@@ -86,9 +98,9 @@
 .login-btn-container .login-btn{
     padding: 7px 158px 6px 156px;
     font-size: 20px;
-    font-family: "Karla", sans-serif;
-    background-color: #223F64;
-    color: white;
+    font-family: var(--font-family);
+    background-color: var(--text-primary-color);
+    color: var(--text-secondray-color);
     outline: none;
     border: none;
     border-radius: 5px;
@@ -97,28 +109,47 @@
     margin-top: 8px;
     height: 20px;
     color: red;
-    font-family: "Karla", sans-serif;
+    font-family: var(--font-family);
     font-weight: 400;
 }
 
 .requirements-list{
-    border: 1px solid #223F64;
-    border: 1px solid #223F64;
+    border: 1px solid var(--text-primary-color);
+    border: 1px solid var(--text-primary-color);
     position: absolute;
     top: 275px;
     right: 630px;
     padding: 10px;
+    display: none;
+}
+.requirements-list.show{
+    display: block;
 }
 .requirements-list{
-    background-color: white;
+    background-color: var(--text-secondray-color);
 }
 .password-check-points li{
    display: flex;
    gap: 10px;
    font-size: 16px;
-   font-family: "Karla", sans-serif;
+   font-family: var(--font-family);
     font-weight: 400;
 }
 .required-feild{
     color: red;
+}
+
+.password-icon{
+    position: relative;
+}
+.eye-icon{
+    position: absolute;
+    position: absolute;
+    right: 0px;
+    top: 15px;
+    color: var(--primary-color);
+    cursor: pointer;
+}
+.input-component{
+    width: 100%;
 }

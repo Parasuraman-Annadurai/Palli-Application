@@ -14,7 +14,7 @@ export const isEmailValid = (email) => {
 export let isPasswordValid = (password) => {
     const lengthCheck = /.{8,}/;
     const numberCheck = /\d/;
-    const UpperCase = /[A-Z]/;
+    const upperCaseCheck = /[A-Z]/;
     const specialCharCheck = /[!@#$%^&*()_+{}\[\]:;<>,.?~\\-]/;
   
     switch (true) {
@@ -22,7 +22,7 @@ export let isPasswordValid = (password) => {
         return "Password is required";
       case !lengthCheck.test(password):
         return "Password must be at least 8 characters.";
-      case !UpperCase.test(password):
+      case !upperCaseCheck.test(password):
         return "At least one uppercase letter";
       case !numberCheck.test(password):
         return "Password must contain at least one number.";

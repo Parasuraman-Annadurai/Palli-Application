@@ -55,8 +55,8 @@ const LoginScreen = () => {
   const handleLoginSubmit = (e) => {
     e.preventDefault();
     if (validate(loginUserData)) {
-      //after post user data the backend show the cross error
-      axios.post("http://127.0.0.1:8000/api/accounts/login/",loginUserData).then(res=>{
+      //after post user data the backend show the cross error solved
+      axios.post("http://13.232.90.154:8000/api/accounts/login/",loginUserData).then(res=>{
         console.log(res);
       })
     }

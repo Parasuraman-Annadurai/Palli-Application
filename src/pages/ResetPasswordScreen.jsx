@@ -1,64 +1,3 @@
-// import React, { Component } from "react";
-// import ResetPasswordImage from "/home/dckap/Palli-Application/Palli-Application/src/assets/images/RestPageImage.png";
-// import Logo from "/home/dckap/Palli-Application/Palli-Application/src/assets/images/logo.png";
-// import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
-// import { Input, Space } from "antd";
-// import "/home/dckap/Palli-Application/Palli-Application/src/assets/css/resetPage.css";
-
-// const ResetPassword = () => {
-//   return (
-//     <div className="reset-container">
-//       <div className="left-side-container">
-//         <div className="logo">
-//           <img src={Logo} alt="Logo" />
-//         </div>
-//         <div className="heding">
-//           <div className="headings">
-//             <h3>
-//               Change Your <br /> Password.?
-//             </h3>
-//             <p>
-//               Your password must be at least 8 characters long <br /> Avoid common
-//               words or patterns.
-//             </p>
-//           </div>
-//           <div className="input-container">
-//             <div className="rest-password-input">
-//               <Space direction="vertical">
-//                 <label htmlFor="Password">
-//                   New Password
-//                   <span className="required-symbole">*</span>
-//                 </label>
-//                 <Input.Password placeholder="input password" />
-//                 <label htmlFor="Password">
-//                   Confirm New Password
-//                   <span className="required-symbole">*</span>
-//                 </label>
-//                 <Input.Password
-//                   placeholder="input password"
-//                   iconRender={(visible) =>
-//                     visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
-//                   }
-//                 />
-//               </Space>
-//             </div>
-//             <div className="reset-password">
-//               <button>Reset Password</button>
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-//       <div>
-//         <div className="resetImage">
-//           <img src={ResetPasswordImage} alt="" />
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default ResetPassword;
-
 import React, { useState } from "react";
 import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
 import { Input, Space } from "antd";
@@ -140,9 +79,9 @@ const ResetPassword = () => {
               </button>
             </div>
           </div>
-</div>
+        </div>
       </div>
-      <div>        
+      <div>
         <div className="resetImage">
           <img src={ResetPasswordImage} alt="ResetPasswordImage" />
         </div>

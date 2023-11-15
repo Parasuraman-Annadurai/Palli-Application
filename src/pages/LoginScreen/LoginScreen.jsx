@@ -127,8 +127,9 @@ const LoginScreen = () => {
                 <PasswordRequirements  password={loginUserData.password}/>
               </div>
               <a href="">Forgot password ?</a>
-              <div className="login-btn-container">
-                {/* sample button components */}
+              <div className="login-btn-container ">
+
+                {/* separate sample button components */}
                 <SampleButton  buttonText={"login"}/>
               </div>
             </form>

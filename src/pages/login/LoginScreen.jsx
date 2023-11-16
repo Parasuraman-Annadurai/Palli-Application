@@ -12,13 +12,10 @@ import { useNavigate } from "react-router-dom";
 import PasswordRequirements from '../../components/PasswordRequirement';
 const LoginScreen = () => {
   const navigate = useNavigate()
-  //while typing the password show password check list to user
-  const [showPasswordCheckList, setshowPasswordCheckList] = useState(false);
+
   //hide and show password
   const [showPassword, setShowPassword] = useState(false);
-
   const [passwordCriteria,setpasswordCriteria] = useState(null)
-
   //this state collect the user details
   const [loginUserData, setloginUserData] = useState({
     email: "",
@@ -136,15 +133,15 @@ const LoginScreen = () => {
                   </span>
 
                   <div className="input__component">
-                    <Popover content={passwordCriteria}  placement="left" trigger={"focus"}>
-                    <input
-                      type={showPassword ? "text" : "password"}
-                      placeholder="Enter password"
-                      className="password__feild"
-                      name="password"
-                      value={loginUserData.password}
-                      onChange={handleChange}
-                    />
+                    <Popover content={passwordCriteria}  placement="leftBottom" trigger={"focus"}>
+                      <input
+                        type={showPassword ? "text" : "password"}
+                        placeholder="Enter password"
+                        className="password__feild"
+                        name="password"
+                        value={loginUserData.password}
+                        onChange={handleChange}
+                      />
                     </Popover>
 
                     {

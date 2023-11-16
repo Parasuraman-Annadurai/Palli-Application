@@ -15,7 +15,9 @@ const ForgotPassword = () => {
   const validateEmail = () => {
     // Simple email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
+    if (!email) {
+      setEmailError("Email is required");
+    } else if (!emailRegex.test(email)) {
       setEmailError("Invalid email address");
     }
   };
@@ -70,10 +72,9 @@ const ForgotPassword = () => {
                 onChange={handleEmailChange}
                 onBlur={validateEmail}
               />
-             
             </div>
             
-            <p className="error-message">{emailError ? emailError : ""}</p>
+            <p className="error-message">{emailError}</p>
           </div>
 
           {/* Reset password button */}

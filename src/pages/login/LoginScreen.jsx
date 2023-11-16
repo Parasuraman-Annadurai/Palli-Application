@@ -1,25 +1,27 @@
 //Remove this file
 import { useState } from "react";
+import React from "react";
 import "./LoginScreen.css";
 import useAuth from "../../context/AuthContext";
-import UserService from "../../services/UserService";
 import DckapPalliLogo from "../../../src/assests/images/DckapPalliLogo.png";
 import ManagerLoginLogo from "../../../src/assests/images/ManagerLoginLogo.png";
-import { validate } from "../../utils/loginPageValidation";
+import { validate } from "../../utils/validate";
 import { Button } from "../../components/Button";
-import { notification,Popover } from "antd";
+import { notification, Popover } from "antd";
 import { useNavigate } from "react-router-dom";
-import PasswordRequirements from '../../components/PasswordRequirement';
+import {checkPasswordCriteria} from "../../components/PasswordRequirement";
+import { makeNetworkRequest } from "../../utils/makeNetworkRequest";
+import { API_END_POINT } from "../../../config";
 const LoginScreen = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   //hide and show password
   const [showPassword, setShowPassword] = useState(false);
-  const [passwordCriteria,setpasswordCriteria] = useState(null)
+  const [passwordCriteria, setpasswordCriteria] = useState(null);
   //this state collect the user details
   const [loginUserData, setloginUserData] = useState({
-    email: "",
-    password: "",
+    email: "testui@gmail.com",
+    password: "admin@123",
   });
 
   //user give wrong value then show erros message
@@ -30,58 +32,21 @@ const LoginScreen = () => {
     const { name, value } = e.target;
     setloginUserData({ ...loginUserData, [name]: value });
     if (erros[name]) delete erros[name];
-    if(name === "password"){checkPasswordCriteria(value);}
+    if(name === "password"){checkPasswordCriteria(value,setpasswordCriteria)}
   };
-
-
- 
 
   //after validate the user email and password and check user already exits or not
   const handleLoginSubmit = (e) => {
     e.preventDefault();
 
-    let isVaild = validate(loginUserData,seterros);
-    if(isVaild){
-      UserService.postUser(loginUserData)
-      .then((res) => {
-        //user give correct credentail go to home page
-        if (res.status === 200 && res.message === 'Success') {
-          notification.success({
-            message: 'Login Successful',
-            duration: 2
-          });
-       
-          
-          //store token in localStorage
-          localStorage.setItem("tokens",JSON.stringify(res.data))
-          navigate("/home/page");
-        }
-      })
-      .catch((erros) => {
-        //user give the wrong credentail stay with login page
-        notification.error({
-          message: erros.response.data.message,
-          duration:2
-        });
-        navigate("/");
-      });
+    let isVaild = validate(loginUserData, seterros);
+    if (isVaild) {
+      let endPoint = `${API_END_POINT}/api/accounts/login/`
+      makeNetworkRequest(endPoint,"POST",loginUserData);
     }
+   
   };
 
-  //this function check password criteria match or not
-  const checkPasswordCriteria =(password)=>{
-    let criteria = PasswordRequirements(password);
-    const content = (
-      <ul>
-        <li>{criteria.lengthCheck ? '✅' : '❌'} Minimum 8 characters</li>
-        <li>{criteria.upperCaseCheck ? '✅' : '❌'} At least one uppercase letter</li>
-        <li>{criteria.lowerCaseCheck ? '✅' : '❌'} At least one lowercase letter</li>
-        <li>{criteria.numberCheck ? '✅' : '❌'} At least one digit</li>
-        <li>{criteria.specialCharCheck ? '✅' : '❌'} At least one special character</li>
-      </ul>
-    );
-    setpasswordCriteria(content);
-  }
   return (
     <div>
       <div className="login__container">
@@ -133,7 +98,11 @@ const LoginScreen = () => {
                   </span>
 
                   <div className="input__component">
-                    <Popover content={passwordCriteria}  placement="leftBottom" trigger={"focus"}>
+                    <Popover
+                      content={passwordCriteria}
+                      placement="leftBottom"
+                      trigger={"focus"} 
+                    >
                       <input
                         type={showPassword ? "text" : "password"}
                         placeholder="Enter password"

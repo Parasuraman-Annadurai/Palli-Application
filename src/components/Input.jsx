@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-const SeparateInput = ({ label, name, type, value, onChange, onBlur, error,onFocus }) => (
+const Input = ({ label, name, type, value, onChange, onBlur, error,onFocus }) => (
   <div className={`${name}__inputs`}>
     <label htmlFor={name}>
       {label} <span className="required-feild">*</span>
@@ -26,4 +26,6 @@ const SeparateInput = ({ label, name, type, value, onChange, onBlur, error,onFoc
   </div>
 );
 
-export default SeparateInput;
+export default Input;
+
+  

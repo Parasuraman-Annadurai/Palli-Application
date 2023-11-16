@@ -161,14 +161,6 @@ const LoginScreen = () => {
                   {erros.password ? erros.password : ""}
                 </p>
               </div>
-              <div
-                className={`${
-                  showPasswordCheckList
-                    ? "requirements__list show"
-                    : "requirements__list"
-                }`}
-              >
-              </div>
               <a href="/forgot/password">Forgot password ?</a>
               <div className="login__btn__container">
                 {/* separate sample button components */}

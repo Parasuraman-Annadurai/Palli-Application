@@ -113,21 +113,7 @@
     font-weight: 400;
 }
 
-.requirements__list{
-    border: 1px solid var(--text-primary-color);
-    border: 1px solid var(--text-primary-color);
-    position: absolute;
-    top: 275px;
-    right: 630px;
-    padding: 10px;
-    display: none;
-}
-.requirements__list.show{
-    display: block;
-}
-.requirements__list{
-    background-color: var(--text-secondray-color);
-}
+
 .password-check-points li{
    display: flex;
    gap: 10px;

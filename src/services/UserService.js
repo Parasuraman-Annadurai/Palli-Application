@@ -1,4 +1,3 @@
-import axios from "axios";
 import { makeNetworkRequest } from "../utils/makeNetworkRequest";
 import { API_END_POINT } from "../../config";
 export default {
@@ -9,24 +8,20 @@ export default {
       throw err;
     }
   },
-  postUser:  function (userData) {
-    makeNetworkRequest(`${API_END_POINT}/api/accounts/login/`,"POST",userData)
+  authedicateUser: async function (userData) {
+    try {
+      let endPoint = `${API_END_POINT}/api/accounts/login/`;
+      let responce = await makeNetworkRequest(endPoint, "POST", userData);
+      if(Object.keys(responce).length > 0){
+        const {data:token} = responce;
+        localStorage.setItem("token",JSON.stringify(token))
+        return responce;
+      }
+    } catch (error) {
+      // Handle error, if needed
+      throw error;
+    }
   },
 
-  //later implement the logout
-
-  // userLogout: async function (token) {
-
-  //   const headers = {
-  //     Authorization: `Bearer ${token.access}`
-  //   }
-  //   try {    
-  //     const response = await axios.post(`${API_END_POINT}/api/accounts/logout/`, token, {
-  //       headers: headers,
-  //     });
-  //     return response;
-  //   } catch (err) {
-  //     throw err;
-  //   }
-  // },
+  userLogout: async function () {},
 };

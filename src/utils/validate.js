@@ -33,7 +33,7 @@ export let isPasswordValid = (password) => {
 }
 
 
-export const validate = (loginUserData, setError) => {
+export const validate = (loginUserData, setErrors) => {
   let errors = {};
   let isValid = true;
 
@@ -49,7 +49,7 @@ export const validate = (loginUserData, setError) => {
     isValid = false;
   }
 
-  setError(errors);
+  setErrors(errors);
   return isValid;
 };
 

@@ -1,4 +1,3 @@
-// utils.js
 
 import React from 'react';
 export const passwordRequirements = (password) => {

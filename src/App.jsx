@@ -8,7 +8,7 @@ import LoginScreen from "./pages/login/LoginScreen";
 const App = () => {
   return (
     <Routes>
-      <Route path="/" element={<LoginScreen />}></Route>
+      <Route path="/login" element={<LoginScreen />}></Route>
     </Routes>
   );
 };

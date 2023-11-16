@@ -7,7 +7,7 @@ import DckapPalliLogo from "../../../src/assests/images/DckapPalliLogo.png";
 import ManagerLoginLogo from "../../../src/assests/images/ManagerLoginLogo.png";
 import { isEmailValid, isPasswordValid,validate } from "../../utils/loginPageValidation";
 import PasswordRequirements from "../../components/PasswordRequirement";
-import { SampleButton } from "../../components/SampleButton";
+import { SampleButton } from "../../components/Button";
 import { notification } from "antd";
 import { useNavigate } from "react-router-dom";
 const LoginScreen = () => {
@@ -82,7 +82,6 @@ const LoginScreen = () => {
       });
     }
   };
-
   return (
     <div>
       <div className="login__container">

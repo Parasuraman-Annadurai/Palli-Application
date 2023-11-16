@@ -82,13 +82,11 @@
 
 .input__containers a{
 
-    display: block;
-    margin-bottom: 25px;
-    margin-top: 6px;
+  
     font-size: 20px;
     font-family: var(--font-family);
     color: var(--text-primary-color);
-
+    line-height: 40px;
 }
 .login__btn__container{
     display: flex;

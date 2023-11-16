@@ -5,17 +5,19 @@ import useAuth from "../../context/AuthContext";
 import UserService from "../../services/UserService";
 import DckapPalliLogo from "../../../src/assests/images/DckapPalliLogo.png";
 import ManagerLoginLogo from "../../../src/assests/images/ManagerLoginLogo.png";
-import { isEmailValid, isPasswordValid,validate } from "../../utils/loginPageValidation";
-import PasswordRequirements from "../../components/PasswordRequirement";
-import { SampleButton } from "../../components/Button";
-import { notification } from "antd";
+import { validate } from "../../utils/loginPageValidation";
+import { Button } from "../../components/Button";
+import { notification,Popover } from "antd";
 import { useNavigate } from "react-router-dom";
+import PasswordRequirements from '../../components/PasswordRequirement';
 const LoginScreen = () => {
   const navigate = useNavigate()
   //while typing the password show password check list to user
   const [showPasswordCheckList, setshowPasswordCheckList] = useState(false);
   //hide and show password
   const [showPassword, setShowPassword] = useState(false);
+
+  const [passwordCriteria,setpasswordCriteria] = useState(null)
 
   //this state collect the user details
   const [loginUserData, setloginUserData] = useState({
@@ -31,25 +33,11 @@ const LoginScreen = () => {
     const { name, value } = e.target;
     setloginUserData({ ...loginUserData, [name]: value });
     if (erros[name]) delete erros[name];
+    if(name === "password"){checkPasswordCriteria(value);}
   };
 
-  //this validate function used to user give the email and password vaild or not
-  // const validate = (loginUserData) => {
-  //   let erross = {};
-  //   let isVaild = true;
 
-  //   if (isEmailValid(loginUserData.email)) {
-  //     erross.email = isEmailValid(loginUserData.email);
-  //     isVaild = false;
-  //   }
-  //   if (isPasswordValid(loginUserData.password)) {
-  //     erross.password = isPasswordValid(loginUserData.password);
-  //     isVaild = false;
-  //   }
-
-  //   seterros(erross);
-  //   return isVaild;
-  // };
+ 
 
   //after validate the user email and password and check user already exits or not
   const handleLoginSubmit = (e) => {
@@ -82,6 +70,21 @@ const LoginScreen = () => {
       });
     }
   };
+
+  //this function check password criteria match or not
+  const checkPasswordCriteria =(password)=>{
+    let criteria = PasswordRequirements(password);
+    const content = (
+      <ul>
+        <li>{criteria.lengthCheck ? '✅' : '❌'} Minimum 8 characters</li>
+        <li>{criteria.upperCaseCheck ? '✅' : '❌'} At least one uppercase letter</li>
+        <li>{criteria.lowerCaseCheck ? '✅' : '❌'} At least one lowercase letter</li>
+        <li>{criteria.numberCheck ? '✅' : '❌'} At least one digit</li>
+        <li>{criteria.specialCharCheck ? '✅' : '❌'} At least one special character</li>
+      </ul>
+    );
+    setpasswordCriteria(content);
+  }
   return (
     <div>
       <div className="login__container">
@@ -133,6 +136,7 @@ const LoginScreen = () => {
                   </span>
 
                   <div className="input__component">
+                    <Popover content={passwordCriteria}  placement="left" trigger={"focus"}>
                     <input
                       type={showPassword ? "text" : "password"}
                       placeholder="Enter password"
@@ -140,9 +144,9 @@ const LoginScreen = () => {
                       name="password"
                       value={loginUserData.password}
                       onChange={handleChange}
-                      onFocus={() => setshowPasswordCheckList(true)}
-                      onBlur={() => setshowPasswordCheckList(false)}
                     />
+                    </Popover>
+
                     {
                       <span
                         onClick={() => setShowPassword(!showPassword)}
@@ -164,13 +168,11 @@ const LoginScreen = () => {
                     : "requirements__list"
                 }`}
               >
-                {/* this is the password check list component */}
-                <PasswordRequirements password={loginUserData.password} />
               </div>
               <a href="/forgot/password">Forgot password ?</a>
               <div className="login__btn__container">
                 {/* separate sample button components */}
-                <SampleButton buttonText={"login"} />
+                <Button buttonText={"login"} />
               </div>
             </form>
           </div>

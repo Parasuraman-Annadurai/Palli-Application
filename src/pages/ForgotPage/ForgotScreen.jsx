@@ -65,6 +65,7 @@ const ForgotPassword = () => {
               <span className="material-symbols-outlined">mail</span>
               <input
                 type="email"
+                placeholder="Input Email"
                 value={email}
                 onChange={handleEmailChange}
                 onBlur={validateEmail}

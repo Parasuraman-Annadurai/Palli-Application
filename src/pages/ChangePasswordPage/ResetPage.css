@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
-
 /* Resetting default styles for all elements */
 * {
     margin: 0;
@@ -67,7 +65,7 @@
 .rest-password-input label {
     color: var(--text-primary-color);
     font-family: var(--font-family);
-    font-size: 24px;
+    font-size: 20px;
 }
 
 /* Styling for the reset password button */
@@ -95,8 +93,8 @@
 
 /* Styling for the input field within the reset password section */
 .rest-password-input input {
-   
-    padding: 6px 25px 6px 10px;
+
+    padding: 10px 120px 10px 10px;
     border-radius: 10px;
     font-family: var(--font-family);
     font-size: 16px;
@@ -111,6 +109,26 @@
     margin: 30px;
 }
 
-.input-field{
+.input-field {
     margin-bottom: 10px;
+}
+
+.input--eye--icon {
+    position: relative;
+}
+
+.input--eye--icon #eye--off {
+    position: absolute;
+    top: 13px;
+    right: 25px;
+    color: var(--text-primary-color);
+    font-size: 20px;
+}
+
+.input--eye--icon #eye--on {
+    position: absolute;
+    top: 35px;
+    right: 25px;
+    color: var(--text-primary-color);
+    font-size: 20px;
 }

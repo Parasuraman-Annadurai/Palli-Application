@@ -1,0 +1,137 @@
+
+:root{
+    --primary-color:#223F64;
+    --secondray-color:#3F88D8;
+    --text-primary-color:#24384F;
+    --font-family: 'Poppins', sans-serif;
+    --text-secondray-color: white;
+    --h1-font-size:32px;
+    --p-font-size:24px;
+}
+.login__container{
+    max-width: 1280px;
+    width: 100%;
+    margin: 0 auto;
+    position: relative;
+}
+
+.login__container .top__header {
+  display: flex;
+  justify-content: space-between;
+  max-width: 1000px;
+  width: 100%;
+  margin: 10px auto;
+}
+.login__container .top__header h2 {
+  font-family: var(--font-family);
+  font-size: var(--h1-font-size);
+  font-weight: 400;
+  text-align: center;
+  color: var(--text-primary-color);
+}
+.login__container .top__header p {
+    font-family: var(--font-family);
+    font-weight: 400;
+    font-size: var(--p-font-size);
+    color: var(--text-primary-color);
+}
+
+.input__containers{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1092px;
+    width: 100%;
+    margin:50px auto;
+    position: relative;
+}
+
+.input__containers .right__side-input__container .email__inputs .email__icon,.input__containers .right__side-input__container .password__inputs .password__icon{
+    display: flex;
+}
+.input__containers .right__side-input__container .email__inputs .email__icon .email-sybmbol,.input__containers .right__side-input__container .password__inputs .password__icon .password-sybmbol {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-radius: 5px 0px 0px 5px;
+    border: 1px solid var(--secondray-color);
+    color: var(--text-primary-color);
+
+}
+.input__containers .right__side-input__container .email__inputs .email__icon .email__feild,.input__containers .right__side-input__container .password__inputs .password__icon .password__feild {
+    border-radius: 0px 5px 5px 0px;
+    border: 1px solid var(--secondray-color);
+    width: 100%;
+    outline: none;
+    padding: 13px;
+    font-family: var(--font-family);
+   
+}
+
+.right__side-input__container label{
+    font-size: 24px;
+    font-family: var(--font-family);
+     line-height: 35px;
+
+
+}
+
+.right__side-input__container {
+    flex: auto;
+    max-width: 507px;
+    width: 100%;
+}
+
+.input__containers a{
+
+  
+    font-size: 20px;
+    font-family: var(--font-family);
+    color: var(--text-primary-color);
+    line-height: 40px;
+}
+.login__btn__container{
+    display: flex;
+    justify-content: center;
+   
+}
+.login__btn__container .login-btn{
+    padding: 7px 158px 6px 156px;
+    font-size: 20px;
+    font-family: var(--font-family);
+    background-color: var(--text-primary-color);
+    color: var(--text-secondray-color);
+    outline: none;
+    border: none;
+    border-radius: 5px;
+}
+.right__side-input__container .error__message{
+    margin-top: 8px;
+    height: 20px;
+    color: red;
+    font-family: var(--font-family);
+    font-weight: 400;
+}
+
+
+.password-check-points li{
+   display: flex;
+   gap: 10px;
+   font-size: 16px;
+   font-family: var(--font-family);
+    font-weight: 400;
+}
+.required__feild{
+    color: red;
+}
+
+.eye__icon{
+    position: absolute;
+    top: 185px;
+    right: 0px;
+    cursor: pointer;
+    color: var(--primary-color);
+}
+.input__component{
+    width: 100%;
+}

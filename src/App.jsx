@@ -1,5 +1,6 @@
+import React from "react";
 import { Routes, Route } from "react-router-dom";
-import LoginScreen from "./pages/SampleLoginScreen";
+import LoginScreen from "./pages/login/LoginScreen";
 
 
 //Define your routes for APP here
@@ -7,7 +8,7 @@ import LoginScreen from "./pages/SampleLoginScreen";
 const App = () => {
   return (
     <Routes>
-      <Route path="/" element={<LoginScreen />}></Route>
+      <Route path="/login" element={<LoginScreen />}></Route>
     </Routes>
   );
 };

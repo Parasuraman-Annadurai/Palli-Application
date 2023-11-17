@@ -72,7 +72,7 @@
 /* Styling for the reset password button */
 .reset-password button {
     margin-top: 10px;
-    padding: 6px 100px 6px 100px;
+    padding: 6px 120px 6px 120px;
     /* justify-content: center;
     align-items: center; */
     border-radius: 15px;
@@ -95,7 +95,7 @@
 /* Styling for the input field within the reset password section */
 .rest-password-input input {
 
-    padding: 10px 120px 10px 10px;
+    padding: 10px 65px 10px 10px;
     border-radius: 10px;
     font-family: var(--font-family);
     font-size: 16px;
@@ -121,7 +121,7 @@
 
 .input--eye--icon #eye--off {
     position: absolute;
-    top: 13px;
+    top: 15px;
     right: 25px;
     color: var(--text-primary-color);
     font-size: 20px;
@@ -129,7 +129,7 @@
 
 .input--eye--icon #eye--on {
     position: absolute;
-    top: 50px;
+    top: 55px;
     right: 25px;
     color: var(--text-primary-color);
     font-size: 20px;

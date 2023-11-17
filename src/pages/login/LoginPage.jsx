@@ -74,7 +74,7 @@ const LoginPage = () => {
           <p>Make Sure Your Account is Secure</p>
         </div>
         <div className="right__side--header">
-          <img src={DckapPalliLogo} alt="" />
+          <img src={DckapPalliLogo} alt="logo" />
         </div>
       </div>
       <div className="input__containers">

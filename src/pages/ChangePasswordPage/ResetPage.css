@@ -66,6 +66,7 @@
     color: var(--text-primary-color);
     font-family: var(--font-family);
     font-size: 20px;
+    line-height: 40px
 }
 
 /* Styling for the reset password button */
@@ -100,6 +101,7 @@
     font-size: 16px;
     display: flex;
     border: 2px solid var(--secondray-color);
+    outline: none;
 }
 
 /* Styling for the image in the left-side container */
@@ -127,7 +129,7 @@
 
 .input--eye--icon #eye--on {
     position: absolute;
-    top: 35px;
+    top: 50px;
     right: 25px;
     color: var(--text-primary-color);
     font-size: 20px;

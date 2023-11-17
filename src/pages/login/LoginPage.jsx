@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./LoginScreen.css";
+import "./LoginPage.css";
 import { Popover } from "antd";
 import { useNavigate } from "react-router-dom";
 import { validate } from "../../utils/validate";
@@ -12,7 +12,7 @@ import UserService from "../../services/UserService";
 import DckapPalliLogo from "../../../src/assests/images/DckapPalliLogo.png";
 import ManagerLoginLogo from "../../../src/assests/images/ManagerLoginLogo.png";
 import Input from "../../components/Input";
-const LoginScreen = () => {
+const LoginPage = () => {
   const navigate = useNavigate();
 
   const [showPassword, setShowPassword] = useState(false);
@@ -50,20 +50,20 @@ const LoginScreen = () => {
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
 
-    const isValid = validate(loginUserData, setErrors);
+    // const isValid = validate(loginUserData, setErrors);
 
-    if (isValid) {
+    // if (isValid) {
       try {
         const response = await UserService.authedicateUser(loginUserData);
 
         if (Object.keys(response.data).length > 0) {
-          navigate("/home");
+          navigate("/dashboard");
         }
       } catch (error) {
         console.error("Authentication Failed", error);
         navigate("/login");
       }
-    }
+    // }
   };
 
   return (
@@ -126,4 +126,4 @@ const LoginScreen = () => {
   );
 };
 
-export default LoginScreen;
+export default LoginPage;

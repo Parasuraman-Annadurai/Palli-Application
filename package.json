@@ -10,9 +10,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
+<<<<<<< HEAD
+=======
     "@fortawesome/free-solid-svg-icons": "^6.4.2",
     "@fortawesome/react-fontawesome": "^0.2.0",
     "antd": "^5.11.1",
+>>>>>>> d76f9ab5f0540caa2e3b7d0d79904bbac293620d
     "axios": "^1.6.1",
     "jwt-decode": "^4.0.0",
     "react": "^18.2.0",

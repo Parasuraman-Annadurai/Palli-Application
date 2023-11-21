@@ -4,7 +4,7 @@ import LoginScreen from "./pages/login/LoginScreen";
 
 
 import AdminDashoboard from './pages/adminDashoard/AdminDashboard';
-
+import ChangePassword from "./pages/ChangePasswordPage/ResetPasswordPage";
 //Define your routes for APP here
 
 const App = () => {
@@ -12,6 +12,7 @@ const App = () => {
     <Routes>
       <Route path="/" element={<LoginScreen />}></Route>
       <Route path="/home" element={<AdminDashoboard />}></Route>
+      <Route path="/change/password" element={<ChangePassword />}></Route>
     </Routes>
   );
 };

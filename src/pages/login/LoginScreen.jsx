@@ -50,9 +50,9 @@ const LoginScreen = () => {
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
 
-    const isValid = validate(loginUserData, setErrors);
+    // const isValid = validate(loginUserData, setErrors);
 
-    if (isValid) {
+    // if (isValid) {
       try {
         const response = await UserService.authedicateUser(loginUserData);
 
@@ -64,7 +64,7 @@ const LoginScreen = () => {
         navigate("/login");
       }
     }
-  };
+  // };
 
   return (
     <div className="login__container">

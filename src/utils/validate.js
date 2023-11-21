@@ -53,3 +53,32 @@ export const validate = (loginUserData, setErrors) => {
   return isValid;
 };
 
+
+export const validateNewpassword = (newPasswordData, setErrors) => {
+
+  let isValid = true;
+  let errors ={}
+
+ 
+   const criteria = isPasswordValid(newPasswordData.newPassword);
+    if(criteria){
+      errors.newPassword = criteria
+      isValid = false;
+    }
+
+
+    if(newPasswordData.confirmPassword.trim()===""){
+      errors.confirmPassword = "confirmPassword required";
+      isValid = false;
+    }
+    else if(newPasswordData.newPassword !== newPasswordData.confirmPassword){
+      errors.confirmPassword = "New password and Confirm password not match";
+      isValid = false;
+    }
+
+
+  setErrors(errors);
+  return isValid;
+
+
+};

@@ -1,0 +1,138 @@
+/* Resetting default styles for all elements */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Defining custom root variables, such as primary color */
+
+:root {
+    --primary-color: #223F64;
+    --secondray-color: #3F88D8;
+    --text-primary-color: #24384F;
+    --text-secondray-color: white;
+    --font-family: 'Poppins', sans-serif;
+
+}
+
+
+/* Styling for the reset container */
+.reset-container {
+    max-width: 1205px;
+    width: 100%;
+    margin: auto;
+    justify-content: center;
+    /* Center the content horizontally */
+}
+
+/* Styling for the logo in the left-side container */
+.left-side-container .logo {
+    width: 250px;
+    padding: 40px 0px 20px 40px;
+    /* Adjust padding for the logo */
+}
+
+/* Styling for the heading */
+.heding {
+    padding-left: 100px;
+}
+
+/* Additional styling for the reset container using flexbox */
+.reset-container {
+    display: flex;
+    justify-content: space-between;
+    /* Space evenly between child elements */
+}
+
+/* Styling for headings, such as reset password title and description */
+.headings h3 {
+    color: var(--text-primary-color);
+    font-family: var(--font-family);
+    font-size: 32px;
+    font-weight: bold;
+    padding-bottom: 10px;
+}
+
+.headings p {
+    color: var(--text-primary-color);
+    font-family: var(--font-family);
+    font-size: 16px;
+    padding-bottom: 20px;
+}
+
+/* Styling for labels within the reset password input section */
+.rest-password-input label {
+    color: var(--text-primary-color);
+    font-family: var(--font-family);
+    font-size: 20px;
+    line-height: 40px
+}
+
+/* Styling for the reset password button */
+.reset-password button {
+    margin-top: 10px;
+    padding: 6px 120px 6px 120px;
+    /* justify-content: center;
+    align-items: center; */
+    border-radius: 15px;
+    background-color: var(--primary-color);
+    color: var(--text-secondray-color);
+    font-family: var(--font-family);
+    font-size: 20px;
+    border: none;
+    cursor: pointer;
+}
+
+/* Styling for the required symbol within the reset password input */
+.rest-password-input .required-symbole {
+    color: red;
+}
+
+/* Additional margin for better spacing in the reset password input section */
+
+
+/* Styling for the input field within the reset password section */
+.rest-password-input input {
+
+    padding: 10px 65px 10px 10px;
+    border-radius: 10px;
+    width: auto;
+    font-family: var(--font-family);
+    font-size: 16px;
+    display: flex;
+    border: 2px solid var(--secondray-color);
+    outline: none;
+}
+
+/* Styling for the image in the left-side container */
+.left-side img {
+    padding: 30px;
+    width: 500px;
+    margin: 30px;
+}
+
+.input-field {
+    margin-bottom: 10px;
+}
+
+.input--eye--icon {
+    position: relative;
+    cursor: pointer;
+}
+
+.input--eye--icon #eye--off {
+    position: absolute;
+    top: 15px;
+    right: 25px;
+    color: var(--text-primary-color);
+    font-size: 20px;
+}
+
+.input--eye--icon #eye--on {
+    position: absolute;
+    top: 55px;
+    right: 25px;
+    color: var(--text-primary-color);
+    font-size: 20px;
+}

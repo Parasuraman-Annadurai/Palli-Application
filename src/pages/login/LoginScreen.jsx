@@ -9,11 +9,17 @@ import {
   passwordRequirements,
 } from "../../components/PasswordRequirement";
 import UserService from "../../services/UserService";
-import DckapPalliLogo from "../../../src/assests/images/DckapPalliLogo.png";
-import ManagerLoginLogo from "../../../src/assests/images/ManagerLoginLogo.png";
+import DckapPalliLogo from "/images/dckap_palli_logo_lg.png";
+import ManagerLoginLogo from "/images/manager_login_logo.png";
 import Input from "../../components/Input";
+
+
+import { useAuth } from "../../context/AuthContext";
+
 const LoginScreen = () => {
   const navigate = useNavigate();
+
+  const {setUser } = useAuth();
 
   const [showPassword, setShowPassword] = useState(false);
   const [popoverVisible, setPopoverVisible] = useState(false);
@@ -55,9 +61,9 @@ const LoginScreen = () => {
     // if (isValid) {
       try {
         const response = await UserService.authedicateUser(loginUserData);
-
         if (Object.keys(response.data).length > 0) {
-          navigate("/home");
+          setUser(response)
+          navigate(`/batch/${1}/applications`);
         }
       } catch (error) {
         console.error("Authentication Failed", error);

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import Logo from "../../assests/images/DckapPalliLogo.png";
-import ResetPasswordImage from "../../assests/images/Change_password_image.svg";
+import Logo from "/images/dckap_palli_logo_lg.png";
+import ResetPasswordImage from "/images/change_password.svg";
 import "./ResetPage.css";
 import { validateNewpassword } from "../../utils/validate";
 import { checkPasswordCriteria } from "../../components/PasswordRequirement";

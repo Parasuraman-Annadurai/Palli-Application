@@ -2,7 +2,7 @@
 import React from 'react';
 
 
-import logo from "../../../assests/images/dckap_palli_logo.png"
+import logo from "/images/dckap_palli_logo_sm.png"
 import "../css/index.css"
 
 const Sidebar = () => {

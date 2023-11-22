@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import forgotPasswordImage from "../../assests/images/Forgot password-Image.svg";
+import forgotPasswordImage from "/images/forgot_password.svg";
 import "../ForgotPage/ForgotPage.css";
 import { isEmailValid } from "../../utils/validate";
 const ForgotPassword = () => {

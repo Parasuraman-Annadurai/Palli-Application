@@ -1,13 +1,17 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 
 const AuthContext = createContext();
 
 export const AuthContextProvider = ({ children }) => {
+
+  const [token, setToken] = useState(()=>localStorage.getItem("token")
+  ? JSON.parse(localStorage.getItem("token"))
+  : {});
+
   const [user, setUser] = useState({});
 
-  //Maintain user related data(username, id, role)
   return (
-    <AuthContext.Provider value={{ user,setUser }}>{children}</AuthContext.Provider>
+    <AuthContext.Provider value={{ user,token,setUser,setToken }}>{children}</AuthContext.Provider>
   );
 };
 

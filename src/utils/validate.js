@@ -52,4 +52,3 @@ export const validate = (loginUserData, setErrors) => {
   setErrors(errors);
   return isValid;
 };
-

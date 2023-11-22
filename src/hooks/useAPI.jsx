@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import axios from 'axios';
 
 const useAPI = () => {
   const [data, setData] = useState(null);
@@ -9,20 +10,17 @@ const useAPI = () => {
     setLoading(true);
 
     try {
-      const response = await fetch(url, {
+      const result = await axios({
+        url,
         method,
-        headers: {
-          'Content-Type': 'application/json',
-          ...headers,
-        },
-        body: body ? JSON.stringify(body) : null,
+        ...headers,
+        data: body ? JSON.stringify(body) : null,
       });
 
-      if (!response.ok) {
-        throw new Error(`Request failed with status ${response.status}`);
-      }
+      // if (!response.ok) {
+      //   throw new Error(`Request failed with status ${response.status}`);
+      // }
 
-      const result = await response.json();
       setData(result);
       setError(null);
     } catch (error) {

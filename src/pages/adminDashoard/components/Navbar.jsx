@@ -1,6 +1,6 @@
 // Navbar.js
 import React from 'react';
-import Profile from './profile';
+import Profile from './Profile';
 const Navbar = () => {
   return (
     <div className="navbar">

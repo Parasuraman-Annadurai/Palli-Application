@@ -6,53 +6,32 @@ import '../css/table.css';
 
 
 const TableComponent = ({data}) => {
-  const [sortedColumn, setSortedColumn] = useState(null);
-  const [sortOrder, setSortOrder] = useState('asc');
 
-  const handleSort = (column) => {
-    setSortedColumn(column);
-    setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
-  };
+  let applicant = Array.from(data);
 
   return (
     <table className="antd-table">
       <thead>
         <tr>
-        <th >
-            Id
-          </th>
-          <th >
-            First Name 
-          </th>
-          <th >
-            Last Name
-          </th>
-          <th >
-            Email
-          </th>
-          <th >
-            Date of Birth
-          </th>
-          <th >
-            Address
-          </th>
-          <th >
-            Invite 
-          </th>
-          <th >
-            view more 
-          </th>
+          <th>Id</th>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Address</th>
+          <th>DOB</th>
+          <th>Email</th>
+          <th>invite</th>
+          <th>view more</th>
         </tr>
       </thead>
       <tbody>
-        {data.map((item) => (
-          <tr key={item.key}>
-            <td>{item.key}</td>
-            <td>{item.first_name}</td>
-            <td>{item.last_name}</td>
-            <td>{item.email}</td>
-            <td>{item.dob}</td>
-            <td>{item.address}</td>
+        {applicant.map((applicants,index) => (
+          <tr key={index}>
+            <td>{index+1}</td>
+            <td>{applicants.first_name}</td>
+            <td>{applicants.last_name}</td>
+            <td>{applicants.email}</td>
+            <td>{applicants.dob}</td>
+            <td>{applicants.address}</td>
             <td><a href="">create login</a></td>
             <td><a href="">see all details</a></td>
           </tr>

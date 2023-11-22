@@ -4,9 +4,8 @@ import Search from 'antd/es/input/Search';
 import { useState } from 'react';
 import { Select,Upload } from 'antd';
 
-const ApplicationHeader = (props) => {
+const ApplicationHeader = ({totalApplicants}) => {
 
-  const {handleStatus,handleSearch,totalRecord} = props;
 
   const [fileList, setFileList] = useState([]);
 
@@ -25,14 +24,14 @@ const ApplicationHeader = (props) => {
         <Search
           placeholder="Search"
           className='search__bar'
-          onChange={handleSearch}
+         
         />
 
         <div className="record-count">
           <span>Number of Records: </span>
-          <span>{totalRecord}</span>
+          <span>{totalApplicants}</span>
         </div>
-           <div className="fileter-category">
+           {/* <div className="fileter-category">
                   <Select
                 defaultValue="all"
                 style={{
@@ -54,7 +53,7 @@ const ApplicationHeader = (props) => {
                 ]}
                 onChange={handleStatus}
               />
-           </div>
+           </div> */}
         
         {/* fillter icon */}
         {/* <div className="select-item">

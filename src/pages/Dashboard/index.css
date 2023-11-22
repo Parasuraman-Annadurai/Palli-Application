@@ -1,0 +1,194 @@
+/* App.css */
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body,
+html {
+  margin: 0;
+  padding: 0;
+}
+
+.app {
+  display: flex;
+}
+
+.sidebar {
+  max-width: 200px;
+  width: 100%;
+  background-color: #223F64;
+  color: white;
+  height: 100vh;
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+}
+
+.main {
+  flex: 1;
+  margin-left: 200px;
+  /* Adjust based on the sidebar width */
+}
+
+.navbar {
+  max-width: 1200px;
+  width: 100%;
+  background-color: #444;
+  color: white;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+
+
+
+/* Other styles */
+.application-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.header-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.record-count {
+  font-size: 14px;
+}
+
+.content {
+  background-color: #F4F7FA;
+  border-radius: 5px;
+  padding: 20px;
+}
+
+body {
+  background-color: #F4F7FA;
+}
+
+.flex {
+  display: flex;
+  align-items: center;
+  gap: 21px;
+  padding-left: 20px;
+}
+
+.menu-container {
+  margin-top: 30px;
+}
+
+.logo {
+  padding: 47px 40px 0px;
+}
+
+.active {
+  background-color: #316AA7;
+  padding: 10px 0;
+  border-radius: 0px 15px 15px 0px;
+}
+
+.setting {
+  margin-top: auto;
+  padding: 20px;
+}
+
+.filter {
+  margin: 10px 5px;
+  padding: 10px;
+  display: none;
+}
+
+.filter p {
+  padding-bottom: 5px;
+}
+
+.filter.show {
+  display: block;
+}
+
+a {
+  text-decoration: none;
+  color: white;
+}
+
+.search__bar {
+  max-width: 200px;
+  width: 100%;
+}
+
+/* avatar */
+.avatar__container {
+  display: flex;
+  align-content: center;
+  justify-content: flex-end;
+}
+
+.avatar__container .avatar__logo {
+  cursor: pointer;
+}
+
+.filter__icon {
+  color: #223F64;
+}
+
+.greeting {
+  background-color: white;
+  display: flex;
+  justify-content: space-between;
+  /* align-items: center; */
+}
+
+.heading h1 {
+  color: #223F64;
+  font-size: 36px;
+  font-style: normal;
+  font-weight: 700;
+  padding-bottom: 20px;
+  line-height: normal;
+}
+
+.heading {
+  padding: 22px 40px;
+}
+
+.heading p {
+  color: #223F64;
+
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.cards {
+  width: 150px;
+  height: 150px;
+  border: 10px;
+  background-color: white;
+  color: #A82700;
+  border-radius: 10px;
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 3px 16px 0px;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.add__batch {
+  padding-top: 20px;
+}
+.ant-modal .ant-modal-body {
+  font-size: 14px;
+  line-height: 1.5714285714285714;
+  word-wrap: break-word;
+  display: flex;
+  justify-content: space-evenly;
+}

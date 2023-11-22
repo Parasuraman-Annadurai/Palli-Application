@@ -12,6 +12,8 @@ import ChangePassword from "./pages/ChangePasswordPage/ResetPasswordPage";
 
 import ForgotPassword from "./pages/ForgotPage/ForgotPage";
 
+import DashBoard from "./pages/Dashboard/DashBoard";
+
 const App = () => {
 
  
@@ -21,6 +23,7 @@ const App = () => {
       <Route path="/forgot/password" element={<ForgotPassword />}></Route>
       <Route path="/home" element={<AdminDashoboard />}></Route>
       <Route path="/change/password" element={<ChangePassword />}></Route>
+      <Route path="/dashboard" element={<DashBoard />}></Route>
     </Routes>
   );
 };

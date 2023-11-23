@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import forgotPasswordImage from "/images/forgot_password.svg";
-import "../ForgotPage/ForgotPage.css";
+import "./ForgotPage.css";
 import { isEmailValid } from "../../utils/validate";
+
+
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState({});
@@ -55,6 +57,7 @@ const ForgotPassword = () => {
                         <span className="material-symbols-outlined">mail</span>
                         <input autoComplete="off"
                           type="text"
+                          className="forgot-password-input"
                           placeholder="Input Email"
                           value={email}
                           onChange={handleEmail}

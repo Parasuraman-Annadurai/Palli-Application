@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthContextProvider } from "./context/AuthContext.jsx";
-
+import { LOGIN,APPLICATIONS } from "./routes/routes.jsx";
 //Define your routes for APP here
 import LoginPage from "./pages/login/LoginPage.jsx";
 import ChangePassword from "./pages/ChangePasswordPage/ResetPasswordPage";
@@ -15,12 +15,12 @@ const App = () => {
     <AuthContextProvider>
       <BrowserRouter>
         <Routes>
-          <Route path="/login" element={<LoginPage />} />
+          <Route path={LOGIN} element={<LoginPage />} />
           <Route path="/forgot/password" element={<ForgotPassword />} />
           <Route path="/change/password" element={<ChangePassword />} />
           {/* Private Route, can't access without token */}
-          <Route path="/batch/:id/applications" element={<PrivateRoute />}>
-            <Route path="/batch/:id/applications" element={<Applicantions />} />
+          <Route path={`/batch/:id${APPLICATIONS}`} element={<PrivateRoute />}>
+            <Route path={`/batch/:id${APPLICATIONS}`} element={<Applicantions />} />
           </Route>
         </Routes>
       </BrowserRouter>

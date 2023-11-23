@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Logo from "/images/dckap_palli_logo_lg.png";
+// import Logo from "/images/dckap_palli_logo_lg.png";
 import ResetPasswordImage from "/images/change_password.svg";
 import "./ResetPage.css";
 import { validateNewpassword } from "../../utils/validate";

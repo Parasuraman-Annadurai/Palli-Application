@@ -5,7 +5,8 @@
   box-sizing: border-box;
 }
 
-body, html {
+body,
+html {
   margin: 0;
   padding: 0;
 }
@@ -27,7 +28,8 @@ body, html {
 
 .main {
   flex: 1;
-  margin-left: 200px; /* Adjust based on the sidebar width */
+  margin-left: 200px;
+  /* Adjust based on the sidebar width */
 }
 
 .navbar {
@@ -81,60 +83,46 @@ body {
   padding-left: 20px;
 }
 
-.menu-container{
+.menu-container {
   margin-top: 30px;
 }
 
-.logo{
+.logo {
   padding: 47px 40px 0px;
 }
 
-.active{
+.active {
   background-color: #223F64;
   padding: 10px 0;
   border-radius: 0px 15px 15px 0px;
 }
-.setting{
+
+.setting {
   margin-top: auto;
   padding: 20px;
 }
 
-/* .filter{
-  margin: 10px 5px;
-  padding: 10px;
-  display: none;
-}
-.filter p{
-  padding-bottom: 5px;
-}
-.filter.show{
-  display: block;
-} */
-
-/* a{
-  text-decoration: none;
-  color: white;
-} */
-.search__bar{
+.search__bar {
   max-width: 200px;
   width: 100%;
 }
 
 /* avatar */
-.avatar__container{
+.avatar__container {
   display: flex;
   align-content: center;
   justify-content: flex-end;
 }
-.avatar__container .avatar__logo{
+
+.avatar__container .avatar__logo {
   cursor: pointer;
 }
 
-.filter__icon{
+.filter__icon {
   color: #223F64;
 }
 
-.upload__btn{
+.upload__btn {
   padding: 8px 20px;
   border-radius: 6px;
   outline: none;

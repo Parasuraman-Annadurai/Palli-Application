@@ -18,6 +18,7 @@ export default {
       if(Object.keys(responce).length > 0){
         const {data:token} = responce;
         localStorage.setItem("token",JSON.stringify(token))
+        
         return responce;
       }
     } catch (error) {

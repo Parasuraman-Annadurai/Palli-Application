@@ -182,13 +182,35 @@ a {
   align-items: center;
   justify-content: center;
 }
+
 .add__batch {
   padding-top: 20px;
 }
+
 .ant-modal .ant-modal-body {
   font-size: 14px;
   line-height: 1.5714285714285714;
   word-wrap: break-word;
   display: flex;
   justify-content: space-evenly;
+}
+
+.batches__list {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.added-batches {
+  width: 150px;
+  height: 150px;
+  border: 10px;
+  background-color: white;
+  color: #A82700;
+  border-radius: 10px;
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 3px 16px 0px;
+  font-size: 16px;
+  text-align: center;
+  padding-top: 50px;
+  cursor: pointer;
 }

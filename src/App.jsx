@@ -1,30 +1,34 @@
 import React from "react";
-import { Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { AuthContextProvider } from "./context/AuthContext.jsx";
+
 //Define your routes for APP here
 import LoginScreen from "./pages/login/LoginScreen";
-import AdminDashoboard from './pages/adminDashoard/AdminDashboard';
-
-
-//Define your routes for APP here
-
+import AdminDashoboard from "./pages/adminDashoard/AdminDashboard";
 import ChangePassword from "./pages/ChangePasswordPage/ResetPasswordPage";
-//Define your routes for APP here
-
 import ForgotPassword from "./pages/ForgotPage/ForgotPage";
+import DashBoard from "./pages/dashBoard/DashBoard.jsx";
 
-import DashBoard from "./pages/Dashboard/DashBoard";
+//Private Routes will be wrapped in below component
+import PrivateRoute from "./routes/PrivateRoute";
 
 const App = () => {
-
- 
   return (
-    <Routes>
-      <Route path="/" element={<LoginScreen />}></Route>
-      <Route path="/forgot/password" element={<ForgotPassword />}></Route>
-      <Route path="/home" element={<AdminDashoboard />}></Route>
-      <Route path="/change/password" element={<ChangePassword />}></Route>
-      <Route path="/dashboard" element={<DashBoard />}></Route>
-    </Routes>
+    <AuthContextProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/login" element={<LoginScreen />} />
+          <Route path="/forgot/password" element={<ForgotPassword />} />
+          <Route path="/change/password" element={<ChangePassword />} />
+          {/* Private Route, can't access without token */}
+          <Route path="/batch/:id/applications" element={<PrivateRoute />}>
+            <Route path="/batch/:id/applications" element={<AdminDashoboard />} />
+          </Route>
+          
+          <Route path="dashboard" element={<DashBoard />} />
+        </Routes>
+      </BrowserRouter>
+    </AuthContextProvider>
   );
 };
 

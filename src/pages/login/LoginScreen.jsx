@@ -9,11 +9,19 @@ import {
   passwordRequirements,
 } from "../../components/PasswordRequirement";
 import UserService from "../../services/UserService";
-import DckapPalliLogo from "../../../src/assests/images/DckapPalliLogo.png";
-import ManagerLoginLogo from "../../../src/assests/images/ManagerLoginLogo.png";
+import DckapPalliLogo from "/images/dckap_palli_logo_lg.png";
+import ManagerLoginLogo from "/images/manager_login_logo.png";
 import Input from "../../components/Input";
+import { API_END_POINT } from "../../../config";
+
+
+import { useAuth } from "../../context/AuthContext";
+import axios from "axios";
+
 const LoginScreen = () => {
   const navigate = useNavigate();
+
+  const {setToken,setUser } = useAuth();
 
   const [showPassword, setShowPassword] = useState(false);
   const [popoverVisible, setPopoverVisible] = useState(false);
@@ -47,24 +55,40 @@ const LoginScreen = () => {
   };
   const handleBlur = () => setPopoverVisible(false);
   //Handle login submit used to validate feild and check creadentials
-  const handleLoginSubmit = async (e) => {
+  const handleLoginSubmit = (e) => {
+
     e.preventDefault();
 
-    // const isValid = validate(loginUserData, setErrors);
-
-    // if (isValid) {
-      try {
-        const response = await UserService.authedicateUser(loginUserData);
-
-        if (Object.keys(response.data).length > 0) {
-          navigate("/home");
-        }
-      } catch (error) {
-        console.error("Authentication Failed", error);
+    axios
+      .post(`${API_END_POINT}/api/accounts/login/`, loginUserData)
+      .then((res) => {
+        console.log(res.data.data,"res")
+        // axios({
+        //     url:`${API_END_POINT}/accounts/get/user_info/`,
+        //     method:"POST",
+        //     headers: {
+        //       Authorization: `Bearer ${res.data.data.access}`,
+        //     },
+        //   })
+        //   .then((userData) => {
+        //     console.log(userData);
+            localStorage.setItem("token", JSON.stringify(res.data.data));
+            setToken(res.data.data);
+            // setUser(userData)
+            navigate(`/batch/${1}/applications`);
+          // })
+          // .catch((err) => {
+          //   console.error("userData fetch Failed", err);
+          // });
+      })
+      .catch((err) => {
+        console.error("Authentication Failed", err);
         navigate("/login");
-      }
-    }
-  // };
+      });
+
+  };
+
+ 
 
   return (
     <div className="login__container">

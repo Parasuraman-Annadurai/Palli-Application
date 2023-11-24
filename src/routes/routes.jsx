@@ -4,5 +4,6 @@
 //Define all the routes here
 
 const DASHBOARD = "/dashboard";
-
-export { DASHBOARD };
+const LOGIN = "/login";
+const APPLICATIONS = "/applications"
+export { DASHBOARD,LOGIN,APPLICATIONS};

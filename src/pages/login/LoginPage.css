@@ -135,3 +135,13 @@
 .input__component{
     width: 100%;
 }
+.criteria{
+    display: flex;
+    gap: 5px;
+}
+.tick{
+    color: var(--primary-color);
+}
+.cancel{
+    color: red;
+}

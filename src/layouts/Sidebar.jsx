@@ -1,16 +1,12 @@
-// Sidebar.js
-import React, { useState } from 'react';
-
-
-import logo from "/images/dckap_palli_logo_sm.png"
-import "../css/index.css"
-
+import React from 'react';
+import dckapLogo from "../../public/images/dckap_palli_logo_sm.svg"
+import { useState } from 'react';
 const Sidebar = () => {
   const [active,setActive] = useState("application");
   return (
     <div className="sidebar">
       <div className="logo">
-        <img src={logo} alt="" />
+        <img src={dckapLogo} alt="dckap-logo-sm" />
       </div>
 
       <div className="menus">
@@ -34,9 +30,6 @@ const Sidebar = () => {
         <p>Task</p>
         </div>
         </div>
-       
-
-     
       </div>
       <div className="setting flex">
       <span className="material-symbols-outlined">settings</span>

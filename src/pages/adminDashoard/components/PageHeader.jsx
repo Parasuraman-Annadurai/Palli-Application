@@ -4,7 +4,7 @@ import Search from 'antd/es/input/Search';
 import { useState } from 'react';
 import { Select,Upload } from 'antd';
 
-const ApplicationHeader = ({totalApplicants}) => {
+const ApplicationHeader = ({total}) => {
 
 
   const [fileList, setFileList] = useState([]);
@@ -12,7 +12,7 @@ const ApplicationHeader = ({totalApplicants}) => {
 
   return (
     <div className="application-header">
-      <h2>Applicants</h2>
+      <h2>Applicantions</h2>
       <div className="header-controls">
         <Upload 
           accept=".xls, .xlsx" fileList={fileList} onChange={({ fileList }) => setFileList(fileList)}
@@ -29,7 +29,7 @@ const ApplicationHeader = ({totalApplicants}) => {
 
         <div className="record-count">
           <span>Number of Records: </span>
-          <span>{totalApplicants}</span>
+          <span>{total}</span>
         </div>
            {/* <div className="fileter-category">
                   <Select

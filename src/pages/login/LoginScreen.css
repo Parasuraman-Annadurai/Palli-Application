@@ -125,10 +125,10 @@
     color: red;
 }
 
-.eye__icon{
+.login-form .eye__icon{
     position: absolute;
     top: 185px;
-    right: 0px;
+    right: 12px;
     cursor: pointer;
     color: var(--primary-color);
 }

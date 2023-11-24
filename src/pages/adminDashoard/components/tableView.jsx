@@ -1,14 +1,8 @@
-// TableComponent.js
-
-import React, { useState } from 'react';
+import React from 'react';
+import { Button } from 'antd';
 import '../css/table.css';
 
-
-
-const TableComponent = ({data}) => {
-
-  let applicant = Array.from(data);
-
+const TableComponent = ({ tableData }) => {
   return (
     <table className="antd-table">
       <thead>
@@ -19,28 +13,36 @@ const TableComponent = ({data}) => {
           <th>Address</th>
           <th>DOB</th>
           <th>Email</th>
-          <th>invite</th>
-          <th>view more</th>
+          <th>Invite</th>
+          <th>View More</th>
         </tr>
       </thead>
       <tbody>
-        {applicant.map((applicants,index) => (
-          <tr key={index}>
-            <td>{index+1}</td>
-            <td>{applicants.first_name}</td>
-            <td>{applicants.last_name}</td>
-            <td>{applicants.email}</td>
-            <td>{applicants.dob}</td>
-            <td>{applicants.address}</td>
-            <td><a href="">create login</a></td>
-            <td><a href="">see all details</a></td>
+        {tableData.length > 0 ? (
+          tableData.map((application, index) => (
+            <tr key={application.id}>
+              <td>{application.id}</td>
+              <td>{application.first_name}</td>
+              <td>{application.last_name}</td>
+              <td>{application.address}</td>
+              <td>{application.dob}</td>
+              <td>{application.email}</td>
+              <td>
+                <Button>Create Login</Button>
+              </td>
+              <td>
+                <Button>View More</Button>
+              </td>
+            </tr>
+          ))
+        ) : (
+          <tr>
+            <td>No applications available</td>
           </tr>
-        ))}
+        )}
       </tbody>
     </table>
   );
 };
-
-
 
 export default TableComponent;

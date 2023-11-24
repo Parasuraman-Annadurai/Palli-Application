@@ -3,15 +3,18 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 const AuthContext = createContext();
 
 export const AuthContextProvider = ({ children }) => {
+  const [token, setToken] = useState(() =>
+    localStorage.getItem("token")
+      ? JSON.parse(localStorage.getItem("token"))
+      : {}
+  );
 
-  const [token, setToken] = useState(()=>localStorage.getItem("token")
-  ? JSON.parse(localStorage.getItem("token"))
-  : {});
-
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState({username:"parasu"});
 
   return (
-    <AuthContext.Provider value={{ user,token,setUser,setToken }}>{children}</AuthContext.Provider>
+    <AuthContext.Provider value={{ user, token, setUser, setToken }}>
+      {children}
+    </AuthContext.Provider>
   );
 };
 
@@ -19,6 +22,7 @@ export const AuthContextProvider = ({ children }) => {
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
+
   if (!context) {
     throw new Error("useAuth must be used within a AuthContextProvider");
   }

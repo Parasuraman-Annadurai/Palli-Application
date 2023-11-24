@@ -1,11 +1,12 @@
-// Navbar.js
 import React from 'react';
 import Profile from './Profile';
-const Navbar = () => {
+import { useAuth } from '../../../context/AuthContext';
+const Navbar = () => {  
+  const {user} = useAuth();
   return (
     <div className="navbar">
       <div>
-        <h2>Welcome to Vignesh Selvaraj</h2>
+      <h2>Welcome,{`Guest`}</h2>
       </div>
       <Profile/>
     </div>

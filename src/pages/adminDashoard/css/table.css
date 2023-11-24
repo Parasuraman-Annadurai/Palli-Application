@@ -106,3 +106,6 @@ pagination */
 .ant-pagination .ant-pagination-item-active{
   border: none;
 }
+.ant-pagination .ant-pagination-item-active a {
+  color: white;
+}

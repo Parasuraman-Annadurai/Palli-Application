@@ -5,11 +5,6 @@
   box-sizing: border-box;
 }
 
-body, html {
-  margin: 0;
-  padding: 0;
-}
-
 .app {
   display: flex;
 }
@@ -82,7 +77,8 @@ body {
 }
 
 .menu-container{
-  margin-top: 30px;
+  margin: 26px 0px;
+  padding: 10px;
 }
 
 .logo{
@@ -91,7 +87,6 @@ body {
 
 .active{
   background-color: #223F64;
-  padding: 10px 0;
   border-radius: 0px 15px 15px 0px;
 }
 .setting{

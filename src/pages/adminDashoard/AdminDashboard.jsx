@@ -1,55 +1,49 @@
-import React, { useEffect, useState } from 'react'
-
-
+import React, { useEffect, useState } from 'react';
 import Sidebar from './components/Sidebar';
 import Navbar from './components/Navbar';
 import Content from './components/ContentArea';
 import { API_END_POINT } from '../../../config';
-
-import UserService from '../../services/UserService';
 import useAPI from '../../hooks/useAPI';
 import { useAuth } from '../../context/AuthContext';
 
-const AdminDashoboard = () => {
-    const [applicants,setApplicants] = useState([])
-    const { token } = useAuth();
+const AdminDashboard = () => {
+  const [limit, setLimit] = useState(10);
+  const [currentPage, setCurrentPage] = useState(1);
 
-    console.log(token.access,"my")
+  const { token } = useAuth();
+  const { data, makeNetworkRequest } = useAPI();
 
-    const { data, loading, error, makeNetworkRequest } = useAPI()
-
-    //this useeffect 
-    useEffect(()=>{
-      makeNetworkRequest(
-        `${API_END_POINT}/api/applicant/1/list/applicants/`,
-        "GET",
-        null,
-        {
-          headers: {
-            Authorization: `Bearer ${token.access}`,
-          },
-        }
-      );
-      // UserService.getApplicants().then(res=>{
-      //   setApplicants(res.data)
-      // })
-    },[])
-
-    console.log(loading,"loading")
-    console.log(error,"error")
-
-    console.log(data,"data")
-
-  
-    return ( 
-        <div className="app">
-        <Sidebar />
-        <div className="main">
-            <Navbar />
-          <Content data={applicants}/>
-        </div>
-        </div>
+  useEffect(() => {
+    makeNetworkRequest(
+      `${API_END_POINT}/api/applicant/1/list/applicants/?limit=${limit}&page=${currentPage}`,
+      'GET',
+      null,
+      {
+        headers: {
+          Authorization: `Bearer ${token.access}`,
+        },
+      }
     );
-}
- 
-export default AdminDashoboard;
+  }, [limit, currentPage]);
+
+
+  const applicantsData = data?.data || { data: [], total: 0 };
+  
+  return (
+    <div className="app">
+      <Sidebar />
+      <div className="main">
+        <Navbar />
+        <Content
+          applicationData={applicantsData.data}
+          limit={limit}
+          currentPage={currentPage}
+          total={applicantsData.total}
+          setCurrentPage={setCurrentPage}
+        />
+      </div>
+    </div>
+  );
+};
+
+export default AdminDashboard;

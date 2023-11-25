@@ -4,5 +4,5 @@
 //Define all the routes here
 
 const DASHBOARD = "/dashboard";
-
-export { DASHBOARD };
+const TASK = "/module"
+export { DASHBOARD,TASK };

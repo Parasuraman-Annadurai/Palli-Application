@@ -1,37 +1,32 @@
-
-
 export const isEmailValid = (email) => {
-
-    const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
-    switch (true) {
-      case !email.trim():
-        return "Email field is required";
-      case !emailRegex.test(email.toLowerCase()):
-        return "Email not valid";
-    }
-  };
+  const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+  switch (true) {
+    case !email.trim():
+      return "Email field is required";
+    case !emailRegex.test(email.toLowerCase()):
+      return "Email not valid";
+  }
+};
 
 export let isPasswordValid = (password) => {
-    const lengthCheck = /.{8,}/;
-    const numberCheck = /\d/;
-    const upperCaseCheck = /[A-Z]/;
-    const specialCharCheck = /[!@#$%^&*()_+{}\[\]:;<>,.?~\\-]/;
-  
-    switch (true) {
-      case !password.trim():
-        return "Password is required";
-      case !lengthCheck.test(password):
-        return "Password must be at least 8 characters.";
-      case !upperCaseCheck.test(password):
-        return "At least one uppercase letter";
-      case !numberCheck.test(password):
-        return "Password must contain at least one number.";
-      case !specialCharCheck.test(password):
-        return "Password must contain at least one special character.";
-    }
-  
-}
+  const lengthCheck = /.{8,}/;
+  const numberCheck = /\d/;
+  const upperCaseCheck = /[A-Z]/;
+  const specialCharCheck = /[!@#$%^&*()_+{}\[\]:;<>,.?~\\-]/;
 
+  switch (true) {
+    case !password.trim():
+      return "Password is required";
+    case !lengthCheck.test(password):
+      return "Password must be at least 8 characters.";
+    case !upperCaseCheck.test(password):
+      return "At least one uppercase letter";
+    case !numberCheck.test(password):
+      return "Password must contain at least one number.";
+    case !specialCharCheck.test(password):
+      return "Password must contain at least one special character.";
+  }
+};
 
 export const validate = (loginUserData, setErrors) => {
   let errors = {};
@@ -54,31 +49,50 @@ export const validate = (loginUserData, setErrors) => {
 };
 
 export const validateNewpassword = (newPasswordData, setErrors) => {
-
   let isValid = true;
-  let errors ={}
+  let errors = {};
 
- 
-   const criteria = isPasswordValid(newPasswordData.newPassword);
-    if(criteria){
-      errors.newPassword = criteria
-      isValid = false;
-    }
+  const criteria = isPasswordValid(newPasswordData.newPassword);
+  if (criteria) {
+    errors.newPassword = criteria;
+    isValid = false;
+  }
 
-
-    if(newPasswordData.confirmPassword.trim()===""){
-      errors.confirmPassword = "confirmPassword required";
-      isValid = false;
-    }
-    else if(newPasswordData.newPassword !== newPasswordData.confirmPassword){
-      errors.confirmPassword = "New password and Confirm password not match";
-      isValid = false;
-    }
-
+  if (newPasswordData.confirmPassword.trim() === "") {
+    errors.confirmPassword = "confirmPassword required";
+    isValid = false;
+  } else if (newPasswordData.newPassword !== newPasswordData.confirmPassword) {
+    errors.confirmPassword = "New password and Confirm password not match";
+    isValid = false;
+  }
 
   setErrors(errors);
   return isValid;
-
-
 };
 
+export const validateAddTask = (addTaskData,setErrors) => {
+  let errors = {};
+  let isVaild = true;
+  if (!addTaskData.taskTitile.trim()) {
+    errors.taskTitile = "Task Name is Required";
+    isVaild = false;
+  }
+  if (!addTaskData.taskDescription.trim()) {
+    errors.taskDescription = "Task Description is Required";
+    isVaild = false;
+  }
+  if (!addTaskData.taskLink.trim()) {
+    errors.taskLink = "Task Link is Required";
+    isVaild = false;
+  }
+  if (!addTaskData.taskDueDate.trim()) {
+    errors.taskDueDate = "Task Due Date is Required";
+    isVaild = false;
+  }
+  if (!addTaskData.taskType.trim()) {
+    errors.taskType = "Task Type is Required";
+    isVaild = false;
+  }
+  setErrors(errors);
+  return isVaild;
+};

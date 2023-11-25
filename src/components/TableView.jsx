@@ -1,6 +1,7 @@
-import { Button } from 'antd';
+
 import React from 'react';
 
+import noDataFound from "../../public/images/no_data_found.svg"
 const TableComponent = ({ applicationListData }) => {
   // Check if the array has data
   if (applicationListData.data && applicationListData.data.length > 0) {
@@ -37,7 +38,9 @@ const TableComponent = ({ applicationListData }) => {
     );
   } else {
     // Display a message or component when the array is empty
-    return <p>No data available.</p>;
+    return <div className='no-data-found'>
+      <img src={noDataFound} alt='no data found'/>
+  </div>;
   }
 };
 

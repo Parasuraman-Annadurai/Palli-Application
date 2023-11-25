@@ -121,3 +121,9 @@ body {
   color: white;
   background-color: #223F64;
 }
+.pagiation__container.hide{
+  visibility: hidden;
+}
+.pagiation__container.show{
+  visibility: visible;
+}

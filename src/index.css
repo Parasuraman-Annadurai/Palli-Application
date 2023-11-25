@@ -123,3 +123,8 @@
 .ant-pagination .ant-pagination-item-active a {
   color:white;
 }
+.no-data-found{
+  max-width: 350px;
+  width: 100%;
+  margin: auto;
+}

@@ -1,15 +1,9 @@
-/* App.css */
+
 * {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
 }
-
-body, html {
-  margin: 0;
-  padding: 0;
-}
-
 .app {
   display: flex;
 }
@@ -27,7 +21,8 @@ body, html {
 
 .main {
   flex: 1;
-  margin-left: 200px; /* Adjust based on the sidebar width */
+  margin-left: 200px;
+  /* Adjust based on the sidebar width */
 }
 
 .navbar {
@@ -81,64 +76,65 @@ body {
   padding-left: 20px;
 }
 
-.menu-container{
+<<<<<<< HEAD:src/pages/adminDashoard/css/index.css
+.menu-container {
   margin-top: 30px;
+=======
+.menu-container{
+  margin: 26px 0px;
+  padding: 10px;
+>>>>>>> 7b6c21022e61d3e112500aaf189555ed9fc8acd5:src/pages/applications/Applicantions.css
 }
 
-.logo{
+.logo {
   padding: 47px 40px 0px;
 }
 
-.active{
+.active {
   background-color: #223F64;
-  padding: 10px 0;
   border-radius: 0px 15px 15px 0px;
 }
-.setting{
+
+.setting {
   margin-top: auto;
   padding: 20px;
 }
 
-/* .filter{
-  margin: 10px 5px;
-  padding: 10px;
-  display: none;
-}
-.filter p{
-  padding-bottom: 5px;
-}
-.filter.show{
-  display: block;
-} */
-
-/* a{
-  text-decoration: none;
-  color: white;
-} */
-.search__bar{
+<<<<<<< HEAD:src/pages/adminDashoard/css/index.css
+.search__bar {
+=======
+.header-controls .search__bar{
+>>>>>>> 7b6c21022e61d3e112500aaf189555ed9fc8acd5:src/pages/applications/Applicantions.css
   max-width: 200px;
   width: 100%;
 }
 
 /* avatar */
-.avatar__container{
+.avatar__container {
   display: flex;
   align-content: center;
   justify-content: flex-end;
 }
-.avatar__container .avatar__logo{
+
+.avatar__container .avatar__logo {
   cursor: pointer;
 }
 
-.filter__icon{
+.filter__icon {
   color: #223F64;
 }
 
-.upload__btn{
+.upload__btn {
   padding: 8px 20px;
   border-radius: 6px;
   outline: none;
   border: none;
   color: white;
   background-color: #223F64;
+}
+.pagiation__container.hide{
+  visibility: hidden;
+}
+.pagiation__container.show{
+  visibility: visible;
 }

@@ -8,7 +8,7 @@ const useAPI = () => {
 
   const makeNetworkRequest = async (url, method = 'GET', body = null, headers = {}) => {
     setLoading(true);
-
+   
     try {
       const result = await axios({
         url,
@@ -20,7 +20,6 @@ const useAPI = () => {
       // if (!response.ok) {
       //   throw new Error(`Request failed with status ${response.status}`);
       // }
-
       setData(result);
       setError(null);
     } catch (error) {

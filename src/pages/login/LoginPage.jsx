@@ -1,27 +1,23 @@
 import React, { useState } from "react";
-import "./LoginScreen.css";
+import "./LoginPage.css";
 import { Popover } from "antd";
 import { useNavigate } from "react-router-dom";
 import { validate } from "../../utils/validate";
-import { Button } from "../../components/Button";
 import {
   checkPasswordCriteria,
   passwordRequirements,
 } from "../../components/PasswordRequirement";
-import UserService from "../../services/UserService";
-import DckapPalliLogo from "/images/dckap_palli_logo_lg.png";
-import ManagerLoginLogo from "/images/manager_login_logo.png";
+import dckapPalliLogon from "../../../public/images/dckap_palli_logo_lg.svg"
+import managerLoginLogo from "../../../public/images/manager_login_image.svg"
 import Input from "../../components/Input";
 import { API_END_POINT } from "../../../config";
-
-
 import { useAuth } from "../../context/AuthContext";
 import axios from "axios";
 
 const LoginScreen = () => {
   const navigate = useNavigate();
 
-  const {setToken,setUser } = useAuth();
+  const {setToken,setUser,user,token } = useAuth();
 
   const [showPassword, setShowPassword] = useState(false);
   const [popoverVisible, setPopoverVisible] = useState(false);
@@ -56,40 +52,37 @@ const LoginScreen = () => {
   const handleBlur = () => setPopoverVisible(false);
   //Handle login submit used to validate feild and check creadentials
   const handleLoginSubmit = (e) => {
-
     e.preventDefault();
-
     axios
       .post(`${API_END_POINT}/api/accounts/login/`, loginUserData)
       .then((res) => {
-        console.log(res.data.data,"res")
-        // axios({
-        //     url:`${API_END_POINT}/accounts/get/user_info/`,
-        //     method:"POST",
-        //     headers: {
-        //       Authorization: `Bearer ${res.data.data.access}`,
-        //     },
-        //   })
-        //   .then((userData) => {
-        //     console.log(userData);
+        axios({
+            url:`${API_END_POINT}/api/accounts/get/user_info/`,
+            method:"GET",
+            headers: {
+              Authorization: `Bearer ${res.data.data.access}`,
+            },
+          })
+          .then((userData) => {
             localStorage.setItem("token", JSON.stringify(res.data.data));
             setToken(res.data.data);
-            // setUser(userData)
-            navigate(`/batch/${1}/applications`);
-          // })
-          // .catch((err) => {
-          //   console.error("userData fetch Failed", err);
-          // });
+            setUser(userData.data);
+            navigate("/dashboard");
+          })
+          .catch((err) => {
+            console.error("userData fetch Failed", err);
+          });
       })
       .catch((err) => {
         console.error("Authentication Failed", err);
         navigate("/login");
       });
 
+      
   };
 
  
-
+  
   return (
     <div className="login__container">
       <div className="top__header">
@@ -98,12 +91,12 @@ const LoginScreen = () => {
           <p>Make Sure Your Account is Secure</p>
         </div>
         <div className="right__side--header">
-          <img src={DckapPalliLogo} alt="" />
+          <img src={dckapPalliLogon} alt="dckap-logo" />
         </div>
       </div>
       <div className="input__containers">
         <div className="left__side__image__container">
-          <img src={ManagerLoginLogo} alt="" />
+          <img src={managerLoginLogo} alt="manager-logo" />
         </div>
         <div className="right__side-input__container">
           <form onSubmit={handleLoginSubmit} className="login-form">
@@ -141,7 +134,7 @@ const LoginScreen = () => {
 
             <a href="/forgot/password">Forgot password ?</a>
             <div className="login__btn__container">
-              <Button buttonText={"login"} />
+            <button className="login-btn">Login</button>
             </div>
           </form>
         </div>

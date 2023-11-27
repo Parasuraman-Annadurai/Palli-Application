@@ -95,7 +95,7 @@
 }
 
 /* Styling for the email input field */
-input[type="text"] {
+input.forgot-password-input {
     width: 425px;
     border: 2px solid #3F88D8;
     border-left: 0px;

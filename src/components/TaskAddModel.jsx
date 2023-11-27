@@ -1,10 +1,17 @@
 import React from "react";
 import { useState } from "react";
-import { Modal, Tabs } from "antd";
+import { Modal, Tabs,DatePicker } from "antd";
 import TabPane from "antd/es/tabs/TabPane";
 import { validateAddTask } from "../utils/validate";
+import { API_END_POINT } from '../../config';
+
+import useAPI from '../hooks/useAPI';
+import { useAuth } from "../context/AuthContext";
+
 
 const TaskAddModal = ({ isVisible, handleCancel }) => {
+  const {data,loading,error,makeNetworkRequest} = useAPI();
+  const {token} = useAuth();
   const [uploadMode, setUploadMode] = useState("link");
   const [errors, setErrors] = useState({});
   const handleModeChange = (key) => {
@@ -12,12 +19,12 @@ const TaskAddModal = ({ isVisible, handleCancel }) => {
   };
 
   const [addTaskData, setAddTaskData] = useState({
-    taskTitile: "",
-    taskDescription: "",
-    taskDueDate: "",
-    taskLink: "",
-    taskType: "",
+    task_title: "",
+    task_description: "",
+    due_date: "",
+    task_type: "",
   });
+
  
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -25,16 +32,33 @@ const TaskAddModal = ({ isVisible, handleCancel }) => {
     if(errors[name])delete errors[name];
   };
   
-  const handleTaskAdd =()=>{
-    let isVaildTask = validateAddTask(addTaskData,setErrors);
-    if(isVaildTask){
-      //make API call for store the task
-    }
-  }
+  
   const resetErrors = () => {
     handleCancel();
     setErrors({});
   };
+  
+  const handleTaskAdd =()=>{
+    let isVaildTask = validateAddTask(addTaskData,setErrors);
+    if(isVaildTask){
+      //make API call for store the task
+      makeNetworkRequest(`${API_END_POINT}/api/task/55/create_task/`,'POST',addTaskData,{
+        headers:{
+          Authorization: `Bearer ${token.access}`,
+          "Content-Type": "application/json"
+        }
+      })
+      
+      setAddTaskData({
+        task_title: "",
+        task_description: "",
+        due_date: "",
+        task_type: "",
+      });
+      resetErrors();
+    }
+  }
+  
   return (
     <Modal
       title="Add Task"
@@ -58,24 +82,24 @@ const TaskAddModal = ({ isVisible, handleCancel }) => {
                 <input
                   type="text"
                   placeholder="Enter the task title "
-                  name="taskTitile"
-                  value={addTaskData.taskTitile}
+                  name="task_title"
+                  value={addTaskData.task_title}
                   onChange={handleChange}
                 />
                 <p className="error-message">
-                  {errors.taskTitile ? errors.taskTitile : ""}
+                  {errors.task_title ? errors.task_title : ""}
                 </p>
               </div>
               <div className="task-desc-sec">
                 <label htmlFor="task description">Task Description</label>
                 <textarea
-                  value={addTaskData.taskDescription}
+                  value={addTaskData.task_description}
                   onChange={handleChange}
-                  name="taskDescription"
+                  name="task_description"
                   placeholder="Type something here..."
                 />
                 <p className="error-message">
-                  {errors.taskDescription ? errors.taskDescription : ""}
+                  {errors.task_description ? errors.task_description : ""}
                 </p>
               </div>
               {/* <div className="file-attach-sec">
@@ -92,7 +116,7 @@ const TaskAddModal = ({ isVisible, handleCancel }) => {
                   </div>
                 </div>
               </div> */}
-              <div className="file-attach-sec">
+              {/* <div className="file-attach-sec">
                 <label htmlFor="file attach">Attach File</label>
                 <Tabs activeKey={uploadMode} onChange={handleModeChange}>
                   <TabPane tab="Upload" key="upload">
@@ -110,7 +134,7 @@ const TaskAddModal = ({ isVisible, handleCancel }) => {
                       <div className="link">
                         <span className="material-symbols-outlined">link</span>
                       </div>
-                      {/* Show paste link area */}
+                 
                       <input
                         type="text"
                         placeholder="Paste link here"
@@ -124,7 +148,7 @@ const TaskAddModal = ({ isVisible, handleCancel }) => {
                     </p>
                   </TabPane>
                 </Tabs>
-              </div>
+              </div>  */}
             </div>
             <div className="right-container">
               <div className="right-contents">
@@ -134,24 +158,25 @@ const TaskAddModal = ({ isVisible, handleCancel }) => {
                 </div> */}
                 <div className="due-date-sec">
                   <label htmlFor="due">Due</label>
+                
                   <input
                     type="date"
                     placeholder="due date"
-                    name="taskDueDate"
-                    value={addTaskData.taskDueDate}
+                    name="due_date"
+                    value={addTaskData.due_date}
                     onChange={handleChange}
                   />
                   <p className="error-message">
-                    {errors.taskDueDate ? errors.taskDueDate : ""}
+                    {errors.due_date ? errors.due_date : ""}
                   </p>
                 </div>
                 <div className="due-date-sec">
                   <label htmlFor="due">Task Type</label>
                   <select
-                    name="taskType"
+                    name="task_type"
                     id=""
                     className="task-type"
-                    value={addTaskData.taskType}
+                    value={addTaskData.task_type}
                     onChange={handleChange}
                     placeholder="select task type"
                   >
@@ -162,7 +187,7 @@ const TaskAddModal = ({ isVisible, handleCancel }) => {
                     <option value="assessment">Assessment</option>
                   </select>
                   <p className="error-message">
-                    {errors.taskType ? errors.taskType : ""}
+                    {errors.task_type ? errors.task_type : ""}
                   </p>
                 </div>
                 <div className="weightage">

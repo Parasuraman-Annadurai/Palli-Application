@@ -71,26 +71,32 @@ export const validateNewpassword = (newPasswordData, setErrors) => {
 };
 
 export const validateAddTask = (addTaskData,setErrors) => {
+
+  // task_title: "",
+  // task_description: "",
+  // due_date: "",
+  // task_type: "",
+
   let errors = {};
   let isVaild = true;
-  if (!addTaskData.taskTitile.trim()) {
-    errors.taskTitile = "Task Name is Required";
+  if (!addTaskData.task_title.trim()) {
+    errors.task_title = "Task Name is Required";
     isVaild = false;
   }
-  if (!addTaskData.taskDescription.trim()) {
-    errors.taskDescription = "Task Description is Required";
+  if (!addTaskData.task_description.trim()) {
+    errors.task_description = "Task Description is Required";
     isVaild = false;
   }
-  if (!addTaskData.taskLink.trim()) {
-    errors.taskLink = "Task Link is Required";
+  // if (!addTaskData.taskLink.trim()) {
+  //   errors.taskLink = "Task Link is Required";
+  //   isVaild = false;
+  // }
+  if (!addTaskData.due_date.trim()) {
+    errors.due_date = "Task Due Date is Required";
     isVaild = false;
   }
-  if (!addTaskData.taskDueDate.trim()) {
-    errors.taskDueDate = "Task Due Date is Required";
-    isVaild = false;
-  }
-  if (!addTaskData.taskType.trim()) {
-    errors.taskType = "Task Type is Required";
+  if (!addTaskData.task_type.trim()) {
+    errors.task_type = "Task Type is Required";
     isVaild = false;
   }
   setErrors(errors);

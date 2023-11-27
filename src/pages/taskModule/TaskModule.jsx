@@ -37,7 +37,7 @@ const TaskModule = () => {
               </div>
             </div>
           </div>
-          <TaskAddModal isVisible={isModalVisible} handleCancel={handleCancel}/>
+          <TaskAddModal isVisible={isModalVisible}  handleCancel={handleCancel}/>
         </div>
       </div>
     </div>

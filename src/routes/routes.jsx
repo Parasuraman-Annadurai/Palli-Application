@@ -4,10 +4,10 @@
 //Define all the routes here
 
 const LOGIN = "/login";
-const DASHBOARD = "/dashboard";
 const FORGOTPASSWORD = "/forgot/password";
 const CHANGEPASSWORD = "/change/password";
-const APPLICATIONS = "/applications"
-
-export { DASHBOARD,LOGIN,APPLICATIONS, FORGOTPASSWORD,CHANGEPASSWORD };
+const DASHBOARD = "/dashboard";
+const APPLICATIONS = "/batch/:id/applications"
+const TASK = "/batch/:id/module"
+export { DASHBOARD,LOGIN,APPLICATIONS, FORGOTPASSWORD,CHANGEPASSWORD,TASK };
 

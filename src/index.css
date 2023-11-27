@@ -4,127 +4,148 @@
   margin: 0;
   list-style: none;
   text-decoration: none;
+  outline: none;
 }
 
-/* TableComponent.css */
+/* taskAddmodel */
 
-.antd-table {
-  font-size: 14px;
-  border-collapse: collapse;
+.container {
   width: 100%;
-  margin-bottom: 20px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.09);
+  border: 1px solid grey;
 }
 
-.antd-table th,
-.antd-table td {
-  border: 1px solid #e8e8e8;
-  padding: 16px;
-  text-align: left;
-}
-
-.antd-table th {
-  background-color: #fafafa;
-}
-
-.antd-table tbody tr:hover {
-  background-color: #f5f5f5;
-}
-
-/* Sorting Icons */
-.sort-icon {
-  display: inline-block;
-  vertical-align: middle;
-  margin-left: 4px;
-}
-
-.sort-icon.asc {
-  border-width: 0 4px 6px;
-  border-color: transparent transparent #000 transparent;
-}
-
-.sort-icon.desc {
-  border-width: 6px 4px 0;
-  border-color: #000 transparent transparent transparent;
-}
-
-/* Header Hover Effect */
-.antd-table th:hover {
-  background-color: #e6f7ff;
-  cursor: pointer;
-}
-
-.antd-table tbody .table-view-more,.create-login-btn{
-  font-size: 14px;
-    height: 32px;
-    padding: 4px 15px;
-    border-radius: 6px;
-    outline: none;
-    background-color: white;
-    border: 1px solid #d9d9d9;
-    cursor: pointer;
-}
-  
-
-
-/* Pagination styles */
-.ant-pagination {
+.inner-container {
   display: flex;
-  justify-content: end;
-  margin-top: 16px;
 }
 
-.ant-pagination-item,
-.ant-pagination-prev,
-.ant-pagination-next {
-  border: 1px solid #d9d9d9;
-  border-radius: 4px;
-  margin-right: 8px;
+/* left side styling */
+
+.left-container {
+  max-width: 700px;
+  width: 100%;
+  border-right: 1px solid grey;
+  padding-right: 40px;
+  padding-left: 40px;
+  padding-top: 24px;
 }
 
-.ant-pagination-item a,
-.ant-pagination-prev a,
-.ant-pagination-next a {
+.left-container > div {
+  margin-bottom: 10px;
+  width: 100%;
+}
+
+.page-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #223f64;
+  span {
+    width: 28px;
+    font-variation-settings: "FILL" 1, "wght" 400, "GRAD" 0, "opsz" 24;
+  }
+  .task-txt {
+    font: bold 16px/18px karla, san-serif;
+    color: #223f64;
+  }
+}
+
+.task-name-sec > label,
+.task-desc-sec > label,
+.file-attach-sec > label {
+  display: block;
+  font: bold 16px/18px karla, san-serif;
+  color: #223f64;
+  padding-bottom: 10px;
+}
+
+.task-name-sec > input,
+.task-desc-sec > textarea {
+  border: 1px solid grey;
+  font: normal 16px/18px karla, san-serif;
+  width: 100%;
+  background-color: white;
+  padding-left: 16px;
+}
+
+.task-name-sec > input {
+  padding: 15px 8px;
+}
+
+.task-name-sec > input:focus,
+textarea:focus {
+  outline: none;
+}
+
+.task-desc-sec > textarea {
+  width: 100%;
+  padding: 10px 10px 100px 6px;
+}
+
+.file-upload-cont {
+  padding: 30px 0 30px 16px;
+  width: 100%;
+  border: 1px solid grey;
+  background-color: white;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
-  border-radius: 4px;
-  color: #333;
+  .or {
+    margin: 0px 20px;
+  }
 }
 
-.ant-pagination-item-active a {
-  background-color: #223f64;
-  color: #fff;
-  border-color: #223f64;
+/* right side styling */
+.right-container {
+  padding: 40px;
+  position: relative;
 }
 
-.ant-pagination-prev,
-.ant-pagination-next {
-  width: 32px;
-  height: 32px;
-}
-
-.ant-pagination-jump-prev,
-.ant-pagination-jump-next {
-  display: none;
-}
-
-.ant-pagination-options {
-  display: none;
-}
-.ant-pagination .ant-pagination-item-active {
-  border: none;
-}
-.ant-pagination-item-active a {
-  color: white;
-}
-.ant-pagination .ant-pagination-item-active a {
-  color:white;
-}
-.no-data-found{
-  max-width: 350px;
+.right-contents {
+  max-width: 340px;
   width: 100%;
-  margin: auto;
+  display: flex;
+  flex-direction: column;
+}
+.right-contents > div {
+  padding-bottom: 10px;
+}
+.right-contents label {
+  display: block;
+  padding-bottom: 5px;
+  color: #223f64;
+}
+.right-container .btns-div {
+  position: absolute;
+  bottom: 0;
+  margin-bottom: 10px;
+}
+.right-container .btns-div .cancel-btn {
+  padding: 10px 20px 10px 20px;
+  margin-right: 5px;
+  color: white;
+  background-color: #9fa4aa;
+  outline: none;
+  border: none;
+  border-radius: 3px;
+}
+.right-container .btns-div .assign-btn {
+  padding: 10px 20px 10px 20px;
+  color: white;
+  background-color: #223f64;
+  outline: none;
+  border: none;
+  border-radius: 3px;
+}
+
+.right-contents input {
+  padding: 10px 5px 10px 10px;
+  outline: none;
+}
+.right-container .weightage button {
+  padding: 10px 71px 10px 62px;
+}
+
+.task-type {
+  padding: 10px 91px 10px 10px;
+  outline: none;
 }

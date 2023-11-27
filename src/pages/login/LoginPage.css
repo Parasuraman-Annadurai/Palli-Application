@@ -125,13 +125,23 @@
     color: red;
 }
 
-.eye__icon{
+.login-form .eye__icon{
     position: absolute;
     top: 185px;
-    right: 0px;
+    right: 12px;
     cursor: pointer;
     color: var(--primary-color);
 }
 .input__component{
     width: 100%;
+}
+.criteria{
+    display: flex;
+    gap: 5px;
+}
+.tick{
+    color: var(--primary-color);
+}
+.cancel{
+    color: red;
 }

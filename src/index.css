@@ -1,7 +1,130 @@
 /* write common styles only here */
-*{
-    padding: 0;
-    margin: 0;
-    list-style: none;
-    text-decoration: none;
+* {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  text-decoration: none;
+}
+
+/* TableComponent.css */
+
+.antd-table {
+  font-size: 14px;
+  border-collapse: collapse;
+  width: 100%;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.09);
+}
+
+.antd-table th,
+.antd-table td {
+  border: 1px solid #e8e8e8;
+  padding: 16px;
+  text-align: left;
+}
+
+.antd-table th {
+  background-color: #fafafa;
+}
+
+.antd-table tbody tr:hover {
+  background-color: #f5f5f5;
+}
+
+/* Sorting Icons */
+.sort-icon {
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 4px;
+}
+
+.sort-icon.asc {
+  border-width: 0 4px 6px;
+  border-color: transparent transparent #000 transparent;
+}
+
+.sort-icon.desc {
+  border-width: 6px 4px 0;
+  border-color: #000 transparent transparent transparent;
+}
+
+/* Header Hover Effect */
+.antd-table th:hover {
+  background-color: #e6f7ff;
+  cursor: pointer;
+}
+
+.antd-table tbody .table-view-more,.create-login-btn{
+  font-size: 14px;
+    height: 32px;
+    padding: 4px 15px;
+    border-radius: 6px;
+    outline: none;
+    background-color: white;
+    border: 1px solid #d9d9d9;
+    cursor: pointer;
+}
+  
+
+
+/* Pagination styles */
+.ant-pagination {
+  display: flex;
+  justify-content: end;
+  margin-top: 16px;
+}
+
+.ant-pagination-item,
+.ant-pagination-prev,
+.ant-pagination-next {
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  margin-right: 8px;
+}
+
+.ant-pagination-item a,
+.ant-pagination-prev a,
+.ant-pagination-next a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 4px;
+  color: #333;
+}
+
+.ant-pagination-item-active a {
+  background-color: #223f64;
+  color: #fff;
+  border-color: #223f64;
+}
+
+.ant-pagination-prev,
+.ant-pagination-next {
+  width: 32px;
+  height: 32px;
+}
+
+.ant-pagination-jump-prev,
+.ant-pagination-jump-next {
+  display: none;
+}
+
+.ant-pagination-options {
+  display: none;
+}
+.ant-pagination .ant-pagination-item-active {
+  border: none;
+}
+.ant-pagination-item-active a {
+  color: white;
+}
+.ant-pagination .ant-pagination-item-active a {
+  color:white;
+}
+.no-data-found{
+  max-width: 350px;
+  width: 100%;
+  margin: auto;
 }

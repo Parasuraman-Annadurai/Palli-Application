@@ -1,16 +1,9 @@
-/* App.css */
+
 * {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
 }
-
-body,
-html {
-  margin: 0;
-  padding: 0;
-}
-
 .app {
   display: flex;
 }
@@ -83,8 +76,14 @@ body {
   padding-left: 20px;
 }
 
+<<<<<<< HEAD:src/pages/adminDashoard/css/index.css
 .menu-container {
   margin-top: 30px;
+=======
+.menu-container{
+  margin: 26px 0px;
+  padding: 10px;
+>>>>>>> 7b6c21022e61d3e112500aaf189555ed9fc8acd5:src/pages/applications/Applicantions.css
 }
 
 .logo {
@@ -93,7 +92,6 @@ body {
 
 .active {
   background-color: #223F64;
-  padding: 10px 0;
   border-radius: 0px 15px 15px 0px;
 }
 
@@ -102,7 +100,11 @@ body {
   padding: 20px;
 }
 
+<<<<<<< HEAD:src/pages/adminDashoard/css/index.css
 .search__bar {
+=======
+.header-controls .search__bar{
+>>>>>>> 7b6c21022e61d3e112500aaf189555ed9fc8acd5:src/pages/applications/Applicantions.css
   max-width: 200px;
   width: 100%;
 }
@@ -129,4 +131,10 @@ body {
   border: none;
   color: white;
   background-color: #223F64;
+}
+.pagiation__container.hide{
+  visibility: hidden;
+}
+.pagiation__container.show{
+  visibility: visible;
 }

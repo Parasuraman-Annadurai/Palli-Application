@@ -1,11 +1,14 @@
 import React, { useState } from "react";
-// import Logo from "/images/dckap_palli_logo_lg.png";
+import Logo from "/images/dckap_palli_logo_lg.svg";
 import ResetPasswordImage from "/images/change_password.svg";
 import "./ResetPage.css";
 import { validateNewpassword } from "../../utils/validate";
 import { checkPasswordCriteria } from "../../components/PasswordRequirement";
 import { Popover } from "antd";
-const ChangePassword = () => {
+
+
+
+const ResetPasswordPage = () => {
   const [passwordError, setPasswordError] = useState({});
   const [passwordCriteria,setpasswordCriteria] = useState(null);
   const [popoverShow,setPopovershow] = useState(false);
@@ -143,7 +146,7 @@ const ChangePassword = () => {
   );
 };
 
-export default ChangePassword;
+export default ResetPasswordPage;
 
 
 

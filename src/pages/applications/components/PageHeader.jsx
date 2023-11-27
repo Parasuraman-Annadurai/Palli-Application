@@ -1,10 +1,10 @@
-// ApplicationHeader.js
+
 import React from 'react';
 import Search from 'antd/es/input/Search';
 import { useState } from 'react';
 import { Select,Upload } from 'antd';
 
-const ApplicationHeader = ({totalApplicants}) => {
+const ApplicationHeader = () => {
 
 
   const [fileList, setFileList] = useState([]);
@@ -21,39 +21,35 @@ const ApplicationHeader = ({totalApplicants}) => {
           Import
         </button>
         </Upload>
-        <Search
-          placeholder="Search"
-          className='search__bar'
-         
-        />
-
+        
+          <Search placeholder='Search' className='search__bar'/>
         <div className="record-count">
           <span>Number of Records: </span>
-          <span>{totalApplicants}</span>
+          <span>{""}</span>
         </div>
-           {/* <div className="fileter-category">
-                  <Select
-                defaultValue="all"
-                style={{
-                  width: 120,
-                }}
-                options={[
-                  {
-                    value: 'all',
-                    label: 'All',
-                  },
-                  {
-                    value: 'pending',
-                    label: 'Pending',
-                  },
-                  {
-                    value: 'success',
-                    label: 'Success',
-                  },
-                ]}
-                onChange={handleStatus}
-              />
-           </div> */}
+        <div className="fileter-category">
+              <Select
+            defaultValue="all"
+            style={{
+              width: 120,
+            }}
+            options={[
+              {
+                value: 'all',
+                label: 'All',
+              },
+              {
+                value: 'pending',
+                label: 'Pending',
+              },
+              {
+                value: 'success',
+                label: 'Success',
+              },
+            ]}
+            
+          />
+        </div>
         
         {/* fillter icon */}
         {/* <div className="select-item">

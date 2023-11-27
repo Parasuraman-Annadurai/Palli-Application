@@ -1,15 +1,12 @@
 // Sidebar.js
 import React from 'react';
-
-
-import logo from "/images/dckap_palli_logo_sm.png"
-import "../css/index.css"
+import dckapLogo from "../../public/images/dckap_palli_logo_sm.svg"
 
 const Sidebar = () => {
   return (
     <div className="sidebar">
       <div className="logo">
-        <img src={logo} alt="" />
+        <img src={dckapLogo} alt="dckap-logo-sm" />
       </div>
 
       <div className="menus">

@@ -67,7 +67,7 @@ const LoginScreen = () => {
             localStorage.setItem("token", JSON.stringify(res.data.data));
             setToken(res.data.data);
             setUser(userData.data);
-            navigate(`/batch/${1}/applications`);
+            navigate("/dashboard");
           })
           .catch((err) => {
             console.error("userData fetch Failed", err);

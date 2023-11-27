@@ -7,6 +7,7 @@ import LoginPage from "./pages/login/LoginPage.jsx";
 import ChangePassword from "./pages/changePasswordPage/ResetPasswordPage";
 import ForgotPassword from "./pages/forgotPage/ForgotPage";
 import Applicantions from "./pages/applications/Applications.jsx";
+import DashBoard from "./pages/dashBoard/DashBoard.jsx";
 //Private Routes will be wrapped in below component
 import PrivateRoute from "./routes/PrivateRoute";
 
@@ -22,6 +23,8 @@ const App = () => {
           <Route path={`/batch/:id${APPLICATIONS}`} element={<PrivateRoute />}>
             <Route path={`/batch/:id${APPLICATIONS}`} element={<Applicantions />} />
           </Route>
+          
+          <Route path="dashboard" element={<DashBoard />} />
         </Routes>
       </BrowserRouter>
     </AuthContextProvider>

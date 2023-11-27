@@ -17,7 +17,7 @@ import axios from "axios";
 const LoginScreen = () => {
   const navigate = useNavigate();
 
-  const {setToken,setUser } = useAuth();
+  const {setToken,setUser,user,token } = useAuth();
 
   const [showPassword, setShowPassword] = useState(false);
   const [popoverVisible, setPopoverVisible] = useState(false);
@@ -52,40 +52,37 @@ const LoginScreen = () => {
   const handleBlur = () => setPopoverVisible(false);
   //Handle login submit used to validate feild and check creadentials
   const handleLoginSubmit = (e) => {
-
     e.preventDefault();
-
     axios
       .post(`${API_END_POINT}/api/accounts/login/`, loginUserData)
       .then((res) => {
-        console.log(res.data.data,"res")
-        // axios({
-        //     url:`${API_END_POINT}/accounts/get/user_info/`,
-        //     method:"POST",
-        //     headers: {
-        //       Authorization: `Bearer ${res.data.data.access}`,
-        //     },
-        //   })
-        //   .then((userData) => {
-        //     console.log(userData);
+        axios({
+            url:`${API_END_POINT}/api/accounts/get/user_info/`,
+            method:"GET",
+            headers: {
+              Authorization: `Bearer ${res.data.data.access}`,
+            },
+          })
+          .then((userData) => {
             localStorage.setItem("token", JSON.stringify(res.data.data));
             setToken(res.data.data);
-            // setUser(userData)
+            setUser(userData.data);
             navigate(`/batch/${1}/applications`);
-          // })
-          // .catch((err) => {
-          //   console.error("userData fetch Failed", err);
-          // });
+          })
+          .catch((err) => {
+            console.error("userData fetch Failed", err);
+          });
       })
       .catch((err) => {
         console.error("Authentication Failed", err);
         navigate("/login");
       });
 
+      
   };
 
  
-
+  
   return (
     <div className="login__container">
       <div className="top__header">

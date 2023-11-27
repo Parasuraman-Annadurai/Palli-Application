@@ -7,7 +7,7 @@ const LOGIN = "/login";
 const DASHBOARD = "/dashboard";
 const FORGOTPASSWORD = "/forgot/password";
 const CHANGEPASSWORD = "/change/password";
-const APPLICATIONS = "/application"
+const APPLICATIONS = "/applications"
 
 export { DASHBOARD,LOGIN,APPLICATIONS, FORGOTPASSWORD,CHANGEPASSWORD };
 

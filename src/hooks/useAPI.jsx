@@ -20,7 +20,6 @@ const useAPI = () => {
       // if (!response.ok) {
       //   throw new Error(`Request failed with status ${response.status}`);
       // }
-
       setData(result);
       setError(null);
     } catch (error) {

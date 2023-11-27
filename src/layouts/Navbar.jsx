@@ -1,4 +1,3 @@
-// Navbar.js
 import React from 'react';
 import { Button,Popover } from 'antd';
 const Navbar = () => {

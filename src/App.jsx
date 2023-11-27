@@ -1,13 +1,12 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthContextProvider } from "./context/AuthContext.jsx";
-import { FORGOTPASSWORD,CHANGEPASSWORD } from "./routes/routes.jsx";
+import { LOGIN,APPLICATIONS, FORGOTPASSWORD,CHANGEPASSWORD } from "./routes/routes.jsx";
 //Define your routes for APP here
-import LoginScreen from "./pages/login/LoginScreen";
-import AdminDashoboard from "./pages/adminDashoard/AdminDashboard";
-import ForgotPassword from "./pages/forgotPage/ForgotPage.jsx";
-import ResetPasswordPage from "./pages/changePasswordPage/ResetPasswordPage.jsx";
-
+import LoginPage from "./pages/login/LoginPage.jsx";
+import ChangePassword from "./pages/changePasswordPage/ResetPasswordPage";
+import ForgotPassword from "./pages/forgotPage/ForgotPage";
+import Applicantions from "./pages/applications/Applications.jsx";
 //Private Routes will be wrapped in below component
 import PrivateRoute from "./routes/PrivateRoute";
 
@@ -16,15 +15,12 @@ const App = () => {
     <AuthContextProvider>
       <BrowserRouter>
         <Routes>
-          <Route path="/login" element={<LoginScreen />} />
+          <Route path={LOGIN} element={<LoginPage />} />
           <Route path={FORGOTPASSWORD} element={<ForgotPassword />} />
-          <Route path={CHANGEPASSWORD} element={<ResetPasswordPage />} />
+          <Route path={CHANGEPASSWORD} element={<ChangePassword />} />
           {/* Private Route, can't access without token */}
-          <Route path="/batch/:id/applications" element={<PrivateRoute />}>
-            <Route
-              path="/batch/:id/applications"
-              element={<AdminDashoboard />}
-            />
+          <Route path={`/batch/:id${APPLICATIONS}`} element={<PrivateRoute />}>
+            <Route path={`/batch/:id${APPLICATIONS}`} element={<Applicantions />} />
           </Route>
         </Routes>
       </BrowserRouter>

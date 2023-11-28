@@ -2,14 +2,13 @@ import React, { useState, useEffect } from "react";
 import dashBoardHeaderImage from "../../../../public/images/dashboard_header_image.svg";
 import useAPI from "../../../hooks/useAPI";
 import { Button, Modal, Input, DatePicker } from "antd";
-import { API_END_POINT } from "../../../../config";
 import { useAuth } from "../../../context/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
 
 const Content = () => {
   const navigate = useNavigate();
   const { token } = useAuth();
-  const { data, makeNetworkRequest } = useAPI();
+  const { data, isCompleted, makeNetworkRequest } = useAPI();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [batch_name, setBatchName] = useState("");
@@ -34,6 +33,12 @@ const Content = () => {
       }
     );
   }, []);
+
+  useEffect(()=>{
+    if(isCompleted){
+        // updates the batches state
+    }
+  },[isCompleted])
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -121,10 +126,6 @@ const Content = () => {
           },
         }
       );
-
-      // Close modal and reset fields
-      handleCancel();
-      navigate("/dashboard");
     }
   };
 

@@ -4,12 +4,9 @@ import Content from './components/content';
 import "./index.css"
 const DashBoard = () => {
     return (
-        <div className="app">
-        <Sidebar />
         <div className="main">
           <Content />
         </div>
-      </div>
     );
 }
  

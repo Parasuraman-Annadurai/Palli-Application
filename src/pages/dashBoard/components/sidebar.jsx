@@ -4,7 +4,7 @@ import logo from "/images/dckap_palli_logo_sm.svg";
 import { Link } from "react-router-dom";
 const Sidebar = () => {
   return (
-    <div className="sidebar">
+    <div className="admin_sidebar">
       <div className="logo">
         <img src={logo} alt="" />
       </div>

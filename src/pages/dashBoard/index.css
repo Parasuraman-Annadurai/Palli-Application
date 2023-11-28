@@ -15,7 +15,7 @@ html {
   display: flex;
 }
 
-.sidebar {
+.admin_sidebar {
   max-width: 200px;
   width: 100%;
   background-color: #223F64;
@@ -189,7 +189,6 @@ a {
 
 .ant-modal .ant-modal-body {
   font-size: 14px;
-  line-height: 1.5714285714285714;
   word-wrap: break-word;
   display: flex;
   justify-content: space-evenly;

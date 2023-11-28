@@ -13,7 +13,6 @@ const TaskModule = () => {
   }
 
   return (
-    <div className="app">
       <div className="main">
         <div className="content">
           <div className="task_container">
@@ -40,7 +39,6 @@ const TaskModule = () => {
           <TaskAddModal isVisible={isModalVisible}  handleCancel={handleCancel}/>
         </div>
       </div>
-    </div>
   );
 };
 

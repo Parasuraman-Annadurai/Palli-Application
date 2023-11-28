@@ -5,6 +5,7 @@ const useAPI = () => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [isCompleted, setIsCompleted] = useState(false)
 
   const makeNetworkRequest = async (url, method = 'GET', body = null, headers = {}) => {
     setLoading(true);
@@ -17,10 +18,8 @@ const useAPI = () => {
         data: body ? JSON.stringify(body) : null,
       });
 
-      // if (!response.ok) {
-      //   throw new Error(`Request failed with status ${response.status}`);
-      // }
       setData(result);
+      setIsCompleted(true)
       setError(null);
     } catch (error) {
       setData(null);
@@ -31,7 +30,7 @@ const useAPI = () => {
   };
 
 
-  return { data, loading, error, makeNetworkRequest };
+  return { data, loading, error, isCompleted, makeNetworkRequest };
 };
 
 export default useAPI;

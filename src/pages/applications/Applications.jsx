@@ -46,8 +46,6 @@ const Applicantions = () => {
   const applicantsData = data?.data || { data: [], total: 0 };
   console.log(applicantsData.data.length);
   return (
-    <div className="app">
-      <Sidebar />
       <div className="main">
         <Navbar />
         <Content>
@@ -78,7 +76,6 @@ const Applicantions = () => {
           )}
         </Content>
       </div>
-    </div>
   );
 };
 

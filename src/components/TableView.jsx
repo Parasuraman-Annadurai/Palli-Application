@@ -2,26 +2,24 @@
 import React from 'react';
 
 import noDataFound from "../../public/images/no_data_found.svg"
-const TableComponent = ({ applicationListData }) => {
+const TableComponent = ({ data,coulmnName }) => {
+  console.log(data);
   // Check if the array has data
-  if (applicationListData.data && applicationListData.data.length > 0) {
+  if (data.data && data.data.length > 0) {
+    console.log(coulmnName);
     return (
+      
       <table className="antd-table">
         <thead>
-          <tr>
-            <th>Id</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Address</th>
-            <th>DOB</th>
-            <th>Email</th>
-            <th>invite</th>
-            <th>view more</th>
+        <tr>
+            {coulmnName.map((column) => (
+              <th key={column.key}>{column.title}</th>
+            ))}
           </tr>
         </thead>
         <tbody>
           {/* Map through the array and render table rows for each object */}
-          {applicationListData.data.map((item) => (
+          {data.data.map((item) => (
             <tr key={item.id}>
               <td>{item.id}</td>
               <td>{item.first_name}</td>

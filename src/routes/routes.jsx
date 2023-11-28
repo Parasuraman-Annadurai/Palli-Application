@@ -9,5 +9,7 @@ const CHANGEPASSWORD = "/change/password";
 const DASHBOARD = "/dashboard";
 const APPLICATIONS = "/batch/:id/applications"
 const TASK = "/batch/:id/module"
-export { DASHBOARD,LOGIN,APPLICATIONS, FORGOTPASSWORD,CHANGEPASSWORD,TASK };
+const ADDTASK = "/batch/:id/add/task"
+const ADDQUIZ = "/batch/:id/add/quiz"
+export { DASHBOARD,LOGIN,APPLICATIONS, FORGOTPASSWORD,CHANGEPASSWORD,TASK ,ADDTASK,ADDQUIZ};
 

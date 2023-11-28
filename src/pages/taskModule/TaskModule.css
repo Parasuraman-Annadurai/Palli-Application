@@ -34,10 +34,10 @@
 .logo {
   padding: 47px 40px 0px;
 }
-.content {
+/* .content {
   background-color: #f4f7fa;
   border-radius: 5px;
-}
+} */
 
 .navbar {
   max-width: 1200px;
@@ -52,12 +52,9 @@
 
 /* task starting page */
 
-.task_container {
-  padding: 20px;
-}
+
 .task__start_page {
   background-color: white;
-  padding: 20px;
 }
 .task__start_page .breadcrumbs {
   display: flex;
@@ -84,3 +81,11 @@
   border-radius: 8px;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
+
+span.ant-dropdown-trigger {
+  background-color: #223f64;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+

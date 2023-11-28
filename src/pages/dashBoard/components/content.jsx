@@ -132,7 +132,7 @@ const Content = () => {
 
   console.log(batches);
   return (
-    <div className="content">
+    <div className="dasboard__content">
       <div className="greeting">
         <div className="heading">
           <h1>

@@ -8,7 +8,8 @@ const useAPI = () => {
 
   const makeNetworkRequest = async (url, method = 'GET', body = null, headers = {}) => {
     setLoading(true);
-   
+
+    
     try {
       const result = await axios({
         url,

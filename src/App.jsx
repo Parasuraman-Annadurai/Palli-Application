@@ -1,7 +1,9 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthContextProvider } from "./context/AuthContext.jsx";
-import { LOGIN,APPLICATIONS, DASHBOARD,FORGOTPASSWORD,CHANGEPASSWORD,TASK } from "./routes/routes.jsx";
+import { LOGIN,APPLICATIONS,
+   DASHBOARD,FORGOTPASSWORD,
+   CHANGEPASSWORD,TASK,ADDTASK,ADDQUIZ } from "./routes/routes.jsx";
 //Define your routes for APP here
 import LoginPage from "./pages/login/LoginPage.jsx";
 import ChangePassword from "./pages/changePasswordPage/ResetPasswordPage";
@@ -9,6 +11,9 @@ import ForgotPassword from "./pages/forgotPage/ForgotPage";
 import Applicantions from "./pages/applications/Applications.jsx";
 import DashBoard from "./pages/dashBoard/DashBoard.jsx";
 import TaskModule from "./pages/taskModule/TaskModule.jsx";
+
+import AddTask from "./pages/addTaskPage/AddTaskPage.jsx";
+import AddQuiz from "./pages/addQuiz/AddQuizz.jsx";
 //Private Routes will be wrapped in below component
 import PrivateRoute from "./routes/PrivateRoute";
 
@@ -30,6 +35,12 @@ const App = () => {
              <Route path={TASK} element={<TaskModule />} />
           </Route>
          
+          <Route path={ADDTASK} element={<PrivateRoute />}>
+             <Route path={ADDTASK} element={<AddTask />} />
+          </Route>
+          <Route path={ADDQUIZ} element={<PrivateRoute />}>
+             <Route path={ADDQUIZ} element={<AddQuiz />} />
+          </Route>
         </Routes>
       </BrowserRouter>
     </AuthContextProvider>

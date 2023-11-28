@@ -3,26 +3,24 @@ import forgotPasswordImage from "/images/forgot_password.svg";
 import "./ForgotPage.css";
 import { isEmailValid } from "../../utils/validate";
 
-
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState({});
 
-  const handleEmail =(e)=>{
-    const {name,value} = e.target;
+  const handleEmail = (e) => {
+    const { name, value } = e.target;
     setEmail(value);
-    if(emailError[name]) delete emailError[name];
-  }
-  const handelSubmit = (e) =>{
+    if (emailError[name]) delete emailError[name];
+  };
+  const handelSubmit = (e) => {
     e.preventDefault();
     const isvalidEmail = isEmailValid(email);
-    if(isvalidEmail){
-      setEmailError({...emailError,email:isvalidEmail})
-    }
-    else{
+    if (isvalidEmail) {
+      setEmailError({ ...emailError, email: isvalidEmail });
+    } else {
       //doing api call
     }
-  }
+  };
   return (
     <div className="forgot-container">
       {/* Left side container with an image */}
@@ -46,33 +44,36 @@ const ForgotPassword = () => {
           </div>
 
           <div className="form-container">
-              <form action="" onSubmit={handelSubmit}>
-                       {/* Email input field section */}
-                    <div className="email-input">
-                      <label htmlFor="Email">
-                        Email
-                        <span className="required-symbole">*</span>
-                      </label>
-                      <div className="emailAndicon">
-                        <span className="material-symbols-outlined">mail</span>
-                        <input autoComplete="off"
-                          type="text"
-                          className="forgot-password-input"
-                          placeholder="Input Email"
-                          value={email}
-                          onChange={handleEmail}
-                          name="email"
-                        />
-                      </div>
-                      
-                      <p className="error-message">{emailError.email ? emailError.email :""}</p>
-                    </div>
+            <form action="" onSubmit={handelSubmit}>
+              {/* Email input field section */}
+              <div className="email-input">
+                <label htmlFor="Email">
+                  Email
+                  <span className="required-symbole">*</span>
+                </label>
+                <div className="emailAndicon">
+                  <span className="material-symbols-outlined">mail</span>
+                  <input
+                    autoComplete="off"
+                    type="text"
+                    className="forgot-password-input"
+                    placeholder="Input Email"
+                    value={email}
+                    onChange={handleEmail}
+                    name="email"
+                  />
+                </div>
 
-                    {/* Reset password button */}
-                    <div className="resetpassword">
-                      <button >Reset Password</button>
-                    </div>
-              </form>
+                <p className="error-message">
+                  {emailError.email ? emailError.email : ""}
+                </p>
+              </div>
+
+              {/* Reset password button */}
+              <div className="resetpassword">
+                <button>Reset Password</button>
+              </div>
+            </form>
           </div>
           {/* Back link to go back */}
           <div className="back">

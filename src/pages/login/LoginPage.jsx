@@ -65,8 +65,9 @@ const LoginScreen = () => {
           })
           .then((userData) => {
             localStorage.setItem("token", JSON.stringify(res.data.data));
+            localStorage.setItem("user", JSON.stringify(userData.data.data));
             setToken(res.data.data);
-            setUser(userData.data);
+            setUser(userData.data.data);
             navigate("/dashboard");
           })
           .catch((err) => {

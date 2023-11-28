@@ -1,11 +1,12 @@
-
 * {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
 }
+
 .app {
   display: flex;
+  
 }
 
 .sidebar {
@@ -18,11 +19,13 @@
   display: flex;
   flex-direction: column;
 }
+.sidebar a{
+  color: white;
+}
 
 .main {
   flex: 1;
-  margin-left: 200px;
-  /* Adjust based on the sidebar width */
+  margin-left: 200px; /* Adjust based on the sidebar width */
 }
 
 .navbar {
@@ -77,17 +80,15 @@ body {
 }
 
 
-
-.logo {
+.logo{
   padding: 47px 40px 0px;
 }
 
-.active {
+.active{
   background-color: #223F64;
   border-radius: 0px 15px 15px 0px;
 }
-
-.setting {
+.setting{
   margin-top: auto;
   padding: 20px;
 }
@@ -98,21 +99,20 @@ body {
 }
 
 /* avatar */
-.avatar__container {
+.avatar__container{
   display: flex;
   align-content: center;
   justify-content: flex-end;
 }
-
-.avatar__container .avatar__logo {
+.avatar__container .avatar__logo{
   cursor: pointer;
 }
 
-.filter__icon {
+.filter__icon{
   color: #223F64;
 }
 
-.upload__btn {
+.upload__btn{
   padding: 8px 20px;
   border-radius: 6px;
   outline: none;
@@ -120,9 +120,14 @@ body {
   color: white;
   background-color: #223F64;
 }
-.pagiation__container.hide{
+.hide{
   visibility: hidden;
 }
-.pagiation__container.show{
+.show{
   visibility: visible;
+}
+.no-data-found{
+  max-width: 350px;
+  width: 100%;
+  margin: auto;
 }

@@ -38,7 +38,7 @@ const DashBoard = () => {
         },
       }
     );
-  }, [batches]);
+  }, []);
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -332,7 +332,7 @@ const DashBoard = () => {
               <div className="greeting">
         <div className="heading">
           <h1>
-            Welcome, {user.username} <br />
+            Welcome,{user.first_name} {user.last_name} <br />
           </h1>
           <p>
             You have two batch students added to your domain. Please reach out

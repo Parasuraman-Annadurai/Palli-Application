@@ -5,7 +5,9 @@
   list-style: none;
   text-decoration: none;
 }
-
+body {
+  background-color: #F4F7FA;
+}
 
 /* TableComponent.css */
 
@@ -131,5 +133,141 @@
   border: 1px solid gray;
 }
 
+/* 
+common layout */
+.app {
+  max-width: 1920px;
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+}
+/* side bar */
+.sidebar {
+  max-width: 200px;
+  width: 100%;
+  background-color: #333;
+  color: white;
+  height: 100vh;
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+}
+.sidebar a{
+  color: white;
+}
+/*main container */
+.main {
+  flex: 1;
+  margin-left: 200px; /* Adjust based on the sidebar width */
+}
+/*navbar*/
+.navbar {
+  max-width: 100%;
+  width: 100%;
+  background-color: #444;
+  color: white;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbar .user-greeting{
+  display: flex;
+  gap: 10px;
+}
 
 
+/* app header */
+
+.application-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.header-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.record-count {
+  font-size: 14px;
+}
+
+.content {
+  margin: 20px;
+  background-color: white;
+  border-radius: 5px;
+  padding: 20px;
+  height: 100%;
+}
+
+
+
+.flex {
+  display: flex;
+  align-items: center;
+  gap: 21px;
+  padding-left: 20px;
+}
+
+.menu-container{
+  margin: 26px 0px;
+  padding: 10px;
+}
+
+.logo{
+  padding: 47px 40px 0px;
+}
+
+.active{
+  background-color: #223F64;
+  border-radius: 0px 15px 15px 0px;
+}
+.setting{
+  margin-top: auto;
+  padding: 20px;
+}
+
+.header-controls .search__bar{
+  max-width: 200px;
+  width: 100%;
+}
+
+/* avatar */
+.avatar__container{
+  display: flex;
+  align-content: center;
+  justify-content: flex-end;
+}
+.avatar__container .avatar__logo{
+  cursor: pointer;
+}
+
+.filter__icon{
+  color: #223F64;
+}
+
+.upload__btn{
+  padding: 8px 20px;
+  border-radius: 6px;
+  outline: none;
+  border: none;
+  color: white;
+  background-color: #223F64;
+}
+.hide{
+  visibility: hidden;
+}
+.show{
+  visibility: visible;
+}
+.no-data-found{
+  max-width: 350px;
+  width: 100%;
+  margin: auto;
+}

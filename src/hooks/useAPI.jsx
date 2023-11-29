@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const useAPI = () => {
-  const [data, setData] = useState(null);
+  const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [isCompleted, setIsCompleted] = useState(false)
@@ -19,7 +19,7 @@ const useAPI = () => {
         data: body ? JSON.stringify(body) : null,
       });
 
-      setData(result);
+      setData(result.data);
       setIsCompleted(true)
       setError(null);
     } catch (error) {

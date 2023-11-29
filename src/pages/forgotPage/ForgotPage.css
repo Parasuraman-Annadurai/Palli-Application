@@ -24,8 +24,16 @@
 }
 
 /* Styling for the forgot password container using flexbox */
+.forgot-password-wrapper{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100dvh;
+}
 .forgot-container {
     display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 /* Styling for a circle element with an icon inside */

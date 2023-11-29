@@ -1,7 +1,7 @@
 import React from "react";
 import "./AddTaskPage.css"
 import { useState } from "react";
-import { Tabs } from "antd";
+import { Tabs,notification } from "antd";
 import TabPane from "antd/es/tabs/TabPane";
 import { validateAddTask } from "../../utils/validate";
 import { API_END_POINT } from "../../../config";
@@ -50,6 +50,12 @@ const AddTask = () => {
           }
         })
         
+      
+        notification.success({
+          message: 'Success',
+          description: "Task Add Successfully",
+          duration: 3, 
+        });
         setAddTaskData({
           task_title: "",
           task_description: "",
@@ -57,12 +63,14 @@ const AddTask = () => {
           task_type: "",
         });
         resetErrors();
+        navigate(`/batch/${batchId}/module`);
       }
+     
     }
 
-    console.log(data);
   return (
-    <div className="task-add-page">
+    <div className="content">
+       <div className="task-add-page">
       <main className="container">
         <div className="inner-container">
           <div className="left-container">
@@ -201,6 +209,7 @@ const AddTask = () => {
           </div>
         </div>
       </main>
+    </div>
     </div>
   );
 };

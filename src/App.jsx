@@ -14,6 +14,7 @@ import TaskModule from "./pages/taskModule/TaskModule.jsx";
 
 import AddTask from "./pages/addTaskPage/AddTaskPage.jsx";
 import AddQuiz from "./pages/addQuiz/AddQuizz.jsx";
+import ErrorPage from "./pages/errorPage/ErrorPage.jsx";
 //Private Routes will be wrapped in below component
 import PrivateRoute from "./routes/PrivateRoute";
 
@@ -49,7 +50,7 @@ const App = () => {
 
 
 
-        <Route path='*' element={<div>Wrong Route</div>} />
+        <Route path='*' element={<ErrorPage/>} />
         </Routes>
 
 

@@ -85,7 +85,8 @@ const LoginScreen = () => {
  
   
   return (
-    <div className="login__container">
+    <div className="login__container_wrapper">
+       <div className="login__container">
       <div className="top__header">
         <div className="left__side__header">
           <h2>Manager Login</h2>
@@ -140,6 +141,7 @@ const LoginScreen = () => {
           </form>
         </div>
       </div>
+    </div>
     </div>
   );
 };

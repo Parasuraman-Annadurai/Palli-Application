@@ -17,7 +17,7 @@ p.icon__title {
     font-size: 24px;
   }
   
-  .weightage {
+  .weightage__header {
     display: flex;
     justify-content: space-between;
     align-items: center;

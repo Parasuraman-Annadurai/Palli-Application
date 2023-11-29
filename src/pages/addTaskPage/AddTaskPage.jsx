@@ -1,9 +1,7 @@
 import React from "react";
 import "./AddTaskPage.css"
 import { useState } from "react";
-import { WEIGHTAGE } from "../../routes/routes";
-import { Tabs } from "antd";
-import TabPane from "antd/es/tabs/TabPane";
+import {notification } from "antd";
 import { validateAddTask } from "../../utils/validate";
 import { API_END_POINT } from "../../../config";
 import { useAuth } from "../../context/AuthContext";
@@ -51,6 +49,12 @@ const AddTask = () => {
           }
         })
         
+      
+        notification.success({
+          message: 'Success',
+          description: "Task Add Successfully",
+          duration: 3, 
+        });
         setAddTaskData({
           task_title: "",
           task_description: "",
@@ -58,12 +62,14 @@ const AddTask = () => {
           task_type: "",
         });
         resetErrors();
+        navigate(`/batch/${batchId}/module`);
       }
+     
     }
 
-    console.log(data);
   return (
-    <div className="task-add-page">
+    <div className="content">
+       <div className="task-add-page">
       <main className="container">
         <div className="inner-container">
           <div className="left-container">
@@ -96,60 +102,11 @@ const AddTask = () => {
                 {errors.task_description ? errors.task_description : ""}
               </p>
             </div>
-            {/* <div className="file-attach-sec">
-            <label htmlFor="file attach">Attach File</label>
-            <div className="file-upload-cont">
-              <div className="upload">
-                <span className="material-symbols-outlined">backup</span>
-                <p htmlFor="file upload">Upload</p>
-              </div>
-              <span className="or">OR</span>
-              <div className="link">
-                <span className="material-symbols-outlined">link</span>
-                <p htmlFor="file link">link</p>
-              </div>
-            </div>
-          </div> */}
-            {/* <div className="file-attach-sec">
-            <label htmlFor="file attach">Attach File</label>
-            <Tabs activeKey={uploadMode} onChange={handleModeChange}>
-              <TabPane tab="Upload" key="upload">
-                <div className="file-upload-cont">
-                  <div className="upload">
-                    <span className="material-symbols-outlined">
-                      backup
-                    </span>
-                    <p htmlFor="file upload">Upload</p>
-                  </div>
-                </div>
-              </TabPane>
-              <TabPane tab="Link" key="link">
-                <div className="file-upload-cont">
-                  <div className="link">
-                    <span className="material-symbols-outlined">link</span>
-                  </div>
-             
-                  <input
-                    type="text"
-                    placeholder="Paste link here"
-                    name="taskLink"
-                    value={addTaskData.taskLink}
-                    onChange={handleChange}
-                  />
-                </div>
-                <p className="error-message">
-                  {errors.taskLink ? errors.taskLink : ""}
-                </p>
-              </TabPane>
-            </Tabs>
-          </div>  */}
+     
           </div>
           <div className="right-container">
             <div className="right-contents">
-              {/* <div className="batch-selection-sec">
-              <label htmlFor="select batch">For</label>
-              <input type="text" placeholder="Batch-1 students" />
-            </div> */}
+         
               <div className="due-date-sec">
                 <label htmlFor="due">Due</label>
 
@@ -188,7 +145,6 @@ const AddTask = () => {
                 <label htmlFor="">Weightage</label>
                 <button>
                   <a href={`/batch/${batchId}/add/task/weightage`}>weightage</a>
-                  {/* <Link to ={WEIGHTAGE}>weightage</Link> */}
                 </button>
               </div>
             </div>
@@ -203,6 +159,7 @@ const AddTask = () => {
           </div>
         </div>
       </main>
+    </div>
     </div>
   );
 };

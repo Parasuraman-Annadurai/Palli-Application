@@ -24,7 +24,8 @@ const ForgotPassword = () => {
     }
   }
   return (
-    <div className="forgot-container">
+    <div className="forgot-password-wrapper">
+       <div className="forgot-container">
       {/* Left side container with an image */}
       <div className="left-side">
         <img src={forgotPasswordImage} alt="ForgotPasswordImage" />
@@ -79,10 +80,11 @@ const ForgotPassword = () => {
             <span className="material-symbols-outlined">
               keyboard_backspace
             </span>
-            <a href="/">Go back</a>
+            <a href="/login">Go back</a>
           </div>
         </div>
       </div>
+    </div>
     </div>
   );
 };

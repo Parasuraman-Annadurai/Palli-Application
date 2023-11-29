@@ -87,9 +87,8 @@ const Weightage = () => {
   };
 
   return (
-    <div  >
-      {/* Render fields and error messages */}
-      <div className="weightage">
+    <div  className="content">
+      <div className="weightage__header">
         <p className="icon__title">
           <span className="material-symbols-outlined">check_circle</span>
           Weightage
@@ -112,7 +111,7 @@ const Weightage = () => {
                 value={field.description}
                 onChange={(e) => handleDescriptionChange(field.id, e)}
               />
-              {field.descriptionError && <p className="error-message">{field.descriptionError}</p>}
+              <p className="error-message">{field.descriptionError ? field.descriptionError : ""}</p>
             </div>
             <div className="value">
               <label className="input__label" htmlFor="">
@@ -125,7 +124,7 @@ const Weightage = () => {
                 value={field.value}
                 onChange={(e) => handleValueChange(field.id, e)}
               />
-              {field.valueError && <p className="error-message">{field.valueError}</p>}
+              <p className="error-message">{field.valueError ? field.valueError : ""}</p>
             </div>
 
             {index !== 0 && (

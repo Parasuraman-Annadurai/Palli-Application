@@ -50,7 +50,8 @@ const ResetPasswordPage = () => {
 
 
   return (
-    <div className="reset-container">
+    <div className="reset-password-wrapper">
+         <div className="reset-container">
     <div className="left-side-container">
       <div className="logo">
         <img src={Logo} alt="Logo" />
@@ -143,6 +144,7 @@ const ResetPasswordPage = () => {
       </div>
     </div>
   </div>
+    </div>
   );
 };
 

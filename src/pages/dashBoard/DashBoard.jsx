@@ -6,7 +6,7 @@ import { Button, Modal, Input, DatePicker } from "antd";
 import { API_END_POINT } from "../../../config";
 import { useAuth } from "../../context/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
-import "./index.css"
+import "./index.css";
 const DashBoard = () => {
   const navigate = useNavigate();
   const { token, user } = useAuth();
@@ -38,7 +38,7 @@ const DashBoard = () => {
         },
       }
     );
-  }, [batches]);
+  }, []);
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -327,9 +327,9 @@ const DashBoard = () => {
 
   //   handleCancel();
   // };
-    return (
-       <div className="content">
-              <div className="greeting">
+  return (
+    <div className="content">
+      <div className="greeting">
         <div className="heading">
           <h1>
             Welcome, {user.username} <br />
@@ -418,8 +418,8 @@ const DashBoard = () => {
           ))}
         </div>
       </div>
-       </div>
-    );
-}
- 
+    </div>
+  );
+};
+
 export default DashBoard;

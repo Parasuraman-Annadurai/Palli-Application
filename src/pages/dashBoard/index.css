@@ -1,4 +1,4 @@
-/* App.css */
+
 * {
   padding: 0;
   margin: 0;
@@ -29,7 +29,6 @@ html {
 .main {
   flex: 1;
   margin-left: 200px;
-  /* Adjust based on the sidebar width */
 }
 
 .navbar {
@@ -46,7 +45,6 @@ html {
 
 
 
-/* Other styles */
 .application-header {
   display: flex;
   justify-content: space-between;
@@ -65,7 +63,7 @@ html {
   font-size: 14px;
 }
 
-.content {
+.dasboard__content {
   background-color: #F4F7FA;
   border-radius: 5px;
   padding: 20px;
@@ -125,7 +123,6 @@ a {
   width: 100%;
 }
 
-/* avatar */
 .avatar__container {
   display: flex;
   align-content: center;
@@ -144,7 +141,6 @@ a {
   background-color: white;
   display: flex;
   justify-content: space-between;
-  /* align-items: center; */
 }
 
 .heading h1 {

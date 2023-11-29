@@ -10,12 +10,14 @@ const ApplicationHeader = (props) => {
   const navigate = useNavigate();
   const {id:batchId} = useParams();
   const {
+    
     totalRecords,
     showUploadButton,
     showRecordCount,
     showFilterSelect,
     headerText,
     showCreateButton,
+    onSearch
   } = props;
 
   const [fileList, setFileList] = useState([]);
@@ -55,7 +57,7 @@ const ApplicationHeader = (props) => {
           </Upload>
         )}
 
-        <Search placeholder="Search" className="search__bar" />
+        <Search placeholder="Search" className="search__bar" onChange={onSearch}/>
 
         {showRecordCount && (
           <div className="record-count">
@@ -63,7 +65,6 @@ const ApplicationHeader = (props) => {
             <span>{totalRecords.total}</span>
           </div>
         )}
-
         {showFilterSelect && (
           <div className="fileter-category">
             <Select
@@ -77,8 +78,8 @@ const ApplicationHeader = (props) => {
                   label: "All",
                 },
                 {
-                  value: "pending",
-                  label: "Pending",
+                  value: "first_name",
+                  label: "First Name",
                 },
                 {
                   value: "success",

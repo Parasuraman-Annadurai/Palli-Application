@@ -18,6 +18,12 @@
 
 
 /* Styling for the reset container */
+.reset-password-wrapper{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100dvh;
+}
 .reset-container {
     max-width: 1205px;
     width: 100%;

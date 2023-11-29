@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import dashBoardHeaderImage from "../../../public/images/dashboard_header_image.svg";
 import useAPI from "../../hooks/useAPI";
-import { Button, Modal, Input, DatePicker } from "antd";
+import { Button, Modal, Input, DatePicker, Skeleton } from "antd";
 import { API_END_POINT } from "../../../config";
 import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
@@ -9,7 +9,7 @@ import "./DashBoard.css";
 const DashBoard = () => {
   const navigate = useNavigate();
   const { token, user } = useAuth();
-  const { data: batchList, makeNetworkRequest } = useAPI();
+  const { data: batchList,loading, makeNetworkRequest } = useAPI();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [batch_name, setBatchName] = useState("");
@@ -187,6 +187,7 @@ const DashBoard = () => {
   };
 
   const batches = batchList.data || [];
+  
   return (
     <div className="content">
       <div className="greeting">
@@ -213,6 +214,36 @@ const DashBoard = () => {
               ADD BATCH
             </Button>
           </div>
+
+          {loading ? (
+        <Skeleton active paragraph={{ rows: 4 }} />
+      ) : (
+        <>
+            {batches.map((batch, index) => (
+            <div key={index} className="added-batches">
+              <div>
+                <a href={`/batch/${batch.id}/applications`}>
+                  <p>{batch.batch_name}</p>
+                  <p>{batch.start_date}</p>
+
+                  <p>{batch.end_date}</p>
+                </a>
+              </div>
+
+              <span
+                onClick={() => handleEditClick(batch)}
+                className="material-symbols-outlined"
+              >
+                edit
+              </span>
+            </div>
+          ))}
+        </>
+      )}
+
+
+
+          
           <Modal
             title={isEditMode ? "Edit Batch" : "Add Year to Year Batch"}
             className="Yearpicker"
@@ -262,25 +293,7 @@ const DashBoard = () => {
             </div>
           </Modal>
 
-          {batches.map((batch, index) => (
-            <div key={index} className="added-batches">
-              <div>
-                <a href={`/batch/${batch.id}/applications`}>
-                  <p>{batch.batch_name}</p>
-                  <p>{batch.start_date}</p>
-
-                  <p>{batch.end_date}</p>
-                </a>
-              </div>
-
-              <span
-                onClick={() => handleEditClick(batch)}
-                className="material-symbols-outlined"
-              >
-                edit
-              </span>
-            </div>
-          ))}
+        
         </div>
       </div>
     </div>

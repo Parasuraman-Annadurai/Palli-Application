@@ -13,6 +13,7 @@ const Weightage = () => {
 
   const validate = () => {
     let valid = true;
+    
     const updatedFields = fields.map((field) => {
       let descriptionError = "";
       let valueError = "";

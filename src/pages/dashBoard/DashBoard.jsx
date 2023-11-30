@@ -81,44 +81,54 @@ const DashBoard = () => {
       setBatchNameError("Batch name is required");
       hasError = true;
     }
-
+  
     if (!start_date) {
       setStartError("Start date is required");
       hasError = true;
     }
-
+  
     if (!end_date) {
       setEndError("End date is required");
       hasError = true;
     }
-
+  
     if (start_date === end_date) {
       setStartError("Start date should not be equal to end date");
       setEndError("End date should not be equal to start date");
       hasError = true;
     }
-
+  
     const startDateObj = new Date(start_date);
     const endDateObj = new Date(end_date);
-
+  
     if (startDateObj >= endDateObj) {
       setStartError("Start date should be earlier than end date");
       setEndError("End date should be later than start date");
       hasError = true;
     }
-
+  
     const newBatchName = batch_name.trim().toLowerCase();
-
+  
     if (isEditMode) {
       const existingBatchNames = batches
-        .filter((batch) => batch.id !== selectedBatch.id)
+        .filter((batch) => batch.id !== selectedBatch.id) 
         .map((batch) => batch.batch_name.toLowerCase());
-
+  
+      if (existingBatchNames.includes(newBatchName)) {
+        setBatchNameError("Batch name already exists");
+        hasError = true;
+      }
+    } else {
+      const existingBatchNames = batches.map((batch) =>
+        batch.batch_name.toLowerCase()
+      );
+  
       if (existingBatchNames.includes(newBatchName)) {
         setBatchNameError("Batch name already exists");
         hasError = true;
       }
     }
+  
     return hasError;
   };
 

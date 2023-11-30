@@ -6,10 +6,11 @@ import { API_END_POINT } from "../../../config";
 import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import "./DashBoard.css";
+import BacthList from "./component/BatchList";
 const DashBoard = () => {
   const navigate = useNavigate();
   const { token, user } = useAuth();
-  const { data: batchList,loading, makeNetworkRequest } = useAPI();
+  const { data: batchList, loading, makeNetworkRequest } = useAPI();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [batch_name, setBatchName] = useState("");
@@ -81,39 +82,39 @@ const DashBoard = () => {
       setBatchNameError("Batch name is required");
       hasError = true;
     }
-  
+
     if (!start_date) {
       setStartError("Start date is required");
       hasError = true;
     }
-  
+
     if (!end_date) {
       setEndError("End date is required");
       hasError = true;
     }
-  
+
     if (start_date === end_date) {
       setStartError("Start date should not be equal to end date");
       setEndError("End date should not be equal to start date");
       hasError = true;
     }
-  
+
     const startDateObj = new Date(start_date);
     const endDateObj = new Date(end_date);
-  
+
     if (startDateObj >= endDateObj) {
       setStartError("Start date should be earlier than end date");
       setEndError("End date should be later than start date");
       hasError = true;
     }
-  
+
     const newBatchName = batch_name.trim().toLowerCase();
-  
+
     if (isEditMode) {
       const existingBatchNames = batches
-        .filter((batch) => batch.id !== selectedBatch.id) 
+        .filter((batch) => batch.id !== selectedBatch.id)
         .map((batch) => batch.batch_name.toLowerCase());
-  
+
       if (existingBatchNames.includes(newBatchName)) {
         setBatchNameError("Batch name already exists");
         hasError = true;
@@ -122,13 +123,13 @@ const DashBoard = () => {
       const existingBatchNames = batches.map((batch) =>
         batch.batch_name.toLowerCase()
       );
-  
+
       if (existingBatchNames.includes(newBatchName)) {
         setBatchNameError("Batch name already exists");
         hasError = true;
       }
     }
-  
+
     return hasError;
   };
 
@@ -197,7 +198,7 @@ const DashBoard = () => {
   };
 
   const batches = batchList.data || [];
-  
+
   return (
     <div className="content">
       <div className="greeting">
@@ -225,35 +226,6 @@ const DashBoard = () => {
             </Button>
           </div>
 
-          {loading ? (
-        <Skeleton active paragraph={{ rows: 4 }} />
-      ) : (
-        <>
-            {batches.map((batch, index) => (
-            <div key={index} className="added-batches">
-              <div>
-                <a href={`/batch/${batch.id}/applications`}>
-                  <p>{batch.batch_name}</p>
-                  <p>{batch.start_date}</p>
-
-                  <p>{batch.end_date}</p>
-                </a>
-              </div>
-
-              <span
-                onClick={() => handleEditClick(batch)}
-                className="material-symbols-outlined"
-              >
-                edit
-              </span>
-            </div>
-          ))}
-        </>
-      )}
-
-
-
-          
           <Modal
             title={isEditMode ? "Edit Batch" : "Add Year to Year Batch"}
             className="Yearpicker"
@@ -302,8 +274,13 @@ const DashBoard = () => {
               {endError && <span style={{ color: "red" }}>{endError}</span>}
             </div>
           </Modal>
-
-        
+          {loading ? (
+            <Skeleton active paragraph={{ rows: 4 }} />
+          ) : (
+            <>
+              <BacthList batch={batches} />
+            </>
+          )}
         </div>
       </div>
     </div>

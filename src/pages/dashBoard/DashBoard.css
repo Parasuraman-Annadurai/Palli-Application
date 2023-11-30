@@ -1,6 +1,10 @@
 
 
-
+.add-container{
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
 .added-batches a {
   text-decoration: none;
   color: #A82700;

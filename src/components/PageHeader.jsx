@@ -8,26 +8,27 @@ import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 const ApplicationHeader = (props) => {
   const navigate = useNavigate();
-  const {id:batchId} = useParams();
+  const { id: batchId } = useParams();
   const {
-    
     totalRecords,
     showUploadButton,
     showRecordCount,
     showFilterSelect,
     headerText,
     showCreateButton,
-    onSearch
+    handleSearch,
+    filterableField,
+    handleFilter,
   } = props;
 
-  const [fileList, setFileList] = useState([]);
+
   const { user } = useAuth();
 
   const handleMenuClick = ({ key }) => {
     if (key === "assessment") {
-      navigate(`/batch/${batchId}/add/task`);
+      navigate(`/batch/${batchId}/module/add/task`);
     } else if (key === "quiz") {
-      navigate(`/batch/${batchId}/add/quiz`);
+      navigate(`/batch/${batchId}/module/add/quiz`);
     }
   };
 
@@ -46,18 +47,18 @@ const ApplicationHeader = (props) => {
       <h2>{headerText}</h2>
       <div className="header-controls">
         {showUploadButton && (
-          <Upload
-            accept=".xls, .xlsx"
-            fileList={fileList}
-            onChange={({ fileList }) => setFileList(fileList)}
-          >
+          <Upload accept=".xls, .xlsx">
             <button className="upload__btn" type="primary">
               Import
             </button>
           </Upload>
         )}
 
-        <Search placeholder="Search" className="search__bar" onChange={onSearch}/>
+        <Search
+          placeholder="Search"
+          className="search__bar"
+          onChange={handleSearch}
+        />
 
         {showRecordCount && (
           <div className="record-count">
@@ -68,24 +69,12 @@ const ApplicationHeader = (props) => {
         {showFilterSelect && (
           <div className="fileter-category">
             <Select
-              defaultValue="all"
+              defaultValue="All"
+              onChange={handleFilter}
               style={{
                 width: 120,
               }}
-              options={[
-                {
-                  value: "all",
-                  label: "All",
-                },
-                {
-                  value: "first_name",
-                  label: "First Name",
-                },
-                {
-                  value: "success",
-                  label: "Success",
-                },
-              ]}
+              options={filterableField}
             />
           </div>
         )}

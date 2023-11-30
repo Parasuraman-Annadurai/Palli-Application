@@ -17,6 +17,7 @@ body {
   width: 100%;
   margin-bottom: 20px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.09);
+  table-layout: fixed;
 }
 
 .antd-table th,
@@ -270,4 +271,9 @@ common layout */
   max-width: 350px;
   width: 100%;
   margin: auto;
+}
+
+.antd-table-action{
+  display: flex;
+  gap: 5px;
 }

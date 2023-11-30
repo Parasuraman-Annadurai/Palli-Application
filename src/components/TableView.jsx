@@ -3,7 +3,7 @@ import React from 'react';
 import noDataFound from "../../public/images/no_data_found.svg";
 import { Button } from 'antd';
 
-const TableComponent = ({ data, columns }) => {
+const TableComponent = ({ data, columns,handleDelete,handleEdit }) => {
   // Check if the array has data
   if (data.data && data.data.length > 0) {
     return (
@@ -24,10 +24,16 @@ const TableComponent = ({ data, columns }) => {
                 <td key={column.key}>
                   {item[column.key]}
                   {column.key === 'invite' && (
-                    <Button onClick={() => handleInvite(item.id)}>Invite</Button>
+                    <Button >Invite</Button>
                   )}
                   {column.key === 'viewMore' && (
-                    <Button onClick={() => handleViewMore(item.id)}>View More</Button>
+                    <Button >View More</Button>
+                  )}
+                    {column.key === 'action' && (
+                    <div className='antd-table-action'>
+                    <Button onClick={()=>handleEdit(item.id)}>Edit</Button>
+                    <Button onClick={() => handleDelete(item.id)} type='primary' danger>Delete</Button>
+                    </div>
                   )}
                 </td>
               ))}

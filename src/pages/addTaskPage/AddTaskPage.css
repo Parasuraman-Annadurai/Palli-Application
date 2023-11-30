@@ -1,22 +1,12 @@
-*{
-    padding: 0;
-    margin: 0;
-  }
-  
-  
-  .content {
-    background-color: #F4F7FA;
-    border-radius: 5px;
-    padding: 20px;
-  }
-  
-  
   
   /* task module */
   
-.task-add-page{
-    padding: 20px;
-  }
+/* .task-add-page{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+} */
   .container{
     width: 100%;
     border: 1px solid grey;

@@ -22,7 +22,8 @@ const ForgotPassword = () => {
     }
   };
   return (
-    <div className="forgot-container">
+    <div className="forgot-password-wrapper">
+       <div className="forgot-container">
       {/* Left side container with an image */}
       <div className="left-side">
         <img src={forgotPasswordImage} alt="ForgotPasswordImage" />
@@ -84,6 +85,7 @@ const ForgotPassword = () => {
           </div>
         </div>
       </div>
+    </div>
     </div>
   );
 };

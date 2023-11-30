@@ -1,11 +1,14 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-
+import { API_END_POINT } from '../../config';
+import { useParams } from 'react-router-dom';
 const useAPI = () => {
-  const [data, setData] = useState(null);
+  const {id} = useParams()
+  const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [isCompleted, setIsCompleted] = useState(false)
+
 
   const makeNetworkRequest = async (url, method = 'GET', body = null, headers = {}) => {
     setLoading(true);
@@ -19,7 +22,7 @@ const useAPI = () => {
         data: body ? JSON.stringify(body) : null,
       });
 
-      setData(result);
+      setData(result.data);
       setIsCompleted(true)
       setError(null);
     } catch (error) {
@@ -29,6 +32,8 @@ const useAPI = () => {
       setLoading(false);
     }
   };
+
+ 
 
 
   return { data, loading, error, isCompleted, makeNetworkRequest };

@@ -1,7 +1,8 @@
 import React from "react";
 import "./AddTaskPage.css"
 import { useState } from "react";
-import {notification } from "antd";
+import { Tabs,notification } from "antd";
+import TabPane from "antd/es/tabs/TabPane";
 import { validateAddTask } from "../../utils/validate";
 import { API_END_POINT } from "../../../config";
 import { useAuth } from "../../context/AuthContext";
@@ -102,11 +103,60 @@ const AddTask = () => {
                 {errors.task_description ? errors.task_description : ""}
               </p>
             </div>
-     
+            {/* <div className="file-attach-sec">
+            <label htmlFor="file attach">Attach File</label>
+            <div className="file-upload-cont">
+              <div className="upload">
+                <span className="material-symbols-outlined">backup</span>
+                <p htmlFor="file upload">Upload</p>
+              </div>
+              <span className="or">OR</span>
+              <div className="link">
+                <span className="material-symbols-outlined">link</span>
+                <p htmlFor="file link">link</p>
+              </div>
+            </div>
+          </div> */}
+            {/* <div className="file-attach-sec">
+            <label htmlFor="file attach">Attach File</label>
+            <Tabs activeKey={uploadMode} onChange={handleModeChange}>
+              <TabPane tab="Upload" key="upload">
+                <div className="file-upload-cont">
+                  <div className="upload">
+                    <span className="material-symbols-outlined">
+                      backup
+                    </span>
+                    <p htmlFor="file upload">Upload</p>
+                  </div>
+                </div>
+              </TabPane>
+              <TabPane tab="Link" key="link">
+                <div className="file-upload-cont">
+                  <div className="link">
+                    <span className="material-symbols-outlined">link</span>
+                  </div>
+             
+                  <input
+                    type="text"
+                    placeholder="Paste link here"
+                    name="taskLink"
+                    value={addTaskData.taskLink}
+                    onChange={handleChange}
+                  />
+                </div>
+                <p className="error-message">
+                  {errors.taskLink ? errors.taskLink : ""}
+                </p>
+              </TabPane>
+            </Tabs>
+          </div>  */}
           </div>
           <div className="right-container">
             <div className="right-contents">
-         
+              {/* <div className="batch-selection-sec">
+              <label htmlFor="select batch">For</label>
+              <input type="text" placeholder="Batch-1 students" />
+            </div> */}
               <div className="due-date-sec">
                 <label htmlFor="due">Due</label>
 
@@ -144,7 +194,7 @@ const AddTask = () => {
               <div className="weightage">
                 <label htmlFor="">Weightage</label>
                 <button>
-                  <a href={`/batch/${batchId}/add/task/weightage`}>weightage</a>
+                  <a href="">weightage</a>
                 </button>
               </div>
             </div>

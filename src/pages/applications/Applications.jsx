@@ -24,7 +24,6 @@ const Applicantions = () => {
   ];
 
   const coulmnName = [
-    { key: "id", title: "Id" },
     { key: "first_name", title: "First Name" },
     { key: "last_name", title: "Last Name" },
     { key: "address", title: "Address" },
@@ -33,7 +32,7 @@ const Applicantions = () => {
     { key: "invite", title: "Invite" },
     { key: "viewMore", title: "View More" },
   ];
-  const { data:applications, loading, error, makeNetworkRequest } = useAPI();
+  const { data: applications, loading, error, makeNetworkRequest } = useAPI();
 
   useEffect(() => {
     makeNetworkRequest(
@@ -52,16 +51,11 @@ const Applicantions = () => {
     setCurrentPage(page);
   };
   const handleSearch = (e) => {
-    const { value } = e.target;
-    setApplicantSearch(value.toLowerCase());
+    const {value} = e.target;
+    setApplicantSearch(value);
   };
-
-  // const applicantsData = data?.data || { data: [], total: 0 };
-
-  // console.log(applications);
-
   console.log(applications);
-  return (  
+  return (
     <div className="content">
       <div className="bread-crumb">
         <Breadcrumb items={breadcrumbTab} />
@@ -70,10 +64,10 @@ const Applicantions = () => {
         totalRecords={applications}
         showUploadButton={true} // Set to true to show the Upload button
         showRecordCount={true} // Set to true to show the record count
-        showFilterSelect={true} // Set to true to show the filter Select
+        showFilterSelect={false} // Set to true to show the filter Select
         headerText={"Application"}
         showCreateButton={false}
-        onSearch={handleSearch}
+        handleSearch={handleSearch}
       />
       <div className="filter">{/* Add your filter component here */}</div>
 

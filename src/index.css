@@ -271,8 +271,3 @@ common layout */
   width: 100%;
   margin: auto;
 }
-.switch{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}

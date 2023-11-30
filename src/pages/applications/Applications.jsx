@@ -59,8 +59,6 @@ const Applicantions = () => {
   // const applicantsData = data?.data || { data: [], total: 0 };
 
   // console.log(applications);
-
-  console.log(applications);
   return (  
     <div className="content">
       <div className="bread-crumb">

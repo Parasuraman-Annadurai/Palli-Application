@@ -80,7 +80,7 @@ const ForgotPassword = () => {
             <span className="material-symbols-outlined">
               keyboard_backspace
             </span>
-            <a href="/">Go back</a>
+            <a href="/login">Go back</a>
           </div>
         </div>
       </div>

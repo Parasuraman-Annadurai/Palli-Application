@@ -1,34 +1,11 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext } from "react";
 
-const AuthContext = createContext();
+const AuthContext = createContext({
+    token:null
+})
 
-export const AuthContextProvider = ({ children }) => {
+export const AuthProvider = AuthContext.Provider
 
-  const [token, setToken] = useState(() =>
-    localStorage.getItem("token")
-      ? JSON.parse(localStorage.getItem("token"))
-      : {}
-  );
-
-  const [user, setUser] = useState(() =>
-  localStorage.getItem("user")
-    ? JSON.parse(localStorage.getItem("user"))
-    : {});
-
-  return (
-    <AuthContext.Provider value={{ user, token, setUser, setToken }}>
-      {children}
-    </AuthContext.Provider>
-  );
-};
-
-//Custom hook for simplified usage of context
-
-export const useAuth = () => {
-  const context = useContext(AuthContext);
-
-  if (!context) {
-    throw new Error("useAuth must be used within a AuthContextProvider");
-  }
-  return context;
-};
+export default function useAuth(){
+    return useContext(AuthContext)
+}

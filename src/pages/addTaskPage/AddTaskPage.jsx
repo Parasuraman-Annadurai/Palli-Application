@@ -23,7 +23,7 @@ const AddTask = () => {
     task_title: "",
     task_description: "",
     due_date: "",
-    task_type: "",
+    task_type: "Task",
   });
 
   useEffect(() => {
@@ -163,20 +163,6 @@ const AddTask = () => {
                 </div>
                 <div className="due-date-sec">
                   <label htmlFor="due">Task Type</label>
-                  {/* <select
-                    name="task_type"
-                    id=""
-                    className="task-type"
-                    value={addTaskData.task_type}
-                    onChange={handleChange}
-                    placeholder="select task type"
-                  >
-                    <option value="" disabled hidden>
-                      Select an task type
-                    </option>
-                    <option value="task">Task</option>
-                    <option value="assessment">Assessment</option>
-                  </select> */}
                   <Select
                     value={addTaskData.task_type}
                     style={{

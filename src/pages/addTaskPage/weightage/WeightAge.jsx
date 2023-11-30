@@ -93,6 +93,8 @@ const Weightage = () => {
           <span className="material-symbols-outlined">check_circle</span>
           Weightage
         </p>
+
+        
         <div className="close">
           <span className="material-symbols-outlined">close</span>
         </div>

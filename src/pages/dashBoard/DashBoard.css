@@ -1,0 +1,78 @@
+
+
+.add-container{
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.added-batches a {
+  text-decoration: none;
+  color: #A82700;
+}
+
+.greeting {
+  background-color: white;
+  display: flex;
+  justify-content: space-between;
+}
+
+.heading h1 {
+  color: #223F64;
+  font-size: 36px;
+  font-style: normal;
+  font-weight: 700;
+  padding-bottom: 20px;
+  line-height: normal;
+}
+
+.heading {
+  padding: 22px 40px;
+}
+
+.heading p {
+  color: #223F64;
+
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.cards {
+  width: 150px;
+  height: 150px;
+  border: 10px;
+  background-color: white;
+  color: #A82700;
+  border-radius: 10px;
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 3px 16px 0px;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.add__batch {
+  padding-top: 20px;
+}
+
+
+.batches__list {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.added-batches {
+  width: 150px;
+  height: 150px;
+  border: 10px;
+  background-color: white;
+  color: #A82700;
+  border-radius: 10px;
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 3px 16px 0px;
+  font-size: 16px;
+  text-align: center;
+  padding-top: 50px;
+  cursor: pointer;
+}

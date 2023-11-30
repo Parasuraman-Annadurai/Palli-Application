@@ -1,0 +1,154 @@
+  
+  /* task module */
+  
+.task-add-page{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+  .container{
+    width: 100%;
+    border: 1px solid grey;
+    padding-bottom: 50px;
+  }
+  
+  .inner-container{
+    display: flex;
+  }
+  
+  /* left side styling */
+  
+  .left-container{
+    max-width: 700px;
+    width: 100%;
+    border-right: 1px solid grey;
+    padding-right: 40px;
+    padding-left: 40px;
+    padding-top: 24px;
+  }
+  
+  .left-container>div{
+    margin-bottom: 20px;
+    width: 100%;
+  }
+  
+  .page-logo{
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #223F64;
+    span{
+      width: 28px;
+      font-variation-settings:
+      'FILL' 1,
+      'wght' 400,
+      'GRAD' 0,
+      'opsz' 24
+    }
+    .task-txt{
+      font: bold 16px/18px karla,san-serif;
+      color: #223F64;
+    }
+  }
+  
+  .task-name-sec>label,.task-desc-sec>label,.file-attach-sec>label{
+    display: block;
+    font: bold 16px/18px karla,san-serif;
+    color: #223F64;
+    padding-bottom: 10px;
+  }
+  
+  .task-name-sec>input,.task-desc-sec>textarea{
+    border: 1px solid grey;
+    font: normal 16px/18px karla,san-serif;
+    width: 100%;
+    background-color: white;
+    padding-left: 16px;
+  }
+  
+  
+  .task-name-sec>input{
+    padding: 15px 8px;
+  }
+  
+  .task-name-sec>input:focus,textarea:focus{
+    outline: none;
+  }
+  
+  .task-desc-sec>textarea{
+    width: 100%;
+    padding: 10px 10px 100px 6px;
+  
+  }
+  
+  .file-upload-cont{
+    padding: 30px 0 30px 16px;
+    width: 100%;
+    border: 1px solid grey;
+    background-color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .or{
+      margin: 0px 20px;
+    }
+  }
+  
+  
+  /* right side styling */
+  .right-container{
+    padding: 40px;
+    position: relative;
+  }
+  
+  .right-contents{
+    max-width: 340px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  .right-contents>div{
+    padding-bottom: 10px;
+  }
+  .right-contents label{
+    display: block;
+    padding-bottom: 5px;
+    color: #223F64;
+  }
+  .right-container .btns-div{
+    position: absolute;
+    bottom: 0;
+  }
+  .right-container .btns-div .cancel-btn{
+    padding: 10px 20px 10px 20px;
+    margin-right: 5px;
+    color: white;
+    background-color: #9FA4AA;
+    outline: none;
+    border: none;
+    border-radius: 3px;
+  }
+  .right-container .btns-div .assign-btn{
+    padding: 10px 20px 10px 20px;
+    color: white;
+    background-color: #223F64;
+    outline: none;
+    border: none;
+    border-radius: 3px;
+  }
+  
+  .right-contents input{
+    padding: 10px 5px 10px 10px;
+    outline: none;
+    
+  }
+  .right-container .weightage button{
+    padding: 10px 71px 10px 62px;
+  }
+  
+  .task-type{
+    padding: 10px 91px 10px 10px;
+    outline: none;
+  }
+  

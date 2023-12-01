@@ -8,6 +8,7 @@ import { useAuth } from "../../context/AuthContext";
 import useAPI from "../../hooks/useAPI";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import moment from "moment";
 const { TextArea } = Input;
 
 const AddTask = () => {
@@ -163,6 +164,7 @@ const AddTask = () => {
                   <DatePicker
                     name="due_date"
                     placeholder="Select Date"
+                    value={moment(addTaskData.due_date)}
                     onChange={handleDate}
                   />
                   <p className="error-message">

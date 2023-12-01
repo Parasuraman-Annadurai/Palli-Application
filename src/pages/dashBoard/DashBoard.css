@@ -3,6 +3,10 @@
   display: flex;
   justify-content: space-between;
 }
+.added-batches a {
+  text-decoration: none;
+  color: #A82700;
+}
 
 .heading h1 {
   color: #223F64;

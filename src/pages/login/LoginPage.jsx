@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "./LoginPage.css";
 import { Popover } from "antd";
 import { useNavigate } from "react-router-dom";
+/*remove this unused code below */
 import { validate } from "../../utils/validate";
 import {
   checkPasswordCriteria,
@@ -21,9 +22,12 @@ const LoginScreen = () => {
   const {setToken,setUser,user,token } = useAuth();
 
   const [showPassword, setShowPassword] = useState(false);
+
+  /*below states is not need*/
   const [popoverVisible, setPopoverVisible] = useState(false);
   const [passwordCriteria, setpasswordCriteria] = useState(null);
 
+  /* keep email pasword as sep state*/
   const [loginUserData, setloginUserData] = useState({
     email: "testui@gmail.com",
     password: "admin@123",
@@ -34,10 +38,12 @@ const LoginScreen = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setloginUserData({ ...loginUserData, [name]: value });
+    /* dont set undefine in error state, if you want to remove the error, 
+     delete the key */
     setErrors({ ...errors, [name]: undefined });
   };
 
-  //handle the password changes
+  /* remove this functin in above func handle change, handle the same */
   const handlePasswordChange = (e) => {
     handleChange(e);
     const {value:password} = e.target
@@ -45,42 +51,33 @@ const LoginScreen = () => {
     checkPasswordCriteria(password, setpasswordCriteria);
   };
   
+
+  /* remove this function */
   const handleFocus = () => {
     setPopoverVisible(true);
     //onfocus call checkPasswordCriteria the function beacuse show password checklist
     checkPasswordCriteria(loginUserData.password, setpasswordCriteria);
   };
+    /* remove this function */
+
   const handleBlur = () => setPopoverVisible(false);
   //Handle login submit used to validate feild and check creadentials
+ 
+ 
   const handleLoginSubmit = (e) => {
     e.preventDefault();
     axios
       .post(`${API_END_POINT}/api/accounts/login/`, loginUserData)
       .then((res) => {
-        axios({
-            url:`${API_END_POINT}/api/accounts/get/user_info/`,
-            method:"GET",
-            headers: {
-              Authorization: `Bearer ${res.data.data.access}`,
-            },
-          })
-          .then((userData) => {
-            localStorage.setItem("token", JSON.stringify(res.data.data));
-            localStorage.setItem("user", JSON.stringify(userData.data.data));
-            setToken(res.data.data);
-            setUser(userData.data.data);
-            navigate("/dashboard");
-          })
-          .catch((err) => {
-            console.error("userData fetch Failed", err);
-          });
+        localStorage.setItem("token", JSON.stringify(res.data.data));
+        setToken(res.data.data);
+        navigate("/dashboard");
+
       })
       .catch((err) => {
         console.error("Authentication Failed", err);
         navigate("/login");
       });
-
-      
   };
 
  
@@ -94,6 +91,7 @@ const LoginScreen = () => {
           <p>Make Sure Your Account is Secure</p>
         </div>
         <div className="right__side--header">
+          {/* typo error */}
           <img src={dckapPalliLogon} alt="dckap-logo" />
         </div>
       </div>
@@ -110,6 +108,9 @@ const LoginScreen = () => {
               value={loginUserData.email}
               onChange={handleChange}
               onBlur={handleBlur}
+              /* Always check email exists using optional chaining or in operator whenever you check object key dont use . operator
+               directly as email might be undefined which might break the page*/
+
               error={errors.email || ""}
             />
             <Popover
@@ -125,9 +126,14 @@ const LoginScreen = () => {
                 onChange={handlePasswordChange}
                 onBlur={handleBlur}
                 onFocus={handleFocus}
+                              /* Always check email exists using optional chaining or in operator whenever you check object key dont use . operator
+               directly as email might be undefined which might break the page*/
+
+
                 error={errors.password || ""}
               />
             </Popover>
+            {/* Add tool tip for eye icon for show pwd and hid password */}
             <span
                 onClick={() => setShowPassword(!showPassword)}
                 className="material-symbols-outlined eye__icon"
@@ -148,3 +154,14 @@ const LoginScreen = () => {
 };
 
 export default LoginScreen;
+
+
+// General comments
+
+
+/*
+
+1. Validation is not working in this page
+2. Add Some hover effect while hovering over login button or any button
+
+*/

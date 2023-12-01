@@ -83,7 +83,6 @@ const TaskModule = () => {
   const handleFilter = (value) => {
     setTaskFilter(value);
   };
-  console.log(taskLists);
   return (
     <div className="content">
       <div className="bread-crumb">
@@ -104,7 +103,6 @@ const TaskModule = () => {
         ]}
       />
 
-      {/* [{label:"Task",value:"task"},{label:"Assessment",value:"assessment"}] */}
       {loading ? (
         <Skeleton active paragraph={{ rows: 4 }} />
       ) : (
@@ -135,17 +133,4 @@ const TaskModule = () => {
 
 export default TaskModule;
 
-/* 
 
-   const fetchTaskData = () => {
-    const url = taskSearch.trim()
-      ? `${API_END_POINT}/api/task/${batchId}/list_task/?limit=${limit}&page=${currentPage}&filter_task_type=${taskFilter}&search=${taskSearch}`
-      : `${API_END_POINT}/api/task/${batchId}/list_task/?limit=${limit}&page=${currentPage}&filter_task_type=${taskFilter}`;
-
-    makeNetworkRequest(url, "GET", null, {
-      headers: {
-        Authorization: `Bearer ${token.access}`,
-      },
-    });
-  };
-*/

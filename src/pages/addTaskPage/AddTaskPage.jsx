@@ -6,7 +6,7 @@ import { validateAddTask } from "../../utils/validate";
 import { API_END_POINT } from "../../../config";
 import { useAuth } from "../../context/AuthContext";
 import useAPI from "../../hooks/useAPI";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 const { TextArea } = Input;
 
@@ -188,7 +188,9 @@ const AddTask = () => {
                 <div className="weightage">
                   <label htmlFor="">Weightage</label>
                   <button>
-                    <a href="">weightage</a>
+                    <a href={`/batch/${batchId}/module/add/task/weightage`}>
+                      Weightage
+                    </a>
                   </button>
                 </div>
               </div>

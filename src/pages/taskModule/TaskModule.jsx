@@ -1,14 +1,14 @@
 // taskmodule.jsx
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "./TaskModule.css";
 import TableComponent from "../../components/TableView";
-import { useState } from "react";
 import { useAuth } from "../../context/AuthContext";
-import { Breadcrumb, Skeleton, Pagination } from "antd";
+import { Skeleton, Pagination, Modal } from "antd";
 import ApplicationHeader from "../../components/PageHeader";
 import { useNavigate, useParams } from "react-router-dom";
 import useAPI from "../../hooks/useAPI";
 import { API_END_POINT } from "../../../config";
+
 const TaskModule = () => {
   const { token } = useAuth();
   const navigate = useNavigate();
@@ -18,14 +18,6 @@ const TaskModule = () => {
   const [taskFilter, setTaskFilter] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const { data: taskLists, loading, error, makeNetworkRequest } = useAPI();
-  const breadcrumbTab = [
-    {
-      title: "Home",
-    },
-    {
-      title: <a href="">Module</a>,
-    },
-  ];
 
   useEffect(() => {
     let url = `${API_END_POINT}/api/task/${batchId}/list_task/?limit=${limit}&page=${currentPage}`;
@@ -54,21 +46,33 @@ const TaskModule = () => {
     { key: "task_title", title: "Task Name" },
     { key: "task_description", title: "Date of Post" },
     { key: "due_date", title: "Deadline" },
-    { key: "task_type", title: "Task Type" },
     { key: "action", title: "Action" },
   ];
 
-  const handleDelete = async (deleteTaskId) => {
-    makeNetworkRequest(
-      `http://13.232.90.154:8000/api/task/${batchId}/delete_task/${deleteTaskId}`,
-      "DELETE",
-      null,
-      {
-        headers: {
-          Authorization: `Bearer ${token.access}`,
-        },
-      }
-    );
+  const handleDelete = (deleteTaskId) => {
+    Modal.confirm({
+      title: "Confirm Deletion",
+      content: "Are you sure you want to delete this task?",
+      onOk: async () => {
+        await makeNetworkRequest(
+          `${API_END_POINT}/api/task/${batchId}/delete_task/${deleteTaskId}`,
+          "DELETE",
+          null,
+          {
+            headers: {
+              Authorization: `Bearer ${token.access}`,
+            },
+          }
+        );
+      },
+    });
+  };
+  const handleEdit = (editId) => {
+    navigate(`/batch/${batchId}/module/edit/task/${editId}`);
+  };
+
+  const handleFilter = (value) => {
+    setTaskFilter(value);
   };
 
   const handleSearch = (e) => {
@@ -76,31 +80,21 @@ const TaskModule = () => {
     setTaskSearch(value);
   };
 
-  const handleEdit = (editId) => {
-    console.log(editId);
-    navigate(`/batch/${batchId}/module/edit/task/${editId}`);
-  };
-  const handleFilter = (value) => {
-    setTaskFilter(value);
-  };
   return (
     <div className="content">
-      <div className="bread-crumb">
-        <Breadcrumb items={breadcrumbTab} />
-      </div>
       <ApplicationHeader
         headerText={"Module"}
         showCreateButton={true}
         showRecordCount={true}
         totalRecords={taskLists}
-        handleSearch={handleSearch}
         showFilterSelect={true}
         handleFilter={handleFilter}
         filterableField={[
           { label: "All", value: "" },
-          { label: "Task", value: "task" },
-          { label: "Assessment", value: "assessment" },
+          { label: "Task", value: 0 },
+          { label: "Assessment", value: 1 },
         ]}
+        handleSearch={handleSearch}
       />
 
       {loading ? (
@@ -132,5 +126,3 @@ const TaskModule = () => {
 };
 
 export default TaskModule;
-
-

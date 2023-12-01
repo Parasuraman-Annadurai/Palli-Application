@@ -24,10 +24,11 @@ const PrivateRoute = () => {
 
   return auth ? (
     <div className="app">
-      <Sidebar menuList={menuList} />
+      <Sidebar menuList={menuList} activeMenuItem={activeMenuItem}/>
       <div className="main">
-        <Navbar />
-        <Outlet />
+      <Navbar item={activeMenuItem ? [{ label: "Dashboard", link: "/dashboard" }, activeMenuItem] : null} />
+
+         <Outlet />
       </div>
     </div>
   ) : (

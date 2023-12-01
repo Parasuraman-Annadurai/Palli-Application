@@ -1,13 +1,14 @@
 import React, { useEffect } from "react";
 import "./AddTaskPage.css";
 import { useState } from "react";
-import { notification, Input, DatePicker, Button, Select } from "antd";
+import { notification, Input, DatePicker, Skeleton, Select } from "antd";
 import { validateAddTask } from "../../utils/validate";
 import { API_END_POINT } from "../../../config";
 import { useAuth } from "../../context/AuthContext";
 import useAPI from "../../hooks/useAPI";
 import { Link, useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import moment from "moment";
 const { TextArea } = Input;
 
 const AddTask = () => {
@@ -23,7 +24,7 @@ const AddTask = () => {
     task_title: "",
     task_description: "",
     due_date: "",
-    task_type: "Task",
+    task_type: "task",
   });
 
   useEffect(() => {
@@ -45,11 +46,12 @@ const AddTask = () => {
   useEffect(() => {
     if (data && data.data) {
       const { task_title, task_description, due_date, task_type } = data.data;
+      
       setAddTaskData({
         task_title,
         task_description,
         due_date,
-        task_type,
+        task_type: task_type === 0 ? "test" : "assesment",
       });
     }
   }, [data]);
@@ -72,7 +74,9 @@ const AddTask = () => {
   };
   const handleTaskAdd = () => {
     const isValidTask = validateAddTask(addTaskData, setErrors);
+
     if (isValidTask) {
+      addTaskData.task_type === "test" ? 0 : 1;
       const apiEndpoint = taskId
         ? `${API_END_POINT}/api/task/${batchId}/update_task/${taskId}`
         : `${API_END_POINT}/api/task/${batchId}/create_task/`;
@@ -112,8 +116,13 @@ const AddTask = () => {
     }
   };
   return (
+ 
     <div className="content">
-      <div className="task-add-page">
+       {loading ? (
+      <Skeleton active paragraph={{ rows: 10 }} />
+    ) : (
+      <>
+        <div className="task-add-page">
         <main className="container">
           <div className="inner-container">
             <div className="left-container">
@@ -150,11 +159,12 @@ const AddTask = () => {
             <div className="right-container">
               <div className="right-contents">
                 <div className="due-date-sec">
-                  <label htmlFor="due">Due</label>
+                  <label htmlFor="due">Due Date</label>
 
                   <DatePicker
                     name="due_date"
                     placeholder="Select Date"
+                    value={ taskId ? moment(addTaskData.due_date) : addTaskData.due_date}
                     onChange={handleDate}
                   />
                   <p className="error-message">
@@ -206,6 +216,9 @@ const AddTask = () => {
           </div>
         </main>
       </div>
+      </>
+    )}
+     
     </div>
   );
 };

@@ -2,18 +2,22 @@ import React from "react";
 import dckapLogo from "../../public/images/dckap_palli_logo_sm.svg";
 import { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
-import { Link, useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import { API_END_POINT } from "../../config";
 import { Button, Modal, List, Avatar } from "antd";
 import { useNavigate } from "react-router-dom";
 import useAPI from "../hooks/useAPI";
-const Sidebar = ({ menuList }) => {
+import { Tooltip } from "antd";
+
+const Sidebar = ({ menuList, activeMenuItem }) => {
   const navigate = useNavigate();
-  const [active, setActive] = useState("applications");
+  const [active, setActive] = useState(activeMenuItem);
   const { token } = useAuth();
   const { data, makeNetworkRequest } = useAPI();
   const { id: batchId } = useParams();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const currentPath = useLocation().pathname;
+  const isDashboardPage = currentPath === "/dashboard";
 
   const handleSwitch = (id) => {
     navigate(`/batch/${id}/applications`);
@@ -34,57 +38,40 @@ const Sidebar = ({ menuList }) => {
       </div>
 
       <div className="menus">
-        {menuList.map((menu, index) => (
-          <Link to={`/batch/${batchId}/${menu.id}`} key={index}>
-            <div
-              className={`${menu.id}-container  menu-container ${
-                active === menu.id ? "active" : ""
-              }`}
-              onClick={() => setActive(menu.id)}
-            >
-              <div className="applicants flex">
-                <span className="material-symbols-outlined">view_list</span>
-                <p>{menu.label}</p>
+        {!isDashboardPage && (
+          <Link to="/dashboard">
+            <Tooltip title="Dashboard" placement="right" color={"#223F64"}>
+              <div className="dashboard-container menu-container">
+                <div className="applicants flex">
+                  <span className="material-symbols-outlined">arrow_back</span>
+                  <p>Back Dashboard</p>
+                </div>
               </div>
-            </div>
+            </Tooltip>
+          </Link>
+        )}
+
+        {menuList.map((menu, index) => (
+          <Link
+            to={isDashboardPage ? "/dashboard" : `/batch/${batchId}/${menu.id}`}
+            key={index}
+            onClick={() => setActive(menu.id)}
+          >
+            <Tooltip title={menu.label} placement="right" color={"#223F64"}>
+              <div
+                className={`${menu.id}-container menu-container ${
+                  menu.id === active ? "active" : ""
+                }`}
+                onClick={() => setActive(menu.id)}
+              >
+                <div className="applicants flex">
+                  <span className="material-symbols-outlined">view_list</span>
+                  <p>{menu.label}</p>
+                </div>
+              </div>
+            </Tooltip>
           </Link>
         ))}
-        {/* <Link to={"/dashboard"}>
-          <div className={`application-container  menu-container `}>
-            <div className="applicants flex">
-              <span className="material-symbols-outlined">view_list</span>
-              <p>Back to Dasboard</p>
-            </div>
-          </div>
-        </Link>
-
-        <Link to={`/batch/${batchId}/applications`}>
-          <div
-            className={`application-container  menu-container ${
-              active === "application" ? "active" : ""
-            }`}
-            onClick={() => setActive("application")}
-          >
-            <div className="applicants flex">
-              <span className="material-symbols-outlined">view_list</span>
-              <p>Application</p>
-            </div>
-          </div>
-        </Link> */}
-
-        {/* <Link to={`/batch/${batchId}/module`}>
-          <div
-            className={`test-container menu-container ${
-              active === "task" ? "active" : ""
-            }`}
-            onClick={() => setActive("task")}
-          >
-            <div className="task flex">
-              <span className="material-symbols-outlined">inventory</span>
-              <p>Module</p>
-            </div>
-          </div>
-        </Link> */}
       </div>
 
       <div className="setting flex">

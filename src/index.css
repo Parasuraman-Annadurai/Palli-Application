@@ -10,6 +10,9 @@ body {
 }
 
 /* TableComponent.css */
+.table-wrapper {
+  overflow-x: auto; /* Enable horizontal scrolling if needed */
+}
 
 .antd-table {
   font-size: 14px;
@@ -25,6 +28,9 @@ body {
   border: 1px solid #e8e8e8;
   padding: 16px;
   text-align: left;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis; 
 }
 
 .antd-table th {
@@ -237,6 +243,7 @@ common layout */
 .header-controls .search__bar{
   max-width: 200px;
   width: 100%;
+  padding: 0px 10px 0px 5px;
 }
 
 /* avatar */
@@ -276,6 +283,18 @@ common layout */
 .antd-table-action{
   display: flex;
   gap: 5px;
+}
+/* breadcrumb */
+.ant-breadcrumb {
+  color: black;
+}
+
+.ant-breadcrumb-link > a {
+  color: white;
+}
+
+.ant-breadcrumb-link:hover > a {
+  color: white; 
 }
 .switch{
   display: flex;

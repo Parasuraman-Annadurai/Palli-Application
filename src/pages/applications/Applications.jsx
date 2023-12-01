@@ -14,14 +14,14 @@ const Applicantions = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const { token, user } = useAuth();
 
-  const breadcrumbTab = [
-    {
-      title: "Home",
-    },
-    {
-      title: <a href="">Applications</a>,
-    },
-  ];
+  // const breadcrumbTab = [
+  //   {
+  //     title: "Home",
+  //   },
+  //   {
+  //     title: <a href="">Applications</a>,
+  //   },
+  // ];
 
   const coulmnName = [
     { key: "first_name", title: "First Name" },
@@ -54,11 +54,10 @@ const Applicantions = () => {
     const {value} = e.target;
     setApplicantSearch(value);
   };
-  console.log(applications);
   return (
     <div className="content">
       <div className="bread-crumb">
-        <Breadcrumb items={breadcrumbTab} />
+        {/* <Breadcrumb items={breadcrumbTab} /> */}
       </div>
       <ApplicationHeader
         totalRecords={applications}
@@ -69,7 +68,7 @@ const Applicantions = () => {
         showCreateButton={false}
         handleSearch={handleSearch}
       />
-      <div className="filter">{/* Add your filter component here */}</div>
+      <div className="filter"></div>
 
       {loading ? (
         <Skeleton active paragraph={{ rows: 4 }} />

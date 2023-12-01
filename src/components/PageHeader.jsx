@@ -1,11 +1,16 @@
+// pageheader.jsx
 import React from "react";
-import Search from "antd/es/input/Search";
-import { useState } from "react";
-import { Select, Upload, Button, Dropdown, Menu } from "antd";
-import { useAuth } from "../context/AuthContext";
-import { DownOutlined, PlusOutlined } from "@ant-design/icons";
+import { Select, Input, Button, Dropdown, Menu } from "antd";
+import {
+  DownOutlined,
+  PlusOutlined,
+  SearchOutlined,
+  CloseCircleOutlined,
+} from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
+import Search from "antd/es/input/Search";
+
 const ApplicationHeader = (props) => {
   const navigate = useNavigate();
   const { id: batchId } = useParams();
@@ -22,12 +27,10 @@ const ApplicationHeader = (props) => {
   } = props;
 
 
-  const { user } = useAuth();
-
   const handleMenuClick = ({ key }) => {
     if (key === "assessment") {
       navigate(`/batch/${batchId}/module/add/task`);
-    } else if (key === "quiz") {
+    } else if (key === "quizz") {
       navigate(`/batch/${batchId}/module/add/quiz`);
     }
   };
@@ -47,18 +50,33 @@ const ApplicationHeader = (props) => {
       <h2>{headerText}</h2>
       <div className="header-controls">
         {showUploadButton && (
-          <Upload accept=".xls, .xlsx">
-            <button className="upload__btn" type="primary">
-              Import
-            </button>
-          </Upload>
+          <button className="upload__btn" type="primary">
+            Import
+          </button>
         )}
 
-        <Search
+        {/* <Input
           placeholder="Search"
           className="search__bar"
-          onChange={handleSearch}
-        />
+          value={searchWord}
+          suffix={
+            <>
+              {searchWord && (
+                <Button
+                  type="text"
+                  icon={<CloseCircleOutlined />}
+                  // onClick={handleClear}
+                />
+              )}
+              <Button
+                type="text"
+                icon={<SearchOutlined />}
+                onClick={() => handleSearch(searchWord)}
+              />
+            </>
+          }
+        /> */}
+        <Search className="search__bar"placeholder="search task" onChange={handleSearch}/>
 
         {showRecordCount && (
           <div className="record-count">
@@ -79,7 +97,7 @@ const ApplicationHeader = (props) => {
           </div>
         )}
 
-        {user.role === 1 && showCreateButton && (
+        {showCreateButton && (
           <Dropdown overlay={menu} placement="bottomRight">
             <span style={{ cursor: "pointer" }}>
               Create <DownOutlined />
@@ -92,3 +110,4 @@ const ApplicationHeader = (props) => {
 };
 
 export default ApplicationHeader;
+``

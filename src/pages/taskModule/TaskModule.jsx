@@ -44,7 +44,7 @@ const TaskModule = () => {
 
   const coulmnName = [
     { key: "task_title", title: "Task Name" },
-    { key: "task_description", title: "Date of Post" },
+    { key: "task_description", title: "Task Description" },
     { key: "due_date", title: "Deadline" },
     { key: "action", title: "Action" },
   ];

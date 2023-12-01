@@ -31,6 +31,7 @@ import ErrorPage from "./pages/errorPage/ErrorPage.jsx";
 import PrivateRoute from "./routes/PrivateRoute";
 
 const App = () => {
+  
   return (
     <AuthContextProvider>
       <BrowserRouter>

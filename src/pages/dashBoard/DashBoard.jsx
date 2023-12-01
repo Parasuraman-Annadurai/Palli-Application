@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import "./DashBoard.css";
 import BacthList from "./component/BatchList";
 const DashBoard = () => {
+  
   const navigate = useNavigate();
   const { token, user } = useAuth();
   const { data: batchList, loading, makeNetworkRequest } = useAPI();

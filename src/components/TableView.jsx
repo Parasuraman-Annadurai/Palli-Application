@@ -5,6 +5,7 @@ import { Button } from 'antd';
 
 
 const TableComponent = ({ data, columns, handleDelete, handleEdit }) => {
+  
 
   if (data.data && data.data.length > 0) {
     return (

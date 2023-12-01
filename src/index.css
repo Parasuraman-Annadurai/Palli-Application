@@ -296,3 +296,8 @@ common layout */
 .ant-breadcrumb-link:hover > a {
   color: white; 
 }
+.switch{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

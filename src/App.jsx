@@ -12,6 +12,7 @@ import {
   ADDQUIZ,
   INDEX,
   EDITTASK,
+  WEIGHTAGE
 } from "./routes/routes.jsx";
 //Define your routes for APP here
 import LoginPage from "./pages/login/LoginPage.jsx";
@@ -23,6 +24,8 @@ import TaskModule from "./pages/taskModule/TaskModule.jsx";
 
 import AddTask from "./pages/addTaskPage/AddTaskPage.jsx";
 import AddQuiz from "./pages/addQuiz/AddQuizz.jsx";
+import Weightage from "./pages/addTaskPage/weightage/WeightAge.jsx";
+
 import ErrorPage from "./pages/errorPage/ErrorPage.jsx";
 //Private Routes will be wrapped in below component
 import PrivateRoute from "./routes/PrivateRoute";
@@ -60,7 +63,9 @@ const App = () => {
           <Route path={EDITTASK} element={<PrivateRoute />}>
             <Route path={EDITTASK} element={<AddTask />} />
           </Route>
-
+          <Route path={WEIGHTAGE} element={<PrivateRoute />}>
+             <Route path={WEIGHTAGE} element={<Weightage/>} />
+          </Route>
           <Route path="*" element={<ErrorPage />} />
         </Routes>
       </BrowserRouter>

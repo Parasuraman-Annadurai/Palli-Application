@@ -6,7 +6,7 @@ import { validateAddTask } from "../../utils/validate";
 import { API_END_POINT } from "../../../config";
 import { useAuth } from "../../context/AuthContext";
 import useAPI from "../../hooks/useAPI";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import moment from "moment";
 const { TextArea } = Input;
@@ -159,12 +159,12 @@ const AddTask = () => {
             <div className="right-container">
               <div className="right-contents">
                 <div className="due-date-sec">
-                  <label htmlFor="due">Due</label>
+                  <label htmlFor="due">Due Date</label>
 
                   <DatePicker
                     name="due_date"
                     placeholder="Select Date"
-                    value={moment(addTaskData.due_date)}
+                    value={ taskId ? moment(addTaskData.due_date) : addTaskData.due_date}
                     onChange={handleDate}
                   />
                   <p className="error-message">
@@ -198,7 +198,9 @@ const AddTask = () => {
                 <div className="weightage">
                   <label htmlFor="">Weightage</label>
                   <button>
-                    <a href="">weightage</a>
+                    <a href={`/batch/${batchId}/module/add/task/weightage`}>
+                      Weightage
+                    </a>
                   </button>
                 </div>
               </div>

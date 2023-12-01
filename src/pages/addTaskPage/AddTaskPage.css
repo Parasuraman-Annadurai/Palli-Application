@@ -1,12 +1,4 @@
-  
-  /* task module */
-  
-/* .task-add-page{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-} */
+
   .container{
     width: 100%;
     border: 1px solid grey;
@@ -17,7 +9,6 @@
     display: flex;
   }
   
-  /* left side styling */
   
   .left-container{
     max-width: 700px;
@@ -96,7 +87,6 @@
   }
   
   
-  /* right side styling */
   .right-container{
     padding: 40px;
     position: relative;

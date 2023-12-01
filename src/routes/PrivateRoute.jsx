@@ -20,16 +20,14 @@ const PrivateRoute = () => {
   ];
 
   const menuList = batchId ? menu : [{ label: "Dashboard", id: "dashboard" }];
-  const activeMenuItem = menuList.find((menu) =>
-    pathname.includes(menu.id)
-  );
-
+  const activeMenuItem = menuList.find((menu) => pathname.includes(menu.id));
   return auth ? (
     <div className="app">
       <Sidebar menuList={menuList} activeMenuItem={activeMenuItem.id} />
       <div className="main">
-        <Navbar />
-        <Outlet />
+      <Navbar item={activeMenuItem ? [{ label: "Dashboard", link: "/dashboard" }, activeMenuItem] : null} />
+
+         <Outlet />
       </div>
     </div>
   ) : (

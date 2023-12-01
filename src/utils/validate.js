@@ -1,3 +1,4 @@
+
 export const isEmailValid = (email) => {
   const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
   switch (true) {
@@ -72,11 +73,8 @@ export const validateNewpassword = (newPasswordData, setErrors) => {
 
 export const validateAddTask = (addTaskData,setErrors) => {
 
-  // task_title: "",
-  // task_description: "",
-  // due_date: "",
-  // task_type: "",
-
+ 
+  console.log(addTaskData.task_type == false);
   let errors = {};
   let isVaild = true;
   if (!addTaskData.task_title.trim()) {
@@ -87,15 +85,12 @@ export const validateAddTask = (addTaskData,setErrors) => {
     errors.task_description = "Task Description is Required";
     isVaild = false;
   }
-  // if (!addTaskData.taskLink.trim()) {
-  //   errors.taskLink = "Task Link is Required";
-  //   isVaild = false;
-  // }
+ 
   if (!addTaskData.due_date.trim()) {
     errors.due_date = "Task Due Date is Required";
     isVaild = false;
   }
-  if (!addTaskData.task_type.trim()) {
+  if (!addTaskData.task_type) {
     errors.task_type = "Task Type is Required";
     isVaild = false;
   }

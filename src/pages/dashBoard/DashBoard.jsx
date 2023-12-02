@@ -304,7 +304,7 @@ const DashBoard = () => {
           ) : (
             <>
             {/*Spelling mistake */}
-              <BacthList batchesList={batches? batchList:[]} handleEditClick={handleEditClick}/>
+              <BacthList batchesList={batches} handleEditClick={handleEditClick}/>
             </>
           )}
         </div>

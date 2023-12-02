@@ -13,20 +13,30 @@ const DashBoard = () => {
   const { token, user } = useAuth();
   const { data: batchList, loading, makeNetworkRequest } = useAPI();
 
+
   const [isModalOpen, setIsModalOpen] = useState(false);
+  /* i have told mulitple times , dont use batch_name  use the convention*/
   const [batch_name, setBatchName] = useState("");
+    /* i have told mulitple times , dont use batch_name  use the convention*/
+
   const [start_date, setStartYear] = useState("");
+    /* i have told mulitple times , dont use batch_name  use the convention*/
+
   const [end_date, setEndYear] = useState("");
+  /*are we using this, if not remove it*/
   const [company, setCompany] = useState(1);
 
   const [batchNameError, setBatchNameError] = useState(null);
   const [startError, setStartError] = useState(null);
   const [endError, setEndError] = useState(null);
 
+  /* instead of this, just set editId*/
   const [isEditMode, setIsEditMode] = useState(false);
   const [selectedBatch, setSelectedBatch] = useState(null);
 
   useEffect(() => {
+
+    /* keep this headers in useapi*/
     makeNetworkRequest(
       "http://13.232.90.154:8000/api/list/batch/",
       "GET",
@@ -40,10 +50,12 @@ const DashBoard = () => {
     );
   }, []);
 
+  /* for this single line we dont need new function just do the set state in onclick itself*/
   const showModal = () => {
     setIsModalOpen(true);
   };
 
+  /* change this func name to handleClose */
   const handleCancel = () => {
     setIsModalOpen(false);
     resetFields();
@@ -65,6 +77,8 @@ const DashBoard = () => {
   };
   const handleBatchNameChange = (e) => {
     const input = e.target.value;
+    /* dont prevent here, they should be able to type anything once they click submit and then show the erros*/
+   
     const regex = /^[A-Za-z0-9\- ]*$/;
 
     if (regex.test(input)) {
@@ -77,6 +91,7 @@ const DashBoard = () => {
     }
   };
 
+  /* move this to utility and change the func name to validateBatch*/
   const validateForm = () => {
     let hasError = false;
 
@@ -135,6 +150,7 @@ const DashBoard = () => {
     return hasError;
   };
 
+  /* typo handleCL*/
   const handleCLick = () => {
     const hasError = validateForm();
 
@@ -172,6 +188,8 @@ const DashBoard = () => {
     setEndYear(batch.end_date);
     setBatchNameError(null);
   };
+
+  
   const handleUpdate = () => {
     const hasError = validateForm();
 
@@ -199,6 +217,7 @@ const DashBoard = () => {
     }
   };
 
+  /*remove this line and add batchList.data directly , dont need addtional variable*/
   const batches = batchList.data || [];
 
   return (
@@ -206,6 +225,7 @@ const DashBoard = () => {
       <div className="greeting">
         <div className="heading">
           <h1>
+            {/* check using ?. or in operator */}
             Welcome, {user.first_name} {user.last_name} <br />
           </h1>
           <p>
@@ -223,11 +243,14 @@ const DashBoard = () => {
       <div className="add__batch">
         <div className="batches__list">
           <div className="add-btn">
+              {/* Add Batch is ok change the case */}
+
             <Button className="cards" type="primary" onClick={showModal}>
               ADD BATCH
             </Button>
           </div>
 
+      {/* Move this as seperate component AddBatch.jsx */}
           <Modal
             title={isEditMode ? "Edit Batch" : "Add Year to Year Batch"}
             className="Yearpicker"
@@ -280,7 +303,8 @@ const DashBoard = () => {
             <Skeleton active paragraph={{ rows: 4 }} />
           ) : (
             <>
-              <BacthList batchesList={batches} handleEditClick={handleEditClick}/>
+            {/*Spelling mistake */}
+              <BacthList batchesList={batches? batchList:[]} handleEditClick={handleEditClick}/>
             </>
           )}
         </div>
@@ -290,3 +314,5 @@ const DashBoard = () => {
 };
 
 export default DashBoard;
+
+//keep this file as minimun as below 150 lines

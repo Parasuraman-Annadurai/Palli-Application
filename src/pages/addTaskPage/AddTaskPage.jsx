@@ -20,6 +20,7 @@ const AddTask = () => {
 
   const [errors, setErrors] = useState({});
 
+  // dont use object use sep state for below
   const [addTaskData, setAddTaskData] = useState({
     task_title: "",
     task_description: "",
@@ -98,6 +99,7 @@ const AddTask = () => {
         duration: 3,
       });
 
+      // add reset functions which resets all the state
       setAddTaskData({
         task_title: "",
         task_description: "",

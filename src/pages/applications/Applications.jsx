@@ -1,18 +1,27 @@
 import React, { useEffect, useState } from "react";
 import "./Applicantions.css";
+//spelling mistake
 import ApplicationHeader from "../../components/PageHeader";
 import TableComponent from "../../components/TableView";
 import { API_END_POINT } from "../../../config";
 import useAPI from "../../hooks/useAPI";
 import { useAuth } from "../../context/AuthContext";
+//remove the unused packages
 import { Breadcrumb, Pagination, Skeleton } from "antd";
 import { useParams } from "react-router-dom";
+
+//spelling mistake
 const Applicantions = () => {
   const { id: batchId } = useParams();
+  //develop a custom hooks called useSearchAndLimit which handles limit, search, currentpage stuff and returns limit,search,currentpage,records
+  //develop a sep componet for pagination and pass the parameters
   const [limit, setLimit] = useState(6);
   const [applicantSearch, setApplicantSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const { token, user } = useAuth();
+
+
+  //remove this if you're not using it
 
   // const breadcrumbTab = [
   //   {
@@ -23,6 +32,7 @@ const Applicantions = () => {
   //   },
   // ];
 
+  //keep columnNameList as name
   const coulmnName = [
     { key: "first_name", title: "First Name" },
     { key: "last_name", title: "Last Name" },
@@ -35,6 +45,7 @@ const Applicantions = () => {
   const { data: applications, loading, error, makeNetworkRequest } = useAPI();
 
   useEffect(() => {
+    //move the header
     makeNetworkRequest(
       `${API_END_POINT}/api/applicant/${batchId}/list/applicants/?limit=${limit}&page=${currentPage}&search=${applicantSearch}`,
       "GET",
@@ -47,9 +58,13 @@ const Applicantions = () => {
     );
   }, [limit, currentPage, applicantSearch]);
 
+
+  // if it is just one line just set the state in onchange itself     
   const handleChangePage = (page) => {
     setCurrentPage(page);
   };
+
+  // move this to custom hook
   const handleSearch = (e) => {
     const {value} = e.target;
     setApplicantSearch(value);
@@ -59,6 +74,7 @@ const Applicantions = () => {
       <div className="bread-crumb">
         {/* <Breadcrumb items={breadcrumbTab} /> */}
       </div>
+      {/* CHange this component */}
       <ApplicationHeader
         totalRecords={applications}
         showUploadButton={true} // Set to true to show the Upload button

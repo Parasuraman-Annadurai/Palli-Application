@@ -5,7 +5,7 @@ import { Button } from 'antd';
 
 
 const TableComponent = ({ data, columns, handleDelete, handleEdit }) => {
-  
+  // use ?. operator to check data?.data
 
   if (data.data && data.data.length > 0) {
     return (

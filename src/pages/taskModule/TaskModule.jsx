@@ -38,10 +38,13 @@ const TaskModule = () => {
     });
   }, [limit, currentPage, taskSearch, taskFilter]);
 
+
+  //follow applications comment
   const handleChangePage = (page) => {
     setCurrentPage(page);
   };
 
+  //refer applicatins
   const coulmnName = [
     { key: "task_title", title: "Task Name" },
     { key: "task_description", title: "Task Description" },
@@ -67,10 +70,12 @@ const TaskModule = () => {
       },
     });
   };
+
   const handleEdit = (editId) => {
     navigate(`/batch/${batchId}/module/edit/task/${editId}`);
   };
 
+  
   const handleFilter = (value) => {
     setTaskFilter(value);
   };

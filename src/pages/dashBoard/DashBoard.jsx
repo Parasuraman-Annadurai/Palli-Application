@@ -316,3 +316,4 @@ const DashBoard = () => {
 export default DashBoard;
 
 //keep this file as minimun as below 150 lines
+// where is proptype?

@@ -46,7 +46,7 @@ const DashBoard = () => {
   const handleCancel = () => {
     setIsModalOpen(false);
     resetFields();
-    setIsEditMode(false)
+    setIsEditMode(false);
   };
 
   const resetFields = () => {
@@ -221,65 +221,82 @@ const DashBoard = () => {
 
       <div className="add__batch">
         <div className="batches__list">
-          <div className="add-btn">
-            <Button className="cards" type="primary" onClick={showModal}>
-              ADD BATCH
-            </Button>
-          </div>
-
-          <Modal
-            title={isEditMode ? "Edit Batch" : "Add Year to Year Batch"}
-            className="Yearpicker"
-            open={isModalOpen}
-            onOk={isEditMode ? handleUpdate : handleCLick}
-            onCancel={handleCancel}
-            okText={isEditMode ? "Update" : "Add Batch"}
-          >
-            <div>
-              <Input
-                placeholder="Enter Batch Name"
-                value={batch_name}
-                onChange={handleBatchNameChange}
-              />
-              {batchNameError && (
-                <span style={{ color: "red" }}>{batchNameError}</span>
-              )}
-
-              <DatePicker
-                format="YYYY-MM-DD"
-                onChange={(date, dateString) =>
-                  handleDateChange(
-                    dateString,
-                    setStartYear,
-                    setStartError,
-                    "startError"
-                  )
-                }
-                placeholder="Start Year"
-              />
-
-              {startError && <span style={{ color: "red" }}>{startError}</span>}
-
-              <DatePicker
-                format="YYYY-MM-DD"
-                onChange={(date, dateString) =>
-                  handleDateChange(
-                    dateString,
-                    setEndYear,
-                    setEndError,
-                    "endError"
-                  )
-                }
-                placeholder="End Year"
-              />
-              {endError && <span style={{ color: "red" }}>{endError}</span>}
-            </div>
-          </Modal>
           {loading ? (
             <Skeleton active paragraph={{ rows: 4 }} />
           ) : (
             <>
-              <BacthList batchesList={batches} handleEditClick={handleEditClick}/>
+              <div className="add-btn">
+                <Button
+                  className="cards batch-card"
+                  type="primary"
+                  onClick={showModal}
+                >
+                  <h3>ADD BATCH</h3>
+                </Button>
+              </div>
+
+              <Modal
+                title={isEditMode ? "Edit Batch" : "Add Year to Year Batch"}
+                className="Yearpicker"
+                open={isModalOpen}
+                onOk={isEditMode ? handleUpdate : handleCLick}
+                onCancel={handleCancel}
+                okText={isEditMode ? "Update" : "Add Batch"}
+              >
+                <div>
+                  <Input
+                    placeholder="Enter Batch Name"
+                    value={batch_name}
+                    onChange={handleBatchNameChange}
+                  />
+
+                  <p className="error-message">
+                    {batchNameError && (
+                      <span style={{ color: "red" }}>{batchNameError}</span>
+                    )}
+                  </p>
+                  <DatePicker
+                    format="YYYY-MM-DD"
+                    onChange={(date, dateString) =>
+                      handleDateChange(
+                        dateString,
+                        setStartYear,
+                        setStartError,
+                        "startError"
+                      )
+                    }
+                    placeholder="Start Year"
+                  />
+                  <p className="error-message">
+                    {startError && (
+                      <span style={{ color: "red" }}>{startError}</span>
+                    )}
+                  </p>
+
+                  <DatePicker
+                    format="YYYY-MM-DD"
+                    onChange={(date, dateString) =>
+                      handleDateChange(
+                        dateString,
+                        setEndYear,
+                        setEndError,
+                        "endError"
+                      )
+                    }
+                    placeholder="End Year"
+                  />
+                  <p className="error-message">
+                    {endError && (
+                      <span style={{ color: "red" }}>{endError}</span>
+                    )}
+                  </p>
+                </div>
+              </Modal>
+
+              <BacthList
+                batchesList={batches}
+                handleEditClick={handleEditClick}
+              />
             </>
           )}
         </div>

@@ -30,12 +30,12 @@ const DashBoard = () => {
       "http://13.232.90.154:8000/api/list/batch/",
       "GET",
       null,
-      {
-        headers: {
-          Authorization: `Bearer ${token.access}`,
-          "Content-Type": "application/json",
-        },
-      }
+      // {
+      //   headers: {
+      //     Authorization: `Bearer ${token.access}`,
+      //     "Content-Type": "application/json",
+      //   },
+      // }
     );
   }, []);
 
@@ -149,12 +149,12 @@ const DashBoard = () => {
         "http://13.232.90.154:8000/api/create/batch/",
         "POST",
         batch,
-        {
-          headers: {
-            Authorization: `Bearer ${token.access}`,
-            "Content-Type": "application/json",
-          },
-        }
+        // {
+        //   headers: {
+        //     Authorization: `Bearer ${token.access}`,
+        //     "Content-Type": "application/json",
+        //   },
+        // }
       );
 
       handleCancel();
@@ -186,19 +186,19 @@ const DashBoard = () => {
         `${API_END_POINT}/api/update/batch/${selectedBatch.id}/`,
         "PUT",
         updatedBatch,
-        {
-          headers: {
-            Authorization: `Bearer ${token.access}`,
-            "Content-Type": "application/json",
-          },
-        }
+        // {
+        //   headers: {
+        //     Authorization: `Bearer ${token.access}`,
+        //     "Content-Type": "application/json",
+        //   },
+        // }
       );
 
       handleCancel();
     }
   };
 
-  const batches = batchList.data || [];
+  const batches = batchList?.data || [];
 
   return (
     <div className="content">

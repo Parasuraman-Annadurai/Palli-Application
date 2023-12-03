@@ -4,8 +4,6 @@ import { Select, Input, Button, Dropdown, Menu } from "antd";
 import {
   DownOutlined,
   PlusOutlined,
-  SearchOutlined,
-  CloseCircleOutlined,
 } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";

@@ -15,7 +15,7 @@ import {
   WEIGHTAGE
 } from "./routes/routes.jsx";
 //Define your routes for APP here
-import LoginPage from "./pages/login/LoginPage.jsx";
+import Login from "./pages/login/Login.jsx";
 import ChangePassword from "./pages/changePasswordPage/ResetPasswordPage";
 import ForgotPassword from "./pages/forgotPage/ForgotPage";
 import Applicantions from "./pages/applications/Applications.jsx";
@@ -37,7 +37,7 @@ const App = () => {
         <Routes>
           <Route path={INDEX} element={<Navigate to="/login" replace />} />
 
-          <Route path={LOGIN} element={<LoginPage />} />
+          <Route path={LOGIN} element={<Login />} />
           <Route path={FORGOTPASSWORD} element={<ForgotPassword />} />
           <Route path={CHANGEPASSWORD} element={<ChangePassword />} />
 

@@ -1,7 +1,8 @@
 // TableComponent.jsx
 import React from 'react';
-import noDataFound from "../../public/images/no_data_found.svg";
-import { Button } from 'antd';
+
+//image paste
+import noDataFound from "/images/no_data_found.svg";
 
 
 const TableComponent = ({ data, columns, handleDelete, handleEdit }) => {
@@ -23,12 +24,12 @@ const TableComponent = ({ data, columns, handleDelete, handleEdit }) => {
                 {columns.map((column) => (
                   <td key={column.key}>
                     {item[column.key]}
-                    {column.key === 'invite' && <Button>Invite</Button>}
-                    {column.key === 'viewMore' && <Button>View More</Button>}
+                    {column.key === 'invite' && <button className='btn invite-btn'>Invite</button>}
+                    {column.key === 'viewMore' && <a href=''>View More</a>}
                     {column.key === 'action' && (
                       <div className='antd-table-action'>
-                        <Button onClick={() => handleEdit(item.id)}>Edit</Button>
-                        <Button onClick={() => handleDelete(item.id)} type='primary' danger>Delete</Button>
+                        <button className='btn edit-btn' onClick={() => handleEdit(item.id)}>Edit</button>
+                        <button className='btn delete-btn' onClick={() => handleDelete(item.id)}>Delete</button>
                       </div>
                     )}
                   </td>

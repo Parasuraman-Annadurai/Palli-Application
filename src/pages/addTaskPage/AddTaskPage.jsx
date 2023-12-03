@@ -1,15 +1,22 @@
-import React, { useEffect } from "react";
-import "./AddTaskPage.css";
-import { useState } from "react";
+import React, { useEffect,useState } from "react";
+import {useParams,useNavigate } from "react-router-dom";
+
+//external packages
 import { notification, Input, DatePicker, Skeleton, Select } from "antd";
-import { validateAddTask } from "../../utils/validate";
-import { API_END_POINT } from "../../../config";
-import { useAuth } from "../../context/AuthContext";
-import useAPI from "../../hooks/useAPI";
-import { Link, useParams } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
 import moment from "moment";
 const { TextArea } = Input;
+//validation suppoting utiltis
+import { validateAddTask } from "../../utils/validate";
+//API endpoint paste here
+import { API_END_POINT } from "../../../config";
+//paste context here
+import { useAuth } from "../../context/AuthContext";
+//paste custom hook here
+import useAPI from "../../hooks/useAPI";
+
+//css paste here
+import "./AddTaskPage.css";
+
 
 const AddTask = () => {
   const navigate = useNavigate();

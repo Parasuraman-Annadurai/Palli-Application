@@ -1,13 +1,22 @@
 // taskmodule.jsx
 import React, { useEffect, useState } from "react";
-import "./TaskModule.css";
-import TableComponent from "../../components/TableView";
-import { useAuth } from "../../context/AuthContext";
-import { Skeleton, Pagination, Modal } from "antd";
-import ApplicationHeader from "../../components/PageHeader";
 import { useNavigate, useParams } from "react-router-dom";
-import useAPI from "../../hooks/useAPI";
+
+//external package
+import { Skeleton, Pagination, Modal } from "antd";
+
+//our component paste here
+import TableComponent from "../../components/TableView";
+import ApplicationHeader from "../../components/PageHeader";
+
+//context paste here
+import { useAuth } from "../../context/AuthContext";
+//API endpoint paste here
 import { API_END_POINT } from "../../../config";
+//custom hook paste here
+import useAPI from "../../hooks/useAPI";
+//css paste here
+import "./TaskModule.css";
 
 const TaskModule = () => {
   const { token } = useAuth();
@@ -31,11 +40,7 @@ const TaskModule = () => {
       url += `&search=${taskSearch}`;
     }
 
-    makeNetworkRequest(url, "GET", null, {
-      headers: {
-        Authorization: `Bearer ${token.access}`,
-      },
-    });
+    makeNetworkRequest(url, "GET", null);
   }, [limit, currentPage, taskSearch, taskFilter]);
 
   const handleChangePage = (page) => {

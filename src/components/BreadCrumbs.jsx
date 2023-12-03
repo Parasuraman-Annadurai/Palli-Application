@@ -1,23 +1,33 @@
-// Breadcrumbs.jsx
-import React from 'react';
-import { Breadcrumb } from 'antd';
-import { Link, useLocation } from 'react-router-dom';
+import React from "react";
+import { Breadcrumb } from "antd";
+import { useLocation } from "react-router-dom";
 
 const Breadcrumbs = () => {
   const location = useLocation();
-  const pathSnippets = location.pathname.split('/').filter((i) => i);
+  const pathSnippets = location.pathname.split("/").filter((i) => i);
 
+  const isInDashboard = location.pathname.startsWith('/dashboard');
+
+  if (isInDashboard) {
+    // Do not show breadcrumbs in the dashboard
+    return null;
+  }
   const breadcrumbs = pathSnippets.map((snippet, index) => {
-    const url = `/${pathSnippets.slice(0, index + 1).join('/')}`;
 
     return (
-      <Breadcrumb.Item key={url}>
-        <Link to={url}>{snippet}</Link>
-      </Breadcrumb.Item>
+      <span>
+        {snippet}
+        {" "}
+        {index !== pathSnippets.length - 1 && (
+          <span className="breadcrumb-arrow"></span>
+        )}
+      </span>
     );
   });
 
-  return <Breadcrumb>{breadcrumbs}</Breadcrumb>;
+  return (
+    <Breadcrumb className="breadcrumb-container">{breadcrumbs}</Breadcrumb>
+  );
 };
 
 export default Breadcrumbs;

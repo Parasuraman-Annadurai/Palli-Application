@@ -73,8 +73,7 @@ export const validateNewpassword = (newPasswordData, setErrors) => {
 
 export const validateAddTask = (addTaskData,setErrors) => {
 
- 
-  console.log(addTaskData.task_type == false);
+
   let errors = {};
   let isVaild = true;
   if (!addTaskData.task_title.trim()) {
@@ -90,7 +89,7 @@ export const validateAddTask = (addTaskData,setErrors) => {
     errors.due_date = "Task Due Date is Required";
     isVaild = false;
   }
-  if (!addTaskData.task_type) {
+  if (addTaskData.task_type < 0) {
     errors.task_type = "Task Type is Required";
     isVaild = false;
   }

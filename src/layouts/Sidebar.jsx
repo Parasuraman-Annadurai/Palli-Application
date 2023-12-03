@@ -24,11 +24,7 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
     setIsModalOpen(false);
   };
   useEffect(() => {
-    makeNetworkRequest(`${API_END_POINT}/api/list/batch/`, "GET", null, {
-      headers: {
-        Authorization: `Bearer ${token.access}`,
-      },
-    });
+    makeNetworkRequest(`${API_END_POINT}/api/list/batch/`, "GET", null);
   }, []);
   const batches = data.data || [];
   return (

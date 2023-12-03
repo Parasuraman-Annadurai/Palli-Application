@@ -1,0 +1,43 @@
+.filter-container {
+    position: relative;
+  }
+  
+  .filter-title {
+    cursor: pointer;
+    padding: 10px;
+    background-color: #3498db;
+    color: #fff;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    transition: background-color 0.3s;
+  }
+  
+  .filter-title.active {
+    background-color: #2980b9;
+  }
+  
+  .filter-dropdown {
+    display: none;
+    padding: 10px;
+    border: 1px solid #3498db;
+    border-radius: 5px;
+    background-color: #fff;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    transition: display 0.3s ease-out;
+  }
+  
+  .filter-dropdown.active {
+    display: block;
+  }
+  
+  .filter-label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+  
+  /* Add more styles as needed */
+  

@@ -1,17 +1,19 @@
 /* write common styles only here */
-*{
+* {
   padding: 0;
   margin: 0;
   list-style: none;
   text-decoration: none;
 }
 body {
-  background-color: #F4F7FA;
+  background-color: #f4f7fa;
 }
 
 /* TableComponent.css */
 .table-wrapper {
-  overflow-x: auto; /* Enable horizontal scrolling if needed */
+  max-height: 400px; /* Set a maximum height for the table */
+  overflow-y: auto;
+  height: 100%;
 }
 
 .antd-table {
@@ -30,7 +32,7 @@ body {
   text-align: left;
   overflow: hidden;
   white-space: nowrap;
-  text-overflow: ellipsis; 
+  text-overflow: ellipsis;
 }
 
 .antd-table th {
@@ -63,8 +65,6 @@ body {
   background-color: #e6f7ff;
   cursor: pointer;
 }
-
-
 
 /* Pagination styles */
 .ant-pagination {
@@ -113,7 +113,7 @@ body {
 .ant-pagination-options {
   display: none;
 }
-.ant-pagination .ant-pagination-item-active{
+.ant-pagination .ant-pagination-item-active {
   border: none;
 }
 .ant-pagination .ant-pagination-item-active a {
@@ -121,7 +121,7 @@ body {
 }
 
 /* invite nad view more button */
-.create-login-btn{
+.create-login-btn {
   padding: 8px 20px;
   border-radius: 6px;
   outline: none;
@@ -130,7 +130,7 @@ body {
   background-color: white;
   border: 1px solid gray;
 }
-.table-view-more{
+.table-view-more {
   padding: 8px 20px;
   border-radius: 6px;
   outline: none;
@@ -159,7 +159,7 @@ common layout */
   display: flex;
   flex-direction: column;
 }
-.sidebar a{
+.sidebar a {
   color: white;
 }
 /*main container */
@@ -179,11 +179,10 @@ common layout */
   align-items: center;
 }
 
-.navbar .user-greeting{
+.navbar .user-greeting {
   display: flex;
   gap: 10px;
 }
-
 
 /* app header */
 
@@ -213,8 +212,6 @@ common layout */
   height: 100%;
 }
 
-
-
 .flex {
   display: flex;
   align-items: center;
@@ -222,71 +219,71 @@ common layout */
   padding-left: 20px;
 }
 
-.menu-container{
+.menu-container {
   margin: 26px 0px;
   padding: 10px;
 }
 
-.logo{
+.logo {
   padding: 47px 40px 0px;
 }
 
-.active{
-  background-color: #223F64;
+.active {
+  background-color: #223f64;
   border-radius: 0px 15px 15px 0px;
 }
-.setting{
+.setting {
   margin-top: auto;
   padding: 20px;
 }
 
-.header-controls .search__bar{
+.header-controls .search__bar {
   max-width: 200px;
   width: 100%;
   padding: 0px 10px 0px 5px;
 }
 
 /* avatar */
-.avatar__container{
+.avatar__container {
   display: flex;
   align-content: center;
   justify-content: flex-end;
 }
-.avatar__container .avatar__logo{
+.avatar__container .avatar__logo {
   cursor: pointer;
 }
 
-.filter__icon{
-  color: #223F64;
+.filter__icon {
+  color: #223f64;
 }
 
-.upload__btn{
+.upload__btn {
   padding: 8px 20px;
   border-radius: 6px;
   outline: none;
   border: none;
   color: white;
-  background-color: #223F64;
+  background-color: #223f64;
 }
-.hide{
+.hide {
   visibility: hidden;
 }
-.show{
+.show {
   visibility: visible;
 }
-.no-data-found{
+.no-data-found {
   max-width: 350px;
   width: 100%;
   margin: auto;
 }
 
-.antd-table-action{
+.antd-table-action {
   display: flex;
   gap: 5px;
 }
 /* breadcrumb */
 .ant-breadcrumb {
-  color: black;
+  color: white;
 }
 
 .ant-breadcrumb-link > a {
@@ -294,10 +291,33 @@ common layout */
 }
 
 .ant-breadcrumb-link:hover > a {
-  color: white; 
+  color: white;
 }
-.switch{
+.switch {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.pagination-container {
+  margin-top: auto; /* Push the pagination container to the bottom */
+}
+
+.breadcrumb-arrow {
+  content: "";
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border: 5px solid transparent;
+  border-top: 5px solid white;
+  border-right: 5px solid white;
+  transform: rotate(45deg);
+  margin-left: 5px;
+  margin-right: 5px;
+}
+.link {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #223f64;
 }

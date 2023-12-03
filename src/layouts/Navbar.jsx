@@ -1,14 +1,15 @@
 import React from "react";
-import { Button, Popover, Breadcrumb } from "antd";
+import { Button, Popover, Avatar } from "antd";
 import { useAuth } from "../context/AuthContext";
 import useAPI from "../hooks/useAPI";
 import { API_END_POINT } from "../../config";
-import { useNavigate, useLocation, Link, useParams } from "react-router-dom";
-const Navbar = ({ item }) => {
+import { useNavigate, useParams } from "react-router-dom";
+import Breadcrumbs from "../components/BreadCrumbs";
+
+const Navbar = () => {
   const navigate = useNavigate();
   const { user, token } = useAuth();
   const { id: batchId } = useParams();
-  const { pathname } = useLocation();
 
   const { data, error, makeNetworkRequest } = useAPI();
 
@@ -27,7 +28,7 @@ const Navbar = ({ item }) => {
   const content = (
     <div>
       <p>
-        <strong>Username</strong>
+        <strong>Email Id</strong>
         <br />
         {user.email}
       </p>
@@ -36,32 +37,25 @@ const Navbar = ({ item }) => {
       </Button>
     </div>
   );
+  const getRandomColor = () => {
+    const colors = ["#f56a00", "#7265e6", "#ffbf00", "#00a2ae"];
+    return colors[Math.floor(Math.random() * colors.length)];
+  };
 
-  console.log(batchId);
   return (
     <div className="navbar">
       <div>
-        {!batchId ? (
-          <h2>
-            Welcome to {user.first_name} {user.last_name}
-          </h2>
-        ) : (
-          batchId &&
-          item && (
-            <Breadcrumb separator=" / ">
-              {item.map((breadcrumbItem, index) => (
-                <Breadcrumb.Item key={index}>
-                  <Link to={breadcrumbItem.link}>{breadcrumbItem.label}</Link>
-                </Breadcrumb.Item>
-              ))}
-            </Breadcrumb>
-          )
-        )}
+        <Breadcrumbs/>
+        {!batchId && <h1>welcome {user.first_name} {user.last_name}</h1>}
       </div>
       <div className="avatar__container">
         <Popover content={content} placement="bottomRight" trigger="click">
           <div className="avatar__logo">
-            <span className="material-symbols-outlined">account_circle</span>
+            <Avatar
+              style={{ backgroundColor: getRandomColor() }}
+            >{`${user.first_name.charAt(0).toUpperCase()}${user.last_name
+              .charAt(0)
+              .toUpperCase()}`}</Avatar>
           </div>
         </Popover>
       </div>

@@ -3,39 +3,27 @@ import React, { useEffect, useState } from "react";
 import "./TaskModule.css";
 import TableComponent from "../../components/TableView";
 import { useAuth } from "../../context/AuthContext";
-import { Skeleton, Pagination, Modal } from "antd";
+import { Skeleton, Pagination, Modal, Select } from "antd";
 import ApplicationHeader from "../../components/PageHeader";
 import { useNavigate, useParams } from "react-router-dom";
 import useAPI from "../../hooks/useAPI";
 import { API_END_POINT } from "../../../config";
-
+import useFilter from "../../hooks/useFilter";
+import UnifiedFilterComponent from "../../components/FilterComponent";
 const TaskModule = () => {
+  const filter = useFilter("task");
   const { token } = useAuth();
   const navigate = useNavigate();
   const { id: batchId } = useParams();
-  const [limit, setLimit] = useState(6);
+  const [limit, setLimit] = useState(5);
   const [taskSearch, setTaskSearch] = useState("");
   const [taskFilter, setTaskFilter] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const { data: taskLists, loading, error, makeNetworkRequest } = useAPI();
-
+  useFilter("");
   useEffect(() => {
-    let url = `${API_END_POINT}/api/task/${batchId}/list_task/?limit=${limit}&page=${currentPage}`;
-
-    if (taskFilter) {
-      url += `&filter_task_type=${taskFilter}`;
-    }
-
-    // Append search parameter if it exists
-    if (taskSearch) {
-      url += `&search=${taskSearch}`;
-    }
-
-    makeNetworkRequest(url, "GET", null, {
-      headers: {
-        Authorization: `Bearer ${token.access}`,
-      },
-    });
+    let url = `${API_END_POINT}/api/task/${batchId}/list_task/?limit=${limit}&page=${currentPage}&filter_task_type=${taskFilter}&search=${taskSearch}`;
+    makeNetworkRequest(url, "GET", null);
   }, [limit, currentPage, taskSearch, taskFilter]);
 
   const handleChangePage = (page) => {
@@ -44,11 +32,11 @@ const TaskModule = () => {
 
   const coulmnName = [
     { key: "task_title", title: "Task Name" },
-    { key: "task_description", title: "Date of Post" },
+    { key: "task_description", title: "Description" },
+    // { key: "task_type", title: "Task type" },
     { key: "due_date", title: "Deadline" },
     { key: "action", title: "Action" },
   ];
-
   const handleDelete = (deleteTaskId) => {
     Modal.confirm({
       title: "Confirm Deletion",
@@ -57,12 +45,7 @@ const TaskModule = () => {
         await makeNetworkRequest(
           `${API_END_POINT}/api/task/${batchId}/delete_task/${deleteTaskId}`,
           "DELETE",
-          null,
-          {
-            headers: {
-              Authorization: `Bearer ${token.access}`,
-            },
-          }
+          null
         );
       },
     });
@@ -82,6 +65,9 @@ const TaskModule = () => {
 
   return (
     <div className="content">
+      <div>
+        <UnifiedFilterComponent filter={filter} />
+      </div>
       <ApplicationHeader
         headerText={"Module"}
         showCreateButton={true}

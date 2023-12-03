@@ -1,5 +1,3 @@
-// SeparateInput.jsx
-
 import React from 'react';
 
 const Input = ({ label, name, type, value, onChange, onBlur, error,onFocus }) => (

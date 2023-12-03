@@ -1,12 +1,12 @@
 import React, { useEffect } from "react";
 import "./AddTaskPage.css";
 import { useState } from "react";
-import { notification, Input, DatePicker, Skeleton, Select } from "antd";
+import { notification, Input, DatePicker, Button, Select } from "antd";
 import { validateAddTask } from "../../utils/validate";
 import { API_END_POINT } from "../../../config";
 import { useAuth } from "../../context/AuthContext";
 import useAPI from "../../hooks/useAPI";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import moment from "moment";
 const { TextArea } = Input;
@@ -20,11 +20,14 @@ const AddTask = () => {
 
   const [errors, setErrors] = useState({});
 
+  const [selectedStudents, setSelectedStudents] = useState([]);
+  const [selectAll, setSelectAll] = useState(false);
+
   const [addTaskData, setAddTaskData] = useState({
     task_title: "",
     task_description: "",
     due_date: "",
-    task_type: "task",
+    task_type: 0,
   });
 
   useEffect(() => {
@@ -34,27 +37,9 @@ const AddTask = () => {
         `${API_END_POINT}/api/task/${batchId}/get/task/${taskId}`,
         "GET",
         null,
-        {
-          headers: {
-            Authorization: `Bearer ${token.access}`,
-          },
-        }
       );
     }
   }, [taskId]);
-
-  useEffect(() => {
-    if (data && data.data) {
-      const { task_title, task_description, due_date, task_type } = data.data;
-      
-      setAddTaskData({
-        task_title,
-        task_description,
-        due_date,
-        task_type: task_type === 0 ? "test" : "assesment",
-      });
-    }
-  }, [data]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -74,21 +59,14 @@ const AddTask = () => {
   };
   const handleTaskAdd = () => {
     const isValidTask = validateAddTask(addTaskData, setErrors);
-
     if (isValidTask) {
-      addTaskData.task_type === "test" ? 0 : 1;
       const apiEndpoint = taskId
         ? `${API_END_POINT}/api/task/${batchId}/update_task/${taskId}`
         : `${API_END_POINT}/api/task/${batchId}/create_task/`;
 
       const method = taskId ? "PUT" : "POST";
 
-      makeNetworkRequest(apiEndpoint, method, addTaskData, {
-        headers: {
-          Authorization: `Bearer ${token.access}`,
-          "Content-Type": "application/json",
-        },
-      });
+      makeNetworkRequest(apiEndpoint, method, addTaskData);
 
       notification.success({
         message: "Success",
@@ -115,14 +93,59 @@ const AddTask = () => {
       }
     }
   };
+  useEffect(() => {
+    if (data && data.data) {
+      const { task_title, task_description, due_date, task_type } = data.data;
+      console.log(task_type);
+      setAddTaskData({
+        task_title,
+        task_description,
+        due_date,
+        task_type,
+      });
+    }
+  }, [data]);
+  console.log(addTaskData);
+
+  // useEffect(() => {
+  //   makeNetworkRequest(
+  //     `${API_END_POINT}/api/applicant/140/list/students/`,
+  //     "GET",
+  //     null,
+  //     {
+  //       headers: {
+  //         Authorization: `Bearer ${token.access}`,
+  //       },
+  //     }
+  //   );
+  // }, []);
+
+
+
+
+  // const renderOptions = () => {
+  //   const options = [
+  //     <Option key="all"  onChange={handleSelectAllChange} checked={selectAll}>
+  //       All
+  //     </Option>,
+  //   ];
+  
+  //   if (data && data.data) {
+  //     options.push(
+  //       ...data.data.map((student) => (
+  //         <Option key={student.id} value={student.id}>
+  //            {student.first_name}{student.last_name}
+  //         </Option>
+  //       ))
+  //     );
+  //   }
+  
+  //   return options;
+  // };
+  console.log(selectAll);
   return (
- 
     <div className="content">
-       {loading ? (
-      <Skeleton active paragraph={{ rows: 10 }} />
-    ) : (
-      <>
-        <div className="task-add-page">
+      <div className="task-add-page">
         <main className="container">
           <div className="inner-container">
             <div className="left-container">
@@ -159,12 +182,12 @@ const AddTask = () => {
             <div className="right-container">
               <div className="right-contents">
                 <div className="due-date-sec">
-                  <label htmlFor="due">Due Date</label>
+                  <label htmlFor="due">Due</label>
 
                   <DatePicker
                     name="due_date"
                     placeholder="Select Date"
-                    value={ taskId ? moment(addTaskData.due_date) : addTaskData.due_date}
+                    value={taskId && moment(addTaskData.due_date)}
                     onChange={handleDate}
                   />
                   <p className="error-message">
@@ -174,19 +197,20 @@ const AddTask = () => {
                 <div className="due-date-sec">
                   <label htmlFor="due">Task Type</label>
                   <Select
-                    value={addTaskData.task_type}
+                    value={addTaskData.task_type === 0 ? "Task" : "Assessment"}
                     style={{
                       width: 120,
                     }}
                     placeholder="Select a person"
+                    name="task_type"
                     onChange={handleType}
                     options={[
                       {
-                        value: "test",
-                        label: "Test",
+                        value: 0,
+                        label: "Tesk",
                       },
                       {
-                        value: "assessment",
+                        value: 1,
                         label: "Assessment",
                       },
                     ]}
@@ -195,12 +219,22 @@ const AddTask = () => {
                     {errors.task_type ? errors.task_type : ""}
                   </p>
                 </div>
+                <div className="to">
+                  <label htmlFor="">Assign to</label>
+                  {/* <Select
+                    mode="multiple"
+                    style={{ width: 200, marginRight: 16 }}
+                    placeholder="Select a section"
+                    value={selectedStudents}
+                    onChange={handleStudentSelect}
+                  >
+                    {renderOptions()}
+                  </Select> */}
+                </div>
                 <div className="weightage">
                   <label htmlFor="">Weightage</label>
                   <button>
-                    <a href={`/batch/${batchId}/module/add/task/weightage`}>
-                      Weightage
-                    </a>
+                    <a href="">weightage</a>
                   </button>
                 </div>
               </div>
@@ -209,16 +243,13 @@ const AddTask = () => {
                   CANCEL
                 </button>
                 <button className="assign-btn" onClick={handleTaskAdd}>
-                  {taskId ? "UPDATE" : "ASSIGN"}
+                  {taskId ? "UPDATE" : "SUMBIT"}
                 </button>
               </div>
             </div>
           </div>
         </main>
       </div>
-      </>
-    )}
-     
     </div>
   );
 };

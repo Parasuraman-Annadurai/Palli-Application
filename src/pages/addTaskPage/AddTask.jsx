@@ -186,7 +186,10 @@ const AddTask = () => {
       </Menu.Item>
     </Menu>
   );
-
+    const handleCancel =()=>{
+      resetForm()
+      navigate(`/batch/${batchId}/module`)
+    }
   return (
     <div className="content">
       {loading ? (
@@ -308,7 +311,7 @@ const AddTask = () => {
                     </div>
                   </div>
                   <div className="btns-div">
-                    <button className="cancel-btn" onClick={() => resetForm()}>
+                    <button className="cancel-btn" onClick={() => handleCancel()}>
                       CANCEL
                     </button>
                     <button className="assign-btn" onClick={handleTaskAdd}>

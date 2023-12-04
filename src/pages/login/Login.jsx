@@ -8,6 +8,8 @@ import Input from "../../components/Input";
 import { validate } from "../../utils/validate";
 // context paste here
 import { useAuth } from "../../context/AuthContext";
+//paste custom hook here
+import useForm from "../../hooks/useForm";
 //API endpoint paste here
 import { API_END_POINT } from "../../../config";
 //images paste here
@@ -18,27 +20,18 @@ import "./Login.css"
 
 const Login = () => {
   const navigate = useNavigate();
-  const { setToken, setUser, user, token } = useAuth();
+  const { setToken, setUser } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
-  const [loginUserData, setloginUserData] = useState({
+  const loginUserData = {
     email: "testui@gmail.com",
     password: "Front-end@123",
-  });
-
-  const [errors, setErrors] = useState({});
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setloginUserData({ ...loginUserData, [name]: value });
-    if (errors[name]) {
-      delete errors[name];
-    }
-  };
+  }
+  const { formData, errors, setErrors, handleChange} = useForm(loginUserData);
 
   //Handle login submit used to validate feild and check creadentials
   const handleLoginSubmit = (e) => {
     e.preventDefault();
-    const isVaild = validate(loginUserData, setErrors);
+    const isVaild = validate(formData, setErrors);
     if (isVaild) {
       axios
         .post(`${API_END_POINT}/api/accounts/login/`, loginUserData)
@@ -90,15 +83,15 @@ const Login = () => {
                 label="Email Id"
                 name="email"
                 type="text"
-                value={loginUserData.email}
+                value={formData.email}
                 onChange={handleChange}
-                error={errors.email ? email.email : ""}
+                error={errors.email ? errors.email : ""}
               />
               <Input
                 label="Password"
                 name="password"
                 type={showPassword ? "text" : "password"}
-                value={loginUserData.password}
+                value={formData.password}
                 onChange={handleChange}
                 error={errors.password ? errors.password : ""}
               />

@@ -127,7 +127,8 @@ body {
   border: none;
 }
 .ant-pagination .ant-pagination-item-active a {
-  color: white;
+  color:white;
+  background-color: var(--primary-color);
 }
 
 /* invite nad view more button button*/ 
@@ -306,4 +307,10 @@ common layout */
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.error-message{
+  height: 20px;
+  color: var(--error);
+  padding-top: 2px;
 }

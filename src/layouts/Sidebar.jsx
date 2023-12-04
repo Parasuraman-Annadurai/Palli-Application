@@ -7,7 +7,7 @@ import { API_END_POINT } from "../../config";
 //our custom hook here
 import useAPI from "../hooks/useAPI";
 
-//paste context
+//paste context here
 
 //images paste here
 import dckapLogo from "/images/dckap_palli_logo_sm.svg";

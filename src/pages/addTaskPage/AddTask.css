@@ -51,11 +51,13 @@
   }
   
   .task-name-sec>input,.task-desc-sec>textarea{
-    border: 1px solid grey;
+   
     font: normal 16px/18px karla,san-serif;
     width: 100%;
     background-color: white;
     padding-left: 16px;
+    border: 1px solid #d9d9d9;
+    border-radius: 6px;
   }
   
   
@@ -142,3 +144,17 @@
     outline: none;
   }
   
+
+  a.ant-dropdown-trigger.ant-dropdown-link {
+    width: 120px;
+    border: 1px solid;
+    padding: 7px 15px 7px 10px;
+    border: 1px solid #d9d9d9;
+    border-radius: 6px;
+  }
+  .right-container label{
+    padding-bottom: 12px;
+  }
+  .task-add-page a{
+    color: var(--primary-color);
+  }

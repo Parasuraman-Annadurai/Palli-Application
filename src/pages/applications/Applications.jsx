@@ -1,21 +1,20 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 //external packages
 import { Pagination, Skeleton } from "antd";
 //components paste here
-import ApplicationHeader from "../../components/PageHeader";
 import TableComponent from "../../components/TableView";
+import CommonFilter from "../../components/CommonFilters";
 //custom hook paste here
 import useAPI from "../../hooks/useAPI";
+import useForm from "../../hooks/useForm";
 //API endpoint paste here
 import { API_END_POINT } from "../../../config";
 //css
-import "./Applicantions.css";
-const Applicantions = () => {
+import "./Applications.css";
+const Applications = () => {
   const { id: batchId } = useParams();
-  const [limit, setLimit] = useState(6);
-  const [applicantSearch, setApplicantSearch] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
+
   const coulmnNameList = [
     { key: "first_name", title: "First Name" },
     { key: "last_name", title: "Last Name" },
@@ -27,46 +26,60 @@ const Applicantions = () => {
   ];
   const { data: applications, loading, makeNetworkRequest } = useAPI();
 
+  const { formData, handleChange} = useForm({
+    limit: 5,
+    applicantSearch: "",
+    currentPage: 1,
+  });
   useEffect(() => {
     makeNetworkRequest(
-      `${API_END_POINT}/api/applicant/${batchId}/list/applicants/?limit=${limit}&page=${currentPage}&search=${applicantSearch}`,
+      `${API_END_POINT}/api/applicant/${batchId}/list/applicants/?limit=${formData.limit}&page=${formData.currentPage}&search=${formData.applicantSearch}`,
       "GET",
       null
     );
-  }, [limit, currentPage, applicantSearch]);
+  }, [formData.limit, formData.currentPage, formData.applicantSearch]);
+  
 
   const handleChangePage = (page) => {
-    setCurrentPage(page);
+    handleChange({ target: { name: "currentPage", value: page } });
   };
-  const handleSearch = (e) => {
-    const { value } = e.target;
-    setApplicantSearch(value);
+  const handleSearch = (value) => {
+       if (value.trim() !== "" || value === "") {
+      handleChange({ target: { name: "applicantSearch", value: value.trim() } });
+    }
   };
+
+  const handleLimit =(limit)=>{
+    handleChange({ target: { name: "limit", value: limit } });
+  }
   return (
     <div className="content">
-      <ApplicationHeader
-        totalRecords={applications}
-        showUploadButton={true} // Set to true to show the Upload button
-        showRecordCount={true} // Set to true to show the record count
-        showFilterSelect={false} // Set to true to show the filter Select
-        headerText={"Applications"}
-        showCreateButton={false}
-        handleSearch={handleSearch}
-      />
-     
+      <div className="application-header">
+        <h2>{"Applications"}</h2>
+        <div className="header-controls">
+          <div className="record-count">
+            <span>{applications.total} Records</span>
+          </div>
+          <button className="upload__btn" type="primary">
+            Import
+          </button>
+
+          <CommonFilter handleLimit={handleLimit}  handleName={"applicantSearch"} handleChange={handleChange}  handleSearch={handleSearch}/>
+        </div>
+      </div>
       {loading ? (
         <Skeleton active paragraph={{ rows: 4 }} />
       ) : (
         <>
-          <TableComponent data={applications} columns={coulmnNameList} />
+          <TableComponent data={applications} coulmnNameList={coulmnNameList}  />
           <div
             className={`pagination__container ${
               applications.total > 0 ? "show" : "hide"
             }`}
           >
             <Pagination
-              current={currentPage}
-              pageSize={limit}
+              current={formData.currentPage}
+              pageSize={formData.limit}
               total={applications.total}
               onChange={handleChangePage}
             />
@@ -77,4 +90,4 @@ const Applicantions = () => {
   );
 };
 
-export default Applicantions;
+export default Applications;

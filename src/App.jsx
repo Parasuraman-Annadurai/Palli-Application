@@ -22,7 +22,7 @@ import Applicantions from "./pages/applications/Applications.jsx";
 import DashBoard from "./pages/dashBoard/DashBoard.jsx";
 import TaskModule from "./pages/taskModule/TaskModule.jsx";
 
-import AddTask from "./pages/addTaskPage/AddTaskPage.jsx";
+import AddTask from "./pages/addTaskPage/AddTask.jsx";
 import AddQuiz from "./pages/addQuiz/AddQuizz.jsx";
 import Weightage from "./pages/addTaskPage/weightage/WeightAge.jsx";
 

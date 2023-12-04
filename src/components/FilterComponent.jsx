@@ -18,8 +18,6 @@ const UnifiedFilterComponent = ({ filter }) => {
       </div>
       <div className={`filter-dropdown ${showFilters ? "active" : ""}`}>
         {filter.map((filterItem) => {
-          console.log(filterItem);
-
           switch (filterItem.filter_type) {
             case "CharFilter":
               return (

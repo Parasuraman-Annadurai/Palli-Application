@@ -337,7 +337,7 @@ common layout */
 /* Apply filter btn and clear filter btn */
 .btn.apply-filter-btn,.btn.clear-filter-btn{
   margin-top: 5px;
-  border: 1px solid gray;
+  border: 1px solid var(--primary-color);
   margin-right: 5px;
 }
 .btn.apply-filter-btn:hover{
@@ -349,7 +349,13 @@ common layout */
   color: white;
 }
 
-
+.btn.logout{
+  border: 1px solid var(--primary-color);
+}
+.btn-logout:hover{
+  background-color: var(--primary-color);
+  color: white;
+}
 /* filter component css */
 /* filter icon */
 .filter-container .filter-icon{

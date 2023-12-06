@@ -1,9 +1,24 @@
-.btn.invite-btn{
-    padding: 8px 20px;
-    border-radius: 6px;
-    outline: none;
-    border: none;
-    color: black;
-    background-color: white;
-    border: 1px solid gray;
-  }
+:root {
+  --primary-color: #223f64;
+  --secondray-color: #3f88d8;
+  --text-primary-color: #24384f;
+  --font-family: "Poppins", sans-serif;
+  --text-secondray-color: white;
+  --h1-font-size: 32px;
+  --p-font-size: 24px;
+  --error: red;
+}
+.btn.invite-btn {
+  padding: 8px 20px;
+  border-radius: 6px;
+  outline: none;
+  border: none;
+  color: black;
+  background-color: white;
+  border: 1px solid gray;
+}
+.btn.invite-btn:hover {
+  background-color: var(--primary-color);
+  color: white;
+}
+

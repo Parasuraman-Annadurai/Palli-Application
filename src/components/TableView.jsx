@@ -1,15 +1,28 @@
-// TableComponent.jsx
 import React from "react";
-import { Button, Tooltip, Tag } from "antd";
+//External Packages here
+import moment from "moment";
+import { Tag, Tooltip } from "antd";
+//Images here
+import noDataFound from "/images/no_data_found.svg";
 
-const TableComponent = ({ data, columns, handleDelete, handleEdit }) => {
-  // Format date as "May 20 203"
-  const formatDate = (date) => {
-    const options = { month: "short", day: "numeric", year: "numeric" };
-    return new Intl.DateTimeFormat("en-US", options).format(date);
+const TableComponent = ({ data, coulmnNameList, handleDelete, handleEdit }) => {
+  const renderDueDate = (dueDate) => {
+    const formattedDueDate = moment(dueDate).format("MMMM DD, YYYY");
+    const today = moment();
+    const dueDateMoment = moment(dueDate);
+    const daysDifference = dueDateMoment.diff(today, "days");
+
+    return (
+      <div>
+        {formattedDueDate}
+        {daysDifference === 0 && <Tag color="red">Today's Deadline</Tag>}
+        {daysDifference > 0 && daysDifference <= 3 && (
+          <Tag color="orange">{`${daysDifference} Days Left`}</Tag>
+        )}
+        {daysDifference < 0 && <Tag color="green">Completed</Tag>}
+      </div>
+    );
   };
-
-  // Get due date tag along with show due date based on different conditions
 
   if (data.data && data.data.length > 0) {
     return (
@@ -17,7 +30,7 @@ const TableComponent = ({ data, columns, handleDelete, handleEdit }) => {
         <table className="antd-table">
           <thead>
             <tr>
-              {columns.map((column) => (
+              {coulmnNameList.map((column) => (
                 <th key={column.key}>{column.title}</th>
               ))}
             </tr>
@@ -25,36 +38,45 @@ const TableComponent = ({ data, columns, handleDelete, handleEdit }) => {
           <tbody>
             {data.data.map((item) => (
               <tr key={item.id}>
-                {columns.map((column) => (
+                {coulmnNameList.map((column) => (
                   <td key={column.key}>
-                    {column.key !== "action" ? (
-                      <>
-                        {column.key === "task_description" && (
-                          <Tooltip placement="topLeft" title={item[column.key]}>
-                            {item[column.key]}
-                          </Tooltip>
-                        )}
-
-                        {column.key === "due_date"
-                          ? formatDate(new Date(item[column.key]))
-                          : item[column.key]}
-                      </>
-                    ) : (
+                    {column.key === "due_date" && (
+                      <span>
+                        <Tooltip title={item[column.key]}>
+                          {renderDueDate(item[column.key])}
+                        </Tooltip>
+                      </span>
+                    )}
+                    {column.key === "task_type" && item[column.key] === 0 ? (
+                      <span>Task</span>
+                    ) : column.key === "task_type" && item[column.key] === 1 ? (
+                      <span>Assessment</span>
+                    ) : column.key !== "due_date" &&
+                      column.key !== "task_type" ? (
+                      <Tooltip title={item[column.key]} placement="topLeft">
+                        {item[column.key]}
+                      </Tooltip>
+                    ) : null}
+                    {column.key === "invite" && (
+                      <button className="btn invite-btn">Invite</button>
+                    )}
+                    {column.key === "viewMore" && <a href="">View More</a>}
+                    {column.key === "action" && (
                       <div className="antd-table-action">
-                        <Button onClick={() => handleEdit(item.id)}>
+                        <button
+                          className="btn edit-btn"
+                          onClick={() => handleEdit(item.id)}
+                        >
                           Edit
-                        </Button>
-                        <Button
+                        </button>
+                        <button
+                          className="btn delete-btn"
                           onClick={() => handleDelete(item.id)}
-                          type="primary"
-                          danger
                         >
                           Delete
-                        </Button>
+                        </button>
                       </div>
                     )}
-                    {column.key === "invite" && <Button>Invite</Button>}
-                    {column.key === "viewMore" && <Button>View More</Button>}
                   </td>
                 ))}
               </tr>
@@ -66,7 +88,7 @@ const TableComponent = ({ data, columns, handleDelete, handleEdit }) => {
   } else {
     return (
       <div className="no-data-found">
-        {/* Render your "No Data Found" content here */}
+        <img src={noDataFound} alt="no data found" />
       </div>
     );
   }

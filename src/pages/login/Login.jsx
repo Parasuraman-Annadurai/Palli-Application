@@ -1,71 +1,64 @@
 import React, { useState } from "react";
-import "./LoginPage.css";
-import { Popover } from "antd";
 import { useNavigate } from "react-router-dom";
-import { validate } from "../../utils/validate";
-import dckapPalliLogon from "../../../public/images/dckap_palli_logo_lg.svg";
-import managerLoginLogo from "../../../public/images/manager_login_image.svg";
-import Input from "../../components/Input";
-import { API_END_POINT } from "../../../config";
-import { useAuth } from "../../context/AuthContext";
+//external packages paste here
 import axios from "axios";
+//our component paste here
+import Input from "../../components/Input";
+//suporting utilits 
+import { validate } from "../../utils/validate";
+// context paste here
+import { useAuth } from "../../context/AuthContext";
+//paste custom hook here
+import useForm from "../../hooks/useForm";
+//API endpoint paste here
+import { API_END_POINT } from "../../../config";
+//images paste here
+import dckapPalliLogon from "/images/dckap_palli_logo_lg.svg";
+import managerLoginLogo from "/images/manager_login_image.svg";
+//css paste here
+import "./Login.css"
 
-const LoginScreen = () => {
+const Login = () => {
   const navigate = useNavigate();
-
-  const { setToken, setUser, user, token } = useAuth();
-
+  const { setToken, setUser } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
-  const [loginUserData, setloginUserData] = useState({
+  const loginUserData = {
     email: "testui@gmail.com",
     password: "Front-end@123",
-  });
-
-  const [errors, setErrors] = useState({});
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setloginUserData({ ...loginUserData, [name]: value });
-    if(errors in name){
-      delete errors[name]
-    }
-  };
-
-  //handle the password changes
+  }
+  const { formData, errors, setErrors, handleChange} = useForm(loginUserData);
 
   //Handle login submit used to validate feild and check creadentials
   const handleLoginSubmit = (e) => {
     e.preventDefault();
-
-    const isValid = validate(loginUserData,setErrors)
-    if(isValid){
+    const isVaild = validate(formData, setErrors);
+    if (isVaild) {
       axios
-      .post(`${API_END_POINT}/api/accounts/login/`, loginUserData)
-      .then((res) => {
-        axios({
-          url: `${API_END_POINT}/api/accounts/get/user_info/`,
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${res.data.data.access}`,
-          },
-        })
-          .then((userData) => {
-            localStorage.setItem("token", JSON.stringify(res.data.data));
-            localStorage.setItem("user", JSON.stringify(userData.data.data));
-            setToken(res.data.data);
-            setUser(userData.data.data);
-            navigate("/dashboard");
+        .post(`${API_END_POINT}/api/accounts/login/`, loginUserData)
+        .then((res) => {
+          axios({
+            url: `${API_END_POINT}/api/accounts/get/user_info/`,
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${res.data.data.access}`,
+            },
           })
-          .catch((err) => {
-            console.error("userData fetch Failed", err);
-          });
-      })
-      .catch((err) => {
-        console.error("Authentication Failed", err);
-        navigate("/login");
-      });
+            .then((userData) => {
+              localStorage.setItem("token", JSON.stringify(res.data.data));
+              localStorage.setItem("user", JSON.stringify(userData.data.data));
+              setToken(res.data.data);
+              setUser(userData.data.data);
+              navigate("/dashboard");
+            })
+            .catch((err) => {
+              console.error("userData fetch Failed", err);
+            });
+        })
+        .catch((err) => {
+          console.error("Authentication Failed", err);
+          navigate("/login");
+        });
     }
-   
   };
 
   return (
@@ -90,18 +83,17 @@ const LoginScreen = () => {
                 label="Email Id"
                 name="email"
                 type="text"
-                value={loginUserData.email}
+                value={formData.email}
                 onChange={handleChange}
-                error={errors.email || ""}
+                error={errors.email ? errors.email : ""}
               />
-
               <Input
                 label="Password"
                 name="password"
                 type={showPassword ? "text" : "password"}
-                value={loginUserData.password}
+                value={formData.password}
                 onChange={handleChange}
-                error={errors.password || ""}
+                error={errors.password ? errors.password : ""}
               />
               <span
                 onClick={() => setShowPassword(!showPassword)}
@@ -122,4 +114,4 @@ const LoginScreen = () => {
   );
 };
 
-export default LoginScreen;
+export default Login;

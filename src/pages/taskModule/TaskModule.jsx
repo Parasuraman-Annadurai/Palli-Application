@@ -1,40 +1,59 @@
 // taskmodule.jsx
-import React, { useEffect, useState } from "react";
-import "./TaskModule.css";
-import TableComponent from "../../components/TableView";
-import { useAuth } from "../../context/AuthContext";
-import { Skeleton, Pagination, Modal, Select } from "antd";
-import ApplicationHeader from "../../components/PageHeader";
+import React, { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import useAPI from "../../hooks/useAPI";
+
+//external package
+import { Skeleton, Pagination, Modal, Dropdown, Menu } from "antd";
+import { DownOutlined, PlusOutlined } from "@ant-design/icons";
+//our component paste here
+import TableComponent from "../../components/TableView";
+
+import CommonFilter from "../../components/CommonFilters";
+//context paste here
+
+//custom hook paste here
+import useForm from "../../hooks/useForm";
+//API endpoint paste here
 import { API_END_POINT } from "../../../config";
+//custom hook paste here
+import useAPI from "../../hooks/useAPI";
 import useFilter from "../../hooks/useFilter";
-import UnifiedFilterComponent from "../../components/FilterComponent";
+//css paste here
+import "./TaskModule.css";
+
 const TaskModule = () => {
-  const filter = useFilter("task");
-  const { token } = useAuth();
   const navigate = useNavigate();
+  const filter = useFilter("task");
   const { id: batchId } = useParams();
-  const [limit, setLimit] = useState(5);
-  const [taskSearch, setTaskSearch] = useState("");
-  const [taskFilter, setTaskFilter] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
   const { data: taskLists, loading, error, makeNetworkRequest } = useAPI();
-  useFilter("");
+
+  const { formData, handleChange } = useForm({
+    limit: 5,
+    currentPage: 1,
+    taskSearch: "",
+    taskFilter: "",
+  });
   useEffect(() => {
-    let url = `${API_END_POINT}/api/task/${batchId}/list_task/?limit=${limit}&page=${currentPage}&filter_task_type=${taskFilter}&search=${taskSearch}`;
+    const url = `${API_END_POINT}/api/task/${batchId}/list_task/?limit=${formData.limit}&page=${formData.currentPage}&filter_task_type=${formData.taskFilter}&search=${formData.taskSearch}`;
     makeNetworkRequest(url, "GET", null);
-  }, [limit, currentPage, taskSearch, taskFilter]);
+  }, [
+    formData.limit,
+    formData.currentPage,
+    formData.taskSearch,
+    formData.taskFilter,
+  ]);
 
   const handleChangePage = (page) => {
-    setCurrentPage(page);
+    handleChange({ target: { name: "currentPage", value: page } });
   };
 
-  const coulmnName = [
+  const coulmnNameList = [
     { key: "task_title", title: "Task Name" },
     { key: "task_description", title: "Task Description" },
     { key: "due_date", title: "Deadline" },
+    { key: "task_type", title: "Task Type" },
     { key: "action", title: "Action" },
+    //
   ];
   const handleDelete = (deleteTaskId) => {
     Modal.confirm({
@@ -53,34 +72,51 @@ const TaskModule = () => {
     navigate(`/batch/${batchId}/module/edit/task/${editId}`);
   };
 
-  const handleFilter = (value) => {
-    setTaskFilter(value);
+  const handleMenuClick = ({ key }) => {
+    if (key === "task") {
+      navigate(`/batch/${batchId}/module/add/task`);
+    }
+  };
+  const menu = (
+    <Menu>
+      <Menu.Item key="task" onClick={handleMenuClick}>
+        <PlusOutlined /> Add Task
+      </Menu.Item>
+ 
+    </Menu>
+  );
+  const handleLimit = (limit) => {
+    handleChange({ target: { name: "limit", value: limit } });
   };
 
-  const handleSearch = (e) => {
-    const { value } = e.target;
-    setTaskSearch(value);
-  };
+  const handleApplyFilter =(filterData)=>{
+      handleChange({ target: { name: "taskFilter", value: filterData.task_type } });
+  }
 
   return (
     <div className="content">
-      <div>
-        <UnifiedFilterComponent filter={filter} />
+      <div className="application-header">
+        <h2>Tasks</h2>
+
+        <div className="header-controls">
+          <Dropdown overlay={menu} placement="bottomRight">
+            <span style={{ cursor: "pointer" }}>
+              Create <DownOutlined />
+            </span>
+          </Dropdown>
+          <div className="record-count">
+            <span>{taskLists.total} Records</span>
+          </div>
+
+          <CommonFilter
+            handleChange={handleChange}
+            handleLimit={handleLimit}
+            handleName={"taskSearch"}
+            filterArray={filter}
+            applyFilter={handleApplyFilter}
+            />
+        </div>
       </div>
-      <ApplicationHeader
-        headerText={"Module"}
-        showCreateButton={true}
-        showRecordCount={true}
-        totalRecords={taskLists}
-        showFilterSelect={true}
-        handleFilter={handleFilter}
-        filterableField={[
-          { label: "All", value: "" },
-          { label: "Task", value: 0 },
-          { label: "Assessment", value: 1 },
-        ]}
-        handleSearch={handleSearch}
-      />
 
       {loading ? (
         <Skeleton active paragraph={{ rows: 4 }} />
@@ -88,7 +124,7 @@ const TaskModule = () => {
         <>
           <TableComponent
             data={taskLists}
-            columns={coulmnName}
+            coulmnNameList={coulmnNameList}
             handleDelete={handleDelete}
             handleEdit={handleEdit}
           />
@@ -98,8 +134,8 @@ const TaskModule = () => {
             }`}
           >
             <Pagination
-              current={currentPage}
-              pageSize={limit}
+              current={formData.currentPage}
+              pageSize={formData.limit}
               total={taskLists.total}
               onChange={handleChangePage}
             />

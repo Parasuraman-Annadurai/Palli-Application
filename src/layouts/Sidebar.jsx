@@ -1,21 +1,23 @@
-import React from "react";
-import dckapLogo from "../../public/images/dckap_palli_logo_sm.svg";
-import { useState, useEffect } from "react";
-import { useAuth } from "../context/AuthContext";
-import { Link, useLocation, useParams } from "react-router-dom";
+import React,{ useState, useEffect } from "react";
+import { Link, useLocation, useParams,useNavigate } from "react-router-dom";
+// External pachage paste here
+import { Button, Modal, List, Avatar,Tooltip } from "antd";
+//Our API enpoin paste here
 import { API_END_POINT } from "../../config";
-import { Button, Modal, List, Avatar } from "antd";
-import { useNavigate } from "react-router-dom";
+//Our custom hook here
 import useAPI from "../hooks/useAPI";
-import { Tooltip } from "antd";
 
+//Context paste here
+
+//Images paste here
+import dckapLogo from "/images/dckap_palli_logo_sm.svg";
+// CSS paste here
 const Sidebar = ({ menuList, activeMenuItem }) => {
   const navigate = useNavigate();
-  const [active, setActive] = useState(activeMenuItem);
-  const { token } = useAuth();
-  const { data, makeNetworkRequest } = useAPI();
   const { id: batchId } = useParams();
+  const { data:batches, makeNetworkRequest } = useAPI();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [active, setActive] = useState(activeMenuItem);
   const currentPath = useLocation().pathname;
   const isDashboardPage = currentPath === "/dashboard";
 
@@ -26,7 +28,7 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
   useEffect(() => {
     makeNetworkRequest(`${API_END_POINT}/api/list/batch/`, "GET", null);
   }, []);
-  const batches = data.data || [];
+
   return (
     <div className="sidebar">
       <div className="logo">

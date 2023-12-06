@@ -1,18 +1,16 @@
-import { useState } from "react";
-import axios from "axios";
-import { useAuth } from "../context/AuthContext";
+import { useState } from 'react';
+//External Packages here
+import axios from 'axios';
+//Our custom hook paste here
+import { useAuth } from '../context/AuthContext';
 const useAPI = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [isCompleted, setIsCompleted] = useState(false);
+  const [isCompleted, setIsCompleted] = useState(false)
   const {token} = useAuth()
-  const makeNetworkRequest = async (
-    url,
-    method = "GET",
-    body = null,
-    headers = {}
-  ) => {
+
+  const makeNetworkRequest = async (url, method = 'GET', body = null, headers = {}) => {
     setLoading(true);
     try {
       const result = await axios({

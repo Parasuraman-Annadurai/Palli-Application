@@ -1,5 +1,15 @@
 /* write common styles only here */
-* {
+:root {
+  --primary-color: #223f64;
+  --secondray-color: #3f88d8;
+  --text-primary-color: #24384f;
+  --font-family: "Poppins", sans-serif;
+  --text-secondray-color: white;
+  --h1-font-size: 32px;
+  --p-font-size: 24px;
+  --error: red;
+}
+*{
   padding: 0;
   margin: 0;
   list-style: none;
@@ -10,10 +20,12 @@ body {
 }
 
 /* TableComponent.css */
+
 .table-wrapper {
-  max-height: 400px; /* Set a maximum height for the table */
-  overflow-y: auto;
-  height: 100%;
+  /* max-height: 400px; */
+  /* overflow-y: auto; */
+  /* height: 100%;
+  overflow-x: auto;  */
 }
 
 .antd-table {
@@ -24,6 +36,9 @@ body {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.09);
   table-layout: fixed;
 }
+.antd-table a{
+  color: var(--primary-color);
+}
 
 .antd-table th,
 .antd-table td {
@@ -31,7 +46,6 @@ body {
   padding: 16px;
   text-align: left;
   overflow: hidden;
-  white-space: nowrap;
   text-overflow: ellipsis;
 }
 
@@ -90,13 +104,13 @@ body {
   width: 32px;
   height: 32px;
   border-radius: 4px;
-  color: #333;
+  color: var(--primary-color);
 }
 
 .ant-pagination-item-active a {
-  background-color: #223f64;
+  background-color: var(--primary-color);
   color: #fff;
-  border-color: #223f64;
+  border-color: var(--primary-color);
 }
 
 .ant-pagination-prev,
@@ -110,18 +124,15 @@ body {
   display: none;
 }
 
-.ant-pagination-options {
-  display: none;
-}
-.ant-pagination .ant-pagination-item-active {
+.ant-pagination .ant-pagination-item-active{
   border: none;
 }
 .ant-pagination .ant-pagination-item-active a {
-  color: white;
+  color:white;
+  background-color: var(--primary-color);
 }
 
-/* invite nad view more button */
-.create-login-btn {
+.btn {
   padding: 8px 20px;
   border-radius: 6px;
   outline: none;
@@ -129,16 +140,12 @@ body {
   color: black;
   background-color: white;
   border: 1px solid gray;
-}
-.table-view-more {
-  padding: 8px 20px;
-  border-radius: 6px;
+  cursor: pointer;
   outline: none;
   border: none;
-  color: black;
-  background-color: white;
-  border: 1px solid gray;
 }
+
+
 
 /* 
 common layout */
@@ -152,7 +159,7 @@ common layout */
 .sidebar {
   max-width: 200px;
   width: 100%;
-  background-color: #333;
+  background-color: var(--primary-color);
   color: white;
   height: 100vh;
   position: fixed;
@@ -171,7 +178,7 @@ common layout */
 .navbar {
   max-width: 100%;
   width: 100%;
-  background-color: #444;
+  background-color: var(--primary-color);
   color: white;
   padding: 20px;
   display: flex;
@@ -228,8 +235,8 @@ common layout */
   padding: 47px 40px 0px;
 }
 
-.active {
-  background-color: #223f64;
+.active{
+  background-color: var(--secondray-color);
   border-radius: 0px 15px 15px 0px;
 }
 .setting {
@@ -253,8 +260,8 @@ common layout */
   cursor: pointer;
 }
 
-.filter__icon {
-  color: #223f64;
+.filter__icon{
+  color: var(--primary-color);
 }
 
 .upload__btn {
@@ -263,7 +270,7 @@ common layout */
   outline: none;
   border: none;
   color: white;
-  background-color: #223f64;
+  background-color: var(--primary-color);
 }
 .hide {
   visibility: hidden;
@@ -321,3 +328,76 @@ common layout */
   align-items: center;
   color: #223f64;
 }
+.error-message{
+  height: 20px;
+  color: var(--error);
+  padding-top: 2px;
+}
+
+/* Apply filter btn and clear filter btn */
+.btn.apply-filter-btn,.btn.clear-filter-btn{
+  margin-top: 5px;
+  border: 1px solid gray;
+  margin-right: 5px;
+}
+.btn.apply-filter-btn:hover{
+  background-color: var(--primary-color);
+  color: white;
+}
+.btn.clear-filter-btn:hover{
+  background-color: var(--primary-color);
+  color: white;
+}
+
+
+/* filter component css */
+/* filter icon */
+.filter-container .filter-icon{
+  cursor: pointer;
+}
+
+/* UnifiedFilterComponent.css */
+
+.filter-container {
+  position: relative;
+  padding: 10px;
+}
+
+.filter-dropdown {
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.filter-dropdown div {
+  margin-bottom: 15px;
+}
+
+.filter-label {
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.filter-container input,
+Select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-sizing: border-box;
+  outline: none;
+  background-color: white;
+}
+
+
+
+
+
+
+
+
+
+

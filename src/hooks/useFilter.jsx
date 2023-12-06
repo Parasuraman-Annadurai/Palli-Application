@@ -1,14 +1,19 @@
 import React, { useState, useEffect } from "react";
+//external packages here
+
+//custom hook here
 import useAPI from "./useAPI";
-import { API_END_POINT } from "../../config";
+//Context here
 import { useAuth } from "../context/AuthContext";
+//API endpoint here
+import { API_END_POINT } from "../../config";
 const useFilter = (url) => {
   const [filters, setFilters] = useState([]);
   const { token } = useAuth();
   const { data, makeNetworkRequest } = useAPI();
   useEffect(() => {
     makeNetworkRequest(
-      `${API_END_POINT}/api/task/get/filter/fields/`,
+      `${API_END_POINT}/api/${url}/get/filter/fields/`,
       "GET",
       null
     );

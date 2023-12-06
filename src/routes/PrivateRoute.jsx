@@ -1,14 +1,16 @@
 import React from "react";
 import { Navigate, Outlet, useParams, useLocation } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
+
+//Our components here
 import Sidebar from "../layouts/Sidebar";
 import Navbar from "../layouts/Navbar";
+//Context here
+import { useAuth } from "../context/AuthContext";
 
 const PrivateRoute = () => {
   const { token } = useAuth();
   const { id: batchId } = useParams();
   const { pathname } = useLocation();
-  // determine if authorized, from context or however you're doing it
 
   const auth = token["access"] ? true : false;
 
@@ -24,7 +26,7 @@ const PrivateRoute = () => {
 
   return auth ? (
     <div className="app">
-      <Sidebar menuList={menuList} activeMenuItem={activeMenuItem.id}/>
+      <Sidebar menuList={menuList} activeMenuItem={activeMenuItem.id} />
       <div className="main">
         <Navbar />
         <Outlet />

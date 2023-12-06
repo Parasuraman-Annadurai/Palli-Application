@@ -1,6 +1,8 @@
 import React from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+//Our context here
 import { AuthContextProvider } from "./context/AuthContext.jsx";
+//Suppoting Routes Variables
 import {
   LOGIN,
   APPLICATIONS,
@@ -15,17 +17,15 @@ import {
   WEIGHTAGE
 } from "./routes/routes.jsx";
 //Define your routes for APP here
-import LoginPage from "./pages/login/LoginPage.jsx";
+import Login from "./pages/login/Login.jsx";
 import ChangePassword from "./pages/changePasswordPage/ResetPasswordPage";
 import ForgotPassword from "./pages/forgotPage/ForgotPage";
 import Applicantions from "./pages/applications/Applications.jsx";
 import DashBoard from "./pages/dashBoard/DashBoard.jsx";
 import TaskModule from "./pages/taskModule/TaskModule.jsx";
-
-import AddTask from "./pages/addTaskPage/AddTaskPage.jsx";
+import AddTask from "./pages/addTaskPage/AddTask.jsx";
 import AddQuiz from "./pages/addQuiz/AddQuizz.jsx";
 import Weightage from "./pages/addTaskPage/weightage/WeightAge.jsx";
-
 import ErrorPage from "./pages/errorPage/ErrorPage.jsx";
 //Private Routes will be wrapped in below component
 import PrivateRoute from "./routes/PrivateRoute";
@@ -37,7 +37,7 @@ const App = () => {
         <Routes>
           <Route path={INDEX} element={<Navigate to="/login" replace />} />
 
-          <Route path={LOGIN} element={<LoginPage />} />
+          <Route path={LOGIN} element={<Login />} />
           <Route path={FORGOTPASSWORD} element={<ForgotPassword />} />
           <Route path={CHANGEPASSWORD} element={<ChangePassword />} />
 

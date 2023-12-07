@@ -1,17 +1,14 @@
 import React,{ useState, useEffect } from "react";
 import { Link, useLocation, useParams,useNavigate } from "react-router-dom";
-//paste external pachage
+
 import { Button, Modal, List, Avatar,Tooltip } from "antd";
-//our API enpoin paste here
+
 import { API_END_POINT } from "../../config";
-//our custom hook here
+
 import useAPI from "../hooks/useAPI";
 
-//paste context here
-
-//images paste here
 import dckapLogo from "/images/dckap_palli_logo_sm.svg";
-// CSS paste here
+
 const Sidebar = ({ menuList, activeMenuItem }) => {
   const navigate = useNavigate();
   const { id: batchId } = useParams();

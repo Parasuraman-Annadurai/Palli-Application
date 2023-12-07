@@ -1,37 +1,43 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-//external packages paste here
 import axios from "axios";
-//our component paste here
+
 import Input from "../../components/Input";
-//suporting utilits 
+
 import { validate } from "../../utils/validate";
-// context paste here
-import { useAuth } from "../../context/AuthContext";
-//paste custom hook here
+
 import useForm from "../../hooks/useForm";
-//API endpoint paste here
+
+import { useAuth } from "../../context/AuthContext";
+
+// import useForm from "../../hooks/useForm";
+
 import { API_END_POINT } from "../../../config";
-//images paste here
-import dckapPalliLogon from "/images/dckap_palli_logo_lg.svg";
+
+import dckapPalliLogo from "/images/dckap_palli_logo_lg.svg";
 import managerLoginLogo from "/images/manager_login_image.svg";
-//css paste here
-import "./Login.css"
+
+import "./Login.css";
 
 const Login = () => {
   const navigate = useNavigate();
   const { setToken, setUser } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
+
   const loginUserData = {
     email: "testui@gmail.com",
     password: "Front-end@123",
-  }
-  const { formData, errors, setErrors, handleChange} = useForm(loginUserData);
+  };
+
+
+
+  const { formData, errors, setErrors, handleChange } = useForm(loginUserData);
 
   //Handle login submit used to validate feild and check creadentials
   const handleLoginSubmit = (e) => {
     e.preventDefault();
     const isVaild = validate(formData, setErrors);
+    console.log(isVaild);
     if (isVaild) {
       axios
         .post(`${API_END_POINT}/api/accounts/login/`, loginUserData)
@@ -60,7 +66,6 @@ const Login = () => {
         });
     }
   };
-
   return (
     <div className="login__container_wrapper">
       <div className="login__container">
@@ -70,7 +75,7 @@ const Login = () => {
             <p>Make Sure Your Account is Secure</p>
           </div>
           <div className="right__side--header">
-            <img src={dckapPalliLogon} alt="dckap-logo" />
+            <img src={dckapPalliLogo} alt="dckap-logo" />
           </div>
         </div>
         <div className="input__containers">
@@ -107,6 +112,7 @@ const Login = () => {
                 <button className="login-btn">Login</button>
               </div>
             </form>
+           
           </div>
         </div>
       </div>

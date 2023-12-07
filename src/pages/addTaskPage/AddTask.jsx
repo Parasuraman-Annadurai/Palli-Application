@@ -1,18 +1,25 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate ,useParams} from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 //external packages
 import {
   notification,
-  DatePicker,
   Select,
   Skeleton,
   Menu,
   Dropdown,
   Checkbox,
+  DatePicker,
+  TimePicker,
 } from "antd";
 import axios from "axios";
 import moment from "moment";
+import dayjs from "dayjs";
+import 'dayjs/locale/en'; // Import the desired locale
+import utc from "dayjs/plugin/utc"; // Import the utc plugin
+dayjs.locale('en'); // Set the locale
+
+
 //custom hook paste here
 import useForm from "../../hooks/useForm";
 
@@ -26,6 +33,7 @@ import { validateAddTask } from "../../utils/validate";
 //css here
 import "./AddTask.css";
 const AddTask = () => {
+  dayjs.extend(utc);
   const navigate = useNavigate();
   const { taskId } = useParams();
   const { token } = useAuth();
@@ -33,19 +41,17 @@ const AddTask = () => {
   const initialState = {
     task_title: "",
     task_description: "",
-    due_date: "",
+    due_date: null,
     task_type: 0,
   };
   const [studentList, setStudentList] = useState([]);
   const [selectedStudents, setSelectedStudents] = useState([]);
   const [selectAll, setSelectAll] = useState(true);
-  const [loading,setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [selectedTime, setSelectedTime] = useState(null);
   const { formData, errors, setErrors, handleChange, resetForm, setFormData } =
     useForm(initialState);
-
-  const handleDate = (date, dataString) => {
-    handleChange({ target: { name: "due_date", value: dataString } });
-  };
 
   const handleType = (taskType) => {
     handleChange({
@@ -53,10 +59,11 @@ const AddTask = () => {
     });
   };
   useEffect(() => {
-    setLoading(true)
+    setLoading(true);
 
     const headers = {
       Authorization: `Bearer ${token.access}`,
+      "Content-type": "application/json",
     };
 
     // Initialize variables for task details and student list requests
@@ -76,7 +83,7 @@ const AddTask = () => {
 
     Promise.all([fetchTaskDetails, fetchStudentList])
       .then(([taskDetailsRes, studentListRes]) => {
-        setLoading(true)
+        setLoading(true);
         const taskDetails = taskDetailsRes ? taskDetailsRes.data.data : null;
         const studentList = studentListRes.data
           ? studentListRes?.data?.data
@@ -89,21 +96,34 @@ const AddTask = () => {
         if (taskDetails) {
           const { task_title, task_description, due_date, task_type } =
             taskDetails;
+
+          // Parse the dueDate string using dayjs with UTC
+          const parsedDate = dayjs.utc(due_date);
+          parsedDate.locale('en');
+          // Get the formatted date and time
+          const formattedDate = parsedDate.format("YYYY-MM-DD");
+          const formattedTime = parsedDate.format("HH:mm:ss");
+
+          setSelectedDate(dayjs(formattedDate, "YYYY-MM-DD"));
+        setSelectedTime(dayjs(formattedTime, "HH:mm:ss"));
+
+
           setFormData({
             task_title,
             task_description,
             task_type,
-            due_date,
+            // due_date,
           });
         }
       })
       .catch((error) => {
         // Handle errors
         console.error("Error fetching data:", error);
-      }).finally(()=>{
-        setLoading(false)
       })
-  }, [taskId, batchId, token, selectAll]);
+      .finally(() => {
+        setLoading(false);
+      });
+  }, [taskId, batchId, token]);
   const handleSelectAllChange = (e) => {
     e.stopPropagation();
     setSelectAll(e.target.checked);
@@ -186,10 +206,26 @@ const AddTask = () => {
       </Menu.Item>
     </Menu>
   );
-    const handleCancel =()=>{
-      resetForm()
-      navigate(`/batch/${batchId}/module`)
-    }
+  const handleCancel = () => {
+    resetForm();
+    navigate(`/batch/${batchId}/module`);
+  };
+
+  const handleDateChange = (date, dateString) => {
+    setSelectedDate(date);
+    handleChange({ target: { name: "due_date", value: dateString } });
+  };
+
+  const handleTimeChange = (time, timeString) => {
+    setSelectedTime(time);
+    const formattedTime = timeString ? `T${timeString}` : ""; // Add time if it exists
+    handleChange({
+      target: {
+        name: "due_date",
+        value: `${selectedDate.format("YYYY-MM-DD")}${formattedTime}`,
+      },
+    });
+  };
   return (
     <div className="content">
       {loading ? (
@@ -257,21 +293,28 @@ const AddTask = () => {
                               }`}
                         </a>
                       </Dropdown>
-                      <p className="error-message">
-                      </p>
+                      <p className="error-message"></p>
                     </div>
                     <div className="due-date-sec">
                       <label htmlFor="due">Due Date</label>
-
                       <DatePicker
-                        showTime="true"
-                        format="YYYY-MM-DDTHH:mm:ss"
-                        placeholder="Select Date and Time"
-                        name="due_date"
-                        value={taskId && moment(formData.due_date)}
-                        onChange={handleDate}
+                        format="YYYY-MM-DD"
+                        placeholder="Select Date"
+                        value={selectedDate}
+                        onChange={handleDateChange}
                       />
 
+                      {selectedDate && (
+                        <>
+                          <label htmlFor="due">Due Time</label>
+                          <TimePicker
+                            format="HH:mm:ss"
+                            placeholder="Select Time"
+                            value={selectedTime}
+                            onChange={handleTimeChange}
+                          />
+                        </>
+                      )}
                       <p className="error-message">
                         {errors.due_date ? errors.due_date : ""}
                       </p>
@@ -280,16 +323,14 @@ const AddTask = () => {
                       <label htmlFor="due">Task Type</label>
                       <Select
                         name="task_type"
+                        className="type-picker"
                         value={formData.task_type === 0 ? "task" : "assessment"}
-                        style={{
-                          width: 120,
-                        }}
-                        placeholder="Select a person"
+                        placeholder="Select a task type"
                         onChange={handleType}
                         options={[
                           {
                             value: "task",
-                            label: "Test",
+                            label: "Task",
                           },
                           {
                             value: "assessment",
@@ -311,11 +352,14 @@ const AddTask = () => {
                     </div>
                   </div>
                   <div className="btns-div">
-                    <button className="cancel-btn" onClick={() => handleCancel()}>
+                    <button
+                      className="cancel-btn"
+                      onClick={() => handleCancel()}
+                    >
                       CANCEL
                     </button>
                     <button className="assign-btn" onClick={handleTaskAdd}>
-                      {taskId ? "UPDATE" : "ASSIGN"}
+                      {taskId ? "UPDATE" : "SUMBIT"}
                     </button>
                   </div>
                 </div>

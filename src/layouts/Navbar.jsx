@@ -1,12 +1,12 @@
 import React from "react";
 import { useNavigate, Link, useParams } from "react-router-dom";
-//external package paste here
-import { Button, Popover, Breadcrumb } from "antd";
-//context paste here
+
+import { Popover, Breadcrumb } from "antd";
+
 import { useAuth } from "../context/AuthContext";
-//custom hook paste here
+
 import useAPI from "../hooks/useAPI";
-//API endpoint paste here
+
 import { API_END_POINT } from "../../config";
 
 const Navbar = ({ item }) => {

@@ -1,10 +1,11 @@
 import React from "react";
-//external packages here
-import Search from "antd/es/input/Search";
+
 import { Select } from "antd";
 import { Option } from "antd/es/mentions";
+import Search from "antd/es/input/Search";
 
-const CommonFilter = ({ handleSearch, handleLimit, handleName ,handleChange}) => {
+const CommonFilters = ({ handleSearch, handleLimit, handleName ,handleChange,totalRecords}) => {
+ 
   return (
     <>
       <Search
@@ -19,7 +20,7 @@ const CommonFilter = ({ handleSearch, handleLimit, handleName ,handleChange}) =>
         <Select
           size="small"
           defaultValue="5"
-          style={{ width: 70, paddingLeft: 10, paddingRight: 5 }}
+          className="limit-seter"
           onChange={handleLimit}
         >
           <Option value="5">5</Option>
@@ -27,10 +28,14 @@ const CommonFilter = ({ handleSearch, handleLimit, handleName ,handleChange}) =>
           <Option value="20">20</Option>
           <Option value="30">30</Option>
         </Select>
-        entries
+        Entries
       </div>
+
+      <div className="record-count">
+            <span>{totalRecords} Records</span>
+          </div>
     </>
   );
 };
 
-export default CommonFilter;
+export default CommonFilters;

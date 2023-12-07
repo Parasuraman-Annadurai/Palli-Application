@@ -139,10 +139,11 @@
     padding: 10px 71px 10px 62px;
   }
   
-  .task-type{
-    padding: 10px 91px 10px 10px;
-    outline: none;
-  }
+ .due-date-sec .type-picker{
+  max-width: 120px;
+  width: 100%;
+  outline: none;
+ }
   
 
   a.ant-dropdown-trigger.ant-dropdown-link {

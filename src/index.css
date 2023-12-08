@@ -5,6 +5,16 @@
   list-style: none;
   text-decoration: none;
 }
+:root{
+  --primary-color:#223F64;
+  --secondray-color:#3F88D8;
+  --text-primary-color:#12160A;
+  --text-secondray-color: #969D88;
+  --font-family: 'Poppins', sans-serif;
+  --h1-font-size:32px;
+  --p-font-size:24px;
+  --side-bar-backgroundcolour: #F8FBF2;
+}
 body {
   background-color: #F4F7FA;
 }
@@ -94,9 +104,9 @@ body {
 }
 
 .ant-pagination-item-active a {
-  background-color: #223f64;
+  background-color: var(--primary-color);
   color: #fff;
-  border-color: #223f64;
+  border-color: var(--primary-color);
 }
 
 .ant-pagination-prev,
@@ -152,7 +162,8 @@ common layout */
 .sidebar {
   max-width: 200px;
   width: 100%;
-  background-color: #333;
+  background-color: var(--primary-color);
+  /* background-color: var(--side-bar-backgroundcolour); */
   color: white;
   height: 100vh;
   position: fixed;
@@ -171,7 +182,7 @@ common layout */
 .navbar {
   max-width: 100%;
   width: 100%;
-  background-color: #444;
+  background-color: var(--primary-color);
   color: white;
   padding: 20px;
   display: flex;
@@ -232,12 +243,13 @@ common layout */
 }
 
 .active{
-  background-color: #223F64;
+  background-color: var(--secondray-color);
   border-radius: 0px 15px 15px 0px;
 }
 .setting{
   margin-top: auto;
   padding: 20px;
+  cursor: pointer;
 }
 
 .header-controls .search__bar{
@@ -266,7 +278,7 @@ common layout */
   outline: none;
   border: none;
   color: white;
-  background-color: #223F64;
+  background-color: var(--primary-color);
 }
 .hide{
   visibility: hidden;

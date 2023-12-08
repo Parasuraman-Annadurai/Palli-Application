@@ -74,13 +74,13 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
         ))}
       </div>
 
-      <div className="setting flex">
-        <span className="material-symbols-outlined">settings</span>
-        <a>Settings</a>
+      <div className="setting flex" onClick={() => setIsModalOpen(true)}>
+        <span class="material-symbols-outlined">switch_account</span>
+        <p className="switch" >
+          Switch
+        </p>
       </div>
-      <div className="switch">
-        <Button onClick={() => setIsModalOpen(true)}>Switch</Button>
-      </div>
+
       <div className="">
         <Modal
           open={isModalOpen}

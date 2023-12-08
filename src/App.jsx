@@ -24,7 +24,7 @@ import TaskModule from "./pages/taskModule/TaskModule.jsx";
 
 import AddTask from "./pages/addTaskPage/AddTaskPage.jsx";
 import AddQuiz from "./pages/addQuiz/AddQuizz.jsx";
-import Weightage from "./pages/addTaskPage/weightage/WeightAge.jsx";
+import Weightage from "./pages/weightage/WeightAge.jsx";
 
 import ErrorPage from "./pages/errorPage/ErrorPage.jsx";
 //Private Routes will be wrapped in below component

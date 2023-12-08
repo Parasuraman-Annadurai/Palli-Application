@@ -142,3 +142,23 @@
     outline: none;
   }
   
+  .weightage-item {
+    display: flex;
+    flex-direction: column; /* Stack children vertically */
+    /* You can add more styles here as needed */
+}
+
+.weightage-name {
+    display: flex;
+    flex-direction: column;
+}
+
+.weightage-name label {
+    margin-right: 10px; /* Adjust the spacing between label and p tag */
+}
+
+.weightage-input {
+    display: flex;
+    align-items: center; /* Align items horizontally */
+    /* You can add more styles here as needed */
+}

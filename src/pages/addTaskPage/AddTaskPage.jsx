@@ -9,6 +9,7 @@ import useAPI from "../../hooks/useAPI";
 import { Link, useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import moment from "moment";
+import axios from "axios";
 const { TextArea } = Input;
 
 const AddTask = () => {
@@ -17,7 +18,7 @@ const AddTask = () => {
   const { data, loading, error, makeNetworkRequest } = useAPI();
   const { token } = useAuth();
   const { id: batchId } = useParams();
-
+  const [weightageList, setWeightageList] = useState([]);
   const [errors, setErrors] = useState({});
 
   const [addTaskData, setAddTaskData] = useState({
@@ -44,9 +45,25 @@ const AddTask = () => {
   }, [taskId]);
 
   useEffect(() => {
+    const headers = {
+      Authorization: `Bearer ${token.access}`,
+      "Content-type": "application/json",
+    };
+
+    axios
+      .get(`${API_END_POINT}/api/task/${batchId}/list/weightage`, { headers })
+      .then((res) => {
+        setWeightageList(res.data.data);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  }, []);
+
+  useEffect(() => {
     if (data && data.data) {
       const { task_title, task_description, due_date, task_type } = data.data;
-      
+
       setAddTaskData({
         task_title,
         task_description,
@@ -115,110 +132,125 @@ const AddTask = () => {
       }
     }
   };
-  return (
- 
-    <div className="content">
-       {loading ? (
-      <Skeleton active paragraph={{ rows: 10 }} />
-    ) : (
-      <>
-        <div className="task-add-page">
-        <main className="container">
-          <div className="inner-container">
-            <div className="left-container">
-              <div className="page-logo">
-                <span className="material-symbols-outlined">check_circle</span>
-                <span className="task-txt">Module</span>
-              </div>
-              <div className="task-name-sec">
-                <label htmlFor="task name">Title</label>
-                <Input
-                  placeholder="Title"
-                  name="task_title"
-                  value={addTaskData.task_title}
-                  onChange={handleChange}
-                />
-                <p className="error-message">
-                  {errors.task_title ? errors.task_title : ""}
-                </p>
-              </div>
-              <div className="task-desc-sec">
-                <label htmlFor="task description">Description</label>
-                <TextArea
-                  rows={4}
-                  name="task_description"
-                  placeholder="Description"
-                  value={addTaskData.task_description}
-                  onChange={handleChange}
-                />
-                <p className="error-message">
-                  {errors.task_description ? errors.task_description : ""}
-                </p>
-              </div>
-            </div>
-            <div className="right-container">
-              <div className="right-contents">
-                <div className="due-date-sec">
-                  <label htmlFor="due">Due Date</label>
 
-                  <DatePicker
-                    name="due_date"
-                    placeholder="Select Date"
-                    value={ taskId ? moment(addTaskData.due_date) : addTaskData.due_date}
-                    onChange={handleDate}
-                  />
-                  <p className="error-message">
-                    {errors.due_date ? errors.due_date : ""}
-                  </p>
+  return (
+    <div className="content">
+      {loading ? (
+        <Skeleton active paragraph={{ rows: 10 }} />
+      ) : (
+        <>
+          <div className="task-add-page">
+            <main className="container">
+              <div className="inner-container">
+                <div className="left-container">
+                  <div className="page-logo">
+                    <span className="material-symbols-outlined">
+                      check_circle
+                    </span>
+                    <span className="task-txt">Module</span>
+                  </div>
+                  <div className="task-name-sec">
+                    <label htmlFor="task name">Title</label>
+                    <Input
+                      placeholder="Title"
+                      name="task_title"
+                      value={addTaskData.task_title}
+                      onChange={handleChange}
+                    />
+                    <p className="error-message">
+                      {errors.task_title ? errors.task_title : ""}
+                    </p>
+                  </div>
+                  <div className="task-desc-sec">
+                    <label htmlFor="task description">Description</label>
+                    <TextArea
+                      rows={4}
+                      name="task_description"
+                      placeholder="Description"
+                      value={addTaskData.task_description}
+                      onChange={handleChange}
+                    />
+                    <p className="error-message">
+                      {errors.task_description ? errors.task_description : ""}
+                    </p>
+                  </div>
                 </div>
-                <div className="due-date-sec">
-                  <label htmlFor="due">Task Type</label>
-                  <Select
-                    value={addTaskData.task_type}
-                    style={{
-                      width: 120,
-                    }}
-                    placeholder="Select a person"
-                    onChange={handleType}
-                    options={[
-                      {
-                        value: "test",
-                        label: "Test",
-                      },
-                      {
-                        value: "assessment",
-                        label: "Assessment",
-                      },
-                    ]}
-                  />
-                  <p className="error-message">
-                    {errors.task_type ? errors.task_type : ""}
-                  </p>
-                </div>
-                <div className="weightage">
-                  <label htmlFor="">Weightage</label>
-                  <button>
-                    <a href={`/batch/${batchId}/module/add/task/weightage`}>
-                      Weightage
-                    </a>
-                  </button>
+                <div className="right-container">
+                  <div className="right-contents">
+                    <div className="due-date-sec">
+                      <label htmlFor="due">Due Date</label>
+
+                      <DatePicker
+                        name="due_date"
+                        placeholder="Select Date"
+                        value={
+                          taskId
+                            ? moment(addTaskData.due_date)
+                            : addTaskData.due_date
+                        }
+                        onChange={handleDate}
+                      />
+                      <p className="error-message">
+                        {errors.due_date ? errors.due_date : ""}
+                      </p>
+                    </div>
+                    <div className="due-date-sec">
+                      <label htmlFor="due">Task Type</label>
+                      <Select
+                        value={addTaskData.task_type}
+                        style={{
+                          width: 120,
+                        }}
+                        placeholder="Select a person"
+                        onChange={handleType}
+                        options={[
+                          {
+                            value: "test",
+                            label: "Test",
+                          },
+                          {
+                            value: "assessment",
+                            label: "Assessment",
+                          },
+                        ]}
+                      />
+                      <p className="error-message">
+                        {errors.task_type ? errors.task_type : ""}
+                      </p>
+                    </div>
+                    <div className="weightage">
+                      {weightageList.map((weightage) => {
+                        return (
+                          <div className="weightage-item">
+                            <div className="weightage-name">
+                              <label htmlFor="">Weight Name</label>
+                              <p>{weightage.weightage}</p>
+                            </div>
+                            <label htmlFor="">Enter the value</label>
+
+                            <div className="weightage-input">
+                              <input type="number" />
+                              <button>add</button>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                  <div className="btns-div">
+                    <button className="cancel-btn" onClick={resetErrors}>
+                      CANCEL
+                    </button>
+                    <button className="assign-btn" onClick={handleTaskAdd}>
+                      {taskId ? "UPDATE" : "ASSIGN"}
+                    </button>
+                  </div>
                 </div>
               </div>
-              <div className="btns-div">
-                <button className="cancel-btn" onClick={resetErrors}>
-                  CANCEL
-                </button>
-                <button className="assign-btn" onClick={handleTaskAdd}>
-                  {taskId ? "UPDATE" : "ASSIGN"}
-                </button>
-              </div>
-            </div>
+            </main>
           </div>
-        </main>
-      </div>
-      </>
-    )}
-     
+        </>
+      )}
     </div>
   );
 };

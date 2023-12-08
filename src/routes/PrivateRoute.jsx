@@ -17,6 +17,7 @@ const PrivateRoute = () => {
   const menu = [
     { label: "Applications", id: "applications" },
     { label: "Module", id: "module" },
+    { label: "Weightage", id: "module/add/task/weightage" },
   ];
 
   const menuList = batchId ? menu : [{ label: "Dashboard", id: "dashboard" }];
@@ -24,11 +25,17 @@ const PrivateRoute = () => {
 
   return auth ? (
     <div className="app">
-      <Sidebar menuList={menuList} activeMenuItem={activeMenuItem.id}/>
+      <Sidebar menuList={menuList} activeMenuItem={activeMenuItem.id} />
       <div className="main">
-      <Navbar item={activeMenuItem ? [{ label: "Dashboard", link: "/dashboard" }, activeMenuItem] : null} />
+        <Navbar
+          item={
+            activeMenuItem
+              ? [{ label: "Dashboard", link: "/dashboard" }, activeMenuItem]
+              : null
+          }
+        />
 
-         <Outlet />
+        <Outlet />
       </div>
     </div>
   ) : (

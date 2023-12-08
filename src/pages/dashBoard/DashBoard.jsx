@@ -244,17 +244,24 @@ const DashBoard = () => {
                 okText={isEditMode ? "Update" : "Add Batch"}
               >
                 <div>
-                  <Input
-                    placeholder="Enter Batch Name"
-                    value={batch_name}
-                    onChange={handleBatchNameChange}
-                  />
+                  <div className="batch_name">
+                    <label htmlFor="">Batch Name</label>
+                    <Input
+                      placeholder="Enter Batch Name"
+                      value={batch_name}
+                      onChange={handleBatchNameChange}
+                    />
 
-                  <p className="error-message">
-                    {batchNameError && (
-                      <span style={{ color: "red" }}>{batchNameError}</span>
-                    )}
-                  </p>
+                    <p className="error-message">
+                      {batchNameError && (
+                        <span style={{ color: "red" }}>{batchNameError}</span>
+                      )}
+                    </p>
+                  </div>
+
+                  <div className="start_year">
+                    <label htmlFor="">Start Year</label>
+                  </div>
                   <DatePicker
                     format="YYYY-MM-DD"
                     onChange={(date, dateString) =>
@@ -273,6 +280,9 @@ const DashBoard = () => {
                     )}
                   </p>
 
+                  <div className="end_year">
+                    <label htmlFor="">End Year</label>
+                  </div>
                   <DatePicker
                     format="YYYY-MM-DD"
                     onChange={(date, dateString) =>

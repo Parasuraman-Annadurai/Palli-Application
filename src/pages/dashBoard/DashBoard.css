@@ -39,10 +39,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  
+
 }
 
-.add__batch {	
+.add__batch {
   padding-top: 20px;
 }
 
@@ -56,8 +56,12 @@
   gap: 60px;
   flex-wrap: wrap;
 }
-.batches__list>*{
-color: #223F64;
+
+.batches__list>* {
+  color: #223F64;
+}
+.batches_list{
+  color: #223F64;
 }
 .added-batches {
   width: 150px;
@@ -72,22 +76,28 @@ color: #223F64;
   display: flex;
   justify-content: center;
   align-items: center;
-  
+
 }
-.main__batches{
+
+.main__batches {
   position: relative;
 }
-.edit__icon{
+
+.edit__icon {
   position: absolute;
   right: 5px;
   top: 5px;
   cursor: pointer;
   padding: 2px;
 }
-.batch_name, .start_date, .end_date{
+
+.batch_name,
+.start_year,
+.end_year {
   color: #223F64;
 }
-.years{
+
+.years {
   display: flex;
   gap: 10px;
   justify-content: center;
@@ -100,5 +110,13 @@ color: #223F64;
 
 /* Apply hover effect */
 .batch-card:hover {
-  transform: scale(1.05); 
+  transform: scale(1.05);
+}
+
+.main__batches batch-card a:active {
+  color: #223F64;
+}
+
+.main__batches batch-card .link {
+  color: #223F64;
 }

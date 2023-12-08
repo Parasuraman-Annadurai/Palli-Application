@@ -1,6 +1,8 @@
 
 import React from "react";
 
+import { Link } from "react-router-dom";
+import "../DashBoard.css"
 const BatchList = ({ batchesList, handleEditClick }) => {
   return (
     <>
@@ -12,8 +14,8 @@ const BatchList = ({ batchesList, handleEditClick }) => {
           >
             edit
           </span>
-          <a href={`/batch/${batch.id}/applications`}>
-            <div className="added-batches "> 
+          <Link to={`/batch/${batch.id}/applications`} className="link">
+          <div className="added-batches "> 
               <div className="batches_list">
                 <h3 className="batch_name">{batch.batch_name}</h3>
                 <div className="years">
@@ -22,7 +24,10 @@ const BatchList = ({ batchesList, handleEditClick }) => {
                 </div>
               </div>
             </div>
-          </a>
+          </Link>
+          {/* <a href={`/batch/${batch.id}/applications`}> */}
+            
+          {/* </a> */}
         </div>
       ))}
     </>

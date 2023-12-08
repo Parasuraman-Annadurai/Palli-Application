@@ -13,9 +13,7 @@ import {
   TimePicker,
 } from "antd";
 import axios from "axios";
-import moment from "moment";
 import dayjs from "dayjs";
-import 'dayjs/locale/en'; // Import the desired locale
 import utc from "dayjs/plugin/utc"; // Import the utc plugin
 dayjs.locale('en'); // Set the locale
 

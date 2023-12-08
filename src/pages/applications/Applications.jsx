@@ -35,6 +35,7 @@ const Applications = () => {
     applicantSearch: "",
     currentPage: 1,
   });
+  
   useEffect(() => {
  
     const fetchData = async () => {

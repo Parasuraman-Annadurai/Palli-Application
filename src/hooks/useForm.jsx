@@ -14,6 +14,7 @@ const useForm = (initialState) => {
         delete errors[name]
       
     }
+    
   };
 
   const resetForm = () => {

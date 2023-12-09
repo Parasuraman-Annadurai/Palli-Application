@@ -14,7 +14,9 @@ import useForm from "../../hooks/useForm";
 import { API_END_POINT } from "../../../config";
 
 import "./Applications.css";
+
 const Applications = () => {
+
   const { id: batchId } = useParams();
   const {token} = useAuth()
   const [applications,setApplications] = useState([])

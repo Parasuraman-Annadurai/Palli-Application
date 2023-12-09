@@ -27,6 +27,7 @@ import { useAuth } from "../../context/AuthContext";
 import { API_END_POINT } from "../../../config";
 
 import "./AddTask.css";
+
 const AddTask = () => {
   const navigate = useNavigate();
   const { taskId } = useParams();

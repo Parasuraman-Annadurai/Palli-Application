@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-//external packages
 import {
   notification,
   Select,
@@ -13,49 +12,38 @@ import {
   TimePicker,
 } from "antd";
 import axios from "axios";
+
 import dayjs from "dayjs";
-import utc from "dayjs/plugin/utc"; // Import the utc plugin
-dayjs.locale('en'); // Set the locale
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 
-//custom hook paste here
-import useForm from "../../hooks/useForm";
+import { useForm, Controller } from "react-hook-form";
 
-//context paste here
 import { useAuth } from "../../context/AuthContext";
-//API endpoint here
+
 import { API_END_POINT } from "../../../config";
 
-//supporting utilits here
-import { validateAddTask } from "../../utils/validate";
-//css here
 import "./AddTask.css";
 const AddTask = () => {
-  dayjs.extend(utc);
   const navigate = useNavigate();
   const { taskId } = useParams();
   const { token } = useAuth();
   const { id: batchId } = useParams();
-  const initialState = {
-    task_title: "",
-    task_description: "",
-    due_date: null,
-    task_type: 0,
-  };
   const [studentList, setStudentList] = useState([]);
   const [selectedStudents, setSelectedStudents] = useState([]);
   const [selectAll, setSelectAll] = useState(true);
   const [loading, setLoading] = useState(false);
-  const [selectedDate, setSelectedDate] = useState(null);
-  const [selectedTime, setSelectedTime] = useState(null);
-  const { formData, errors, setErrors, handleChange, resetForm, setFormData } =
-    useForm(initialState);
 
-  const handleType = (taskType) => {
-    handleChange({
-      target: { name: "task_type", value: taskType === "task" ? 0 : 1 },
-    });
-  };
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+    setValue,
+  } = useForm();
+
   useEffect(() => {
     setLoading(true);
 
@@ -90,28 +78,25 @@ const AddTask = () => {
         setSelectedStudents(
           selectAll ? studentList.map((student) => student.id) : []
         );
+        setValue(
+          "selectedStudents",
+          selectAll ? studentList.map((student) => student.id) : []
+        );
 
         if (taskDetails) {
           const { task_title, task_description, due_date, task_type } =
             taskDetails;
 
-          // Parse the dueDate string using dayjs with UTC
           const parsedDate = dayjs.utc(due_date);
-          parsedDate.locale('en');
-          // Get the formatted date and time
-          const formattedDate = parsedDate.format("YYYY-MM-DD");
+          const formattedDate = parsedDate.format("YYYY-MM-DD")
           const formattedTime = parsedDate.format("HH:mm:ss");
 
-          setSelectedDate(dayjs(formattedDate, "YYYY-MM-DD"));
-        setSelectedTime(dayjs(formattedTime, "HH:mm:ss"));
+          setValue("task_title", task_title);
+          setValue("task_description", task_description);
+          setValue("task_type", task_type === 0 ? "task" : "assessment");
+          setValue("date", dayjs(formattedDate,'YYYY-MM-DD'));
+          setValue("time",dayjs(formattedTime,"HH:mm:ss"));
 
-
-          setFormData({
-            task_title,
-            task_description,
-            task_type,
-            // due_date,
-          });
         }
       })
       .catch((error) => {
@@ -124,9 +109,10 @@ const AddTask = () => {
   }, [taskId, batchId, token]);
   const handleSelectAllChange = (e) => {
     e.stopPropagation();
-    setSelectAll(e.target.checked);
+    const checked = e.target.checked;
+    setSelectAll(checked);
     setSelectedStudents(
-      e.target.checked ? studentList.map((student) => student.id) : []
+      checked ? studentList.map((student) => student.id) : []
     );
   };
 
@@ -134,46 +120,62 @@ const AddTask = () => {
     setSelectedStudents(value);
     setSelectAll(false);
   };
-  const handleTaskAdd = async () => {
-    const isVaild = validateAddTask(formData, setErrors);
+  const handleTaskAdd = async (formData) => {
+    const {
+      task_title,
+      task_description,
+      task_type,
+      date,
+      time,
+      selectedStudents,
+    } = formData;
 
-    if (isVaild) {
-      const apiEndpoint = taskId
-        ? `${API_END_POINT}/api/task/${batchId}/update_task/${taskId}`
-        : `${API_END_POINT}/api/task/${batchId}/create_task/`;
+    const parsedDate = dayjs(date);
+    const parseTime = dayjs(time);
 
-      const method = taskId ? "PUT" : "POST";
-      try {
-        await axios({
-          method,
-          url: apiEndpoint,
-          headers: {
-            Authorization: `Bearer ${token.access}`, // Include your authentication token
-            "Content-Type": "application/json",
-          },
-          data: formData,
-        });
+    // Format the date and time
+    const formattedDate = parsedDate.format("YYYY-MM-DD");
+    const formattedTime = parseTime.format("HH:mm:ss");
 
-        notification.success({
-          message: "Success",
-          description: taskId
-            ? "Task Updated Successfully"
-            : "Task Added Successfully",
-          duration: 3,
-        });
+    const formattedData = {
+      task_title,
+      task_description,
+      task_type: task_type === "task" ? 0 : 1,
+      due_date: `${formattedDate} ${formattedTime}`,
+    };
 
-        navigate(`/batch/${batchId}/module`);
+    const apiEndpoint = taskId
+      ? `${API_END_POINT}/api/task/${batchId}/update_task/${taskId}`
+      : `${API_END_POINT}/api/task/${batchId}/create_task/`;
 
-        resetForm();
-      } catch (error) {
-        console.error("Error:", error);
-        // Handle error notification or other logic
-      }
+    const method = taskId ? "PUT" : "POST";
+    try {
+      await axios({
+        method,
+        url: apiEndpoint,
+        headers: {
+          Authorization: `Bearer ${token.access}`,
+          "Content-Type": "application/json",
+        },
+        data: formattedData,
+      });
+
+      notification.success({
+        message: "Success",
+        description: taskId
+          ? "Task Updated Successfully"
+          : "Task Added Successfully",
+        duration: 3,
+      });
+
+      navigate(`/batch/${batchId}/module`);
+    } catch (error) {
+      console.error("Error:", error);
     }
   };
 
   const dropdownMenu = (
-    <Menu>
+    <Menu onClick={(e) => e.stopPropagation()}>
       <Menu.Item key="selectAll">
         <Checkbox onChange={handleSelectAllChange} checked={selectAll}>
           Select All
@@ -185,12 +187,7 @@ const AddTask = () => {
         <Select
           mode="multiple"
           placeholder="Select students"
-          style={{ minWidth: "200px" }}
-          value={
-            selectAll
-              ? studentList.map((student) => student.id)
-              : selectedStudents
-          }
+          value={selectedStudents}
           onChange={handleStudentSelect}
         >
           {studentList && [
@@ -205,25 +202,9 @@ const AddTask = () => {
     </Menu>
   );
   const handleCancel = () => {
-    resetForm();
     navigate(`/batch/${batchId}/module`);
   };
 
-  const handleDateChange = (date, dateString) => {
-    setSelectedDate(date);
-    handleChange({ target: { name: "due_date", value: dateString } });
-  };
-
-  const handleTimeChange = (time, timeString) => {
-    setSelectedTime(time);
-    const formattedTime = timeString ? `T${timeString}` : ""; // Add time if it exists
-    handleChange({
-      target: {
-        name: "due_date",
-        value: `${selectedDate.format("YYYY-MM-DD")}${formattedTime}`,
-      },
-    });
-  };
   return (
     <div className="content">
       {loading ? (
@@ -242,27 +223,45 @@ const AddTask = () => {
                   </div>
                   <div className="task-name-sec">
                     <label htmlFor="task name">Title</label>
-                    <input
-                      placeholder="Title"
+                    <Controller
                       name="task_title"
-                      value={formData.task_title}
-                      onChange={handleChange}
+                      control={control}
+                      defaultValue=""
+                      rules={{
+                        required: "Task title is required",
+                        maxLength: {
+                          value: 50,
+                          message: "Task title must not exceed 50 characters",
+                        },
+                      }}
+                      render={({ field }) => (
+                        <input placeholder="Title..." {...field} />
+                      )}
                     />
                     <p className="error-message">
-                      {errors.task_title ? errors.task_title : ""}
+                      {errors.task_title && errors.task_title.message}
                     </p>
                   </div>
                   <div className="task-desc-sec">
                     <label htmlFor="task description">Description</label>
-                    <textarea
-                      rows={4}
+                    <Controller
                       name="task_description"
-                      placeholder="Description"
-                      value={formData.task_description}
-                      onChange={handleChange}
+                      control={control}
+                      defaultValue=""
+                      rules={{
+                        required: "Description is required",
+                        maxLength: {
+                          value: 200,
+                          message: "Description must not exceed 200 characters",
+                        },
+                      }}
+                      render={({ field }) => (
+                        <textarea placeholder="Description..." {...field} />
+                      )}
                     />
                     <p className="error-message">
-                      {errors.task_description ? errors.task_description : ""}
+                      {errors.task_description &&
+                        errors.task_description.message}
                     </p>
                   </div>
                 </div>
@@ -270,74 +269,92 @@ const AddTask = () => {
                   <div className="right-contents">
                     <div className="students">
                       <label htmlFor="students">Students</label>
-                      <Dropdown
-                        overlay={dropdownMenu}
-                        trigger={["click"]}
-                        onClick={(e) => e.stopPropagation()}
-                      >
-                        <a
-                          className="ant-dropdown-link"
-                          onClick={(e) => {
-                            e.preventDefault();
-                            e.stopPropagation();
-                          }}
-                        >
-                          {studentList.length === selectedStudents.length
-                            ? "All Students Selected"
-                            : `${
-                                selectedStudents.length === 0
-                                  ? "Select students"
-                                  : `${selectedStudents.length} Selected`
-                              }`}
-                        </a>
-                      </Dropdown>
-                      <p className="error-message"></p>
-                    </div>
-                    <div className="due-date-sec">
-                      <label htmlFor="due">Due Date</label>
-                      <DatePicker
-                        format="YYYY-MM-DD"
-                        placeholder="Select Date"
-                        value={selectedDate}
-                        onChange={handleDateChange}
+                      <Controller
+                        name="selectedStudents"
+                        control={control}
+                        defaultValue={[]}
+                        render={({ field }) => (
+                          <Dropdown
+                            overlay={dropdownMenu}
+                            trigger={["click"]}
+                            className="ant-dropdown-link"
+                            onClick={(e) => e.stopPropagation()}
+                            {...field}
+                          >
+                            <a>
+                              {studentList.length === selectedStudents.length
+                                ? "All Students Selected"
+                                : `${
+                                    selectedStudents.length === 0
+                                      ? "Select students"
+                                      : `${selectedStudents.length} Selected`
+                                  }`}
+                            </a>
+                          </Dropdown>
+                        )}
                       />
-
-                      {selectedDate && (
-                        <>
-                          <label htmlFor="due">Due Time</label>
-                          <TimePicker
-                            format="HH:mm:ss"
-                            placeholder="Select Time"
-                            value={selectedTime}
-                            onChange={handleTimeChange}
-                          />
-                        </>
-                      )}
                       <p className="error-message">
-                        {errors.due_date ? errors.due_date : ""}
+                        {errors.selectedStudents &&
+                          errors.selectedStudents.message}
+                      </p>
+                    </div>
+                    <div className="due-time-sec">
+                      <label htmlFor="due">Due Date</label>
+                      <Controller
+                        name="date"
+                        control={control}
+                        defaultValue={null}
+                        rules={{ required: "Date is required" }}
+                        render={({ field }) => (
+                          <DatePicker
+                            format="YYYY-MM-DD"
+                            placeholder="Select Date"
+                            {...field}
+                          />
+                        )}
+                      />
+                      <p className="error-message">
+                        {errors.date && errors.date.message}{" "}
+                      </p>
+                    </div>
+                    <div className="due-time-sec">
+                      <label htmlFor="due">Due Time</label>
+                      <Controller
+                        name="time"
+                        control={control}
+                        defaultValue={null}
+                        rules={{ required: "Time is required" }}
+                        render={({ field }) => (
+                          <TimePicker {...field} format="HH:mm:ss" />
+                        )}
+                      />
+                      <p className="error-message">
+                        {errors.time && errors.time.message}
                       </p>
                     </div>
                     <div className="due-date-sec">
                       <label htmlFor="due">Task Type</label>
-                      <Select
+                      <Controller
                         name="task_type"
-                        className="type-picker"
-                        value={formData.task_type === 0 ? "task" : "assessment"}
-                        placeholder="Select a task type"
-                        onChange={handleType}
-                        options={[
-                          {
-                            value: "task",
-                            label: "Task",
-                          },
-                          {
-                            value: "assessment",
-                            label: "Assessment",
-                          },
-                        ]}
+                        control={control}
+                        defaultValue=""
+                        rules={{ required: "Please select an option" }}
+                        render={({ field }) => (
+                          <Select
+                            {...field}
+                            placeholder="Select an option"
+                            className="type-picker"
+                          >
+                            <Option value="" disabled>
+                              Select an option
+                            </Option>
+                            <Option value="task">Task</Option>
+                            <Option value="assessment">Assessment</Option>
+                          </Select>
+                        )}
                       />
                       <p className="error-message">
-                        {errors.task_type ? errors.task_type : ""}
+                        {errors.task_type && errors.task_type.message}
                       </p>
                     </div>
                     <div className="weightage">
@@ -356,8 +373,11 @@ const AddTask = () => {
                     >
                       CANCEL
                     </button>
-                    <button className="assign-btn" onClick={handleTaskAdd}>
-                      {taskId ? "UPDATE" : "SUMBIT"}
+                    <button
+                      className="assign-btn"
+                      onClick={handleSubmit(handleTaskAdd)}
+                    >
+                      {taskId ? "UPDATE" : "SUBMIT"}
                     </button>
                   </div>
                 </div>

@@ -24,7 +24,12 @@ const Login = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+  } = useForm({
+    defaultValues:{
+      email:"testui@gmail.com",
+      password:"Front-end@123"
+    }
+  });
 
   //Handle login submit used to validate feild and check creadentials
   const handleLoginSubmit = (formData) => {

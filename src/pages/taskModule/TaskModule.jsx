@@ -23,7 +23,7 @@ const TaskModule = () => {
   const [taskLists, setTaskLists] = useState([]);
   const [loading, setLoading] = useState(false);
   const { formData, handleChange } = useForm({
-    limit: 5,
+    limit: 4,
     currentPage: 1,
     taskSearch: "", // Add taskSearch field
     taskFilter: "", // Add taskFilter field

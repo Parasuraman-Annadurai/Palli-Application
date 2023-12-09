@@ -1,28 +1,28 @@
 import React from 'react';
 
 import { Tag, Tooltip } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+dayjs.extend(utc);
 
 import noDataFound from "/images/no_data_found.svg";
 
 const TableView = ({ tableData, columnNameList, handleDelete, handleEdit }) => {
   const renderDueDate = (dueDate) => {
    
-    const utcDueDate = moment.utc(dueDate);
+    const utcDueDate = dayjs.utc(dueDate);
 
     const formattedDueDate = utcDueDate.format('MMMM DD, YYYY');
-    const today = moment()
-
-    const dueDateMoment = moment(utcDueDate).startOf('day'); // Adjust to start of day for accurate comparisons
+    const today = dayjs();
+  
+    const dueDateMoment = dayjs(utcDueDate).startOf('day'); // Adjust to start of day for accurate comparisons
     const daysDifference = dueDateMoment.diff(today, 'days');
     return (
       <div>
       {formattedDueDate}
       {daysDifference === 0 && <Tag color="red">Today's Deadline</Tag>}
       {daysDifference === 1 && <Tag color="orange">1 Day Left</Tag>}
-      {daysDifference > 1 && (
-        <Tag color="orange">{`${daysDifference} Days Left`}</Tag>
-      )}
+      {daysDifference > 1 && daysDifference <= 3 && <Tag color="orange">3 Day Left</Tag>}
       {daysDifference < 0 && <Tag color="red">Overdue</Tag>}
     </div>
     );
@@ -45,8 +45,13 @@ const TableView = ({ tableData, columnNameList, handleDelete, handleEdit }) => {
                 {columnNameList.map((column) => (
                   <td key={column.key} >
                     {column.key === 'due_date' && (
-                      <Tooltip title={item[column.key]} className='due-date-container'>
+                      <Tooltip title={dayjs.utc(item[column.key]).format('MMMM DD, YYYY')} className='due-date-container'>
                         {renderDueDate(item[column.key])}
+                      </Tooltip>
+                    )}
+                    {column.key === 'task_description' && (
+                      <Tooltip title={item[column.key]} placement="topLeft">
+                        {item[column.key]}
                       </Tooltip>
                     )}
                     {column.key === 'task_type' && item[column.key] === 0 ? (
@@ -54,7 +59,7 @@ const TableView = ({ tableData, columnNameList, handleDelete, handleEdit }) => {
                     ) : column.key === 'task_type' && item[column.key] === 1 ? (
                       <span>Assessment</span>
                     ) : column.key !== 'due_date' && column.key !== 'task_type' ? (
-                      <Tooltip title={item[column.key]} >
+                      <Tooltip title={item[column.key]  } >
                         {item[column.key]}
                       </Tooltip>
                     ) : null}

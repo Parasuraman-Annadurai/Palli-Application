@@ -1,29 +1,28 @@
 import React, { useEffect, useState } from "react";
-import "./Applicantions.css";
-import ApplicationHeader from "../../components/PageHeader";
-import TableComponent from "../../components/TableView";
-import { API_END_POINT } from "../../../config";
-import useAPI from "../../hooks/useAPI";
-import { useAuth } from "../../context/AuthContext";
-import { Breadcrumb, Pagination, Skeleton } from "antd";
 import { useParams } from "react-router-dom";
-const Applicantions = () => {
+
+import { Pagination, Skeleton } from "antd";
+import axios from "axios";
+
+import TableView from "../../components/TableView";
+import CommonFilters from "../../components/CommonFilters";
+
+import { useAuth } from "../../context/AuthContext";
+
+import useForm from "../../hooks/useForm";
+
+import { API_END_POINT } from "../../../config";
+
+import "./Applications.css";
+
+const Applications = () => {
+
   const { id: batchId } = useParams();
-  const [limit, setLimit] = useState(6);
-  const [applicantSearch, setApplicantSearch] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
-  const { token, user } = useAuth();
-
-  // const breadcrumbTab = [
-  //   {
-  //     title: "Home",
-  //   },
-  //   {
-  //     title: <a href="">Applications</a>,
-  //   },
-  // ];
-
-  const coulmnName = [
+  const {token} = useAuth()
+  const [applications,setApplications] = useState([])
+  const [loading,setLoading] = useState(false)
+  
+  const columnNameList = [
     { key: "first_name", title: "First Name" },
     { key: "last_name", title: "Last Name" },
     { key: "address", title: "Address" },
@@ -32,57 +31,77 @@ const Applicantions = () => {
     { key: "invite", title: "Invite" },
     { key: "viewMore", title: "View More" },
   ];
-  const { data: applications, loading, error, makeNetworkRequest } = useAPI();
 
+  const { formData, handleChange} = useForm({
+    limit: 5,
+    applicantSearch: "",
+    currentPage: 1,
+  });
+  
   useEffect(() => {
-    makeNetworkRequest(
-      `${API_END_POINT}/api/applicant/${batchId}/list/applicants/?limit=${limit}&page=${currentPage}&search=${applicantSearch}`,
-      "GET",
-      null,
-      {
-        headers: {
-          Authorization: `Bearer ${token.access}`,
-        },
+ 
+    const fetchData = async () => {
+      setLoading(true);
+  
+      const headers = {
+        Authorization: `Bearer ${token.access}`,
+        "Content-Type": "application/json",
+      };
+  
+      try {
+        const response = await axios.get(
+          `${API_END_POINT}/api/applicant/${batchId}/list/applicants/?limit=${formData.limit}&page=${formData.currentPage}&search=${formData.applicantSearch}`,
+          { headers }
+        );
+  
+        setApplications(response.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setLoading(false);
       }
-    );
-  }, [limit, currentPage, applicantSearch]);
-
+    };
+  
+    fetchData(); 
+  }, [formData.limit, formData.currentPage, formData.applicantSearch]);
+  
   const handleChangePage = (page) => {
-    setCurrentPage(page);
+    handleChange({ target: { name: "currentPage", value: page } });
   };
-  const handleSearch = (e) => {
-    const {value} = e.target;
-    setApplicantSearch(value);
+  const handleSearch = (value) => {
+       if (value.trim() !== "" || value === "") {
+      handleChange({ target: { name: "applicantSearch", value: value.trim() } });
+    }
   };
+
+  const handleLimit =(limit)=>{
+    handleChange({ target: { name: "limit", value: limit } });
+  }
   return (
     <div className="content">
-      <div className="bread-crumb">
-        {/* <Breadcrumb items={breadcrumbTab} /> */}
-      </div>
-      <ApplicationHeader
-        totalRecords={applications}
-        showUploadButton={true} // Set to true to show the Upload button
-        showRecordCount={true} // Set to true to show the record count
-        showFilterSelect={false} // Set to true to show the filter Select
-        headerText={"Application"}
-        showCreateButton={false}
-        handleSearch={handleSearch}
-      />
-      <div className="filter"></div>
+      <div className="application-header">
+        <h2>{"Applications"}</h2>
+        <div className="header-controls">
+          <button className="upload__btn" type="primary">
+            Import
+          </button>
 
+          <CommonFilters handleLimit={handleLimit}  handleName={"applicantSearch"} handleChange={handleChange}  handleSearch={handleSearch} totalRecords={applications.total}/>
+        </div>
+      </div>
       {loading ? (
         <Skeleton active paragraph={{ rows: 4 }} />
       ) : (
         <>
-          <TableComponent data={applications} columns={coulmnName} />
+          <TableView tableData={applications.data} columnNameList={columnNameList}  />
           <div
             className={`pagination__container ${
               applications.total > 0 ? "show" : "hide"
             }`}
           >
             <Pagination
-              current={currentPage}
-              pageSize={limit}
+              current={formData.currentPage}
+              pageSize={formData.limit}
               total={applications.total}
               onChange={handleChangePage}
             />
@@ -93,4 +112,4 @@ const Applicantions = () => {
   );
 };
 
-export default Applicantions;
+export default Applications;

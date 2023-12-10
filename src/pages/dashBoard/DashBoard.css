@@ -1,12 +1,25 @@
+:root {
+  --primary-color: #223f64;
+  --secondray-color: #3f88d8;
+  --text-primary-color: #24384f;
+  --font-family: "Poppins", sans-serif;
+  --text-secondray-color: white;
+  --h1-font-size: 32px;
+  --p-font-size: 24px;
+  --error: red;
+}
+
 .greeting {
   background-color: white;
   display: flex;
   justify-content: space-between;
 }
 
+.welcome__message {
+  color: var(--text-primary-color);
+}
 
 .heading h1 {
-  color: #223F64;
   font-size: 36px;
   font-style: normal;
   font-weight: 700;
@@ -19,7 +32,7 @@
 }
 
 .heading p {
-  color: #223F64;
+  color: var(--text-primary-color);
   font-size: 15px;
   font-style: normal;
   font-weight: 400;
@@ -31,7 +44,7 @@
   height: 150px;
   border: 10px;
   background-color: white;
-  color: #223F64;
+  color: var(--text-primary-color);
   border-radius: 10px;
   box-shadow: rgba(0, 0, 0, 0.2) 0px 3px 16px 0px;
   font-size: 16px;
@@ -48,7 +61,7 @@
 
 .error-message {
   height: 20px;
-  color: red;
+  color: var(--error);
 }
 
 .batches__list {
@@ -58,11 +71,13 @@
 }
 
 .batches__list>* {
-  color: #223F64;
+  color: var(--text-primary-color);
 }
-.batches_list{
-  color: #223F64;
+
+.batches_list {
+  color: var(--text-primary-color);
 }
+
 .added-batches {
   width: 150px;
   height: 150px;
@@ -94,7 +109,7 @@
 .batch_name,
 .start_year,
 .end_year {
-  color: #223F64;
+  color: var(--text-primary-color);
 }
 
 .years {
@@ -111,12 +126,4 @@
 /* Apply hover effect */
 .batch-card:hover {
   transform: scale(1.05);
-}
-
-.main__batches batch-card a:active {
-  color: #223F64;
-}
-
-.main__batches batch-card .link {
-  color: #223F64;
 }

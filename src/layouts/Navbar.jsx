@@ -1,25 +1,22 @@
 import React from "react";
-import { Button, Popover, Breadcrumb } from "antd";
+import { useNavigate, Link, useParams } from "react-router-dom";
+
+import { Popover, Breadcrumb } from "antd";
+
 import { useAuth } from "../context/AuthContext";
+
 import useAPI from "../hooks/useAPI";
+
 import { API_END_POINT } from "../../config";
-import { useNavigate, useLocation, Link, useParams } from "react-router-dom";
+
 const Navbar = ({ item }) => {
   const navigate = useNavigate();
-  const { user, token } = useAuth();
+  const { user } = useAuth();
   const { id: batchId } = useParams();
-  const { pathname } = useLocation();
-
-  const { data, error, makeNetworkRequest } = useAPI();
+  const { makeNetworkRequest } = useAPI();
 
   const handleLogout = () => {
-    makeNetworkRequest(`${API_END_POINT}/api/accounts/logout/`, "POST", token, {
-      headers: {
-        Authorization: `Bearer ${token.access}`,
-        "Content-type": "application/json",
-      },
-    });
-
+    makeNetworkRequest(`${API_END_POINT}/api/accounts/logout/`, "POST",null);
     localStorage.removeItem("token");
     localStorage.removeItem("user");
     navigate("/login");
@@ -31,13 +28,12 @@ const Navbar = ({ item }) => {
         <br />
         {user.email}
       </p>
-      <Button type="link" onClick={handleLogout}>
+      <button className="btn" onClick={handleLogout}>
         Logout
-      </Button>
+      </button>
     </div>
   );
 
-  console.log(batchId);
   return (
     <div className="navbar">
       <div>

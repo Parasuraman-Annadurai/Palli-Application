@@ -1,11 +1,11 @@
 import React from "react";
 import { Navigate, Outlet, useParams, useLocation } from "react-router-dom";
 
-//Our components here
+import { useAuth } from "../context/AuthContext";
+
 import Sidebar from "../layouts/Sidebar";
 import Navbar from "../layouts/Navbar";
-//Context here
-import { useAuth } from "../context/AuthContext";
+
 
 const PrivateRoute = () => {
   const { token } = useAuth();

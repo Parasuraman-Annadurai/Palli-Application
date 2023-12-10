@@ -1,5 +1,5 @@
 import React from "react";
-//external packages here
+
 import { Result,Button } from "antd";
 
 const ErrorPage = () => {

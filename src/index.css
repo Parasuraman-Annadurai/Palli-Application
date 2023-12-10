@@ -1,10 +1,10 @@
 /* write common styles only here */
 :root {
   --primary-color: #223f64;
-  --secondray-color: #3f88d8;
+  --secondary-color: #3f88d8;
   --text-primary-color: #24384f;
   --font-family: "Poppins", sans-serif;
-  --text-secondray-color: white;
+  --text-secondary-color: white;
   --h1-font-size: 32px;
   --p-font-size: 24px;
   --error: red;
@@ -22,10 +22,7 @@ body {
 /* TableComponent.css */
 
 .table-wrapper {
-  /* max-height: 400px; */
-  /* overflow-y: auto; */
-  /* height: 100%;
-  overflow-x: auto;  */
+  overflow-x: auto;
 }
 
 .antd-table {
@@ -46,6 +43,7 @@ body {
   padding: 16px;
   text-align: left;
   overflow: hidden;
+  white-space: nowrap;
   text-overflow: ellipsis;
 }
 
@@ -56,7 +54,11 @@ body {
 .antd-table tbody tr:hover {
   background-color: #f5f5f5;
 }
-
+.due-date-container{
+  display: flex;
+  flex-direction: column;
+  align-items: baseline;
+}
 /* Sorting Icons */
 .sort-icon {
   display: inline-block;
@@ -200,6 +202,9 @@ common layout */
   padding: 10px;
   border-bottom: 1px solid #ddd;
 }
+.application-header h2{
+  color: var(--primary-color);
+}
 
 .header-controls {
   display: flex;
@@ -208,8 +213,10 @@ common layout */
 }
 
 .record-count {
-  font-size: 14px;
+  font-size: 15px;
+  color: var(--primary-color);
 }
+
 
 .content {
   margin: 20px;
@@ -236,7 +243,7 @@ common layout */
 }
 
 .active{
-  background-color: var(--secondray-color);
+  background-color: var(--secondary-color);
   border-radius: 0px 15px 15px 0px;
 }
 .setting {
@@ -282,6 +289,14 @@ common layout */
   max-width: 350px;
   width: 100%;
   margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.no-data-found .btn.create-btn{
+  background-color: var(--primary-color);
+  color: white;
+  padding: 10px 50px;
 }
 
 .antd-table-action {
@@ -290,7 +305,7 @@ common layout */
 }
 /* breadcrumb */
 .ant-breadcrumb {
-  color: white;
+  color: rgb(255, 255, 255);
 }
 
 .ant-breadcrumb-link > a {
@@ -310,17 +325,16 @@ common layout */
   margin-top: auto; /* Push the pagination container to the bottom */
 }
 
-.breadcrumb-arrow {
-  content: "";
+
+
+
+
+.breadcrumb-container .double-arrow {
   display: inline-block;
-  width: 8px;
-  height: 8px;
-  border: 5px solid transparent;
-  border-top: 5px solid white;
-  border-right: 5px solid white;
-  transform: rotate(45deg);
   margin-left: 5px;
   margin-right: 5px;
+  font-size: 16px; 
+  vertical-align: middle;
 }
 .link {
   display: flex;
@@ -356,13 +370,14 @@ common layout */
   background-color: var(--primary-color);
   color: white;
 }
-/* filter component css */
-/* filter icon */
+
 .filter-container .filter-icon{
   cursor: pointer;
+  display: flex;
+  align-items: center;
 }
 
-/* UnifiedFilterComponent.css */
+/* FilterComponent.css */
 
 .filter-container {
   position: relative;
@@ -403,7 +418,46 @@ Select {
 
 
 
+  
+.error-message {
+  height: 20px;
+  color: var(--error);
+  padding-top: 2px;
+}
+
+.fileter-category{
+  color: var(--primary-color);
+}
+.fileter-category .limit-seter {
+  width: 70px;
+  padding-left: 10px;
+  padding-right: 5px;
+  
+}
+.icon-flex{
+  display: flex;
+  gap: 5px;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  
+}
 
 
 
+.applied-filters {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
 
+}
+.applied-filter {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+.clear-filter-icon{
+  color: var(--error);
+  font-size: 20px;
+  cursor: pointer;
+}

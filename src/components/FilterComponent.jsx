@@ -1,7 +1,6 @@
-import { Button } from "antd";
 import React, { useState } from "react";
 
-const UnifiedFilterComponent = ({ filter, applyFilter }) => {
+const FilterComponent = ({ filter, applyFilter,setPopoverVisible }) => {
   const [filterValues, setFilterValues] = useState({});
 
   const handleFilterChange = (fieldName, value) => {
@@ -10,11 +9,12 @@ const UnifiedFilterComponent = ({ filter, applyFilter }) => {
 
   const handleApplyFilter = () => {
     applyFilter(filterValues);
-    setIspopoveOpen(false);
+    setPopoverVisible(false)
   };
 
   const handleClearFilter = () => {
     applyFilter({});
+    setPopoverVisible(false)
   };
   return (
     <div className="filter-container">
@@ -80,7 +80,7 @@ const UnifiedFilterComponent = ({ filter, applyFilter }) => {
                   </label>
                   <select
                     id={filterItem.name}
-                    value={filterValues[filterItem.name] || ""}
+                    value={filterValues[filterItem.name] ? filterValues[filterItem.name]: ""}
                     onChange={(e) =>
                       handleFilterChange(filterItem.name, e.target.value)
                     }
@@ -88,7 +88,7 @@ const UnifiedFilterComponent = ({ filter, applyFilter }) => {
                     <option value="" disabled hidden>
                       {`Select ${filterItem.label}`}
                     </option>
-                    <option value=" ">All</option>
+                    <option value="all">All</option>
                     {filterItem.extra.choices.map((choice) => (
                       <option key={choice.key} value={choice.key}>
                         {choice.label}
@@ -112,4 +112,4 @@ const UnifiedFilterComponent = ({ filter, applyFilter }) => {
   );
 };
 
-export default UnifiedFilterComponent;
+export default FilterComponent;

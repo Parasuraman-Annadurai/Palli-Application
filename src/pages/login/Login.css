@@ -1,9 +1,9 @@
 :root {
   --primary-color: #223f64;
-  --secondray-color: #3f88d8;
+  --secondary-color: #3f88d8;
   --text-primary-color: #24384f;
   --font-family: "Poppins", sans-serif;
-  --text-secondray-color: white;
+  --text-secondary-color: white;
   --h1-font-size: 32px;
   --p-font-size: 24px;
   --error: red;
@@ -73,7 +73,7 @@
   align-items: center;
   padding: 10px;
   border-radius: 5px 0px 0px 5px;
-  border: 1px solid var(--secondray-color);
+  border: 1px solid var(--secondary-color);
   color: var(--text-primary-color);
 }
 .input__containers
@@ -87,7 +87,7 @@
   .password__icon
   .password__feild {
   border-radius: 0px 5px 5px 0px;
-  border: 1px solid var(--secondray-color);
+  border: 1px solid var(--secondary-color);
   width: 100%;
   outline: none;
   padding: 13px;
@@ -121,7 +121,7 @@
   font-size: 20px;
   font-family: var(--font-family);
   background-color: var(--text-primary-color);
-  color: var(--text-secondray-color);
+  color: var(--text-secondary-color);
   outline: none;
   border: none;
   border-radius: 5px;

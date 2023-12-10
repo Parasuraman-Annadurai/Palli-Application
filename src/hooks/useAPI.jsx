@@ -1,8 +1,9 @@
 import { useState } from 'react';
-//External Packages here
+
 import axios from 'axios';
-//Our custom hook paste here
+
 import { useAuth } from '../context/AuthContext';
+
 const useAPI = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);

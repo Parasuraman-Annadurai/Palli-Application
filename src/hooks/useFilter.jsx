@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
-//external packages here
 
-//custom hook here
 import useAPI from "./useAPI";
-//Context here
+
 import { useAuth } from "../context/AuthContext";
-//API endpoint here
+
 import { API_END_POINT } from "../../config";
+
 const useFilter = (url) => {
   const [filters, setFilters] = useState([]);
   const { token } = useAuth();

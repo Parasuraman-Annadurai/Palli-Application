@@ -1,24 +1,27 @@
 import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
-//External package paste here
+
 import { Popover,Avatar } from "antd";
-//Context paste here
-import { useAuth } from "../context/AuthContext";
-//Custom hook paste here
-import useAPI from "../hooks/useAPI";
-//API endpoint paste here
-import { API_END_POINT } from "../../config";
-//Our component paste here
+import axios from "axios";
+
 import Breadcrumbs from "../components/BreadCrumbs"
 
-const Navbar = ({ item }) => {
-  const navigate = useNavigate();
-  const { user } = useAuth();
-  const { id: batchId } = useParams();
-  const { makeNetworkRequest } = useAPI();
+import { useAuth } from "../context/AuthContext";
 
+import { API_END_POINT } from "../../config";
+
+const Navbar = () => {
+  const navigate = useNavigate();
+  const { user,token } = useAuth();
+  const { id: batchId } = useParams();
   const handleLogout = () => {
-    makeNetworkRequest(`${API_END_POINT}/api/accounts/logout/`, "POST",null);
+    const headers = {
+      Authorization : `Bearer ${token.access}`,
+      "Content-type" : "application/json"
+    }
+    axios.post(`${API_END_POINT}/api/accounts/logout/`,token,{headers}).then(res=>{
+      console.log("Logout Successfully");
+    })
     localStorage.removeItem("token");
     localStorage.removeItem("user");
     navigate("/login");

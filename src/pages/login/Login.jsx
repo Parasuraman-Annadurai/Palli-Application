@@ -1,66 +1,64 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-//external packages paste here
+import { useForm } from "react-hook-form";
+
 import axios from "axios";
-//our component paste here
-import Input from "../../components/Input";
-//suporting utilits 
-import { validate } from "../../utils/validate";
-// context paste here
+
+import { isEmailValid, isPasswordValid } from "../../utils/validate";
+
 import { useAuth } from "../../context/AuthContext";
-//paste custom hook here
-import useForm from "../../hooks/useForm";
-//API endpoint paste here
+
 import { API_END_POINT } from "../../../config";
-//images paste here
-import dckapPalliLogon from "/images/dckap_palli_logo_lg.svg";
+
+import dckapPalliLogo from "/images/dckap_palli_logo_lg.svg";
 import managerLoginLogo from "/images/manager_login_image.svg";
-//css paste here
-import "./Login.css"
+
+import "./Login.css";
 
 const Login = () => {
   const navigate = useNavigate();
   const { setToken, setUser } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
-  const loginUserData = {
-    email: "testui@gmail.com",
-    password: "Front-end@123",
-  }
-  const { formData, errors, setErrors, handleChange} = useForm(loginUserData);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    defaultValues:{
+      email:"testui@gmail.com",
+      password:"Front-end@123"
+    }
+  });
 
   //Handle login submit used to validate feild and check creadentials
-  const handleLoginSubmit = (e) => {
-    e.preventDefault();
-    const isVaild = validate(formData, setErrors);
-    if (isVaild) {
-      axios
-        .post(`${API_END_POINT}/api/accounts/login/`, loginUserData)
-        .then((res) => {
-          axios({
-            url: `${API_END_POINT}/api/accounts/get/user_info/`,
-            method: "GET",
-            headers: {
-              Authorization: `Bearer ${res.data.data.access}`,
-            },
-          })
-            .then((userData) => {
-              localStorage.setItem("token", JSON.stringify(res.data.data));
-              localStorage.setItem("user", JSON.stringify(userData.data.data));
-              setToken(res.data.data);
-              setUser(userData.data.data);
-              navigate("/dashboard");
-            })
-            .catch((err) => {
-              console.error("userData fetch Failed", err);
-            });
+  const handleLoginSubmit = (formData) => {
+    axios
+      .post(`${API_END_POINT}/api/accounts/login/`, formData)
+      .then((res) => {
+        axios({
+          url: `${API_END_POINT}/api/accounts/get/user_info/`,
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${res.data.data.access}`,
+          },
         })
-        .catch((err) => {
-          console.error("Authentication Failed", err);
-          navigate("/login");
-        });
-    }
+          .then((userData) => {
+            localStorage.setItem("token", JSON.stringify(res.data.data));
+            localStorage.setItem("user", JSON.stringify(userData.data.data));
+            setToken(res.data.data);
+            setUser(userData.data.data);
+            navigate("/dashboard");
+          })
+          .catch((err) => {
+            console.error("userData fetch Failed", err);
+          });
+      })
+      .catch((err) => {
+        console.error("Authentication Failed", err);
+        navigate("/login");
+      });
   };
-
   return (
     <div className="login__container_wrapper">
       <div className="login__container">
@@ -70,7 +68,7 @@ const Login = () => {
             <p>Make Sure Your Account is Secure</p>
           </div>
           <div className="right__side--header">
-            <img src={dckapPalliLogon} alt="dckap-logo" />
+            <img src={dckapPalliLogo} alt="dckap-logo" />
           </div>
         </div>
         <div className="input__containers">
@@ -78,23 +76,64 @@ const Login = () => {
             <img src={managerLoginLogo} alt="manager-logo" />
           </div>
           <div className="right__side-input__container">
-            <form onSubmit={handleLoginSubmit} className="login-form">
-              <Input
-                label="Email Id"
-                name="email"
-                type="text"
-                value={formData.email}
-                onChange={handleChange}
-                error={errors.email ? errors.email : ""}
-              />
-              <Input
-                label="Password"
-                name="password"
-                type={showPassword ? "text" : "password"}
-                value={formData.password}
-                onChange={handleChange}
-                error={errors.password ? errors.password : ""}
-              />
+            <form
+              onSubmit={handleSubmit(handleLoginSubmit)}
+              className="login-form"
+            >
+              <div className={`email__inputs`}>
+                <label htmlFor={"email"}>
+                  email <span className="required-feild">*</span>
+                </label>
+                <div className={`email__icon`}>
+                  <span className={`material-symbols-outlined email-sybmbol`}>
+                    email
+                  </span>
+                  <div className="input__component">
+                    <input
+                      type={"text"}
+                      placeholder={`Enter the Email Id`}
+                      name={"email"}
+                      className={`email__feild`}
+                      {...register("email", {
+                        required: "Email is required",
+                        validate: isEmailValid,
+                      })}
+                    />
+                  </div>
+                </div>
+                <p className="error__message">
+                  {errors.email ? errors.email.message : ""}
+                </p>
+              </div>
+
+              <div className={`password__inputs`}>
+                <label htmlFor={"password"}>
+                  Password <span className="required-feild">*</span>
+                </label>
+                <div className={`password__icon`}>
+                  <span
+                    className={`material-symbols-outlined password-sybmbol`}
+                  >
+                    Password
+                  </span>
+                  <div className="input__component">
+                    <input
+                      type={showPassword ? "text" : "password"}
+                      placeholder={`Enter the password`}
+                      name={"password"}
+                      className={`password__feild`}
+                      {...register("password", {
+                        required: "Password is required",
+                        validate: isPasswordValid,
+                      })}
+                    />
+                  </div>
+                </div>
+                <p className="error__message">
+                  {errors.password ? errors.password.message : ""}
+                </p>
+              </div>
+
               <span
                 onClick={() => setShowPassword(!showPassword)}
                 className="material-symbols-outlined eye__icon"

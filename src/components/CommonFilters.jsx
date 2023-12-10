@@ -1,9 +1,9 @@
-import React from "react";
-//External Packages here
+import React,{useState} from "react";
+
 import Search from "antd/es/input/Search";
 import { Select, Popover } from "antd";
-//Our componenent here
-import UnifiedFilterComponent from "./FilterComponent";
+
+import FilterComponent from "./FilterComponent";
 
 
 const CommonFilter = ({
@@ -12,14 +12,19 @@ const CommonFilter = ({
   handleName,
   filterArray,
   applyFilter,
-  
+  appliedFilters
 }) => {
+  const [popoverVisible, setPopoverVisible] = useState(false);
+
 
   const content = (
     <div>
-      <UnifiedFilterComponent filter={filterArray} applyFilter={applyFilter} />
+      <FilterComponent filter={filterArray} applyFilter={applyFilter} setPopoverVisible={setPopoverVisible}/>
     </div>
   );
+  const appliedFilterLength = Object.keys(appliedFilters).length;
+
+
   return (
     <>
       <Search
@@ -28,7 +33,7 @@ const CommonFilter = ({
         name={handleName}
         onChange={handleChange}
       />
-      <div className="fileter-category">
+      <div className="filter-category">
         Show
         <Select
           size="small"
@@ -43,10 +48,20 @@ const CommonFilter = ({
         </Select>
         Entries
       </div>
+      
       <div className="filter-container" >
-        <Popover content={content} placement="bottomRight" trigger={"click"}>
-          <div className="filter-icon">
-            <span className="material-symbols-outlined">filter_list</span>{" "}
+        <Popover  
+         open={popoverVisible}
+         content={content}
+         placement="bottomRight"
+         trigger="click"
+         openClassName={popoverVisible}
+         onVisibleChange={(visible) => setPopoverVisible(visible)}
+         
+         >
+          <div className="filter-icon" onClick={() => setPopoverVisible(!popoverVisible)}>
+          <span>{appliedFilterLength === 0 ? "" : appliedFilterLength}</span>
+            <span className="material-symbols-outlined">filter_list</span>
           </div>
         </Popover>
       </div>

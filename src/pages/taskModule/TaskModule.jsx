@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-import { Skeleton, Pagination, Modal,Tag } from "antd";
+import { Skeleton, Pagination, Modal,Tag,notification } from "antd";
 import axios from "axios";
 
 import TableView from "../../components/TableView";
@@ -86,12 +86,12 @@ const TaskModule = () => {
   };
   const handleDelete = (deleteTaskId) => {
     Modal.confirm({
-      title: "Confirm Deletion",
-      content: "Are you sure you want to delete this task?",
+      title: `Confirm Deletion the ${deleteTaskId.task_title} `,
+      content: `Are you sure you want to delete this ${deleteTaskId.task_title}?`,
       onOk: () => {
         axios
           .delete(
-            `${API_END_POINT}/api/task/${batchId}/delete_task/${deleteTaskId}`,
+            `${API_END_POINT}/api/task/${batchId}/delete_task/${deleteTaskId.id}`,
             {
               headers: {
                 Authorization: `Bearer ${token.access}`,
@@ -103,9 +103,14 @@ const TaskModule = () => {
             // Update taskLists after successful deletion
             setTaskLists((prevTaskLists) => ({
               ...prevTaskLists,
-              data: prevTaskLists.data.filter((item) => item.id !== deleteTaskId),
+              data: prevTaskLists.data.filter((item) => item.id !== deleteTaskId.id),
               total: prevTaskLists.total - 1,
             }));
+            notification.success({
+              message: "Success",
+              description: "Task Deleted Successfully",
+              duration: 3,
+            });
           })
           .catch((error) => {
             console.log(error);
@@ -156,6 +161,8 @@ const TaskModule = () => {
     }
   };
 
+  console.log(appliedFilters);
+
   return (
     <div className="content">
       <div className="application-header">
@@ -184,7 +191,7 @@ const TaskModule = () => {
           {Object.keys(appliedFilters).map((filterName) => (
             <div key={filterName} className="applied-filter">
               <Tag color="green">
-              <span>{`${filterName}`}</span>
+              <span>{`${filterName}`}: {appliedFilters[filterName]}</span>
               </Tag>
               <span class="material-symbols-outlined clear-filter-icon" onClick={() => handleCancelFilter(filterName)}>cancel</span>
             </div>

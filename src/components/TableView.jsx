@@ -165,7 +165,7 @@ const TableView = ({
                         </button>
                         <button
                           className="btn delete-btn"
-                          onClick={() => handleDelete(item.id)}
+                          onClick={() => handleDelete(item)}
                         >
                           Delete
                         </button>

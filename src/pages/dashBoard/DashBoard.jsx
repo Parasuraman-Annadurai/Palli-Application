@@ -1,73 +1,102 @@
 import React, { useState, useEffect } from "react";
-import dashBoardHeaderImage from "../../../public/images/dashboard_header_image.svg";
-import useAPI from "../../hooks/useAPI";
-import { Button, Modal, Input, DatePicker, Skeleton } from "antd";
-import { API_END_POINT } from "../../../config";
-import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
-import "./DashBoard.css";
+
+import { Button, Modal, Input, DatePicker, Skeleton ,notification} from "antd";
+import dayjs from "dayjs";
+import axios from "axios";
+
 import BacthList from "./component/BatchList";
+
+import { useAuth } from "../../context/AuthContext";
+
+import { API_END_POINT } from "../../../config";
+
+import dashBoardHeaderImage from "../../../public/images/dashboard_header_image.svg";
+
+import "./DashBoard.css";
+
 const DashBoard = () => {
   const navigate = useNavigate();
-  const { token, user } = useAuth();
-  const { data: batchList, loading, makeNetworkRequest } = useAPI();
+  const { user, token } = useAuth();
 
+  const [batchList, setBatchList] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
   const [batch_name, setBatchName] = useState("");
-  const [start_date, setStartYear] = useState("");
-  const [end_date, setEndYear] = useState("");
+  const [start_date, setStartDate] = useState("");
+  const [end_date, setEndDate] = useState(""); 
   const [company, setCompany] = useState(1);
 
+  const [startError, setStartError] = useState("");
+  const [endError, setEndError] = useState("");
   const [batchNameError, setBatchNameError] = useState(null);
-  const [startError, setStartError] = useState(null);
-  const [endError, setEndError] = useState(null);
-
+ 
   const [isEditMode, setIsEditMode] = useState(false);
   const [selectedBatch, setSelectedBatch] = useState(null);
 
   useEffect(() => {
-    makeNetworkRequest(
-      "http://13.232.90.154:8000/api/list/batch/",
-      "GET",
-      null,
-      // {
-      //   headers: {
-      //     Authorization: `Bearer ${token.access}`,
-      //     "Content-Type": "application/json",
-      //   },
-      // }
-    );
+    setLoading(true);
+    const fetchData = () => {
+      const headers = {
+        Authorization: `Bearer ${token.access}`,
+        "Content-type": "application/json",
+      };
+      axios
+        .get(`${API_END_POINT}/api/list/batch`, { headers })
+        .then((res) => {
+          setBatchList(res.data.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    };
+    fetchData();
   }, []);
 
   const showModal = () => {
     setIsModalOpen(true);
   };
-
   const handleCancel = () => {
     setIsModalOpen(false);
     resetFields();
-    setIsEditMode(false)
+    setIsEditMode(false);
   };
 
   const resetFields = () => {
     setBatchName("");
-    setStartYear("");
-    setEndYear("");
+    setStartDate("");
+    setEndDate("");
     setBatchNameError(null);
     setStartError(null);
     setEndError(null);
   };
 
-  const handleDateChange = (dateString, setter, setError, errorKey) => {
-    setter(dateString);
-    setError(null);
+  const handleDateChange = (dateString, setDate, setError, errorType) => {
+    // setter(dateString);
+    // setError(null);
+    if (dateString === "") {
+      setError("Date cannot be empty");
+    } else {
+      setDate(dateString);
+      setError("");
+    }
   };
   const handleBatchNameChange = (e) => {
     const input = e.target.value;
     const regex = /^[A-Za-z0-9\- ]*$/;
 
-    if (regex.test(input)) {
-      setBatchName(input);
+    if (regex.test(input) || input === "") {
+      const formattedBatchName = input
+        .toLowerCase()
+        .split(" ")
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(" ");
+
+      setBatchName(formattedBatchName);
       setBatchNameError(null);
     } else {
       setBatchNameError(
@@ -112,7 +141,7 @@ const DashBoard = () => {
     const newBatchName = batch_name.trim().toLowerCase();
 
     if (isEditMode) {
-      const existingBatchNames = batches
+      const existingBatchNames = batchList
         .filter((batch) => batch.id !== selectedBatch.id)
         .map((batch) => batch.batch_name.toLowerCase());
 
@@ -121,7 +150,7 @@ const DashBoard = () => {
         hasError = true;
       }
     } else {
-      const existingBatchNames = batches.map((batch) =>
+      const existingBatchNames = batchList.map((batch) =>
         batch.batch_name.toLowerCase()
       );
 
@@ -138,37 +167,51 @@ const DashBoard = () => {
     const hasError = validateForm();
 
     if (!hasError) {
-      const batch = {
+      const batchData = {
         batch_name: batch_name.trim(),
         company,
         start_date,
         end_date,
       };
 
-      makeNetworkRequest(
-        "http://13.232.90.154:8000/api/create/batch/",
-        "POST",
-        batch,
-        // {
-        //   headers: {
-        //     Authorization: `Bearer ${token.access}`,
-        //     "Content-Type": "application/json",
-        //   },
-        // }
-      );
+      const headers = {
+        Authorization: `Bearer ${token.access}`,
+        "Content-type": "application/json",
+      };
+      axios
+        .post(`${API_END_POINT}/api/create/batch/`, batchData, { headers })
+        .then((res) => {
+          const newBatch = { ...batchData, ...res.data.data };
+          const updatedArray = [...batchList, newBatch];
+          setBatchList(updatedArray);
+          notification.success({
+            message: "Success",
+            description:  "Batch Created Successfully",
+            duration: 3,
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+
+        })
+        .finally(() => {
+          setLoading(false);
+        });
 
       handleCancel();
       navigate("/dashboard");
     }
   };
-
+  const [EditId, setEditId] = useState();
   const handleEditClick = (batch) => {
+    setEditId(batch.id);
+    setIsEditMode(batch.id);
     setSelectedBatch(batch);
     setIsModalOpen(true);
     setIsEditMode(true);
     setBatchName(batch.batch_name);
-    setStartYear(batch.start_date);
-    setEndYear(batch.end_date);
+    setStartDate(dayjs(batch.start_date));
+    setEndDate(dayjs(batch.end_date));
     setBatchNameError(null);
   };
   const handleUpdate = () => {
@@ -176,35 +219,57 @@ const DashBoard = () => {
 
     if (!hasError) {
       const updatedBatch = {
-        ...selectedBatch,
         batch_name: batch_name.trim(),
-        start_date,
-        end_date,
+        start_date: dayjs(start_date).format("YYYY-MM-DD"),
+        end_date: dayjs(end_date).format("YYYY-MM-DD"),
+        id: EditId,
       };
 
-      makeNetworkRequest(
-        `${API_END_POINT}/api/update/batch/${selectedBatch.id}/`,
-        "PUT",
-        updatedBatch,
-        // {
-        //   headers: {
-        //     Authorization: `Bearer ${token.access}`,
-        //     "Content-Type": "application/json",
-        //   },
-        // }
-      );
+      const headers = {
+        Authorization: `Bearer ${token.access}`,
+        "Content-type": "application/json",
+      };
+
+      axios
+        .put(`${API_END_POINT}/api/update/batch/${EditId}/`, updatedBatch, {
+          headers,
+        })
+        .then((res) => {
+          const updatedData = batchList.map((item) => {
+            if (item.id === EditId) {
+              return {
+                ...item,
+                batch_name: batch_name.trim(),
+                start_date: dayjs(start_date).format("YYYY-MM-DD"),
+                end_date: dayjs(end_date).format("YYYY-MM-DD"),
+                // Add other properties you want to update
+              };
+            }
+            return item;
+          });
+
+          setBatchList(updatedData);
+          notification.success({
+            message: "Success",
+            description:  "Batch Updated Successfully",
+            duration: 3,
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
 
       handleCancel();
     }
   };
-
-  const batches = batchList?.data || [];
-
   return (
     <div className="content">
       <div className="greeting">
         <div className="heading">
-          <h1>
+          <h1 className="welcome__message">
             Welcome, {user.first_name} {user.last_name} <br />
           </h1>
           <p>
@@ -221,65 +286,139 @@ const DashBoard = () => {
 
       <div className="add__batch">
         <div className="batches__list">
-          <div className="add-btn">
-            <Button className="cards" type="primary" onClick={showModal}>
-              ADD BATCH
-            </Button>
-          </div>
-
-          <Modal
-            title={isEditMode ? "Edit Batch" : "Add Year to Year Batch"}
-            className="Yearpicker"
-            open={isModalOpen}
-            onOk={isEditMode ? handleUpdate : handleCLick}
-            onCancel={handleCancel}
-            okText={isEditMode ? "Update" : "Add Batch"}
-          >
-            <div>
-              <Input
-                placeholder="Enter Batch Name"
-                value={batch_name}
-                onChange={handleBatchNameChange}
-              />
-              {batchNameError && (
-                <span style={{ color: "red" }}>{batchNameError}</span>
-              )}
-
-              <DatePicker
-                format="YYYY-MM-DD"
-                onChange={(date, dateString) =>
-                  handleDateChange(
-                    dateString,
-                    setStartYear,
-                    setStartError,
-                    "startError"
-                  )
-                }
-                placeholder="Start Year"
-              />
-
-              {startError && <span style={{ color: "red" }}>{startError}</span>}
-
-              <DatePicker
-                format="YYYY-MM-DD"
-                onChange={(date, dateString) =>
-                  handleDateChange(
-                    dateString,
-                    setEndYear,
-                    setEndError,
-                    "endError"
-                  )
-                }
-                placeholder="End Year"
-              />
-              {endError && <span style={{ color: "red" }}>{endError}</span>}
-            </div>
-          </Modal>
           {loading ? (
             <Skeleton active paragraph={{ rows: 4 }} />
           ) : (
             <>
-              <BacthList batchesList={batches} handleEditClick={handleEditClick}/>
+              <div className="add-btn">
+                <Button
+                  className="cards batch-card"
+                  type="primary"
+                  onClick={showModal}
+                >
+                  <h3>ADD BATCH</h3>
+                </Button>
+              </div>
+
+              <Modal
+                title={isEditMode ? "Edit Batch" : "Add Year to Year Batch"}
+                className="Yearpicker"
+                open={isModalOpen}
+                onOk={isEditMode ? handleUpdate : handleCLick}
+                onCancel={handleCancel}
+                okText={isEditMode ? "Update" : "Add Batch"}
+              >
+                <div>
+                  <div className="batch_name">
+                    <label htmlFor="">Batch Name</label>
+                    <Input
+                      placeholder="Enter Batch Name"
+                      value={batch_name}
+                      onChange={handleBatchNameChange}
+                    />
+
+                    <p className="error-message">
+                      {batchNameError && (
+                        <span style={{ color: "red" }}>{batchNameError}</span>
+                      )}
+                    </p>
+                  </div>
+
+                  {/* <div className="start_year">
+                    <label htmlFor="">Start Year</label>
+                  </div>
+                  <DatePicker
+                    format="YYYY-MM-DD"
+                    value={dayjs(start_date)}
+                    onChange={(date, dateString) =>
+                      handleDateChange(
+                        dateString,
+                        setStartYear,
+                        setStartError,
+                        "startError"
+                      )
+                    }
+                    placeholder="Start Year"
+                  />
+                  <p className="error-message">
+                    {startError && (
+                      <span style={{ color: "red" }}>{startError}</span>
+                    )}
+                  </p>
+
+                  <div className="end_year">
+                    <label htmlFor="">End Year</label>
+                  </div>
+                  <DatePicker
+                    format="YYYY-MM-DD"
+                    value={dayjs(end_date)}
+                    onChange={(date, dateString) =>
+                      handleDateChange(
+                        dateString,
+                        setEndYear,
+                        setEndError,
+                        "endError"
+                      )
+                    }
+                    placeholder="End Year"
+                  />
+                  <p className="error-message">
+                    {endError && (
+                      <span style={{ color: "red" }}>{endError}</span>
+                    )}
+                  </p> */}
+                  <div className="start_year">
+                    <label htmlFor="startYearInput">Start Year</label>
+                  </div>
+                  <DatePicker
+                    id="startYearInput"
+                    format="YYYY-MM-DD"
+                    value={start_date ? dayjs(start_date) : null}
+                    onChange={(date, dateString) =>
+                      handleDateChange(
+                        dateString,
+                        setStartDate,
+                        setStartError,
+                        "startError"
+                      )
+                    }
+                    placeholder="Start Year"
+                  />
+                  <p className="error-message">
+                    {startError && (
+                      <span style={{ color: "red" }}>{startError}</span>
+                    )}
+                  </p>
+
+                  <div className="end_year">
+                    <label htmlFor="endYearInput">End Year</label>
+                  </div>
+                  <DatePicker
+                    id="endYearInput"
+                    format="YYYY-MM-DD"
+                    value={end_date ? dayjs(end_date) : null}
+                    onChange={(date, dateString) =>
+                      handleDateChange(
+                        dateString,
+                        setEndDate,
+                        setEndError,
+                        "endError"
+                      )
+                    }
+                    placeholder="End Year"
+                  />
+                  <p className="error-message">
+                    {endError && (
+                      <span style={{ color: "red" }}>{endError}</span>
+                    )}
+                  </p>
+                </div>
+              </Modal>
+
+              <BacthList
+                batchesList={batchList}
+                handleEditClick={handleEditClick}
+              />
             </>
           )}
         </div>

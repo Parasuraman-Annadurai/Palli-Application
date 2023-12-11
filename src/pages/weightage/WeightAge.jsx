@@ -44,9 +44,10 @@ const Weightage = () => {
     reset();
     setEditMode(false);
   };
+
   const handleAddWeightage = (formData) => {
     const trimmedWeightage = formData.weightage.trim(); // Trim the input value
-
+  
     if (!trimmedWeightage) {
       setError("weightage", {
         type: "manual",
@@ -54,10 +55,11 @@ const Weightage = () => {
       });
       return;
     }
+    
     const isExisting = listWeightage.some(
       (item) => item.weightage.toLowerCase() === trimmedWeightage.toLowerCase()
     );
-
+  
     if (isExisting) {
       setError("weightage", {
         type: "manual",
@@ -65,30 +67,48 @@ const Weightage = () => {
       });
       return;
     }
+  
     const weightageData = {
       weightage: trimmedWeightage,
     };
-
+  
     const headers = {
       Authorization: `Bearer ${token.access}`,
       "Content-Type": "application/json",
     };
-
+  
     const url = editMode
       ? `${API_END_POINT}/api/task/${batchId}/update/weightage/${editId}`
       : `${API_END_POINT}/api/task/${batchId}/create/weightage`;
-
+  
     const requestConfig = {
       method: editMode ? "PUT" : "POST",
       url,
       data: weightageData,
       headers,
     };
+  
     axios(requestConfig)
       .then((res) => {
         setIsModalOpen(false);
         setEditMode(false);
         reset();
+  
+        const updatedListWeightage = [...listWeightage]; // Create a copy of listWeightage
+  
+        if (editMode) {
+          const index = updatedListWeightage.findIndex((item) => item.id === editId);
+          if (index !== -1) {
+            updatedListWeightage[index] = { id: editId, ...weightageData };
+          }
+        } else {
+          // Add a new item to the list
+          const newWeightageItem = { id: res.data.id, ...weightageData }; // Assuming the response contains the ID of the newly created item
+          updatedListWeightage.push(newWeightageItem);
+        }
+  
+        setListWeightage(updatedListWeightage);
+  
         notification.success({
           message: "Success",
           description: editMode
@@ -99,9 +119,14 @@ const Weightage = () => {
       })
       .catch((error) => {
         console.error("Error:", error);
+        notification.error({
+          message: "Error",
+          description: "Failed to perform the operation",
+          duration: 3,
+        });
       });
   };
-
+  
   useEffect(() => {
     const headers = {
       Authorization: `Bearer ${token.access}`,
@@ -160,7 +185,7 @@ const Weightage = () => {
       setEditId(editedWeightage.id);
     }
   };
-
+  console.log(editId);
   return (
     <div className="content">
       <div className="list-weightage-container">

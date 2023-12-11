@@ -1,6 +1,8 @@
 import React from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+//Our context here
 import { AuthContextProvider } from "./context/AuthContext.jsx";
+//Suppoting Routes Variables
 import {
   LOGIN,
   APPLICATIONS,
@@ -21,7 +23,6 @@ import ForgotPassword from "./pages/forgotPage/ForgotPage";
 import Applicantions from "./pages/applications/Applications.jsx";
 import DashBoard from "./pages/dashBoard/DashBoard.jsx";
 import TaskModule from "./pages/taskModule/TaskModule.jsx";
-
 import AddTask from "./pages/addTaskPage/AddTask.jsx";
 import AddQuiz from "./pages/addQuiz/AddQuizz.jsx";
 import Weightage from "./pages/weightage/WeightAge.jsx";

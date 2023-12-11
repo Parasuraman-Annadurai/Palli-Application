@@ -1,35 +1,28 @@
 /* write common styles only here */
 :root {
   --primary-color: #223f64;
-  --secondray-color: #3f88d8;
+  --secondary-color: #3f88d8;
   --text-primary-color: #24384f;
   --font-family: "Poppins", sans-serif;
-  --text-secondray-color: white;
+  --text-secondary-color: white;
   --h1-font-size: 32px;
   --p-font-size: 24px;
   --error: red;
 }
+
 * {
   padding: 0;
   margin: 0;
   list-style: none;
   text-decoration: none;
 }
-:root{
-  --primary-color:#223F64;
-  --secondray-color:#3F88D8;
-  --text-primary-color:#12160A;
-  --text-secondray-color: #969D88;
-  --font-family: 'Poppins', sans-serif;
-  --h1-font-size:32px;
-  --p-font-size:24px;
-  --side-bar-backgroundcolour: #F8FBF2;
-}
+
 body {
   background-color: #f4f7fa;
 }
 
 /* TableComponent.css */
+
 .table-wrapper {
   overflow-x: auto;
 }
@@ -41,8 +34,8 @@ body {
   margin-bottom: 20px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.09);
   table-layout: fixed;
-  table-layout: calc();
 }
+
 .antd-table a {
   color: var(--primary-color);
 }
@@ -64,7 +57,8 @@ body {
 .antd-table tbody tr:hover {
   background-color: #f5f5f5;
 }
-.due-date-container{
+
+.due-date-container {
   display: flex;
   flex-direction: column;
   align-items: baseline;
@@ -140,12 +134,12 @@ body {
 .ant-pagination .ant-pagination-item-active {
   border: none;
 }
+
 .ant-pagination .ant-pagination-item-active a {
   color: white;
   background-color: var(--primary-color);
 }
 
-/* invite nad view more button button*/
 .btn {
   padding: 8px 20px;
   border-radius: 6px;
@@ -159,6 +153,8 @@ body {
   border: none;
 }
 
+
+
 /* 
 common layout */
 .app {
@@ -167,6 +163,7 @@ common layout */
   margin: 0 auto;
   display: flex;
 }
+
 /* side bar */
 .sidebar {
   max-width: 200px;
@@ -179,14 +176,18 @@ common layout */
   display: flex;
   flex-direction: column;
 }
+
 .sidebar a {
   color: white;
 }
+
 /*main container */
 .main {
   flex: 1;
-  margin-left: 200px; /* Adjust based on the sidebar width */
+  margin-left: 200px;
+  /* Adjust based on the sidebar width */
 }
+
 /*navbar*/
 .navbar {
   max-width: 100%;
@@ -213,7 +214,8 @@ common layout */
   padding: 10px;
   border-bottom: 1px solid #ddd;
 }
-.application-header h2{
+
+.application-header h2 {
   color: var(--primary-color);
 }
 
@@ -227,6 +229,7 @@ common layout */
   font-size: 15px;
   color: var(--primary-color);
 }
+
 
 .content {
   margin: 20px;
@@ -253,9 +256,10 @@ common layout */
 }
 
 .active {
-  background-color: var(--primary-color);
+  background-color: var(--secondary-color);
   border-radius: 0px 15px 15px 0px;
 }
+
 .setting {
   margin-top: auto;
   padding: 20px;
@@ -274,6 +278,7 @@ common layout */
   align-content: center;
   justify-content: flex-end;
 }
+
 .avatar__container .avatar__logo {
   cursor: pointer;
 }
@@ -290,38 +295,76 @@ common layout */
   color: white;
   background-color: var(--primary-color);
 }
+
 .hide {
   visibility: hidden;
 }
+
 .show {
   visibility: visible;
 }
+
 .no-data-found {
   max-width: 350px;
   width: 100%;
   margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.no-data-found .btn.create-btn {
+  background-color: var(--primary-color);
+  color: white;
+  padding: 10px 50px;
 }
 
 .antd-table-action {
   display: flex;
   gap: 5px;
 }
+
 /* breadcrumb */
 .ant-breadcrumb {
-  color: black;
+  color: rgb(255, 255, 255);
 }
 
-.ant-breadcrumb-link > a {
+.ant-breadcrumb-link>a {
   color: white;
 }
 
-.ant-breadcrumb-link:hover > a {
+.ant-breadcrumb-link:hover>a {
   color: white;
 }
+
 .switch {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.pagination-container {
+  margin-top: auto;
+  /* Push the pagination container to the bottom */
+}
+
+
+
+
+
+.breadcrumb-container .double-arrow {
+  display: inline-block;
+  margin-left: 5px;
+  margin-right: 5px;
+  font-size: 16px;
+  vertical-align: middle;
+}
+
+.link {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #223f64;
 }
 
 .error-message {
@@ -329,20 +372,125 @@ common layout */
   color: var(--error);
   padding-top: 2px;
 }
-.fileter-category{
+
+/* Apply filter btn and clear filter btn */
+.btn.apply-filter-btn,
+.btn.clear-filter-btn {
+  margin-top: 5px;
+  border: 1px solid var(--primary-color);
+  margin-right: 5px;
+}
+
+.btn.apply-filter-btn:hover {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.btn.clear-filter-btn:hover {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.btn.logout {
+  border: 1px solid var(--primary-color);
+}
+
+.btn-logout:hover {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.filter-container .filter-icon {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+/* FilterComponent.css */
+
+.filter-container {
+  position: relative;
+  padding: 10px;
+}
+
+.filter-dropdown {
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.filter-dropdown div {
+  margin-bottom: 15px;
+}
+
+.filter-label {
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.filter-container input,
+Select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-sizing: border-box;
+  outline: none;
+  background-color: white;
+}
+
+
+
+
+
+
+
+.error-message {
+  height: 20px;
+  color: var(--error);
+  padding-top: 2px;
+}
+
+.fileter-category {
   color: var(--primary-color);
 }
+
 .fileter-category .limit-seter {
   width: 70px;
   padding-left: 10px;
   padding-right: 5px;
-  
+
 }
-.icon-flex{
+
+.icon-flex {
   display: flex;
   gap: 5px;
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  
+
+}
+
+
+
+.applied-filters {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+
+}
+
+.applied-filter {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.clear-filter-icon {
+  color: var(--error);
+  font-size: 20px;
+  cursor: pointer;
 }

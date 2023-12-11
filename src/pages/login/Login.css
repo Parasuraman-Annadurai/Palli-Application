@@ -1,9 +1,9 @@
 :root {
   --primary-color: #223f64;
-  --secondray-color: #3f88d8;
+  --secondary-color: #3f88d8;
   --text-primary-color: #24384f;
   --font-family: "Poppins", sans-serif;
-  --text-secondray-color: white;
+  --text-secondary-color: white;
   --h1-font-size: 32px;
   --p-font-size: 24px;
   --error: red;
@@ -73,7 +73,7 @@
   align-items: center;
   padding: 10px;
   border-radius: 5px 0px 0px 5px;
-  border: 1px solid var(--secondray-color);
+  border: 1px solid var(--secondary-color);
   color: var(--text-primary-color);
 }
 .input__containers
@@ -87,7 +87,7 @@
   .password__icon
   .password__feild {
   border-radius: 0px 5px 5px 0px;
-  border: 1px solid var(--secondray-color);
+  border: 1px solid var(--secondary-color);
   width: 100%;
   outline: none;
   padding: 13px;
@@ -121,11 +121,56 @@
   font-size: 20px;
   font-family: var(--font-family);
   background-color: var(--text-primary-color);
-  color: var(--text-secondray-color);
+  color: var(--text-secondary-color);
   outline: none;
   border: none;
   border-radius: 5px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
 }
+
+.login-btn::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 5px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.login-btn:hover {
+  background-color: var(--primary-color);
+}
+
+.login-btn:hover::before {
+  opacity: 1;
+  transition: opacity 0.5s ease;
+  animation: pulsate 1s infinite;
+}
+
+@keyframes pulsate {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+
+.login-btn:hover {
+  animation: none; /* Disable animation on hover */
+}
+
 .right__side-input__container .error__message {
   margin-top: 8px;
   height: 20px;

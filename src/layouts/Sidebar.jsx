@@ -2,28 +2,44 @@ import React, { useState, useEffect } from "react";
 import { Link, useLocation, useParams, useNavigate } from "react-router-dom";
 
 import { Button, Modal, List, Avatar, Tooltip } from "antd";
+import axios from "axios";
+
+import { useAuth } from "../context/AuthContext";
 
 import { API_END_POINT } from "../../config";
-
-import useAPI from "../hooks/useAPI";
 
 import dckapLogo from "/images/dckap_palli_logo_sm.svg";
 
 const Sidebar = ({ menuList, activeMenuItem }) => {
   const navigate = useNavigate();
   const { id: batchId } = useParams();
-  const { data: batches, makeNetworkRequest } = useAPI();
+  const {token} = useAuth()
+  const [batches,setBatches] = useState([])
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [active, setActive] = useState(activeMenuItem);
   const currentPath = useLocation().pathname;
   const isDashboardPage = currentPath === "/dashboard";
 
-  const handleSwitch = (id) => {
-    navigate(`/batch/${id}/applications`);
-    setIsModalOpen(false);
+  const handleSwitch = (id,batchName) => {
+    Modal.confirm({
+      title: `Confirm Swith to ${batchName}`,
+      content: "Are you sure you want to Switch this Batch?",
+      onOk: () => {
+        navigate(`/batch/${id}/applications`);
+        setIsModalOpen(false);
+        window.location.reload()
+      },
+    });
+
   };
   useEffect(() => {
-    makeNetworkRequest(`${API_END_POINT}/api/list/batch/`, "GET", null);
+    const headers = {
+      Authorization : `Bearer ${token.access}`,
+      "Content-type":"application/json"
+    }
+    axios.get(`${API_END_POINT}/api/list/batch/`,{headers}).then((res)=>{
+      setBatches(res.data.data);
+    })
   }, []);
 
   return (
@@ -88,7 +104,7 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
             dataSource={batches}
             renderItem={(batch, index) => (
               <List.Item
-                onClick={() => handleSwitch(batch.id)}
+                onClick={() => handleSwitch(batch.id,batch.batch_name)}
                 style={{ cursor: "pointer" }}
               >
                 <List.Item.Meta

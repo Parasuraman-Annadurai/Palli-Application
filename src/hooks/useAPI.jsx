@@ -13,12 +13,11 @@ const useAPI = () => {
 
   const makeNetworkRequest = async (url, method = 'GET', body = null, headers = {}) => {
     setLoading(true);
-
-    
     try {
       const result = await axios({
         url,
         method,
+        withCredentials: true,
         headers: {
           Authorization: `Bearer ${token.access}`,
           "Content-Type": "application/json",
@@ -28,18 +27,15 @@ const useAPI = () => {
       });
 
       setData(result.data);
-      setIsCompleted(true)
+      setIsCompleted(true);
       setError(null);
     } catch (error) {
       setData(null);
-      setError(error.message || 'An error occurred');
+      setError(error.message || "An error occurred");
     } finally {
       setLoading(false);
     }
   };
-
- 
-
 
   return { data, loading, error, isCompleted, makeNetworkRequest };
 };

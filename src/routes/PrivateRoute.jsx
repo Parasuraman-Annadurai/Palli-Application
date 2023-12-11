@@ -6,11 +6,11 @@ import { useAuth } from "../context/AuthContext";
 import Sidebar from "../layouts/Sidebar";
 import Navbar from "../layouts/Navbar";
 
+
 const PrivateRoute = () => {
   const { token } = useAuth();
   const { id: batchId } = useParams();
   const { pathname } = useLocation();
-  // determine if authorized, from context or however you're doing it
 
   const auth = token["access"] ? true : false;
 
@@ -29,14 +29,7 @@ const PrivateRoute = () => {
     <div className="app">
       <Sidebar menuList={menuList} activeMenuItem={activeMenuItem.id} />
       <div className="main">
-        <Navbar
-          item={
-            activeMenuItem
-              ? [{ label: "Dashboard", link: "/dashboard" }, activeMenuItem]
-              : null
-          }
-        />
-
+        <Navbar />
         <Outlet />
       </div>
     </div>

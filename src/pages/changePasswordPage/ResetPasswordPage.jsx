@@ -1,10 +1,16 @@
 import React, { useState } from "react";
-import Logo from "/images/dckap_palli_logo_lg.svg";
-import ResetPasswordImage from "/images/change_password.svg";
-import "./ResetPage.css";
+//External packages here
+import { Popover } from "antd";
+//Supporting utilities files here
 import { validateNewpassword } from "../../utils/validate";
 import { checkPasswordCriteria } from "../../components/PasswordRequirement";
-import { Popover } from "antd";
+
+//Images here
+import Logo from "/images/dckap_palli_logo_lg.svg";
+import ResetPasswordImage from "/images/change_password.svg";
+//CSS here
+import "./ResetPage.css";
+
 
 
 

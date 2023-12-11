@@ -26,7 +26,7 @@ const TaskModule = () => {
   const [taskLists, setTaskLists] = useState([]);
   const [loading, setLoading] = useState(false);
   const [sortKey, setSortKey] = useState("");
-  const [sortOrder, setSortOrder] = useState("asc");
+  const [sortOrder, setSortOrder] = useState(1);
   const { formData, handleChange } = useForm({
     limit: 4,
     currentPage: 1,
@@ -41,9 +41,11 @@ const TaskModule = () => {
         Authorization: `Bearer ${token.access}`,
         "Content-Type": "application/json",
       };
+
       axios
         .get(
-          `${API_END_POINT}/api/task/${batchId}/list_task/?limit=${formData.limit}&page=${formData.currentPage}&filter_task_type=${formData.task_type}&sort_key=${sortKey}&sort_order=${sortOrder === "asc" ? 0 : 1}&search=${formData.taskSearch}`,
+          `${API_END_POINT}/api/task/${batchId}/list_task/?limit=${formData.limit}&page=${formData.currentPage}&filter_task_type=${formData.task_type}&sort_key=${sortKey}&sort_order=${sortOrder}&search=${formData.taskSearch}`
+          ,
           { headers }
         )
         .then((res) => {
@@ -63,23 +65,19 @@ const TaskModule = () => {
     formData.currentPage,
     formData.taskSearch,
     formData.task_type,
+    sortKey,
+    sortOrder
   ]);
 
-  // const columnNameList = [
-  //   { key: "task_title", title: "Task Name" },
-  //   { key: "task_description", title: "Task Description" },
-  //   { key: "due_date", title: "Deadline" },
-  //   { key: "task_type", title: "Task Type" },
-  //   { key: "action", title: "Action" },
-  // ];
-
   const columnNameList = [
-    { key: "task_title", title: "Task Name", sortable: true },
-    { key: "task_description", title: "Task Description", sortable: true },
-    { key: "due_date", title: "Deadline", sortable: true },
-    { key: "task_type", title: "Task Type", sortable: true },
+    { key: "task_title", title: "Task Name" },
+    { key: "task_description", title: "Task Description" },
+    { key: "due_date", title: "Deadline" },
+    { key: "task_type", title: "Task Type" },
     { key: "action", title: "Action" },
   ];
+
+
   const handleChangePage = (page) => {
     handleChange({ target: { name: "currentPage", value: page } });
   };
@@ -151,12 +149,13 @@ const TaskModule = () => {
 
   const handleSortChange = (key) => {
     if (sortKey === key) {
-      setSortOrder((prevOrder) => (prevOrder === "asc" ? "desc" : "asc"));
+      setSortOrder((prevOrder) => (prevOrder === 0 ? 1 : 0));
     } else {
       setSortKey(key);
-      setSortOrder("asc");
+      setSortOrder(1);
     }
   };
+
   return (
     <div className="content">
       <div className="application-header">

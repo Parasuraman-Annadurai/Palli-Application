@@ -58,7 +58,12 @@ const TableView = ({
     { key: 9, label: "OfferDeclined" },
   ];
 
-
+  const renderSortIcon = (columnKey) => {
+    if (columnKey === sortKey) {
+      return sortOrder === 0 ? <span>&uarr;</span> : <span>&darr;</span>;
+    }
+    return null;
+  };
 
   if (tableData && tableData.length > 0) {
     return (
@@ -67,7 +72,12 @@ const TableView = ({
           <thead>
             <tr>
               {columnNameList.map((column) => (
-                <th key={column.key}>{column.title}</th>
+                <th
+                  key={column.key}
+                  onClick={() => handleSortChange(column.key)}
+                >
+                  {column.title} {renderSortIcon(column.key)}
+                </th>
               ))}
             </tr>
           </thead>
@@ -97,9 +107,7 @@ const TableView = ({
                       </Tooltip>
                     ) : column.key === "due_date" ? (
                       <Tooltip
-                        title={dayjs
-                          .utc(item[column.key])
-                          .format("MMMM DD, YYYY")}
+                        title={dayjs(item[column.key]).format("MMMM DD, YYYY")}
                         className="due-date-container"
                       >
                         {renderDueDate(item[column.key])}

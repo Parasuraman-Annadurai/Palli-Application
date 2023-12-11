@@ -134,10 +134,12 @@ const AddTask = () => {
 
   const validateNotEmpty = (fieldName, value) => {
     const trimmedValue = value ? value.replace(/<[^>]*>/g, "").trim() : null;
-    return trimmedValue ? "" : `${fieldName} is required`;
+    return trimmedValue ? undefined : `${fieldName} is required`;
   };
 
   const handleTaskAdd = async (formData) => {
+
+    console.log(formData);
     const {
       task_title,
       task_description,

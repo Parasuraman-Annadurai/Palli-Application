@@ -1,4 +1,4 @@
-// SeparateInput.jsx
+
 
 import React from 'react';
 

@@ -1,14 +1,15 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+
 import axios from 'axios';
-import { API_END_POINT } from '../../config';
-import { useParams } from 'react-router-dom';
+
+import { useAuth } from '../context/AuthContext';
+
 const useAPI = () => {
-  const {id} = useParams()
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [isCompleted, setIsCompleted] = useState(false)
-
+  const {token} = useAuth()
 
   const makeNetworkRequest = async (url, method = 'GET', body = null, headers = {}) => {
     setLoading(true);
@@ -18,7 +19,11 @@ const useAPI = () => {
       const result = await axios({
         url,
         method,
-        ...headers,
+        headers: {
+          Authorization: `Bearer ${token.access}`,
+          "Content-Type": "application/json",
+          ...headers,
+        },
         data: body ? JSON.stringify(body) : null,
       });
 

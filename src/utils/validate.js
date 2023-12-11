@@ -86,11 +86,11 @@ export const validateAddTask = (addTaskData,setErrors) => {
     isVaild = false;
   }
  
-  if (!addTaskData.due_date.trim()) {
+  if (!addTaskData.due_date) {
     errors.due_date = "Task Due Date is Required";
     isVaild = false;
   }
-  if (!addTaskData.task_type) {
+  if (addTaskData.task_type <0) {
     errors.task_type = "Task Type is Required";
     isVaild = false;
   }

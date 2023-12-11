@@ -1,5 +1,15 @@
 /* write common styles only here */
-*{
+:root {
+  --primary-color: #223f64;
+  --secondray-color: #3f88d8;
+  --text-primary-color: #24384f;
+  --font-family: "Poppins", sans-serif;
+  --text-secondray-color: white;
+  --h1-font-size: 32px;
+  --p-font-size: 24px;
+  --error: red;
+}
+* {
   padding: 0;
   margin: 0;
   list-style: none;
@@ -16,12 +26,12 @@
   --side-bar-backgroundcolour: #F8FBF2;
 }
 body {
-  background-color: #F4F7FA;
+  background-color: #f4f7fa;
 }
 
 /* TableComponent.css */
 .table-wrapper {
-  overflow-x: auto; /* Enable horizontal scrolling if needed */
+  overflow-x: auto;
 }
 
 .antd-table {
@@ -31,6 +41,10 @@ body {
   margin-bottom: 20px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.09);
   table-layout: fixed;
+  table-layout: calc();
+}
+.antd-table a {
+  color: var(--primary-color);
 }
 
 .antd-table th,
@@ -40,7 +54,7 @@ body {
   text-align: left;
   overflow: hidden;
   white-space: nowrap;
-  text-overflow: ellipsis; 
+  text-overflow: ellipsis;
 }
 
 .antd-table th {
@@ -49,6 +63,11 @@ body {
 
 .antd-table tbody tr:hover {
   background-color: #f5f5f5;
+}
+.due-date-container{
+  display: flex;
+  flex-direction: column;
+  align-items: baseline;
 }
 
 /* Sorting Icons */
@@ -74,8 +93,6 @@ body {
   cursor: pointer;
 }
 
-
-
 /* Pagination styles */
 .ant-pagination {
   display: flex;
@@ -100,7 +117,7 @@ body {
   width: 32px;
   height: 32px;
   border-radius: 4px;
-  color: #333;
+  color: var(--primary-color);
 }
 
 .ant-pagination-item-active a {
@@ -120,18 +137,16 @@ body {
   display: none;
 }
 
-.ant-pagination-options {
-  display: none;
-}
-.ant-pagination .ant-pagination-item-active{
+.ant-pagination .ant-pagination-item-active {
   border: none;
 }
 .ant-pagination .ant-pagination-item-active a {
   color: white;
+  background-color: var(--primary-color);
 }
 
-/* invite nad view more button */
-.create-login-btn{
+/* invite nad view more button button*/
+.btn {
   padding: 8px 20px;
   border-radius: 6px;
   outline: none;
@@ -139,15 +154,9 @@ body {
   color: black;
   background-color: white;
   border: 1px solid gray;
-}
-.table-view-more{
-  padding: 8px 20px;
-  border-radius: 6px;
+  cursor: pointer;
   outline: none;
   border: none;
-  color: black;
-  background-color: white;
-  border: 1px solid gray;
 }
 
 /* 
@@ -170,7 +179,7 @@ common layout */
   display: flex;
   flex-direction: column;
 }
-.sidebar a{
+.sidebar a {
   color: white;
 }
 /*main container */
@@ -190,11 +199,10 @@ common layout */
   align-items: center;
 }
 
-.navbar .user-greeting{
+.navbar .user-greeting {
   display: flex;
   gap: 10px;
 }
-
 
 /* app header */
 
@@ -205,6 +213,9 @@ common layout */
   padding: 10px;
   border-bottom: 1px solid #ddd;
 }
+.application-header h2{
+  color: var(--primary-color);
+}
 
 .header-controls {
   display: flex;
@@ -213,7 +224,8 @@ common layout */
 }
 
 .record-count {
-  font-size: 14px;
+  font-size: 15px;
+  color: var(--primary-color);
 }
 
 .content {
@@ -224,8 +236,6 @@ common layout */
   height: 100%;
 }
 
-
-
 .flex {
   display: flex;
   align-items: center;
@@ -233,46 +243,46 @@ common layout */
   padding-left: 20px;
 }
 
-.menu-container{
+.menu-container {
   margin: 26px 0px;
   padding: 10px;
 }
 
-.logo{
+.logo {
   padding: 47px 40px 0px;
 }
 
-.active{
-  background-color: var(--secondray-color);
+.active {
+  background-color: var(--primary-color);
   border-radius: 0px 15px 15px 0px;
 }
-.setting{
+.setting {
   margin-top: auto;
   padding: 20px;
   cursor: pointer;
 }
 
-.header-controls .search__bar{
+.header-controls .search__bar {
   max-width: 200px;
   width: 100%;
   padding: 0px 10px 0px 5px;
 }
 
 /* avatar */
-.avatar__container{
+.avatar__container {
   display: flex;
   align-content: center;
   justify-content: flex-end;
 }
-.avatar__container .avatar__logo{
+.avatar__container .avatar__logo {
   cursor: pointer;
 }
 
-.filter__icon{
-  color: #223F64;
+.filter__icon {
+  color: var(--primary-color);
 }
 
-.upload__btn{
+.upload__btn {
   padding: 8px 20px;
   border-radius: 6px;
   outline: none;
@@ -280,19 +290,19 @@ common layout */
   color: white;
   background-color: var(--primary-color);
 }
-.hide{
+.hide {
   visibility: hidden;
 }
-.show{
+.show {
   visibility: visible;
 }
-.no-data-found{
+.no-data-found {
   max-width: 350px;
   width: 100%;
   margin: auto;
 }
 
-.antd-table-action{
+.antd-table-action {
   display: flex;
   gap: 5px;
 }
@@ -306,10 +316,33 @@ common layout */
 }
 
 .ant-breadcrumb-link:hover > a {
-  color: white; 
+  color: white;
 }
-.switch{
+.switch {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.error-message {
+  height: 20px;
+  color: var(--error);
+  padding-top: 2px;
+}
+.fileter-category{
+  color: var(--primary-color);
+}
+.fileter-category .limit-seter {
+  width: 70px;
+  padding-left: 10px;
+  padding-right: 5px;
+  
+}
+.icon-flex{
+  display: flex;
+  gap: 5px;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  
 }

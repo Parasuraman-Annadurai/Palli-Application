@@ -1,21 +1,20 @@
-import React from "react";
-import dckapLogo from "../../public/images/dckap_palli_logo_sm.svg";
-import { useState, useEffect } from "react";
-import { useAuth } from "../context/AuthContext";
-import { Link, useLocation, useParams } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useLocation, useParams, useNavigate } from "react-router-dom";
+
+import { Button, Modal, List, Avatar, Tooltip } from "antd";
+
 import { API_END_POINT } from "../../config";
-import { Button, Modal, List, Avatar } from "antd";
-import { useNavigate } from "react-router-dom";
+
 import useAPI from "../hooks/useAPI";
-import { Tooltip } from "antd";
+
+import dckapLogo from "/images/dckap_palli_logo_sm.svg";
 
 const Sidebar = ({ menuList, activeMenuItem }) => {
   const navigate = useNavigate();
-  const [active, setActive] = useState(activeMenuItem);
-  const { token } = useAuth();
-  const { data, makeNetworkRequest } = useAPI();
   const { id: batchId } = useParams();
+  const { data: batches, makeNetworkRequest } = useAPI();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [active, setActive] = useState(activeMenuItem);
   const currentPath = useLocation().pathname;
   const isDashboardPage = currentPath === "/dashboard";
 
@@ -24,13 +23,9 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
     setIsModalOpen(false);
   };
   useEffect(() => {
-    makeNetworkRequest(`${API_END_POINT}/api/list/batch/`, "GET", null, {
-      headers: {
-        Authorization: `Bearer ${token.access}`,
-      },
-    });
+    makeNetworkRequest(`${API_END_POINT}/api/list/batch/`, "GET", null);
   }, []);
-  const batches = data.data || [];
+
   return (
     <div className="sidebar">
       <div className="logo">
@@ -74,12 +69,12 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
         ))}
       </div>
 
-      <div className="setting flex" onClick={() => setIsModalOpen(true)}>
-        <span class="material-symbols-outlined">switch_account</span>
-        <p className="switch" >
-          Switch
-        </p>
-      </div>
+      {!isDashboardPage && (
+        <div className="setting flex" onClick={() => setIsModalOpen(true)}>
+          <span class="material-symbols-outlined">switch_account</span>
+          <p className="switch">Switch</p>
+        </div>
+      )}
 
       <div className="">
         <Modal

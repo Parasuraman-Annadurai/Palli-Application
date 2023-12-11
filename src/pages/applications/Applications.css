@@ -1,0 +1,9 @@
+.btn.invite-btn{
+    padding: 8px 20px;
+    border-radius: 6px;
+    outline: none;
+    border: none;
+    color: black;
+    background-color: white;
+    border: 1px solid gray;
+  }

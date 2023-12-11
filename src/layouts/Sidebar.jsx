@@ -1,32 +1,45 @@
-import React,{ useState, useEffect } from "react";
-import { Link, useLocation, useParams,useNavigate } from "react-router-dom";
-// External pachage paste here
-import { Button, Modal, List, Avatar,Tooltip } from "antd";
-//Our API enpoin paste here
+import React, { useState, useEffect } from "react";
+import { Link, useLocation, useParams, useNavigate } from "react-router-dom";
+
+import { Button, Modal, List, Avatar, Tooltip } from "antd";
+import axios from "axios";
+
+import { useAuth } from "../context/AuthContext";
+
 import { API_END_POINT } from "../../config";
-//Our custom hook here
-import useAPI from "../hooks/useAPI";
 
-//Context paste here
-
-//Images paste here
 import dckapLogo from "/images/dckap_palli_logo_sm.svg";
-// CSS paste here
+
 const Sidebar = ({ menuList, activeMenuItem }) => {
   const navigate = useNavigate();
   const { id: batchId } = useParams();
-  const { data:batches, makeNetworkRequest } = useAPI();
+  const {token} = useAuth()
+  const [batches,setBatches] = useState([])
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [active, setActive] = useState(activeMenuItem);
   const currentPath = useLocation().pathname;
   const isDashboardPage = currentPath === "/dashboard";
 
-  const handleSwitch = (id) => {
-    navigate(`/batch/${id}/applications`);
-    setIsModalOpen(false);
+  const handleSwitch = (id,batchName) => {
+    Modal.confirm({
+      title: `Confirm Swith to ${batchName}`,
+      content: "Are you sure you want to Switch this Batch?",
+      onOk: () => {
+        navigate(`/batch/${id}/applications`);
+        setIsModalOpen(false);
+        window.location.reload()
+      },
+    });
+
   };
   useEffect(() => {
-    makeNetworkRequest(`${API_END_POINT}/api/list/batch/`, "GET", null);
+    const headers = {
+      Authorization : `Bearer ${token.access}`,
+      "Content-type":"application/json"
+    }
+    axios.get(`${API_END_POINT}/api/list/batch/`,{headers}).then((res)=>{
+      setBatches(res.data.data);
+    })
   }, []);
 
   return (
@@ -72,13 +85,13 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
         ))}
       </div>
 
-      <div className="setting flex">
-        <span className="material-symbols-outlined">settings</span>
-        <a>Settings</a>
-      </div>
-      <div className="switch">
-        <Button onClick={() => setIsModalOpen(true)}>Switch</Button>
-      </div>
+      {!isDashboardPage && (
+        <div className="setting flex" onClick={() => setIsModalOpen(true)}>
+          <span class="material-symbols-outlined">switch_account</span>
+          <p className="switch">Switch</p>
+        </div>
+      )}
+
       <div className="">
         <Modal
           open={isModalOpen}
@@ -91,7 +104,7 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
             dataSource={batches}
             renderItem={(batch, index) => (
               <List.Item
-                onClick={() => handleSwitch(batch.id)}
+                onClick={() => handleSwitch(batch.id,batch.batch_name)}
                 style={{ cursor: "pointer" }}
               >
                 <List.Item.Meta

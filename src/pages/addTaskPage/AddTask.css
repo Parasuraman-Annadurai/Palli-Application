@@ -169,7 +169,11 @@ a.ant-dropdown-trigger.ant-dropdown-link {
   width: 130px;
 }
 
-.date-time-container{
+
+.list-weightage{
   display: flex;
-  gap: 5px;
+}
+input.ant-input.css-dev-only-do-not-override-6j9yrn.weightage-input.css-dev-only-do-not-override-6j9yrn {
+  padding: 0;
+  padding-left: 5px;
 }

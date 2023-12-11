@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { Button, Modal, Input, DatePicker, Skeleton } from "antd";
+import { Button, Modal, Input, DatePicker, Skeleton ,notification} from "antd";
 import dayjs from "dayjs";
 import axios from "axios";
 
@@ -56,36 +56,6 @@ const DashBoard = () => {
     };
     fetchData();
   }, []);
-
-  //   const fetchData = async () => {
-  //     try {
-  //       const response = await axios.get(apiUrl, {
-  //         headers: {
-  //           Authorization: `Bearer ${token}`, // Add your token to the Authorization header
-  //           "Content-Type": "application/json", // Example content type
-  //           // Add other headers if needed
-  //         },
-  //       });
-  //       console.log(response);
-  //     } catch (error) {
-  //       // Handle error, such as setting an error state
-  //       console.error("Error fetching data:", error);
-  //     }
-  //   };
-  //   fetchData();
-  // }, []);
-  // axios.get('http://13.232.90.154:8000/api/list/batch/')
-  // .then(function (response) {
-  //   // handle success
-  //   console.log(response);
-  // })
-  // .catch(function (error) {
-  //   // handle error
-  //   console.log(error);
-  // })
-  // .finally(function () {
-  //   // always executed
-  // });
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -214,9 +184,15 @@ const DashBoard = () => {
           const newBatch = { ...batchData, ...res.data.data };
           const updatedArray = [...batchList, newBatch];
           setBatchList(updatedArray);
+          notification.success({
+            message: "Success",
+            description:  "Batch Created Successfully",
+            duration: 3,
+          });
         })
         .catch((error) => {
           console.log(error);
+
         })
         .finally(() => {
           setLoading(false);
@@ -273,6 +249,11 @@ const DashBoard = () => {
           });
 
           setBatchList(updatedData);
+          notification.success({
+            message: "Success",
+            description:  "Batch Updated Successfully",
+            duration: 3,
+          });
         })
         .catch((error) => {
           console.log(error);

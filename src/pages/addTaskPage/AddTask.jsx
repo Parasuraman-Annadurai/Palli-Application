@@ -10,6 +10,8 @@ import {
   Checkbox,
   DatePicker,
   TimePicker,
+  Input,
+  Button,
 } from "antd";
 import axios from "axios";
 
@@ -40,7 +42,10 @@ const AddTask = () => {
   const [studentList, setStudentList] = useState([]);
   const [selectedStudents, setSelectedStudents] = useState([]);
   const [selectAll, setSelectAll] = useState(true);
+  const [weightageList, setWeightageList] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [selectValues, setSelectValues] = useState([{}]);
+
   const [selectedDate, setSelectedDate] = useState(true);
 
   const {
@@ -118,6 +123,21 @@ const AddTask = () => {
       });
   }, [taskId, batchId, token]);
 
+  useEffect(() => {
+    const headers = {
+      Authorization: `Bearer ${token.access}`,
+      "Content-type": "application/json",
+    };
+
+    axios
+      .get(`${API_END_POINT}/api/task/${batchId}/list/weightage`, { headers })
+      .then((res) => {
+        setWeightageList(res.data.data);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  }, []);
   const handleSelectAllChange = (e) => {
     e.stopPropagation();
     const checked = e.target.checked;
@@ -139,7 +159,23 @@ const AddTask = () => {
 
   const handleTaskAdd = async (formData) => {
 
-    console.log(formData);
+    const requests = selectValues.map( (item) => {
+      const headers = {
+        Authorization : `Bearer ${token.access}`,
+        "Content-type" : "application/json"
+      }
+      const { weightage, weightage_percentage } = item;
+      const endpoint = `${API_END_POINT}/api/task/${batchId}/assign/task_weightage/117`;
+
+      const response =  axios.post(`${endpoint}`, {
+        weightage,
+        weightage_percentage,
+      },{headers});
+
+      return response.data;
+    });
+
+    console.log(requests);
     const {
       task_title,
       task_description,
@@ -202,6 +238,7 @@ const AddTask = () => {
     });
   };
 
+
   const dropdownMenu = (
     <Menu onClick={(e) => e.stopPropagation()}>
       <Menu.Item key="selectAll">
@@ -232,7 +269,21 @@ const AddTask = () => {
   const handleCancel = () => {
     navigate(`/batch/${batchId}/module`);
   };
+  const handleAddSelect = () => {
+    setSelectValues([...selectValues, { weightage: '', weightage_percentage: 0 }]);
+  };
+  const handleWeightageChange = (value, index) => {
+    const updatedValues = [...selectValues];
+    updatedValues[index].weightage = value;
+    setSelectValues(updatedValues);
+  };
 
+  const handleInputChange = (event, index) => {
+    const { value } = event.target;
+    const updatedValues = [...selectValues];
+    updatedValues[index].weightage_percentage = Number(value);
+    setSelectValues(updatedValues);
+  };
   return (
     <div className="content">
       {loading ? (
@@ -424,17 +475,45 @@ const AddTask = () => {
                           </Select>
                         )}
                       />
-                      <p className="error-message">
+                      <p className="error-message" data>
                         {errors.task_type && errors.task_type.message}
                       </p>
                     </div>
-                    <div className="weightage">
+
+                    <div>
                       <label htmlFor="">Weightage</label>
-                      <button>
-                        <a href={`/batch/${batchId}/module/add/task/weightage`}>
-                          Weightage
-                        </a>
-                      </button>
+                      {selectValues.map((select, index) => (
+                        <div className="list-weightage" key={index}>
+                          <Select
+                            style={{ width: 300, marginRight: "8px" }}
+                            placeholder={"select"}
+                            value={select.weightage}
+                            onChange={(value) =>
+                              handleWeightageChange(value, index)
+                            }
+                          >
+                            {weightageList.map((weightage, weightageIndex) => (
+                              <Select.Option
+                                key={weightageIndex}
+                                value={weightage.id}
+                              >
+                                {weightage.weightage}
+                              </Select.Option>
+                            ))}
+                          </Select> 
+                          <Input
+                            className="weightage-input"
+                            placeholder="Enter value"
+                            style={{ marginRight: "8px" }}
+                            onChange={(e) => handleInputChange(e, index)}
+                          />
+                          {index === selectValues.length - 1 && (
+                            <Button type="primary" onClick={handleAddSelect}>
+                              + Add
+                            </Button>
+                          )}
+                        </div>
+                      ))}
                     </div>
                   </div>
                   <div className="btns-div">

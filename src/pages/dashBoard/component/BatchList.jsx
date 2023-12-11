@@ -1,31 +1,44 @@
-import React from 'react'
+import React from "react";
 
-const BacthList = ({batchesList,handleEditClick}) => {
+import { Link } from "react-router-dom";
 
-    return ( 
-       <>
-          {batchesList.map((batch, index) => (
-            <div key={index} className="added-batches">
-              <div>
-                <a href={`/batch/${batch.id}/applications`}>
-                  <p>{batch.batch_name}</p>
-                  <p>{batch.start_date}</p>
+import { Tooltip } from "antd";
 
-                  <p>{batch.end_date}</p>
-                </a>
+import "../DashBoard.css";
+
+const BatchList = ({ batchesList, handleEditClick }) => {
+  return (
+    <>
+      {batchesList.map((batch, index) => (
+        <div className="main__batches batch-card" key={index}>
+          <span
+            onClick={() => handleEditClick(batch)}
+            className="material-symbols-outlined edit__icon"
+          >
+            edit
+          </span>
+          <Link to={`/batch/${batch.id}/applications`} className="link">
+            <div className="added-batches">
+              <div className="batches_list">
+                <Tooltip placement="top" title={batch.batch_name}>
+                  <h3 className="batch_name">
+                    {batch.batch_name.length > 12
+                      ? `${batch.batch_name.slice(0, 12)}...`
+                      : batch.batch_name}
+                  </h3>
+                </Tooltip>
+                <div className="years">
+                  <p className="start_date">{batch.start_date.slice(0, 4)}</p>
+                  <p className="start_date">to</p>
+                  <p className="end_date">{batch.end_date.slice(0, 4)}</p>
+                </div>
               </div>
-
-              <span
-                onClick={() => handleEditClick(batch)}
-                className="material-symbols-outlined"
-              >
-                edit
-              </span>
             </div>
-          ))}
-       </>
-     );
-}
- 
-export default BacthList;
+          </Link>
+        </div>
+      ))}
+    </>
+  );
+};
 
+export default BatchList;

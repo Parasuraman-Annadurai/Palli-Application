@@ -1,15 +1,25 @@
+:root {
+  --primary-color: #223f64;
+  --secondray-color: #3f88d8;
+  --text-primary-color: #24384f;
+  --font-family: "Poppins", sans-serif;
+  --text-secondray-color: white;
+  --h1-font-size: 32px;
+  --p-font-size: 24px;
+  --error: red;
+}
+
 .greeting {
   background-color: white;
   display: flex;
   justify-content: space-between;
 }
-.added-batches a {
-  text-decoration: none;
-  color: #A82700;
+
+.welcome__message {
+  color: var(--text-primary-color);
 }
 
 .heading h1 {
-  color: #223F64;
   font-size: 36px;
   font-style: normal;
   font-weight: 700;
@@ -22,8 +32,7 @@
 }
 
 .heading p {
-  color: #223F64;
-
+  color: var(--text-primary-color);
   font-size: 15px;
   font-style: normal;
   font-weight: 400;
@@ -35,25 +44,38 @@
   height: 150px;
   border: 10px;
   background-color: white;
-  color: #A82700;
+  color: var(--text-primary-color);
   border-radius: 10px;
   box-shadow: rgba(0, 0, 0, 0.2) 0px 3px 16px 0px;
   font-size: 16px;
+  font-weight: bold;
   display: flex;
   align-items: center;
   justify-content: center;
+
 }
 
 .add__batch {
   padding-top: 20px;
 }
 
-
+.error-message {
+  height: 20px;
+  color: var(--error);
+}
 
 .batches__list {
   display: flex;
-  gap: 20px;
+  gap: 60px;
   flex-wrap: wrap;
+}
+
+.batches__list>* {
+  color: var(--text-primary-color);
+}
+
+.batches_list {
+  color: var(--text-primary-color);
 }
 
 .added-batches {
@@ -61,11 +83,47 @@
   height: 150px;
   border: 10px;
   background-color: white;
-  color: #A82700;
   border-radius: 10px;
   box-shadow: rgba(0, 0, 0, 0.2) 0px 3px 16px 0px;
   font-size: 16px;
   text-align: center;
-  padding-top: 50px;
   cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+}
+
+.main__batches {
+  position: relative;
+}
+
+.edit__icon {
+  position: absolute;
+  right: 5px;
+  top: 5px;
+  cursor: pointer;
+  padding: 2px;
+}
+
+.batch_name,
+.start_year,
+.end_year {
+  color: var(--text-primary-color);
+}
+
+.years {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.batch-card {
+  transition: transform 0.3s ease-in-out;
+}
+
+/* Apply hover effect */
+.batch-card:hover {
+  transform: scale(1.05);
 }

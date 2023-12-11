@@ -1,5 +1,15 @@
+:root {
+  --primary-color: #223f64;
+  --secondary-color: #3f88d8;
+  --text-primary-color: #24384f;
+  --font-family: "Poppins", sans-serif;
+  --text-secondary-color: white;
+  --h1-font-size: 32px;
+  --p-font-size: 24px;
+  --error: red;
+}
+
 .container {
-  width: 100%;
   border: 1px solid grey;
   padding-bottom: 50px;
 }
@@ -17,19 +27,24 @@
   padding-top: 24px;
 }
 
-.left-container > div {
+/* .left-container > div {
   margin-bottom: 20px;
   width: 100%;
-}
+} */
 
 .page-logo {
   display: flex;
   align-items: center;
   gap: 8px;
-  color: #223f64;
+  color: var(--primary-color);
+  padding-bottom: 10px;
+  span {
+    width: 28px;
+    font-variation-settings: "FILL" 1, "wght" 400, "GRAD" 0, "opsz" 24;
+  }
   .task-txt {
     font: bold 16px/18px karla, san-serif;
-    color: #223f64;
+    color: var(--primary-color);
   }
 }
 
@@ -38,7 +53,7 @@
 .file-attach-sec > label {
   display: block;
   font: bold 16px/18px karla, san-serif;
-  color: #223f64;
+  color:var(--primary-color);
   padding-bottom: 10px;
 }
 
@@ -90,13 +105,13 @@ textarea:focus {
   display: flex;
   flex-direction: column;
 }
-.right-contents > div {
+/* .right-contents > div {
   padding-bottom: 10px;
-}
+} */
 .right-contents label {
   display: block;
   padding-bottom: 5px;
-  color: #223f64;
+  color: var(--primary-color);
 }
 .right-container .btns-div {
   position: absolute;
@@ -114,7 +129,7 @@ textarea:focus {
 .right-container .btns-div .assign-btn {
   padding: 10px 20px 10px 20px;
   color: white;
-  background-color: #223f64;
+  background-color: var(--primary-color);
   outline: none;
   border: none;
   border-radius: 3px;
@@ -128,9 +143,8 @@ textarea:focus {
   padding: 10px 71px 10px 62px;
 }
 
-.due-date-sec .type-picker {
-  max-width: 120px;
-  width: 100%;
+.task-type {
+  padding: 10px 91px 10px 10px;
   outline: none;
 }
 
@@ -148,10 +162,14 @@ a.ant-dropdown-trigger.ant-dropdown-link {
   color: var(--primary-color);
 }
 
-
-
+.ant-select.type-picker{
+  width: 150px;
+}
 .ant-select.ant-select\.type-picker {
   width: 130px;
 }
 
-
+.date-time-container{
+  display: flex;
+  gap: 5px;
+}

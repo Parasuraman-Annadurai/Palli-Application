@@ -1,22 +1,27 @@
 import React from "react";
-import { useNavigate, Link, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
-import { Popover, Breadcrumb } from "antd";
+import { Popover,Avatar } from "antd";
+import axios from "axios";
+
+import Breadcrumbs from "../components/BreadCrumbs"
 
 import { useAuth } from "../context/AuthContext";
 
-import useAPI from "../hooks/useAPI";
-
 import { API_END_POINT } from "../../config";
 
-const Navbar = ({ item }) => {
+const Navbar = () => {
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user,token } = useAuth();
   const { id: batchId } = useParams();
-  const { makeNetworkRequest } = useAPI();
-
   const handleLogout = () => {
-    makeNetworkRequest(`${API_END_POINT}/api/accounts/logout/`, "POST",null);
+    const headers = {
+      Authorization : `Bearer ${token.access}`,
+      "Content-type" : "application/json"
+    }
+    axios.post(`${API_END_POINT}/api/accounts/logout/`,token,{headers}).then(res=>{
+      console.log("Logout Successfully");
+    })
     localStorage.removeItem("token");
     localStorage.removeItem("user");
     navigate("/login");
@@ -24,40 +29,34 @@ const Navbar = ({ item }) => {
   const content = (
     <div>
       <p>
-        <strong>Username</strong>
+        <strong>Email Id</strong>
         <br />
         {user.email}
       </p>
-      <button className="btn" onClick={handleLogout}>
+      <button className="btn logout" onClick={handleLogout}>
         Logout
       </button>
     </div>
   );
+  const getRandomColor = () => {
+    const colors = ["#f56a00", "#7265e6", "#ffbf00", "#00a2ae"];
+    return colors[Math.floor(Math.random() * colors.length)];
+  };
 
   return (
     <div className="navbar">
       <div>
-        {!batchId ? (
-          <h2>
-            Welcome to {user.first_name} {user.last_name}
-          </h2>
-        ) : (
-          batchId &&
-          item && (
-            <Breadcrumb separator=" / ">
-              {item.map((breadcrumbItem, index) => (
-                <Breadcrumb.Item key={index}>
-                  <Link to={breadcrumbItem.link}>{breadcrumbItem.label}</Link>
-                </Breadcrumb.Item>
-              ))}
-            </Breadcrumb>
-          )
-        )}
+        <Breadcrumbs/>
+        {!batchId && <h1>welcome {user.first_name} {user.last_name}</h1>}
       </div>
       <div className="avatar__container">
         <Popover content={content} placement="bottomRight" trigger="click">
           <div className="avatar__logo">
-            <span className="material-symbols-outlined">account_circle</span>
+            <Avatar
+              style={{ backgroundColor: getRandomColor() }}
+            >{`${user.first_name.charAt(0).toUpperCase()}${user.last_name
+              .charAt(0)
+              .toUpperCase()}`}</Avatar>
           </div>
         </Popover>
       </div>

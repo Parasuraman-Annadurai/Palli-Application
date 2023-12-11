@@ -1,11 +1,30 @@
-import React from "react";
+import React,{useState} from "react";
 
-import { Select } from "antd";
-import { Option } from "antd/es/mentions";
 import Search from "antd/es/input/Search";
+import { Select, Popover } from "antd";
 
-const CommonFilters = ({ handleSearch, handleLimit, handleName ,handleChange,totalRecords}) => {
- 
+import FilterComponent from "./FilterComponent";
+
+
+const CommonFilter = ({
+  handleChange,
+  handleLimit,
+  handleName,
+  filterArray,
+  applyFilter,
+  appliedFilters
+}) => {
+  const [popoverVisible, setPopoverVisible] = useState(false);
+
+
+  const content = (
+    <div>
+      <FilterComponent filter={filterArray} applyFilter={applyFilter} setPopoverVisible={setPopoverVisible}/>
+    </div>
+  );
+  const appliedFilterLength = Object.keys(appliedFilters).length;
+
+
   return (
     <>
       <Search
@@ -13,29 +32,41 @@ const CommonFilters = ({ handleSearch, handleLimit, handleName ,handleChange,tot
         placeholder="search task"
         name={handleName}
         onChange={handleChange}
-        onSearch={handleSearch}
       />
-      <div className="fileter-category">
+      <div className="filter-category">
         Show
         <Select
           size="small"
           defaultValue="5"
-          className="limit-seter"
+          style={{ width: 70, paddingLeft: 10, paddingRight: 5 }}
           onChange={handleLimit}
         >
-          <Option value="5">5</Option>
-          <Option value="10">10</Option>
-          <Option value="20">20</Option>
-          <Option value="30">30</Option>
+          <Select.Option value="5">5</Select.Option>
+          <Select.Option value="10">10</Select.Option>
+          <Select.Option value="20">20</Select.Option>
+          <Select.Option value="30">30</Select.Option>
         </Select>
         Entries
       </div>
-
-      <div className="record-count">
-            <span>{totalRecords} Records</span>
+      
+      <div className="filter-container" >
+        <Popover  
+         open={popoverVisible}
+         content={content}
+         placement="bottomRight"
+         trigger="click"
+         openClassName={popoverVisible}
+         onVisibleChange={(visible) => setPopoverVisible(visible)}
+         
+         >
+          <div className="filter-icon" onClick={() => setPopoverVisible(!popoverVisible)}>
+          <span>{appliedFilterLength === 0 ? "" : appliedFilterLength}</span>
+            <span className="material-symbols-outlined">filter_list</span>
           </div>
+        </Popover>
+      </div>
     </>
   );
 };
 
-export default CommonFilters;
+export default CommonFilter;

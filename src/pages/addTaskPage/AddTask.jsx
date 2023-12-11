@@ -19,6 +19,8 @@ import timezone from "dayjs/plugin/timezone";
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css"; // Import the styles
 
 import { useForm, Controller } from "react-hook-form";
 
@@ -27,6 +29,8 @@ import { useAuth } from "../../context/AuthContext";
 import { API_END_POINT } from "../../../config";
 
 import "./AddTask.css";
+
+import { validateAddTask } from "../../utils/validate";
 
 const AddTask = () => {
   const navigate = useNavigate();
@@ -37,13 +41,18 @@ const AddTask = () => {
   const [selectedStudents, setSelectedStudents] = useState([]);
   const [selectAll, setSelectAll] = useState(true);
   const [loading, setLoading] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(true);
 
   const {
     control,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, dirtyFields },
     setValue,
-  } = useForm();
+  } = useForm({
+    defaultValues: {
+      task_type: "task",
+    },
+  });
 
   useEffect(() => {
     setLoading(true);
@@ -88,16 +97,16 @@ const AddTask = () => {
           const { task_title, task_description, due_date, task_type } =
             taskDetails;
 
+          console.log(task_description);
           const parsedDate = dayjs.utc(due_date);
-          const formattedDate = parsedDate.format("YYYY-MM-DD")
+          const formattedDate = parsedDate.format("YYYY-MM-DD");
           const formattedTime = parsedDate.format("HH:mm:ss");
 
           setValue("task_title", task_title);
           setValue("task_description", task_description);
           setValue("task_type", task_type === 0 ? "task" : "assessment");
-          setValue("date", dayjs(formattedDate,'YYYY-MM-DD'));
-          setValue("time",dayjs(formattedTime,"HH:mm:ss"));
-
+          setValue("date", dayjs(formattedDate, "YYYY-MM-DD"));
+          setValue("time", dayjs(formattedTime, "HH:mm:ss"));
         }
       })
       .catch((error) => {
@@ -108,6 +117,7 @@ const AddTask = () => {
         setLoading(false);
       });
   }, [taskId, batchId, token]);
+
   const handleSelectAllChange = (e) => {
     e.stopPropagation();
     const checked = e.target.checked;
@@ -121,7 +131,15 @@ const AddTask = () => {
     setSelectedStudents(value);
     setSelectAll(false);
   };
+
+  const validateNotEmpty = (fieldName, value) => {
+    const trimmedValue = value ? value.replace(/<[^>]*>/g, "").trim() : null;
+    return trimmedValue ? undefined : `${fieldName} is required`;
+  };
+
   const handleTaskAdd = async (formData) => {
+
+    console.log(formData);
     const {
       task_title,
       task_description,
@@ -130,6 +148,7 @@ const AddTask = () => {
       time,
       selectedStudents,
     } = formData;
+
 
     const parsedDate = dayjs(date);
     const parseTime = dayjs(time);
@@ -150,17 +169,16 @@ const AddTask = () => {
       : `${API_END_POINT}/api/task/${batchId}/create_task/`;
 
     const method = taskId ? "PUT" : "POST";
-    try {
-      await axios({
-        method,
-        url: apiEndpoint,
-        headers: {
-          Authorization: `Bearer ${token.access}`,
-          "Content-Type": "application/json",
-        },
-        data: formattedData,
-      });
 
+    axios({
+      method,
+      url: apiEndpoint,
+      headers: {
+        Authorization: `Bearer ${token.access}`,
+        "Content-Type": "application/json",
+      },
+      data: formattedData,
+    }).then((res) => {
       notification.success({
         message: "Success",
         description: taskId
@@ -169,10 +187,19 @@ const AddTask = () => {
         duration: 3,
       });
 
+      const assignUser= {
+        user:selectedStudents
+      }
+      const headers = {
+        Authorization: `Bearer ${token.access}`,
+        "Content-Type": "application/json",
+      }
+      axios.post(`${API_END_POINT}/api/task/${batchId}/assign/task/${res.data.data.id}`,assignUser,{headers}).then(res=>{
+        console.log(res);
+      })
+
       navigate(`/batch/${batchId}/module`);
-    } catch (error) {
-      console.error("Error:", error);
-    }
+    });
   };
 
   const dropdownMenu = (
@@ -229,11 +256,7 @@ const AddTask = () => {
                       control={control}
                       defaultValue=""
                       rules={{
-                        required: "Task title is required",
-                        maxLength: {
-                          value: 50,
-                          message: "Task title must not exceed 50 characters",
-                        },
+                        validate: (value) => validateNotEmpty("Title", value),
                       }}
                       render={({ field }) => (
                         <input placeholder="Title..." {...field} />
@@ -248,22 +271,61 @@ const AddTask = () => {
                     <Controller
                       name="task_description"
                       control={control}
-                      defaultValue=""
                       rules={{
-                        required: "Description is required",
-                        maxLength: {
-                          value: 200,
-                          message: "Description must not exceed 200 characters",
-                        },
+                        validate: (value) =>
+                          validateNotEmpty("Description", value),
                       }}
                       render={({ field }) => (
-                        <textarea placeholder="Description..." {...field} />
+                        <ReactQuill
+                          theme="snow"
+                          style={{ height: "200px" }}
+                          placeholder="Description..."
+                          value={field.value}
+                          onChange={(value) => field.onChange(value)}
+                          modules={{
+                            toolbar: [
+                              [{ header: [1, 2, 3, 4, 5, 6, false] }],
+                              ["bold", "italic", "underline"],
+                              [{ list: "ordered" }, { list: "bullet" }],
+                              [{ indent: "-1" }, { indent: "+1" }],
+                              ["link"],
+                              [
+                                { align: [] },
+                                "align-left",
+                                "align-center",
+                                "align-right",
+                                "align-justify",
+                              ],
+                            ],
+                          }}
+                          formats={[
+                            "header",
+                            "bold",
+                            "italic",
+                            "underline",
+                            "list",
+                            "bullet",
+                            "indent",
+                            "link",
+                            "align",
+                            "direction",
+                            "align-left",
+                            "align-center",
+                            "align-right",
+                            "align-justify",
+                          ]}
+                        />
                       )}
                     />
-                    <p className="error-message">
-                      {errors.task_description &&
-                        errors.task_description.message}
-                    </p>
+                    <div>
+                      <br />
+                      <br />
+                      <br />
+                      <p className="error-message">
+                        {errors.task_description &&
+                          errors.task_description.message}
+                      </p>
+                    </div>
                   </div>
                 </div>
                 <div className="right-container">
@@ -301,37 +363,43 @@ const AddTask = () => {
                     </div>
                     <div className="due-time-sec">
                       <label htmlFor="due">Due Date</label>
-                      <Controller
-                        name="date"
-                        control={control}
-                        defaultValue={null}
-                        rules={{ required: "Date is required" }}
-                        render={({ field }) => (
-                          <DatePicker
-                            format="YYYY-MM-DD"
-                            placeholder="Select Date"
-                            {...field}
+
+                      <div className="date-time-container">
+                        <div className="date">
+                          <Controller
+                            name="date"
+                            control={control}
+                            defaultValue={null}
+                            rules={{ required: "Date is required" }}
+                            render={({ field }) => (
+                              <DatePicker
+                                format="YYYY-MM-DD"
+                                placeholder="Select Date"
+                                {...field}
+                              />
+                            )}
                           />
+                          <p className="error-message">
+                            {errors.date && errors.date.message}
+                          </p>
+                        </div>
+                        {dirtyFields.date && ( // Check if date is selected
+                          <div className="time">
+                            <Controller
+                              name="time"
+                              control={control}
+                              defaultValue={null}
+                              rules={{ required: "Time is required" }}
+                              render={({ field }) => (
+                                <TimePicker {...field} format="HH:mm:ss" />
+                              )}
+                            />
+                            <p className="error-message">
+                              {errors.time && errors.time.message}
+                            </p>
+                          </div>
                         )}
-                      />
-                      <p className="error-message">
-                        {errors.date && errors.date.message}{" "}
-                      </p>
-                    </div>
-                    <div className="due-time-sec">
-                      <label htmlFor="due">Due Time</label>
-                      <Controller
-                        name="time"
-                        control={control}
-                        defaultValue={null}
-                        rules={{ required: "Time is required" }}
-                        render={({ field }) => (
-                          <TimePicker {...field} format="HH:mm:ss" />
-                        )}
-                      />
-                      <p className="error-message">
-                        {errors.time && errors.time.message}
-                      </p>
+                      </div>
                     </div>
                     <div className="due-date-sec">
                       <label htmlFor="due">Task Type</label>
@@ -346,11 +414,13 @@ const AddTask = () => {
                             placeholder="Select an option"
                             className="type-picker"
                           >
-                            <Option value="" disabled>
+                            <Select.Option value="" disabled>
                               Select an option
-                            </Option>
-                            <Option value="task">Task</Option>
-                            <Option value="assessment">Assessment</Option>
+                            </Select.Option>
+                            <Select.Option value="task">Task</Select.Option>
+                            <Select.Option value="assessment">
+                              Assessment
+                            </Select.Option>
                           </Select>
                         )}
                       />

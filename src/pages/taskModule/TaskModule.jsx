@@ -2,13 +2,14 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-import { Skeleton, Pagination, Modal, Dropdown, Menu } from "antd";
+import { Skeleton, Pagination, Modal,Tag } from "antd";
 import axios from "axios";
 
 import TableView from "../../components/TableView";
-import CommonFilters from "../../components/CommonFilters";
+import CommonFilter from "../../components/CommonFilters";
 
 import useForm from "../../hooks/useForm";
+import useFilter from "../../hooks/useFilter";
 
 import { useAuth } from "../../context/AuthContext";
 
@@ -18,15 +19,19 @@ import "./TaskModule.css";
 
 const TaskModule = () => {
   const navigate = useNavigate();
+  const filter = useFilter("task");
+
   const { token } = useAuth();
   const { id: batchId } = useParams();
   const [taskLists, setTaskLists] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [sortKey, setSortKey] = useState("");
+  const [sortOrder, setSortOrder] = useState(1);
   const { formData, handleChange } = useForm({
     limit: 4,
     currentPage: 1,
-    taskSearch: "", // Add taskSearch field
-    taskFilter: "", // Add taskFilter field
+    taskSearch: "",
+    task_type: "",
   });
   useEffect(() => {
     const fetchData = async () => {
@@ -37,18 +42,21 @@ const TaskModule = () => {
         "Content-Type": "application/json",
       };
 
-      try {
-        const response = await axios.get(
-          `${API_END_POINT}/api/task/${batchId}/list_task/?limit=${formData.limit}&page=${formData.currentPage}&filter_task_type=${formData.taskFilter}&search=${formData.taskSearch}`,
+      axios
+        .get(
+          `${API_END_POINT}/api/task/${batchId}/list_task/?limit=${formData.limit}&page=${formData.currentPage}&filter_task_type=${formData.task_type}&sort_key=${sortKey}&sort_order=${sortOrder}&search=${formData.taskSearch}`
+          ,
           { headers }
-        );
-
-        setTaskLists(response.data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      } finally {
-        setLoading(false);
-      }
+        )
+        .then((res) => {
+          setTaskLists(res.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
     };
 
     fetchData();
@@ -56,12 +64,11 @@ const TaskModule = () => {
     formData.limit,
     formData.currentPage,
     formData.taskSearch,
-    formData.taskFilter,
+    formData.task_type,
+    sortKey,
+    sortOrder
   ]);
 
-  const handleChangePage = (page) => {
-    handleChange({ target: { name: "currentPage", value: page } });
-  };
   const columnNameList = [
     { key: "task_title", title: "Task Name" },
     { key: "task_description", title: "Task Description" },
@@ -70,13 +77,20 @@ const TaskModule = () => {
     { key: "action", title: "Action" },
   ];
 
+
+  const handleChangePage = (page) => {
+    handleChange({ target: { name: "currentPage", value: page } });
+  };
+  const handleCreate = () => {
+    navigate(`/batch/${batchId}/module/add/task`);
+  };
   const handleDelete = (deleteTaskId) => {
     Modal.confirm({
       title: "Confirm Deletion",
       content: "Are you sure you want to delete this task?",
-      onOk: async () => {
-        try {
-          await axios.delete(
+      onOk: () => {
+        axios
+          .delete(
             `${API_END_POINT}/api/task/${batchId}/delete_task/${deleteTaskId}`,
             {
               headers: {
@@ -84,63 +98,99 @@ const TaskModule = () => {
                 "Content-Type": "application/json",
               },
             }
-          );
-          
-        } catch (error) {
-          console.error("Error deleting task:", error);
-         
-        }
+          )
+          .then((res) => {
+            // Update taskLists after successful deletion
+            setTaskLists((prevTaskLists) => ({
+              ...prevTaskLists,
+              data: prevTaskLists.data.filter((item) => item.id !== deleteTaskId),
+              total: prevTaskLists.total - 1,
+            }));
+          })
+          .catch((error) => {
+            console.log(error);
+          });
       },
     });
   };
-  
+
   const handleEdit = (editId) => {
     navigate(`/batch/${batchId}/module/edit/task/${editId}`);
   };
-  const handleSearch = (value) => {
-    if (value.trim() !== "" || value === "") {
-      handleChange({ target: { name: "taskSearch", value: value.trim() } });
-    }
-  };
-  const handleMenuClick = ({ key }) => {
-    if (key === "assessment") {
-      navigate(`/batch/${batchId}/module/add/task`);
-    }
-  };
 
-  const menu = (
-    <Menu>
-      <Menu.Item key="assessment" onClick={handleMenuClick}>
-        <div className="icon-flex">
-          <span class="material-symbols-outlined">add</span>
-          Add Assessment
-        </div>
-      </Menu.Item>
-    </Menu>
-  );
   const handleLimit = (limit) => {
     handleChange({ target: { name: "limit", value: limit } });
   };
+  const [appliedFilters, setAppliedFilters] = useState({});
+
+  const handleApplyFilter = (filterData) => {
+    setAppliedFilters(filterData)
+    Object.keys(filterData).forEach((key) => {
+      handleChange({
+        target: {
+          name: key,
+          value: filterData[key],
+        },
+      });
+    });
+  };
+
+  const handleCancelFilter = (filterName) => {
+    const updatedFilters = { ...appliedFilters };
+    delete updatedFilters[filterName];
+    setAppliedFilters(updatedFilters);
+    handleChange({
+      target: {
+        name: `${filterName}`,
+        value: "",
+      },
+    });
+  };
+
+  const handleSortChange = (key) => {
+    if (sortKey === key) {
+      setSortOrder((prevOrder) => (prevOrder === 0 ? 1 : 0));
+    } else {
+      setSortKey(key);
+      setSortOrder(1);
+    }
+  };
+
   return (
     <div className="content">
       <div className="application-header">
         <h2>Tasks</h2>
         <div className="header-controls">
-          <Dropdown overlay={menu} placement="bottomRight">
-            <span className="icon-flex">
-              Create <span class="material-symbols-outlined">expand_more</span>
-            </span>
-          </Dropdown>
-          <CommonFilters
+         {taskLists.total > 0 &&(
+           <button className="btn add-task" onClick={handleCreate}>
+           Create
+         </button>
+         )}
+          <CommonFilter
             handleChange={handleChange}
-            handleSearch={handleSearch}
             handleLimit={handleLimit}
             handleName={"taskSearch"}
-            totalRecords={taskLists.total}
+            filterArray={filter}
+            applyFilter={handleApplyFilter}
+            appliedFilters={appliedFilters}
           />
+           <div className="record-count">
+            <span>{taskLists.total} Records</span>
+          </div>
         </div>
+        
       </div>
-
+      <div className="applied-filters">
+          {Object.keys(appliedFilters).map((filterName) => (
+            <div key={filterName} className="applied-filter">
+              <Tag color="green">
+              <span>{`${filterName}`}</span>
+              </Tag>
+              <span class="material-symbols-outlined clear-filter-icon" onClick={() => handleCancelFilter(filterName)}>cancel</span>
+            </div>
+          ))}
+        </div>
+       
       {loading ? (
         <Skeleton active paragraph={{ rows: 4 }} />
       ) : (
@@ -150,6 +200,11 @@ const TaskModule = () => {
             columnNameList={columnNameList}
             handleDelete={handleDelete}
             handleEdit={handleEdit}
+            createButtonAction={`/batch/${batchId}/module/add/task`}
+            sortKey={sortKey}
+            sortOrder={sortOrder}
+            handleSortChange={handleSortChange}
+
           />
           <div
             className={`pagination__container ${

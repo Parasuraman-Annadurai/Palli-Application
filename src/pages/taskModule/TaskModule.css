@@ -1,9 +1,9 @@
 :root {
   --primary-color: #223f64;
-  --secondray-color: #3f88d8;
+  --secondary-color: #3f88d8;
   --text-primary-color: #24384f;
   --font-family: "Poppins", sans-serif;
-  --text-secondray-color: white;
+  --text-secondary-color: white;
   --h1-font-size: 32px;
   --p-font-size: 24px;
   --error: red;
@@ -16,11 +16,8 @@
   color: white;
   background-color: var(--error);
 }
-span.ant-dropdown-trigger {
-
+.btn.add-task{
   background-color: var(--primary-color);
   color: white;
-  padding: 2px 7px;
-  border-radius: 5px;
 }
 

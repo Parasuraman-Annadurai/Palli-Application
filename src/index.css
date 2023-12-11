@@ -1,15 +1,15 @@
 /* write common styles only here */
 :root {
   --primary-color: #223f64;
-  --secondray-color: #3f88d8;
+  --secondary-color: #3f88d8;
   --text-primary-color: #24384f;
   --font-family: "Poppins", sans-serif;
-  --text-secondray-color: white;
+  --text-secondary-color: white;
   --h1-font-size: 32px;
   --p-font-size: 24px;
   --error: red;
 }
-* {
+*{
   padding: 0;
   margin: 0;
   list-style: none;
@@ -20,6 +20,7 @@ body {
 }
 
 /* TableComponent.css */
+
 .table-wrapper {
   overflow-x: auto;
 }
@@ -31,9 +32,8 @@ body {
   margin-bottom: 20px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.09);
   table-layout: fixed;
-  table-layout: calc();
 }
-.antd-table a {
+.antd-table a{
   color: var(--primary-color);
 }
 
@@ -59,7 +59,6 @@ body {
   flex-direction: column;
   align-items: baseline;
 }
-
 /* Sorting Icons */
 .sort-icon {
   display: inline-block;
@@ -127,15 +126,14 @@ body {
   display: none;
 }
 
-.ant-pagination .ant-pagination-item-active {
+.ant-pagination .ant-pagination-item-active{
   border: none;
 }
 .ant-pagination .ant-pagination-item-active a {
-  color: white;
+  color:white;
   background-color: var(--primary-color);
 }
 
-/* invite nad view more button button*/
 .btn {
   padding: 8px 20px;
   border-radius: 6px;
@@ -149,6 +147,8 @@ body {
   border: none;
 }
 
+
+
 /* 
 common layout */
 .app {
@@ -161,7 +161,7 @@ common layout */
 .sidebar {
   max-width: 200px;
   width: 100%;
-  background-color: #333;
+  background-color: var(--primary-color);
   color: white;
   height: 100vh;
   position: fixed;
@@ -180,7 +180,7 @@ common layout */
 .navbar {
   max-width: 100%;
   width: 100%;
-  background-color: #444;
+  background-color: var(--primary-color);
   color: white;
   padding: 20px;
   display: flex;
@@ -217,6 +217,7 @@ common layout */
   color: var(--primary-color);
 }
 
+
 .content {
   margin: 20px;
   background-color: white;
@@ -241,8 +242,8 @@ common layout */
   padding: 47px 40px 0px;
 }
 
-.active {
-  background-color: var(--primary-color);
+.active{
+  background-color: var(--secondary-color);
   border-radius: 0px 15px 15px 0px;
 }
 .setting {
@@ -266,7 +267,7 @@ common layout */
   cursor: pointer;
 }
 
-.filter__icon {
+.filter__icon{
   color: var(--primary-color);
 }
 
@@ -288,6 +289,14 @@ common layout */
   max-width: 350px;
   width: 100%;
   margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.no-data-found .btn.create-btn{
+  background-color: var(--primary-color);
+  color: white;
+  padding: 10px 50px;
 }
 
 .antd-table-action {
@@ -296,7 +305,7 @@ common layout */
 }
 /* breadcrumb */
 .ant-breadcrumb {
-  color: black;
+  color: rgb(255, 255, 255);
 }
 
 .ant-breadcrumb-link > a {
@@ -312,11 +321,110 @@ common layout */
   align-items: center;
 }
 
+.pagination-container {
+  margin-top: auto; /* Push the pagination container to the bottom */
+}
+
+
+
+
+
+.breadcrumb-container .double-arrow {
+  display: inline-block;
+  margin-left: 5px;
+  margin-right: 5px;
+  font-size: 16px; 
+  vertical-align: middle;
+}
+.link {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #223f64;
+}
+.error-message{
+  height: 20px;
+  color: var(--error);
+  padding-top: 2px;
+}
+
+/* Apply filter btn and clear filter btn */
+.btn.apply-filter-btn,.btn.clear-filter-btn{
+  margin-top: 5px;
+  border: 1px solid var(--primary-color);
+  margin-right: 5px;
+}
+.btn.apply-filter-btn:hover{
+  background-color: var(--primary-color);
+  color: white;
+}
+.btn.clear-filter-btn:hover{
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.btn.logout{
+  border: 1px solid var(--primary-color);
+}
+.btn-logout:hover{
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.filter-container .filter-icon{
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+/* FilterComponent.css */
+
+.filter-container {
+  position: relative;
+  padding: 10px;
+}
+
+.filter-dropdown {
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.filter-dropdown div {
+  margin-bottom: 15px;
+}
+
+.filter-label {
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.filter-container input,
+Select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-sizing: border-box;
+  outline: none;
+  background-color: white;
+}
+
+
+
+
+
+
+  
 .error-message {
   height: 20px;
   color: var(--error);
   padding-top: 2px;
 }
+
 .fileter-category{
   color: var(--primary-color);
 }
@@ -333,4 +441,23 @@ common layout */
   align-items: center;
   cursor: pointer;
   
+}
+
+
+
+.applied-filters {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+
+}
+.applied-filter {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+.clear-filter-icon{
+  color: var(--error);
+  font-size: 20px;
+  cursor: pointer;
 }

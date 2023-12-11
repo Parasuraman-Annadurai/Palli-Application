@@ -1,15 +1,28 @@
 import React, { useState, useEffect } from "react";
-import dashBoardHeaderImage from "../../../public/images/dashboard_header_image.svg";
-import useAPI from "../../hooks/useAPI";
-import { Button, Modal, Input, DatePicker, Skeleton } from "antd";
-import { API_END_POINT } from "../../../config";
-import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
-import "./DashBoard.css";
+
+//External Packages here
+import { Button, Modal, Input, DatePicker, Skeleton } from "antd";
+
+//Custom hooks here
+import useAPI from "../../hooks/useAPI";
+
+//Our components here
+
 import BacthList from "./component/BatchList";
+
+//Our context here
+import { useAuth } from "../../context/AuthContext";
+
+//API endpint here
+import { API_END_POINT } from "../../../config";
+//Images here
+import dashBoardHeaderImage from "/images/dashboard_header_image.svg";
+//CSS here
+import "./DashBoard.css";
 const DashBoard = () => {
   const navigate = useNavigate();
-  const { token, user } = useAuth();
+  const {user } = useAuth();
   const { data: batchList, loading, makeNetworkRequest } = useAPI();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -30,12 +43,7 @@ const DashBoard = () => {
       "http://13.232.90.154:8000/api/list/batch/",
       "GET",
       null,
-      // {
-      //   headers: {
-      //     Authorization: `Bearer ${token.access}`,
-      //     "Content-Type": "application/json",
-      //   },
-      // }
+     
     );
   }, []);
 

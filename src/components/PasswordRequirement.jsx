@@ -1,5 +1,6 @@
 
 import React from 'react';
+
 export const passwordRequirements = (password) => {
   const lengthCheck = /.{8,}/.test(password);
   const upperCaseCheck = /[A-Z]/.test(password);

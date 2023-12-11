@@ -73,8 +73,7 @@ export const validateNewpassword = (newPasswordData, setErrors) => {
 
 export const validateAddTask = (addTaskData,setErrors) => {
 
- 
-  console.log(addTaskData.task_type == false);
+
   let errors = {};
   let isVaild = true;
   if (!addTaskData.task_title.trim()) {

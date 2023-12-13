@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 import {
@@ -22,7 +22,7 @@ dayjs.extend(utc);
 dayjs.extend(timezone);
 
 import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css"; // Import the styles
+import "react-quill/dist/quill.snow.css"; 
 
 import { useForm, Controller } from "react-hook-form";
 
@@ -32,35 +32,34 @@ import { API_END_POINT } from "../../../config";
 
 import "./AddTask.css";
 
-import { validateAddTask } from "../../utils/validate";
 
 const AddTask = () => {
   const navigate = useNavigate();
   const { taskId } = useParams();
   const { token } = useAuth();
   const { id: batchId } = useParams();
-  const [studentList, setStudentList] = useState([]);
-  const [selectedStudents, setSelectedStudents] = useState([]);
-  const [selectAll, setSelectAll] = useState(true);
-  const [weightageList, setWeightageList] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [selectValues, setSelectValues] = useState([{}]);
-
-  const [selectedDate, setSelectedDate] = useState(true);
 
   const {
     control,
     handleSubmit,
-    formState: { errors, dirtyFields },
+    watch,
+    formState: { errors },
     setValue,
   } = useForm({
     defaultValues: {
+      studentList:[],
+      selectedStudents:[],
+      selectAll:true,
+      weightageList:[],
+      loading:false,
+      selectValues:[{}],
+      selectedDate:true,
       task_type: "task",
     },
   });
-
+  const watchFields = watch();
   useEffect(() => {
-    setLoading(true);
+    setValue("loading",true)
 
     const headers = {
       Authorization: `Bearer ${token.access}`,
@@ -84,18 +83,15 @@ const AddTask = () => {
 
     Promise.all([fetchTaskDetails, fetchStudentList])
       .then(([taskDetailsRes, studentListRes]) => {
-        setLoading(true);
+        setValue("loading",true);
         const taskDetails = taskDetailsRes ? taskDetailsRes.data.data : null;
         const studentList = studentListRes.data
           ? studentListRes?.data?.data
           : [];
-        setStudentList(studentList);
-        setSelectedStudents(
-          selectAll ? studentList.map((student) => student.id) : []
-        );
+        setValue("studentList",studentList)
         setValue(
           "selectedStudents",
-          selectAll ? studentList.map((student) => student.id) : []
+          watchFields.selectAll ? studentList.map((student) => student.id) : []
         );
 
         if (taskDetails) {
@@ -119,9 +115,9 @@ const AddTask = () => {
         console.error("Error fetching data:", error);
       })
       .finally(() => {
-        setLoading(false);
+        setValue("loading",false)
       });
-  }, [taskId, batchId, token]);
+  }, [taskId]);
 
   useEffect(() => {
     const headers = {
@@ -132,7 +128,7 @@ const AddTask = () => {
     axios
       .get(`${API_END_POINT}/api/task/${batchId}/list/weightage`, { headers })
       .then((res) => {
-        setWeightageList(res.data.data);
+        setValue("weightageList",res.data.data)
       })
       .catch((error) => {
         console.error("Error:", error);
@@ -141,25 +137,24 @@ const AddTask = () => {
   const handleSelectAllChange = (e) => {
     e.stopPropagation();
     const checked = e.target.checked;
-    setSelectAll(checked);
-    setSelectedStudents(
-      checked ? studentList.map((student) => student.id) : []
-    );
+    setValue("selectAll",checked)
+    setValue("selectedStudents",  checked ? watchFields.studentList.map((student) => student.id) : [])
   };
 
   const handleStudentSelect = (value) => {
-    setSelectedStudents(value);
-    setSelectAll(false);
+    setValue("selectedStudents",value);
+    setValue("selectAll",false)
+
   };
 
   const validateNotEmpty = (fieldName, value) => {
     const trimmedValue = value ? value.replace(/<[^>]*>/g, "").trim() : null;
-    return trimmedValue ? undefined : `${fieldName} is required`;
+    return trimmedValue ? null : `${fieldName} is required`;
   };
 
   const handleTaskAdd = async (formData) => {
 
-    const requests = selectValues.map( (item) => {
+    const requests = watchFields.selectValues.map( (item) => {
       const headers = {
         Authorization : `Bearer ${token.access}`,
         "Content-type" : "application/json"
@@ -175,7 +170,6 @@ const AddTask = () => {
       return response.data;
     });
 
-    console.log(requests);
     const {
       task_title,
       task_description,
@@ -242,7 +236,7 @@ const AddTask = () => {
   const dropdownMenu = (
     <Menu onClick={(e) => e.stopPropagation()}>
       <Menu.Item key="selectAll">
-        <Checkbox onChange={handleSelectAllChange} checked={selectAll}>
+        <Checkbox onChange={handleSelectAllChange} checked={watchFields.selectAll}>
           Select All
         </Checkbox>
       </Menu.Item>
@@ -252,11 +246,11 @@ const AddTask = () => {
         <Select
           mode="multiple"
           placeholder="Select students"
-          value={selectedStudents}
+          value={watchFields.selectedStudents}
           onChange={handleStudentSelect}
         >
-          {studentList && [
-            ...studentList.map((student) => (
+          {watchFields.studentList && [
+            ...watchFields.studentList.map((student) => (
               <Select.Option key={student.id} value={student.id}>
                 {`${student.first_name} ${student.last_name}`}
               </Select.Option>
@@ -266,27 +260,51 @@ const AddTask = () => {
       </Menu.Item>
     </Menu>
   );
+
+  const quillModules = {
+    toolbar: [
+      [{ header: [1, 2, 3, 4, 5, 6, false] }],
+      ["bold", "italic", "underline"],
+      [{ list: "ordered" }, { list: "bullet" }],
+      [{ indent: "-1" }, { indent: "+1" }],
+      ["link"],
+      [{ align: [] }],
+    ],
+  };
+
+  const quillFormats = [
+    "header",
+    "bold",
+    "italic",
+    "underline",
+    "list",
+    "bullet",
+    "indent",
+    "link",
+    "align",
+  ];
+  
   const handleCancel = () => {
     navigate(`/batch/${batchId}/module`);
   };
   const handleAddSelect = () => {
-    setSelectValues([...selectValues, { weightage: '', weightage_percentage: 0 }]);
+    setSelectValues([...watchFields.selectValues, { weightage: '', weightage_percentage: 0 }]);
   };
   const handleWeightageChange = (value, index) => {
-    const updatedValues = [...selectValues];
+    const updatedValues = [...watchFields.selectValues];
     updatedValues[index].weightage = value;
     setSelectValues(updatedValues);
   };
 
   const handleInputChange = (event, index) => {
     const { value } = event.target;
-    const updatedValues = [...selectValues];
+    const updatedValues = [...watchFields.selectValues];
     updatedValues[index].weightage_percentage = Number(value);
     setSelectValues(updatedValues);
   };
   return (
     <div className="content">
-      {loading ? (
+      {watchFields.loading ? (
         <Skeleton active paragraph={{ rows: 10 }} />
       ) : (
         <>
@@ -314,7 +332,7 @@ const AddTask = () => {
                       )}
                     />
                     <p className="error-message">
-                      {errors.task_title && errors.task_title.message}
+                      {errors.task_title ? errors.task_title.message : ""}
                     </p>
                   </div>
                   <div className="task-desc-sec">
@@ -331,52 +349,16 @@ const AddTask = () => {
                           theme="snow"
                           style={{ height: "200px" }}
                           placeholder="Description..."
-                          value={field.value}
-                          onChange={(value) => field.onChange(value)}
-                          modules={{
-                            toolbar: [
-                              [{ header: [1, 2, 3, 4, 5, 6, false] }],
-                              ["bold", "italic", "underline"],
-                              [{ list: "ordered" }, { list: "bullet" }],
-                              [{ indent: "-1" }, { indent: "+1" }],
-                              ["link"],
-                              [
-                                { align: [] },
-                                "align-left",
-                                "align-center",
-                                "align-right",
-                                "align-justify",
-                              ],
-                            ],
-                          }}
-                          formats={[
-                            "header",
-                            "bold",
-                            "italic",
-                            "underline",
-                            "list",
-                            "bullet",
-                            "indent",
-                            "link",
-                            "align",
-                            "direction",
-                            "align-left",
-                            "align-center",
-                            "align-right",
-                            "align-justify",
-                          ]}
+                          {...field}
+                          modules={quillModules}
+                          formats={quillFormats}
                         />
                       )}
                     />
-                    <div>
-                      <br />
-                      <br />
-                      <br />
-                      <p className="error-message">
-                        {errors.task_description &&
-                          errors.task_description.message}
+                     <p className="error-message error-description">
+                        {errors.task_description ?
+                          errors.task_description.message :""}
                       </p>
-                    </div>
                   </div>
                 </div>
                 <div className="right-container">
@@ -396,20 +378,20 @@ const AddTask = () => {
                             {...field}
                           >
                             <a>
-                              {studentList.length === selectedStudents.length
+                              {watchFields.studentList.length === watchFields.selectedStudents.length
                                 ? "All Students Selected"
                                 : `${
-                                    selectedStudents.length === 0
+                                    watchFields.selectedStudents.length === 0
                                       ? "Select students"
-                                      : `${selectedStudents.length} Selected`
+                                      : `${watchFields.selectedStudents.length} Selected`
                                   }`}
                             </a>
                           </Dropdown>
                         )}
                       />
                       <p className="error-message">
-                        {errors.selectedStudents &&
-                          errors.selectedStudents.message}
+                        {errors.selectedStudents ?
+                          errors.selectedStudents.message :""}
                       </p>
                     </div>
                     <div className="due-time-sec">
@@ -431,10 +413,10 @@ const AddTask = () => {
                             )}
                           />
                           <p className="error-message">
-                            {errors.date && errors.date.message}
+                            {errors.date ? errors.date.message : ""}
                           </p>
                         </div>
-                        {dirtyFields.date && ( // Check if date is selected
+                        {watchFields.date && ( 
                           <div className="time">
                             <Controller
                               name="time"
@@ -446,7 +428,7 @@ const AddTask = () => {
                               )}
                             />
                             <p className="error-message">
-                              {errors.time && errors.time.message}
+                              {errors.time ? errors.time.message: ""}
                             </p>
                           </div>
                         )}
@@ -482,7 +464,7 @@ const AddTask = () => {
 
                     <div>
                       <label htmlFor="">Weightage</label>
-                      {selectValues.map((select, index) => (
+                      {watchFields.selectValues.map((select, index) => (
                         <div className="list-weightage" key={index}>
                           <Select
                             style={{ width: 300, marginRight: "8px" }}
@@ -492,7 +474,7 @@ const AddTask = () => {
                               handleWeightageChange(value, index)
                             }
                           >
-                            {weightageList.map((weightage, weightageIndex) => (
+                            {watchFields.weightageList.map((weightage, weightageIndex) => (
                               <Select.Option
                                 key={weightageIndex}
                                 value={weightage.id}
@@ -507,7 +489,7 @@ const AddTask = () => {
                             style={{ marginRight: "8px" }}
                             onChange={(e) => handleInputChange(e, index)}
                           />
-                          {index === selectValues.length - 1 && (
+                          {index === watchFields.selectValues.length - 1 && (
                             <Button type="primary" onClick={handleAddSelect}>
                               + Add
                             </Button>

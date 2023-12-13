@@ -7,7 +7,7 @@ import FilterComponent from "./FilterComponent";
 
 
 const CommonFilter = ({
-  handleChange,
+  handleSearch,
   handleLimit,
   handleName,
   filterArray,
@@ -29,9 +29,9 @@ const CommonFilter = ({
     <>
       <Search
         className="search__bar"
-        placeholder="search task"
+        placeholder={`${handleName.charAt(0).toUpperCase()}${handleName.slice(1)}...`}
         name={handleName}
-        onChange={handleChange}
+        onChange={handleSearch}
       />
       <div className="filter-category">
         Show

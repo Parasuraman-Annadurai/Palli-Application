@@ -6,8 +6,8 @@ const CHANGEPASSWORD = "/change/password";
 const DASHBOARD = "/dashboard";
 const APPLICATIONS = "/batch/:id/applications";
 const TASK = "/batch/:id/module";
-const ADDTASK = "/batch/:id/module/add/task";
-const EDITTASK = "/batch/:id/module/edit/task/:taskId";
+const ADDTASK = "/batch/:id/module/addtask";
+const EDITTASK = "/batch/:id/module/edit/:taskId";
 const ADDQUIZ = "/batch/:id/module/add/quiz";
 const WEIGHTAGE = "/batch/:id/module/add/task/weightage";
 

@@ -139,15 +139,11 @@ textarea:focus {
   padding: 10px 5px 10px 10px;
   outline: none;
 }
-.right-container .weightage button {
-  padding: 10px 71px 10px 62px;
-}
 
-.task-type {
-  padding: 10px 91px 10px 10px;
-  outline: none;
+.right-container .due-time-sec .date-time-container{
+  display: flex;
+  gap: 5px;
 }
-
 a.ant-dropdown-trigger.ant-dropdown-link {
   width: 120px;
   border: 1px solid;
@@ -176,4 +172,7 @@ a.ant-dropdown-trigger.ant-dropdown-link {
 input.ant-input.css-dev-only-do-not-override-6j9yrn.weightage-input.css-dev-only-do-not-override-6j9yrn {
   padding: 0;
   padding-left: 5px;
+}
+.error-description{
+  margin-top: 50px;
 }

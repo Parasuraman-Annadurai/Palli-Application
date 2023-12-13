@@ -5,7 +5,7 @@ import { Breadcrumb } from "antd";
 
 const Breadcrumbs = () => {
   const location = useLocation();
-  const pathSnippets = location.pathname.split("/").filter((i) => i);
+  const breadcrumbsPath = location.pathname.split("/").filter((i) => i);
 
   const isInDashboard = location.pathname.startsWith("/dashboard");
 
@@ -13,21 +13,21 @@ const Breadcrumbs = () => {
     // Do not show breadcrumbs in the dashboard
     return null;
   }
-  const breadcrumbs = pathSnippets.map((snippet, index) => {
+  const breadcrumbs = breadcrumbsPath.map((path, index) => {
     return (
       <span key={index}>
-      {snippet}{" "}
-      {index !== pathSnippets.length - 1 && (
-       <span className="material-symbols-outlined double-arrow" >
-       double_arrow
-       </span>
-      )}
-    </span>
+        {`${path.charAt(0).toUpperCase()}${path.slice(1)}`}
+        {index !== breadcrumbsPath.length - 1 && (
+          <span className="material-symbols-outlined double-arrow">
+            double_arrow
+          </span>
+        )}
+      </span>
     );
   });
 
   return (
-    <Breadcrumb className="breadcrumb-container" >{breadcrumbs}</Breadcrumb>
+    <Breadcrumb className="breadcrumb-container">{breadcrumbs}</Breadcrumb>
   );
 };
 

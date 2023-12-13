@@ -87,7 +87,7 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
 
       {!isDashboardPage && (
         <div className="setting flex" onClick={() => setIsModalOpen(true)}>
-          <span class="material-symbols-outlined">switch_account</span>
+          <span className="material-symbols-outlined">switch_account</span>
           <p className="switch">Switch</p>
         </div>
       )}

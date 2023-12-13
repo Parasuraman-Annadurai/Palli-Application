@@ -26,7 +26,7 @@ const TableView = ({
     setModalVisible(true);
   };
   const renderDueDate = (dueDate) => {
-    const utcDueDate = dayjs.utc(dueDate);
+    const utcDueDate = dayjs(dueDate);
     const today = dayjs().startOf("day"); // Adjusted for accurate comparisons
     const dueDateMoment = dayjs(utcDueDate).startOf("day");
     const daysDifference = dueDateMoment.diff(today, "days");
@@ -58,13 +58,6 @@ const TableView = ({
     { key: 9, label: "OfferDeclined" },
   ];
 
-  const renderSortIcon = (columnKey) => {
-    if (columnKey === sortKey) {
-      return sortOrder === 0 ? <span>&uarr;</span> : <span>&darr;</span>;
-    }
-    return null;
-  };
-
   if (tableData && tableData.length > 0) {
     return (
       <div className="table-wrapper">
@@ -72,11 +65,39 @@ const TableView = ({
           <thead>
             <tr>
               {columnNameList.map((column) => (
-                <th
-                  key={column.key}
-                  onClick={() => handleSortChange(column.key)}
-                >
-                  {column.title} {renderSortIcon(column.key)}
+                <th key={column.key}>
+                  {["applicantStatus", "viewMore", "action"].includes(
+                    column.key
+                  ) ? (
+                    <span>{column.title}</span>
+                  ) : (
+                    // Render the sorting icons with tooltips
+                    <div className="table-column-container">
+                      <p>{column.title}</p>
+                      <div>
+                        <span
+                          onClick={() => handleSortChange(column.key,0)}
+                          className={`material-symbols-outlined sorting-icon ${
+                            sortKey === column.key && sortOrder === 0
+                              ? "sorting-asc-icon"
+                              : "sorting-normal-icon"
+                          }`}
+                        >
+                          arrow_drop_up
+                        </span>
+                        <span
+                          onClick={() => handleSortChange(column.key,1)}
+                          className={`material-symbols-outlined  ${
+                            sortKey === column.key && sortOrder === 1
+                              ? "sorting-desc-icon"
+                              : "sorting-normal-icon"
+                          }`}
+                        >
+                          arrow_drop_down
+                        </span>
+                      </div>
+                    </div>
+                  )}
                 </th>
               ))}
             </tr>
@@ -88,9 +109,7 @@ const TableView = ({
                   <td key={column.key}>
                     {column.key === "dob" ? (
                       <Tooltip
-                        title={dayjs
-                          .utc(item[column.key])
-                          .format("MMMM DD, YYYY")}
+                        title={dayjs(item[column.key]).format("MMMM DD, YYYY")}
                         className="dob-container"
                       >
                         {dayjs(item[column.key]).format("MMM DD YYYY")}
@@ -135,10 +154,11 @@ const TableView = ({
                       ) : (
                         <span>Assessment</span>
                       )
-                    ) : column.key === "invite" ? (
+                    ) : column.key === "applicantStatus" ? (
                       <Select
                         style={{ width: 130 }}
                         placeholder={"Select status"}
+                        value={0}
                       >
                         {statusChoices.map((choice) => (
                           <Select.Option key={choice.key} value={choice.key}>

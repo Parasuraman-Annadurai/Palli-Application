@@ -43,7 +43,7 @@ body {
 .antd-table th,
 .antd-table td {
   border: 1px solid #e8e8e8;
-  padding: 16px;
+  padding: 10px;
   text-align: left;
   overflow: hidden;
   white-space: nowrap;
@@ -54,6 +54,26 @@ body {
   background-color: #fafafa;
 }
 
+.table-column-container{
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.table-column-container .sorting-icon{
+  display: block;
+  height: 10px;
+}
+.sorting-asc-icon {
+  color: var(--secondary-color); 
+}
+
+.sorting-desc-icon {
+  color: var(--secondary-color); 
+}
+
+.sorting-normal-icon {
+  color: black; 
+}
 .antd-table tbody tr:hover {
   background-color: #f5f5f5;
 }
@@ -64,22 +84,7 @@ body {
   align-items: baseline;
 }
 
-/* Sorting Icons */
-.sort-icon {
-  display: inline-block;
-  vertical-align: middle;
-  margin-left: 4px;
-}
 
-.sort-icon.asc {
-  border-width: 0 4px 6px;
-  border-color: transparent transparent #000 transparent;
-}
-
-.sort-icon.desc {
-  border-width: 6px 4px 0;
-  border-color: #000 transparent transparent transparent;
-}
 
 /* Header Hover Effect */
 .antd-table th:hover {
@@ -324,6 +329,8 @@ common layout */
   gap: 5px;
 }
 
+
+
 /* breadcrumb */
 .ant-breadcrumb {
   color: rgb(255, 255, 255);
@@ -404,6 +411,10 @@ common layout */
   cursor: pointer;
   display: flex;
   align-items: center;
+  color: var(--primary-color);
+}
+.filter-category {
+  color: var(--primary-color);
 }
 
 /* FilterComponent.css */
@@ -494,3 +505,10 @@ Select {
   font-size: 20px;
   cursor: pointer;
 }
+.arrow{
+  vertical-align: middle;
+}
+
+
+
+

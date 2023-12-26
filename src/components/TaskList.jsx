@@ -73,12 +73,14 @@ const TaskList = ({
                    <img
                       src="/icons/edit-pencil.svg"
                       alt="edit-icon"
+                      className="edit-icon"
                       id={task.id}
                       onClick={() => onEditClick(task.id)}
                     />
                       <img
                       src="/icons/deleteIcon.svg"
-                      alt="edit-icon"
+                      alt=""
+                      
                       id={task.id}
                       onClick={() => handleDelete(task.id)}
                     />

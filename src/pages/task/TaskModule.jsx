@@ -68,7 +68,7 @@ const TaskModule = () => {
         handleDelete={handleDelete}
         filterShow={false}
       />
-      <TaskView type={"task"} editId={editId} />
+      <TaskView type={"task"} editId={editId} weightageShow={false}/>
     </>
   );
 };

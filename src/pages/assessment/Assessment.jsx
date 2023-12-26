@@ -16,7 +16,7 @@ const AssessmentModule = () => {
     <>
       <TaskList
         title={"Assessment"}
-        filterType={0}
+        filterType={1}
         limit={5}
         onEditClick={activateEditMode}
         onEditModeChange={deactivateEditMode}

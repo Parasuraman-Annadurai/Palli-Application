@@ -665,12 +665,16 @@ body {
                 line-height: 16px;
                 font-weight: 500;
                 font-family: $font-Roboto;
+                flex: 1;
               }
 
               img {
                 width: 16px;
                 height: 16px;
                 display: none;
+              }
+              .edit-icon{
+                margin-right: 5px;
               }
             }
 

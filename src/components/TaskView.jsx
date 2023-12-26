@@ -5,7 +5,7 @@ import "react-quill/dist/quill.snow.css"; // Import the styles
 import { useAuth } from "../context/AuthContext";
 import axios from "axios";
 import dayjs from "dayjs";
-
+import WeightageList from "../components/demo";
 import { API_END_POINT } from "../../config";
 import { useParams } from "react-router-dom";
 import {
@@ -17,9 +17,11 @@ import {
   Dropdown,
   Button,
   Skeleton,
+  Input,
+  InputNumber,
 } from "antd";
 
-import WeightageList from "./WeightageList";
+// import WeightageList from "./WeightageList";
 
 const TaskView = ({ editId, type, weightageShow }) => {
   const { id: batchId } = useParams();
@@ -29,12 +31,19 @@ const TaskView = ({ editId, type, weightageShow }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [students, setStudents] = useState([]);
   const [selectedStudents, setSelectedStudents] = useState([]);
+  const [weightages, setWeighatages] = useState([]);
+  // const [selectWeightages, setSelectWeightages] = useState([{}]);
+  const [selectWeightages, setSelectWeightages] = useState([
+    { weightage: "", weightage_percentage: "" },
+  ]);
 
   const {
     control,
     handleSubmit,
     reset,
+    clearErrors,
     setError,
+    watch,
     getValues,
     setValue,
     formState: { errors },
@@ -81,12 +90,28 @@ const TaskView = ({ editId, type, weightageShow }) => {
       setValue("description", "");
       setValue("due_date", "");
     }
+
+    //weightage
+    axios
+      .get(`${API_END_POINT}/api/task/${batchId}/list/weightage`, { headers })
+      .then((res) => {
+        if (res.status === 200 && res.data.message === "Success") {
+          setWeighatages(res.data.data);
+        }
+      });
   }, [editId]);
 
   const validateNotEmpty = (fieldName, value) => {
     const trimmedValue = value ? value.replace(/<[^>]*>/g, "").trim() : null;
     return trimmedValue ? null : `${fieldName} is required`;
   };
+
+  const remainingPercentage =
+    100 -
+    selectWeightages.reduce(
+      (acc, curr) => acc + (curr.weightage_percentage || 0),
+      0
+    );
 
   const handleAddTask = (taskData) => {
     if (selectedStudents.length === 0) {
@@ -119,10 +144,10 @@ const TaskView = ({ editId, type, weightageShow }) => {
       : `${API_END_POINT}/api/task/${batchId}/create_task/`;
     const method = editId ? "PUT" : "POST";
 
-    const headers = {
-      Authorization: `Bearer ${token.access}`,
-      "Content-Type": "application/json",
-    };
+    // const headers = {
+    //   Authorization: `Bearer ${token.access}`,
+    //   "Content-Type": "application/json",
+    // };
     axios({
       method,
       url: apiEndpoint,
@@ -139,6 +164,40 @@ const TaskView = ({ editId, type, weightageShow }) => {
           : "Task Added Successfully",
         duration: 3,
       });
+      clearErrors();
+
+      const requests = selectWeightages.map((item) => {
+        const headers = {
+          Authorization: `Bearer ${token.access}`,
+          "Content-type": "application/json",
+        };
+        const { weightage, weightage_percentage } = item;
+        const endpoint = `${API_END_POINT}/api/task/${batchId}/assign/task_weightage/${res.data.data.id}`;
+
+        return axios.post(
+          endpoint,
+          {
+            weightage,
+            weightage_percentage,
+          },
+          { headers }
+        );
+      });
+
+      Promise.all(requests)
+        .then((responses) => {
+          // Handle responses here
+          responses.forEach((response) => {
+            // Process each response from the POST requests
+            console.log(response.data, "ww"); // or perform other actions
+          });
+        })
+        .catch((error) => {
+          // Handle errors here
+          console.error(error);
+        });
+
+      //assignee
       axios({
         method,
         url: `${API_END_POINT}/api/task/${batchId}/assign/task/${res.data.data.id}`,
@@ -147,11 +206,19 @@ const TaskView = ({ editId, type, weightageShow }) => {
           "Content-Type": "application/json",
         },
         data: assignTask,
-      }).then((res)=>{
-        alert("task user assigned")
-      })
-
-     
+      }).then((res) => {
+        // alert("task user assigned");
+        reset({
+          Title: "",
+          Description: "",
+          Deadline: null, // Assuming this is the name used for the Deadline field
+          SubmissionLink: "",
+          weightage: "", // Assuming this is the name used for the weightage field
+          weightage_percentage: "", // Assuming this is the name used for the weightage_percentage field
+        });
+        setWeighatages([{ weightage: "", weightage_percentage: "" }]);
+        setValue("weightage", "");
+      });
     });
   };
 
@@ -248,6 +315,62 @@ const TaskView = ({ editId, type, weightageShow }) => {
     </Menu>
   );
 
+  const handleAddSelect = () => {
+    let sum = 0;
+
+    for (let i = 0; i < selectWeightages.length; i++) {
+      sum += selectWeightages[i].weightage_percentage;
+    }
+
+    if (sum < 100 && sum !== 100) {
+      setSelectWeightages([
+        ...selectWeightages,
+        { weightage: "", weightage_percentage: "" },
+      ]);
+    } else {
+      notification.warning({
+        message: "Warning",
+        description:
+          "Total weightage cannot exceed 100% or no remaining percentage available",
+        duration: 3,
+      });
+    }
+  };
+  const handleWeightageChange = (value, index) => {
+    const updatedValues = [...selectWeightages];
+    updatedValues[index].weightage = value;
+    setSelectWeightages(updatedValues);
+  };
+  const handleInputChange = (value, index) => {
+    let weightagePercentage = Number(value);
+
+    if (weightagePercentage === 0 || value === "") {
+      setError(`weightage_percentage`, {
+        type: "manual",
+        message: "Weightage percentage is required",
+      });
+      return;
+    }
+
+    if (weightagePercentage > 0 && weightagePercentage <= 100) {
+      const updatedValues = [...selectWeightages];
+      updatedValues[index].weightage_percentage = weightagePercentage;
+      setSelectWeightages(updatedValues);
+      clearErrors(`weightage_percentage`);
+    } else {
+      setError(`weightage_percentage`, {
+        type: "manual",
+        message: "Weightage must be between 0 and 100",
+      });
+    }
+  };
+  const handleDeleteSelect = (index) => {
+    const updatedWeightages = [...selectWeightages];
+    updatedWeightages.splice(index, 1);
+    setSelectWeightages(updatedWeightages);
+  };
+
+  console.log(errors);
   return (
     <>
       <main className="main-container">
@@ -501,7 +624,122 @@ const TaskView = ({ editId, type, weightageShow }) => {
                     )}
                   />
                 </div>
-                {weightageShow && <WeightageList />}
+                {weightageShow ? (
+                  <>
+                    <div className="weightage-label-container flex">
+                      <h3>Weightage</h3>
+                      <div className="horizon-line"></div>
+                    </div>
+
+                    <div className="weightage-adding-container">
+                      <div className="weight-inputs">
+                        <p>Weightage</p>
+                        {selectWeightages.map((weightage, index) => {
+                          return (
+                            <>
+                              <div
+                                className="weightage-unit-container flex"
+                                key={index}
+                              >
+                                <Controller
+                                  name={`weightage`}
+                                  control={control}
+                                  render={({ field }) => (
+                                    <Select
+                                      {...field}
+                                      style={{ width: "200px" }}
+                                      placeholder="Select Weightage..."
+                                      className={`${
+                                        errors.weightage ? "error-notify" : ""
+                                      }`}
+                                      value={weightage.weightage}
+                                      suffixIcon={
+                                        <img src="/icons/dropdown.svg" />
+                                      }
+                                      onChange={(value) =>
+                                        handleWeightageChange(value, index)
+                                      }
+                                    >
+                                      {weightages.map((weightage, index) => (
+                                        <Select.Option
+                                          value={weightage.id}
+                                          key={index}
+                                        >
+                                          {weightage.weightage}
+                                        </Select.Option>
+                                      ))}
+                                    </Select>
+                                  )}
+                                />
+                                {errors.weightage &&
+                                  errors.weightage[index] && (
+                                    <p className="error-message"></p>
+                                  )}
+                                <Controller
+                                  name={`weightage_percentage`}
+                                  control={control}
+                                  render={({ field }) => (
+                                    <input
+                                      {...field}
+                                      type="number"
+                                      className={`task-weight-value-selector ${
+                                        errors.weightage_percentage
+                                          ? "error-notify"
+                                          : ""
+                                      }`}
+                                      placeholder="00"
+                                      onChange={(e) =>
+                                        handleInputChange(e.target.value, index)
+                                      }
+                                    />
+                                  )}
+                                />
+
+                                <div className="weightage-action">
+                                  <span
+                                    className="btn increment-btn"
+                                    onClick={handleAddSelect}
+                                  >
+                                    +
+                                  </span>
+                                  <span className="btn decrement-btn">
+                                    {index > 0 ? (
+                                      <img
+                                        src="/icons/deleteIcon.svg"
+                                        style={{
+                                          width: "16px",
+                                          height: "16px",
+                                        }}
+                                        onClick={() =>
+                                          handleDeleteSelect(index)
+                                        }
+                                      />
+                                    ) : (
+                                      <img
+                                        src="/icons/deleteIcon.svg"
+                                        style={{
+                                          width: "16px",
+                                          height: "16px",
+                                          display: "none",
+                                        }}
+                                      />
+                                    )}
+                                  </span>
+                                </div>
+                              </div>
+                            </>
+                          );
+                        })}
+
+                        {remainingPercentage < 100 && (
+                          <p>Remaining Percentage: {remainingPercentage}%</p>
+                        )}
+                      </div>
+                    </div>
+                  </>
+                ) : (
+                  ""
+                )}
               </div>
             </div>
           </form>

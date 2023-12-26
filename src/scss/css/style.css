@@ -536,11 +536,15 @@ body .container .listing-container .task-list-container .task-card .task-details
   line-height: 16px;
   font-weight: 500;
   font-family: "Roboto";
+  flex: 1;
 }
 body .container .listing-container .task-list-container .task-card .task-details .task-name-with-icon img {
   width: 16px;
   height: 16px;
   display: none;
+}
+body .container .listing-container .task-list-container .task-card .task-details .task-name-with-icon .edit-icon {
+  margin-right: 5px;
 }
 body .container .listing-container .task-list-container .task-card .task-details .task-description {
   max-width: 205px;

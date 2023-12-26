@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 
 import { Tooltip } from "antd";
 
-import "../DashBoard.css";
 
 const BatchList = ({ batchesList, handleEditClick }) => {
   return (

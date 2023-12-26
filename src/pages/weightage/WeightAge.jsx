@@ -15,7 +15,6 @@ import { API_END_POINT } from "../../../config";
 
 import dataNotFound from "/images/no_data_found.svg";
 
-import "./WeightAge.css";
 
 const Weightage = () => {
   const { token } = useAuth();

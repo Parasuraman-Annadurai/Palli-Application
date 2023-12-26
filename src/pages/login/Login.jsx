@@ -1,40 +1,36 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useForm } from "react-hook-form";
 
 import axios from "axios";
-
-import { isEmailValid, isPasswordValid } from "../../utils/validate";
+import { useForm } from "react-hook-form";
 
 import { useAuth } from "../../context/AuthContext";
 
+
+import { isEmailValid, isPasswordValid } from "../../utils/validate";
+
+
 import { API_END_POINT } from "../../../config";
 
-import dckapPalliLogo from "/images/dckap_palli_logo_lg.svg";
-import managerLoginLogo from "/images/manager_login_image.svg";
-
-import "./Login.css";
-
+import "./scss/Login.css";
 const Login = () => {
   const navigate = useNavigate();
   const { setToken, setUser } = useAuth();
-  const [showPassword, setShowPassword] = useState(false);
+  const [showPassword,setShowPassword] = useState(false);
 
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm({
-    defaultValues:{
-      email:"testui@gmail.com",
-      password:"Front-end@123"
-    }
+    defaultValues: {
+      email: "testui@gmail.com",
+      password: "Front-end@123",
+    },
   });
-
-  //Handle login submit used to validate feild and check creadentials
-  const handleLoginSubmit = (formData) => {
+  const handleLogin = (loginData) => {
     axios
-      .post(`${API_END_POINT}/api/accounts/login/`, formData)
+      .post(`${API_END_POINT}/api/accounts/login/`, loginData)
       .then((res) => {
         axios({
           url: `${API_END_POINT}/api/accounts/get/user_info/`,
@@ -56,100 +52,83 @@ const Login = () => {
       })
       .catch((err) => {
         console.error("Authentication Failed", err);
+        
         navigate("/login");
       });
   };
-  return (
-    <div className="login__container_wrapper">
-      <div className="login__container">
-        <div className="top__header">
-          <div className="left__side__header">
-            <h2>Manager Login</h2>
-            <p>Make Sure Your Account is Secure</p>
-          </div>
-          <div className="right__side--header">
-            <img src={dckapPalliLogo} alt="dckap-logo" />
-          </div>
-        </div>
-        <div className="input__containers">
-          <div className="left__side__image__container">
-            <img src={managerLoginLogo} alt="manager-logo" />
-          </div>
-          <div className="right__side-input__container">
-            <form
-              onSubmit={handleSubmit(handleLoginSubmit)}
-              className="login-form"
-            >
-              <div className={`email__inputs`}>
-                <label htmlFor={"email"}>
-                  email <span className="required-feild">*</span>
-                </label>
-                <div className={`email__icon`}>
-                  <span className={`material-symbols-outlined email-sybmbol`}>
-                    email
-                  </span>
-                  <div className="input__component">
-                    <input
-                      type={"text"}
-                      placeholder={`Enter the Email Id`}
-                      name={"email"}
-                      className={`email__feild`}
-                      {...register("email", {
-                        required: "Email is required",
-                        validate: isEmailValid,
-                      })}
-                    />
-                  </div>
-                </div>
-                <p className="error__message">
-                  {errors.email ? errors.email.message : ""}
-                </p>
-              </div>
 
-              <div className={`password__inputs`}>
-                <label htmlFor={"password"}>
-                  Password <span className="required-feild">*</span>
-                </label>
-                <div className={`password__icon`}>
-                  <span
-                    className={`material-symbols-outlined password-sybmbol`}
-                  >
-                    Password
-                  </span>
-                  <div className="input__component">
+  return (
+    <>
+      <div className="container">
+        <main className="login-page-container">
+          <div className="logo-container">
+            <img
+              className="logo"
+              src="/images/dckap_palli_logo_sm.svg"
+              alt=""
+              draggable={false}
+            />
+          </div>
+          <div className="login-container flex">
+            <div className="login-image-container">
+              <img src="/icons/Login Image.svg" alt="" draggable={false}/>
+            </div>
+            <div className="login-form-container">
+              <form onSubmit={handleSubmit(handleLogin)}>
+                <div className="form-heading">
+                  <h1>Welcome Back</h1>
+                  <p>Please Login to your account</p>
+                </div>
+                <div className="email-container flex">
+                  <label htmlFor="">Email id</label>
+                  <input
+                    type="text"
+                    className={`email-input ${errors.email ? "error-notify" : ""}`}
+
+                    name="email"
+                    placeholder="Type here..."
+                    {...register("email", {
+                      required: "Email id is required",
+                      validate: isEmailValid,
+                    })}
+                  />
+                  <p className="error-message">{errors.email ? errors.email.message :""}</p>
+                </div>
+                <div className="password-container">
+                  <label htmlFor="">Password</label>
+                  <div className="password-field">
                     <input
-                      type={showPassword ? "text" : "password"}
-                      placeholder={`Enter the password`}
-                      name={"password"}
-                      className={`password__feild`}
+                      type={`${showPassword ? "text":"password"}`}
+                      className={`password-input ${errors.email ? "error-notify" : ""}`}
+                      name="password"
+                      placeholder="Type here..."
                       {...register("password", {
                         required: "Password is required",
                         validate: isPasswordValid,
                       })}
                     />
+                    <img onClick={()=>setShowPassword(!showPassword)} src={`/icons/${showPassword ? "eye-close" :"eye-open"}.svg`} alt="eye-icon" className="eye-icon" />
+                  </div>
+                  <p className="error-message">{errors.password ? errors.password.message :""}</p>
+                </div>
+                <div className="remember-container flex">
+                  <div className="remember-content flex">
+                    <input type="checkbox" className="remember-input" />
+                    <p>Remember me</p>
+                  </div>
+                  <div className="forgot-container">
+                    <a href="/forgot/password">Forgot Password</a>
                   </div>
                 </div>
-                <p className="error__message">
-                  {errors.password ? errors.password.message : ""}
-                </p>
-              </div>
-
-              <span
-                onClick={() => setShowPassword(!showPassword)}
-                className="material-symbols-outlined eye__icon"
-              >
-                {showPassword ? "visibility" : "visibility_off"}
-              </span>
-
-              <a href="/forgot/password">Forgot password ?</a>
-              <div className="login__btn__container">
-                <button className="login-btn">Login</button>
-              </div>
-            </form>
+                <div className="login-button-container ">
+                  <button className="btn primary-medium ">Login</button>
+                </div>
+              </form>
+            </div>
           </div>
-        </div>
+        </main>
       </div>
-    </div>
+    </>
   );
 };
 

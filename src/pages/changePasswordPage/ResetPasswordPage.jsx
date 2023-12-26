@@ -9,7 +9,6 @@ import { checkPasswordCriteria } from "../../components/PasswordRequirement";
 import Logo from "/images/dckap_palli_logo_lg.svg";
 import ResetPasswordImage from "/images/change_password.svg";
 //CSS here
-import "./ResetPage.css";
 
 
 

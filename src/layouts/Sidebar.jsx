@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, useLocation, useParams, useNavigate } from "react-router-dom";
+import { useLocation, useParams, useNavigate, NavLink } from "react-router-dom";
 
 import { Button, Modal, List, Avatar, Tooltip } from "antd";
 import axios from "axios";
@@ -8,126 +8,213 @@ import { useAuth } from "../context/AuthContext";
 
 import { API_END_POINT } from "../../config";
 
-import dckapLogo from "/images/dckap_palli_logo_sm.svg";
-
-const Sidebar = ({ menuList, activeMenuItem }) => {
+const Sidebar = ({ menu, activeMenuItem }) => {
   const navigate = useNavigate();
   const { id: batchId } = useParams();
-  const {token} = useAuth()
-  const [batches,setBatches] = useState([])
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [active, setActive] = useState(activeMenuItem);
+  const { token } = useAuth();
+  
   const currentPath = useLocation().pathname;
   const isDashboardPage = currentPath === "/dashboard";
 
-  const handleSwitch = (id,batchName) => {
-    Modal.confirm({
-      title: `Confirm Swith to ${batchName}`,
-      content: "Are you sure you want to Switch this Batch?",
-      onOk: () => {
-        navigate(`/batch/${id}/applications`);
-        setIsModalOpen(false);
-        window.location.reload()
-      },
+  // const handleSwitch = (id, batchName) => {
+  //   Modal.confirm({
+  //     title: `Confirm Swith to ${batchName}`,
+  //     content: "Are you sure you want to Switch this Batch?",
+  //     onOk: () => {
+  //       navigate(`/batch/${id}/applications`);
+  //       setIsModalOpen(false);
+  //       window.location.reload();
+  //     },
+  //   });
+  // };
+  // useEffect(() => {
+  //   const headers = {
+  //     Authorization: `Bearer ${token.access}`,
+  //     "Content-type": "application/json",
+  //   };
+  //   axios.get(`${API_END_POINT}/api/list/batch/`, { headers }).then((res) => {
+  //     setBatches(res.data.data);
+  //   });
+  // }, []);
+
+  const [isActive, setIsActive] = useState({
+    home: false,
+    application: false,
+    session: false,
+    module: false,
+    settings: false,
+  });
+
+  const [isSubActive, setIsSubActive] = useState({
+    task: false,
+    assessment: false,
+    quiz: false,
+  });
+  const [isModuleActive, setIsModuleActive] = useState(false);
+
+  const handleMainLinkClick = (link) => {
+    const updateActive = { ...isActive };
+    Object.keys(updateActive).forEach((key) => {
+      const checkIsActive = key === link ? true : false;
+      updateActive[key] = checkIsActive;
     });
-
-  };
-  useEffect(() => {
-    const headers = {
-      Authorization : `Bearer ${token.access}`,
-      "Content-type":"application/json"
+    setIsActive(updateActive);
+    if (link === "module") {
+      setIsModuleActive(!isModuleActive);
     }
-    axios.get(`${API_END_POINT}/api/list/batch/`,{headers}).then((res)=>{
-      setBatches(res.data.data);
-    })
-  }, []);
+  };
 
+  const handleSubLinkClick = (link) => {
+    const updateSubActive = { ...isSubActive };
+    Object.keys(updateSubActive).forEach((key) => {
+      const checkIsSubActive = key === link ? true : false;
+      updateSubActive[key] = checkIsSubActive;
+    });
+    setIsSubActive(updateSubActive);
+  };
   return (
-    <div className="sidebar">
+    <nav className="side-nav-container flex">
       <div className="logo">
-        <img src={dckapLogo} alt="dckap-logo-sm" />
+        <img src="/images/dckap_palli_logo_sm.svg" alt="DCKAP Palli logo" />
       </div>
-
-      <div className="menus">
-        {!isDashboardPage && (
-          <Link to="/dashboard">
-            <Tooltip title="Dashboard" placement="right" color={"#223F64"}>
-              <div className="dashboard-container menu-container">
-                <div className="applicants flex">
-                  <span className="material-symbols-outlined">arrow_back</span>
-                  <p>Back Dashboard</p>
-                </div>
-              </div>
-            </Tooltip>
-          </Link>
-        )}
-
-        {menuList.map((menu, index) => (
-          <Link
-            to={isDashboardPage ? "/dashboard" : `/batch/${batchId}/${menu.id}`}
-            key={index}
-            onClick={() => setActive(menu.id)}
-          >
-            <Tooltip title={menu.label} placement="right" color={"#223F64"}>
-              <div
-                className={`${menu.id}-container menu-container ${
-                  menu.id === active ? "active" : ""
-                }`}
-                onClick={() => setActive(menu.id)}
-              >
-                <div className="applicants flex">
-                  <span className="material-symbols-outlined">view_list</span>
-                  <p>{menu.label}</p>
-                </div>
-              </div>
-            </Tooltip>
-          </Link>
-        ))}
-      </div>
-
-      {!isDashboardPage && (
-        <div className="setting flex" onClick={() => setIsModalOpen(true)}>
-          <span class="material-symbols-outlined">switch_account</span>
-          <p className="switch">Switch</p>
+      <div className="batch-switch-container flex">
+        <div className="batch-content-container flex">
+          <div className="batch-logo">
+            <p>B1</p>
+          </div>
+          <div className="batch-name">
+            <p>Batch 1</p>
+            <span>2023-2024</span>
+          </div>
         </div>
-      )}
-
-      <div className="">
-        <Modal
-          open={isModalOpen}
-          footer={null}
-          onCancel={() => setIsModalOpen(false)}
-          centered
-        >
-          <List
-            itemLayout="horizontal"
-            dataSource={batches}
-            renderItem={(batch, index) => (
-              <List.Item
-                onClick={() => handleSwitch(batch.id,batch.batch_name)}
-                style={{ cursor: "pointer" }}
-              >
-                <List.Item.Meta
-                  avatar={
-                    <Avatar
-                      size="small"
-                      icon={
-                        <span className="material-symbols-outlined">
-                          {" "}
-                          account_circle{" "}
-                        </span>
-                      }
-                    />
-                  }
-                  title={batch.batch_name}
-                  description={`Start Date: ${batch.start_date}, End Date: ${batch.end_date}`}
-                />
-              </List.Item>
-            )}
-          />
-        </Modal>
+        <div className="switch-icon">
+          <img src="/icons/dropdown.svg" alt="" />
+        </div>
       </div>
-    </div>
+
+      <div className="nav-links">
+        <ul>
+          <li className={`main-link ${isActive.home ? "main-active" : ""}`}>
+            <a
+              href="#"
+              className="flex"
+              onClick={() => handleMainLinkClick("home")}
+            >
+              <img src="/icons/home.svg" alt="home icon" />
+              <span>Home</span>
+            </a>
+          </li>
+          {!isDashboardPage && (
+            <>
+              <li
+                className={`main-link ${
+                  isActive.application ? "main-active" : ""
+                }`}
+              >
+                <a
+                  href={`/batch/${batchId}/applications`}
+                  className="flex"
+                  onClick={() => handleMainLinkClick("application")}
+                >
+                  <img src="/icons/application.svg" alt="home icon" />
+                  <span>Application</span>
+                </a>
+              </li>
+              <li
+                className={`main-link ${isActive.session ? "main-active" : ""}`}
+              >
+                <a
+                  href="#"
+                  className="flex"
+                  onClick={() => handleMainLinkClick("session")}
+                >
+                  <img src="/icons/application.svg" alt="home icon" />
+                  <span>Session</span>
+                </a>
+              </li>
+              <li
+                className={`main-link ${isActive.module ? "main-active" : ""}`}
+              >
+                <a
+                  href="#"
+                  className="flex"
+                  onClick={() => handleMainLinkClick("module")}
+                >
+                  <img src="/icons/application.svg" alt="home icon" />
+                  <span>Module</span>
+                </a>
+                {isModuleActive && (
+                  <ul className="sub-links">
+                    <li
+                      className={`sub-link ${
+                        isSubActive.task ? "sub-active" : ""
+                      }`}
+                      onClick={() => {
+                        handleSubLinkClick("task");
+                      }}
+                    >
+                      <a
+                        href={`/batch/${batchId}/module/task`}
+                        onClick={() => isModuleActive(true)}
+                      >
+                        Task
+                      </a>
+                    </li>
+                    <li
+                      className={`sub-link ${
+                        isSubActive.assessment ? "sub-active" : ""
+                      }`}
+                      onClick={() => handleSubLinkClick("assessment")}
+                    >
+                      <a
+                        href={`/batch/${batchId}/module/assessment`}
+                        onClick={() => isModuleActive(true)}
+                      >
+                        Assessment
+                      </a>
+                    </li>
+                    <li
+                      className={`sub-link ${
+                        isSubActive.quiz ? "sub-active" : ""
+                      }`}
+                      onClick={() => handleSubLinkClick("quiz")}
+                    >
+                      <a href="#" onClick={() => isModuleActive(true)}>
+                        Quiz
+                      </a>
+                    </li>
+                  </ul>
+                )}
+              </li>
+              <li
+                className={`main-link ${
+                  isActive.settings ? "main-active" : ""
+                }`}
+              >
+                <a
+                  href="#"
+                  className="flex"
+                  onClick={() => handleMainLinkClick("settings")}
+                >
+                  <img src="/icons/application.svg" alt="home icon" />
+                  <span>Settings</span>
+                </a>
+              </li>
+            </>
+          )}
+        </ul>
+      </div>
+
+      <div className="user-profile flex">
+        <div className="profile-img">
+          <img src="/icons/profile.svg" alt="" />
+        </div>
+        <div className="user-details">
+          <p>Kate Bishop</p>
+          <span>Trainer</span>
+        </div>
+      </div>
+    </nav>
   );
 };
 

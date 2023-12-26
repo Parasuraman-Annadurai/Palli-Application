@@ -30,7 +30,6 @@ import { useAuth } from "../../context/AuthContext";
 
 import { API_END_POINT } from "../../../config";
 
-import "./AddTask.css";
 
 import { validateAddTask } from "../../utils/validate";
 

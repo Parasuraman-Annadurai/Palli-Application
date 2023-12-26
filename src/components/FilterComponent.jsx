@@ -9,7 +9,7 @@ const FilterComponent = ({ filter, applyFilter,setPopoverVisible }) => {
 
   const handleApplyFilter = () => {
     applyFilter(filterValues);
-    setPopoverVisible(false)
+    // setPopoverVisible(false)
   };
 
   const handleClearFilter = () => {
@@ -102,11 +102,11 @@ const FilterComponent = ({ filter, applyFilter,setPopoverVisible }) => {
           }
         })}
       </div>
-      <button onClick={handleApplyFilter} className="btn apply-filter-btn">
-        Apply Filter
+      <button onClick={handleApplyFilter} className="btn primary-medium">
+        Apply
       </button>
-      <button onClick={handleClearFilter} className="btn clear-filter-btn">
-        Clear Filter
+      <button onClick={handleClearFilter} className="btn primary-default">
+        Clear
       </button>
     </div>
   );

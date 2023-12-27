@@ -9,12 +9,7 @@ import {
   DASHBOARD,
   FORGOTPASSWORD,
   CHANGEPASSWORD,
-  MODULE,
-  ADDTASK,
-  ADDQUIZ,
   INDEX,
-  EDITTASK,
-  WEIGHTAGE,
   TASKMODULE,
   ASSESSMENTMODULE,
 } from "./routes/routes.jsx";
@@ -22,15 +17,8 @@ import {
 import Login from "./pages/login/Login.jsx";
 import ChangePassword from "./pages/changePasswordPage/ResetPasswordPage";
 import ForgotPassword from "./pages/forgotPage/ForgotPage";
-import Applicantions from "./pages/applications/Applications.jsx";
+import Applications from "./pages/applications/Applications.jsx";
 import DashBoard from "./pages/dashBoard/DashBoard.jsx";
-// import TaskModule from "./pages/taskModule/TaskModule.jsx";
-import AddTask from "./pages/addTaskPage/AddTask.jsx";
-import AddQuiz from "./pages/addQuiz/AddQuizz.jsx";
-import Weightage from "./pages/weightage/WeightAge.jsx";
-
-//New chnages
-
 import TaskModule from "./pages/task/TaskModule.jsx";
 import AssessmentModule from "./pages/assessment/Assessment.jsx";
 import ErrorPage from "./pages/errorPage/ErrorPage.jsx";
@@ -53,7 +41,7 @@ const App = () => {
           </Route>
           {/* Private Route, can't access without token */}
           <Route path={APPLICATIONS} element={<PrivateRoute />}>
-            <Route path={APPLICATIONS} element={<Applicantions />} />
+            <Route path={APPLICATIONS} element={<Applications />} />
           </Route>
 
         

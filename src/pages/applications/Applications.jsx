@@ -1,21 +1,29 @@
 import React, { useEffect, useState } from "react";
+
 import { useParams } from "react-router-dom";
+
 import axios from "axios";
-import { Pagination, Popover, Tag, Skeleton, Dropdown } from "antd";
+import { Pagination, Popover, Tag, Skeleton, Tooltip } from "antd";
+import dayjs from "dayjs";
+
 import { API_END_POINT } from "../../../config";
 
 import { useAuth } from "../../context/AuthContext";
 
-import "./scss/Applications.css";
+import FilterComponent from "../../components/FilterComponent";
+
 import useFilter from "../../hooks/useFilter";
 
-import FilterComponent from "../../components/FilterComponent";
+import "./scss/css/Applications.css";
+
 
 const Applications = () => {
   const filterFields = useFilter("applicant");
   const { id: batchId } = useParams();
   const { token } = useAuth();
   const [isLoading, setLoading] = useState(false);
+  const [popoverVisible, setPopoverVisible] = useState(false);
+
   const [viewMoreApplicant, setViewMoreApplicant] = useState([]);
   const [applications, setApplications] = useState({ data: [] });
   const [applicationSearch, setApplicationSearch] = useState("");
@@ -23,16 +31,17 @@ const Applications = () => {
   const [limit, setLimit] = useState(5);
   const [page, setPage] = useState(1);
   const [filterState, setFilterState] = useState({
-    district: null,
-    annualIncomeMin: 0,
-    annualIncomeMax: 0,
-    userStatus: 0,
-    degree: 0,
-    venue: null,
-    pincode: null,
-    subject: null,
-    markMin: 0,
-    markMax: 0,
+    district: "",
+    annual_income_min: "",
+    annual_income_max: "",
+    userStatus: "",
+    degree: "",
+    venue: "",
+    pincode: "",
+    subject: "",
+    mark_min: "",
+    mark_max: "",
+    user_status: "",
   });
 
   const headers = {
@@ -41,27 +50,45 @@ const Applications = () => {
   };
   useEffect(() => {
     setLoading(true);
+
+    //this useEffect used to fetch application list and will re-run whenever filter or search is updated
     axios
       .get(
-        `${API_END_POINT}/api/applicant/${batchId}/list/applicants/?limit=${limit}&page=${page}&search=${applicationSearch}`,
+        `${API_END_POINT}/api/applicant/${batchId}/list/applicants/?filter_mark_min=${filterState.mark_min}&&filter_mark_max=${filterState.mark_max}&&filter_subject=${filterState.subject}&&filter_annual_income_min=${filterState.annual_income_min}&&filter_annual_income_max=${filterState.annual_income_max}&&filter_degree=${filterState.degree}&&filter_district=${filterState.district}&&filter_pincode=${filterState.pincode}&limit=${limit}&page=${page}&search=${applicationSearch}`,
         { headers }
       )
       .then((res) => {
         setApplications(res.data);
         setLoading(false);
       });
-  }, [applicationSearch, limit, page]);
+  }, [applicationSearch, limit, page, filterState]);
 
   const handleApplyFilter = (filterData) => {
     setAppliedFilterShow(filterData);
-    Object.keys(filterData).map((key) => {
-      filterState[key] = filterData[key];
+
+
+    Object.keys(filterData).forEach((key) => {
+      setFilterState((prevFilterState) => ({
+        ...prevFilterState,
+        [key]: filterData[key],
+      }));
     });
   };
+  const handleRemoveFilter =(fieldName)=>{
+    const updatedFilterState = { ...filterState, [fieldName]: "" };
+    const updateAppliedFilterState = {...appliedFilterShow};
+    delete updateAppliedFilterState[fieldName];
+    setAppliedFilterShow(updateAppliedFilterState)
+    setFilterState(updatedFilterState)
+  }
 
   const content = (
     <div>
-      <FilterComponent filter={filterFields} applyFilter={handleApplyFilter} />
+      <FilterComponent
+        filter={filterFields}
+        applyFilter={handleApplyFilter}
+        setPopoverVisible={setPopoverVisible}
+      />
     </div>
   );
 
@@ -71,6 +98,14 @@ const Applications = () => {
     );
     setViewMoreApplicant(applicantDetails);
   };
+
+  const truncateText = (text, maxLength) => {
+    return text.length > maxLength
+      ? text.substring(0, maxLength) + "..."
+      : text;
+  };
+
+
 
   return viewMoreApplicant.length > 0 ? (
     viewMoreApplicant.map((details) => {
@@ -86,7 +121,6 @@ const Applications = () => {
                 </p>
               </div>
               <div className="search-input">
-                {/* <input type="text" placeholder="Search here" /> */}
                 <button
                   className="btn primary-medium"
                   onClick={() => handleViewMore([])}
@@ -406,95 +440,124 @@ const Applications = () => {
           />
           <input
             type="text"
+            value={applicationSearch}
             placeholder="Search here"
             onChange={(e) => setApplicationSearch(e.target.value)}
           />
 
-          <Popover placement="leftTop" content={content} title="Title">
+          <Popover placement="leftTop" 
+          open={popoverVisible}
+          onOpenChange={(visible) => setPopoverVisible(visible)}
+          content={content} trigger={["click"]}>
             <img
               src="/public/icons/filterIcon.svg"
               alt=""
               className="filter-icon"
-            />{" "}
+            />
           </Popover>
         </div>
         <div className="filter-or-search-container">
-          {applicationSearch ? (
-            <Tag color="#49a843">Search : {applicationSearch}</Tag>
+          {applicationSearch.length > 0 ? (
+            <>
+              <Tag color="#49a843">Search : {applicationSearch} </Tag>
+              <img
+                src="/public/icons/Cancel.svg"
+                className="cancel-btn"
+                onClick={() => setApplicationSearch("")}
+              />
+            </>
           ) : (
             ""
           )}
           {appliedFilterShow &&
             Object.keys(appliedFilterShow).map((filterName) => (
-              <Tag color="#49a843">{`${filterName} : ${appliedFilterShow[filterName]} `}</Tag>
+              <>
+                <Tag color="#49a843">{`${filterName} : ${appliedFilterShow[filterName]} `}</Tag>
+                <img src="/icons/Cancel.svg" alt="" className="cancel-btn" onClick={()=>handleRemoveFilter(filterName)}/>
+              </>
             ))}
         </div>
 
-        <div className="application-list-container">
-          {isLoading ? (
-            <Skeleton active paragraph={20} />
-          ) : (
-            applications.data.map((application) => (
-              <div
-                className="application-card-container"
-                key={application.id}
-                onClick={() => handleViewMore(application.id)}
-              >
-                <div className="application-details-container flex">
-                  <div className="application-info flex">
-                    <div className="application-name-container">
-                      <p>
-                        {application.first_name[0]}
-                        {application.last_name[0]}
-                      </p>
+        {applications.data.length > 0 ? (
+          <>
+            <div className="application-list-container">
+              {isLoading ? (
+                <Skeleton active paragraph={20} />
+              ) : (
+                applications.data.map((application) => (
+                  <div
+                    className="application-card-container"
+                    key={application.id}
+                    onClick={() => handleViewMore(application.id)}
+                  >
+                    <div className="application-details-container flex">
+                      <div className="application-info flex">
+                        <div className="application-name-container">
+                          <p>
+                            {application.first_name[0]}
+                            {application.last_name[0]}
+                          </p>
+                        </div>
+                        <div className="application-email-container">
+                          <p className="application-name">
+                            <Tooltip
+                              title={`${application.first_name} ${application.last_name}`}
+                            >
+                              {truncateText(
+                                `${application.first_name} ${application.last_name}`,
+                                15
+                              )}
+                            </Tooltip>
+                          </p>
+                          <p className="application-email">
+                            {truncateText(application.email, 15)}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="application-gender">
+                        <p>Gender</p>
+                        <span>Male</span>
+                      </div>
+                      <div className="application-dob">
+                        <p>Date of Birth</p>
+                        <span>
+                          {dayjs(application.dob).format("MMM DD, YYYY")}
+                        </span>
+                      </div>
+                      <div className="application-district">
+                        <p>District</p>
+                        <span>{application.district}</span>
+                      </div>
+                      <div className="application-qualification">
+                        <p>Qualification</p>
+                        <span>Diploma</span>
+                      </div>
+                      <div className="application-mobile-no">
+                        <p>Mobile No</p>
+                        <span>{application.contact_number}</span>
+                      </div>
                     </div>
-                    <div class="application-email-container">
-                      <p class="application-name">
-                        {application.first_name} {application.last_name}
-                      </p>
-                      <p className="application-email">{application.email}</p>
-                    </div>
                   </div>
-                  <div className="application-gender">
-                    <p>Aadhaar No</p>
-                    <span>{application.aadhaar_number}</span>
-                  </div>
-                  <div className="application-dob">
-                    <p>Date of Birth</p>
-                    <span>{application.dob}</span>
-                  </div>
-                  <div className="application-district">
-                    <p>District</p>
-                    <span>{application.district}</span>
-                  </div>
-                  <div className="application-qualification">
-                    <p>State</p>
-                    <span>{application.state}</span>
-                  </div>
-                  <div className="application-mobile-no">
-                    <p>Mobile No</p>
-                    <span>{application.contact_number}</span>
-                  </div>
-                  <div className="application-10th-percentage">
-                    <p>Care Taker Name</p>
-                    <span>{application.care_taker_name}</span>
-                  </div>
-                </div>
-              </div>
-            ))
-          )}
-        </div>
-        <div className="application-pagination-container flex">
-          {applications.data.length > 0 && (
-            <Pagination
-              className="pagination"
-              current={applications.currentPage}
-              pageSize={limit}
-              total={applications.total}
-              onChange={(page) => setPage(page)}
-            />
-          )}
-        </div>
+                ))
+              )}
+            </div>
+            <div className="application-pagination-container flex">
+              {applications.data.length > 0 && (
+                <Pagination
+                  className="pagination"
+                  current={applications.currentPage}
+                  pageSize={limit}
+                  total={applications.total}
+                  onChange={(page) => setPage(page)}
+                />
+              )}
+            </div>
+          </>
+        ) : (
+          <div className="flex no-data-container">
+            <img src="/icons/no-data.svg" className="no-data-image" />
+          </div>
+        )}
       </div>
     </main>
   );

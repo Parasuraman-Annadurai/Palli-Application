@@ -9,11 +9,11 @@ const FilterComponent = ({ filter, applyFilter,setPopoverVisible }) => {
 
   const handleApplyFilter = () => {
     applyFilter(filterValues);
-    // setPopoverVisible(false)
+    setPopoverVisible(false)
   };
 
   const handleClearFilter = () => {
-    applyFilter({});
+    applyFilter({...filterValues,...{}});
     setPopoverVisible(false)
   };
   return (
@@ -40,6 +40,7 @@ const FilterComponent = ({ filter, applyFilter,setPopoverVisible }) => {
                   />
                 </div>
               );
+            
             case "RangeFilter":
               return (
                 <div key={filterItem.name}>

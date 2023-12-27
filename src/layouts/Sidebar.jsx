@@ -12,7 +12,7 @@ const Sidebar = ({ menu, activeMenuItem }) => {
   const navigate = useNavigate();
   const { id: batchId } = useParams();
   const { token } = useAuth();
-  
+
   const currentPath = useLocation().pathname;
   const isDashboardPage = currentPath === "/dashboard";
 
@@ -37,185 +37,290 @@ const Sidebar = ({ menu, activeMenuItem }) => {
   //   });
   // }, []);
 
-  const [isActive, setIsActive] = useState({
-    home: false,
-    application: false,
-    session: false,
-    module: false,
-    settings: false,
-  });
+  const [activeState, setActiveState] = useState({ main: null, sub: null });
 
-  const [isSubActive, setIsSubActive] = useState({
-    task: false,
-    assessment: false,
-    quiz: false,
-  });
-  const [isModuleActive, setIsModuleActive] = useState(false);
-
-  const handleMainLinkClick = (link) => {
-    const updateActive = { ...isActive };
-    Object.keys(updateActive).forEach((key) => {
-      const checkIsActive = key === link ? true : false;
-      updateActive[key] = checkIsActive;
+  const [showSwitchBatch, setShowSwitchBatch] = useState(false);
+  const [batchList, setBatchList] = useState([]);
+  const headers = {
+    Authorization: `Bearer ${token.access}`,
+    "Content-type": "application/json",
+  };
+  useEffect(() => {
+    axios.get(`${API_END_POINT}/api/list/batch/`, { headers }).then((res) => {
+      setBatchList(res.data.data);
     });
-    setIsActive(updateActive);
-    if (link === "module") {
-      setIsModuleActive(!isModuleActive);
-    }
+  }, []);
+
+  console.log(activeState);
+  const handleMainLinkClick = (menuList) => {
+    setActiveState({ main: menuList.id, sub: null });
   };
 
-  const handleSubLinkClick = (link) => {
-    const updateSubActive = { ...isSubActive };
-    Object.keys(updateSubActive).forEach((key) => {
-      const checkIsSubActive = key === link ? true : false;
-      updateSubActive[key] = checkIsSubActive;
-    });
-    setIsSubActive(updateSubActive);
+  const handleSubLinkClick = (subLinkId) => {
+    setActiveState({ ...activeState, sub: subLinkId });
   };
   return (
-    <nav className="side-nav-container flex">
-      <div className="logo">
-        <img src="/images/dckap_palli_logo_sm.svg" alt="DCKAP Palli logo" />
-      </div>
-      <div className="batch-switch-container flex">
-        <div className="batch-content-container flex">
-          <div className="batch-logo">
-            <p>B1</p>
+    <>
+      <nav className="side-nav-container flex">
+        <div className="logo">
+          <img src="/images/dckap_palli_logo_sm.svg" alt="DCKAP Palli logo" />
+        </div>
+        <div
+          className="batch-switch-container flex"
+          onClick={() => setShowSwitchBatch(!showSwitchBatch)}
+        >
+          <div className="batch-content-container flex">
+            <div className="batch-logo">
+              <p>B1</p>
+            </div>
+            <div className="batch-name">
+              <p>Batch 1</p>
+              <span>2023-2024</span>
+            </div>
           </div>
-          <div className="batch-name">
-            <p>Batch 1</p>
-            <span>2023-2024</span>
+          <div className="switch-icon">
+            <img src="/icons/dropdown.svg" alt="" />
           </div>
         </div>
-        <div className="switch-icon">
-          <img src="/icons/dropdown.svg" alt="" />
-        </div>
-      </div>
 
-      <div className="nav-links">
-        <ul>
-          <li className={`main-link ${isActive.home ? "main-active" : ""}`}>
-            <a
-              href="#"
-              className="flex"
-              onClick={() => handleMainLinkClick("home")}
-            >
-              <img src="/icons/home.svg" alt="home icon" />
-              <span>Home</span>
-            </a>
-          </li>
-          {!isDashboardPage && (
-            <>
-              <li
-                className={`main-link ${
-                  isActive.application ? "main-active" : ""
-                }`}
+        <div className="nav-links">
+          <ul>
+            <li className={`main-link ${activeState.main === "home" ? "main-active" : ""}`}>
+              <a
+                href="#"
+                className="flex"
+                onClick={() => handleMainLinkClick("home")}
               >
-                <a
-                  href={`/batch/${batchId}/applications`}
-                  className="flex"
-                  onClick={() => handleMainLinkClick("application")}
-                >
-                  <img src="/icons/application.svg" alt="home icon" />
-                  <span>Application</span>
-                </a>
-              </li>
-              <li
-                className={`main-link ${isActive.session ? "main-active" : ""}`}
-              >
-                <a
-                  href="#"
-                  className="flex"
-                  onClick={() => handleMainLinkClick("session")}
-                >
-                  <img src="/icons/application.svg" alt="home icon" />
-                  <span>Session</span>
-                </a>
-              </li>
-              <li
-                className={`main-link ${isActive.module ? "main-active" : ""}`}
-              >
-                <a
-                  href="#"
-                  className="flex"
-                  onClick={() => handleMainLinkClick("module")}
-                >
-                  <img src="/icons/application.svg" alt="home icon" />
-                  <span>Module</span>
-                </a>
-                {isModuleActive && (
-                  <ul className="sub-links">
+                <img src="/icons/home.svg" alt="home icon" />
+                <span>Home</span>
+              </a>
+            </li>
+            {!isDashboardPage && (
+              <>
+                <ul>
+                  {menu.map((menuList) => (
                     <li
-                      className={`sub-link ${
-                        isSubActive.task ? "sub-active" : ""
+                      key={menuList.id}
+                      className={`main-link ${
+                        activeState.main === menuList.id ? "main-active" : ""
                       }`}
-                      onClick={() => {
-                        handleSubLinkClick("task");
-                      }}
                     >
                       <a
-                        href={`/batch/${batchId}/module/task`}
-                        onClick={() => isModuleActive(true)}
+                        href={`/batch/${batchId}${menuList.id}`}
+                        className="flex"
+                        onClick={() => handleMainLinkClick(menuList)}
                       >
-                        Task
+                        <img src="/icons/application.svg" alt="home icon" />
+                        <span>{menuList.label}</span>
                       </a>
+                      {menuList.id === "module" && (
+                        <ul
+                          className={`sub-links ${
+                            activeState.main === "module" ? "open" : ""
+                          }`}
+                        >
+                          <li
+                            className={`sub-link ${
+                              activeState.sub === "task" ? "sub-active" : ""
+                            }`}
+                          >
+                            <a href={`/batch/${batchId}/module/task`}>Task</a>
+                          </li>
+                          <li
+                            className={`sub-link ${
+                              activeState.sub === "assessment"
+                                ? "sub-active"
+                                : ""
+                            }`}
+                            onClick={() => handleSubLinkClick("assessment")}
+                          >
+                            <a href={`/batch/${batchId}/module/assessment`}>
+                              Assessment
+                            </a>
+                          </li>
+                          <li
+                            className={`sub-link ${
+                              activeState.sub === "quiz" ? "sub-active" : ""
+                            }`}
+                          >
+                            <a href="#">Quiz</a>
+                          </li>
+                        </ul>
+                      )}
                     </li>
-                    <li
-                      className={`sub-link ${
-                        isSubActive.assessment ? "sub-active" : ""
-                      }`}
-                      onClick={() => handleSubLinkClick("assessment")}
-                    >
-                      <a
-                        href={`/batch/${batchId}/module/assessment`}
-                        onClick={() => isModuleActive(true)}
-                      >
-                        Assessment
-                      </a>
-                    </li>
-                    <li
-                      className={`sub-link ${
-                        isSubActive.quiz ? "sub-active" : ""
-                      }`}
-                      onClick={() => handleSubLinkClick("quiz")}
-                    >
-                      <a href="#" onClick={() => isModuleActive(true)}>
-                        Quiz
-                      </a>
-                    </li>
-                  </ul>
-                )}
-              </li>
-              <li
-                className={`main-link ${
-                  isActive.settings ? "main-active" : ""
-                }`}
-              >
-                <a
-                  href="#"
-                  className="flex"
-                  onClick={() => handleMainLinkClick("settings")}
-                >
-                  <img src="/icons/application.svg" alt="home icon" />
-                  <span>Settings</span>
-                </a>
-              </li>
-            </>
-          )}
-        </ul>
-      </div>
+                  ))}
+                </ul>
+              </>
+            )}
+          </ul>
+        </div>
 
-      <div className="user-profile flex">
-        <div className="profile-img">
-          <img src="/icons/profile.svg" alt="" />
+        <div className="user-profile flex">
+          <div className="profile-img">
+            <img src="/icons/profile.svg" alt="" />
+          </div>
+          <div className="user-details">
+            <p>Kate Bishop</p>
+            <span>Trainer</span>
+          </div>
         </div>
-        <div className="user-details">
-          <p>Kate Bishop</p>
-          <span>Trainer</span>
+      </nav>
+
+      {showSwitchBatch && (
+        <div className="popup-container">
+          <div className="popup-content">
+            <div className="inner-content flex">
+              <h3>Switch Batch</h3>
+              <div className="close-icon">
+                <img
+                  src="/public/icons/Cancel.svg"
+                  className="cancel-btn"
+                  alt=""
+                  onClick={() => setShowSwitchBatch(false)}
+                />
+              </div>
+            </div>
+            <div className="add-batch">
+              <button className="add-batch-btn">
+                <span>+</span> Add New Batch
+              </button>
+            </div>
+          </div>
+          <div className="switch-batch-list-container">
+            {batchList.map((batch, index) => {
+              console.log(batch);
+              return (
+                <div className="switch-batch-card flex" key={index}>
+                  <div className="batch-left-side flex">
+                    <div className="batch-name-year">
+                      <h4>{batch.batch_name}</h4>
+                      <p>
+                        {batch.start_date.slice(0, 4)} -{" "}
+                        {batch.end_date.slice(0, 4)}{" "}
+                      </p>
+                    </div>
+                    <div className="tag">
+                      <span>Internship</span>
+                    </div>
+                  </div>
+                  <div className="batch-right-side">
+                    <img src="/public/icons/edit-pencil.svg" alt="" />
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </div>
-      </div>
-    </nav>
+      )}
+    </>
   );
 };
 
 export default Sidebar;
+
+/*
+
+ {!isDashboardPage && (
+              <>
+                <li
+                  className={`main-link ${
+                    isActive.application ? "main-active" : ""
+                  }`}
+                >
+                  <a
+                    href={`/batch/${batchId}/applications`}
+                    className="flex"
+                    onClick={() => handleMainLinkClick("application")}
+                  >
+                    <img src="/icons/application.svg" alt="home icon" />
+                    <span>Application</span>
+                  </a>
+                </li>
+                <li
+                  className={`main-link ${
+                    isActive.session ? "main-active" : ""
+                  }`}
+                >
+                  <a
+                    href="#"
+                    className="flex"
+                    onClick={() => handleMainLinkClick("session")}
+                  >
+                    <img src="/icons/application.svg" alt="home icon" />
+                    <span>Session</span>
+                  </a>
+                </li>
+                <li
+                  className={`main-link ${
+                    isActive.module ? "main-active" : ""
+                  }`}
+                >
+                  <a
+                    href="#"
+                    className="flex"
+                    onClick={() => handleMainLinkClick("module")}
+                  >
+                    <img src="/icons/application.svg" alt="home icon" />
+                    <span>Module</span>
+                  </a>
+                  {isModuleActive && (
+                    <ul className="sub-links">
+                      <li
+                        className={`sub-link ${
+                          isSubActive.task ? "sub-active" : ""
+                        }`}
+                        onClick={() => {
+                          handleSubLinkClick("task");
+                        }}
+                      >
+                        <a
+                          href={`/batch/${batchId}/module/task`}
+                          onClick={() => isModuleActive(true)}
+                        >
+                          Task
+                        </a>
+                      </li>
+                      <li
+                        className={`sub-link ${
+                          isSubActive.assessment ? "sub-active" : ""
+                        }`}
+                        onClick={() => handleSubLinkClick("assessment")}
+                      >
+                        <a
+                          href={`/batch/${batchId}/module/assessment`}
+                          onClick={() => isModuleActive(true)}
+                        >
+                          Assessment
+                        </a>
+                      </li>
+                      <li
+                        className={`sub-link ${
+                          isSubActive.quiz ? "sub-active" : ""
+                        }`}
+                        onClick={() => handleSubLinkClick("quiz")}
+                      >
+                        <a href="#" onClick={() => isModuleActive(true)}>
+                          Quiz
+                        </a>
+                      </li>
+                    </ul>
+                  )}
+                </li>
+                <li
+                  className={`main-link ${
+                    isActive.settings ? "main-active" : ""
+                  }`}
+                >
+                  <a
+                    href="#"
+                    className="flex"
+                    onClick={() => handleMainLinkClick("settings")}
+                  >
+                    <img src="/icons/application.svg" alt="home icon" />
+                    <span>Settings</span>
+                  </a>
+                </li>
+              </>
+            )}
+
+*/

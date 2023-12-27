@@ -1,16 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { useForm, Controller } from "react-hook-form";
-import ReactQuill, { Quill } from "react-quill";
-import "react-quill/dist/quill.snow.css"; // Import the styles
-import { useAuth } from "../context/AuthContext";
-import axios from "axios";
-import dayjs from "dayjs";
 
-import { API_END_POINT } from "../../config";
 import { useParams } from "react-router-dom";
+
 import {
   notification,
-  Select,
   DatePicker,
   Checkbox,
   Menu,
@@ -18,8 +11,19 @@ import {
   Button,
   Skeleton,
 } from "antd";
+import { useForm, Controller } from "react-hook-form";
+import ReactQuill, { Quill } from "react-quill";
+import axios from "axios";
+import dayjs from "dayjs";
+
 
 import WeightageList from "./WeightageList";
+
+import { useAuth } from "../context/AuthContext";
+
+import { API_END_POINT } from "../../config";
+
+import "quill/dist/quill.snow.css"; 
 
 const TaskView = ({ editId, type, weightageShow }) => {
   const { id: batchId } = useParams();
@@ -47,6 +51,7 @@ const TaskView = ({ editId, type, weightageShow }) => {
 
   useEffect(() => {
     setLoading(true);
+        //this useEffect used to fetch students lists
     axios
       .get(`${API_END_POINT}/api/applicant/${batchId}/list/students/`, {
         headers,
@@ -57,13 +62,13 @@ const TaskView = ({ editId, type, weightageShow }) => {
           setLoading(false);
           setSelectedStudents(res.data.data.map((student) => student.id));
         }
-        //setStatemin update
       })
       .catch((error) => {
         console.log(error);
       });
 
     if (editId) {
+      //this fetch used if the task edit that task details autofill the fields
       axios
         .get(`${API_END_POINT}/api/task/${batchId}/get/task/${editId}`, {
           headers,
@@ -71,15 +76,16 @@ const TaskView = ({ editId, type, weightageShow }) => {
         .then((res) => {
           if (res.data.status === 200 && res.data.message === "Success") {
             const { task_title, task_description, due_date } = res.data.data;
-            setValue("title", task_title);
-            setValue("description", task_description);
-            setValue("dueDate", dayjs(due_date));
+            setValue("Title", task_title);
+            setValue("Description", task_description);
+            setValue("Deadline", dayjs(due_date));
           }
         });
     } else {
-      setValue("title", "");
-      setValue("description", "");
-      setValue("due_date", "");
+      //other wise set empty value
+      setValue("Title", "");
+      setValue("Description", "");
+      setValue("Deadline", "");
     }
   }, [editId]);
 
@@ -119,10 +125,7 @@ const TaskView = ({ editId, type, weightageShow }) => {
       : `${API_END_POINT}/api/task/${batchId}/create_task/`;
     const method = editId ? "PUT" : "POST";
 
-    const headers = {
-      Authorization: `Bearer ${token.access}`,
-      "Content-Type": "application/json",
-    };
+    
     axios({
       method,
       url: apiEndpoint,
@@ -135,23 +138,23 @@ const TaskView = ({ editId, type, weightageShow }) => {
       notification.success({
         message: "Success",
         description: editId
-          ? "Task Updated Successfully"
-          : "Task Added Successfully",
+          ? `${type.charAt(0).toUpperCase() + type.slice(1)} Updated Successfully`
+          : `${type.charAt(0).toUpperCase() + type.slice(1)} Added Successfully`,
         duration: 3,
       });
+      reset({
+        SubmissionLink:""
+      });
       axios({
-        method,
+        method:"POST",
         url: `${API_END_POINT}/api/task/${batchId}/assign/task/${res.data.data.id}`,
         headers: {
           Authorization: `Bearer ${token.access}`,
           "Content-Type": "application/json",
         },
         data: assignTask,
-      }).then((res)=>{
-        alert("task user assigned")
-      })
-
-     
+      }).then((res) => {
+      });
     });
   };
 
@@ -191,11 +194,11 @@ const TaskView = ({ editId, type, weightageShow }) => {
       <path d="M10.5 9H3.5" stroke="#969D88" stroke-linecap="round" stroke-linejoin="round"/>
     </svg>`;
     icons.alignJustify = `<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 10 8" fill="none">
-     <path d="M9.5 3H0.5" stroke="#969D88" stroke-linecap="round" stroke-linejoin="round"/>
-     <path d="M9.5 1H0.5" stroke="#969D88" stroke-linecap="round" stroke-linejoin="round"/>
-     <path d="M9.5 5H0.5" stroke="#969D88" stroke-linecap="round" stroke-linejoin="round"/>
-     <path d="M9.5 7H0.5" stroke="#969D88" stroke-linecap="round" stroke-linejoin="round"/>
-   </svg>`;
+    <path d="M9.5 3H0.5" stroke="#969D88" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M9.5 1H0.5" stroke="#969D88" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M9.5 5H0.5" stroke="#969D88" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M9.5 7H0.5" stroke="#969D88" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>`;
     return null; // This component doesn't render anything
   };
 
@@ -258,39 +261,41 @@ const TaskView = ({ editId, type, weightageShow }) => {
             <div className="module-header-section-container">
               <div className="module-header-section flex">
                 <div className="module-title-section flex">
-                  <div>
-                    <Controller
-                      name="Title"
-                      control={control}
-                      rules={{
-                        validate: (value) => validateNotEmpty("Title", value),
-                      }}
-                      render={({ field }) => (
-                        <>
-                          <input
-                            {...field}
-                            style={{
-                              width: field.value
-                                ? `${Math.max(58, field.value.length * 8)}px`
-                                : "56px",
-                            }}
-                            type="text"
-                            placeholder={"Untitled"}
-                            className={`${errors.Title ? "error-notify" : ""} `}
-                            readOnly={!isEditing}
-                            onKeyUp={(e) => {
-                              if (
-                                e.key === "Enter" &&
-                                field.value.trim() === ""
-                              ) {
-                                setValue("Title", "Untitled");
-                              }
-                            }}
-                          />
-                        </>
-                      )}
-                    />
-                  </div>
+                  <Controller
+                    name="Title"
+                    control={control}
+                    rules={{
+                      validate: (value) => validateNotEmpty("Title", value),
+                    }}
+                    render={({ field }) => (
+                      <>
+                        <input
+                          {...field}
+                          style={{
+                            width: field.value
+                              ? `${field.value.length * 8}px`
+                              : "56px",
+                          }}
+                          type="text"
+                          placeholder={"Untitled"}
+                          className={`task-title ${
+                            errors.Title ? "error-notify" : ""
+                          } `}
+                          readOnly={!isEditing}
+                          onFocus={true}
+                          onBlur={() => setIsEditing(false)}
+                          onKeyUp={(e) => {
+                            if (
+                              e.key === "Enter" &&
+                              field.value.trim() === ""
+                            ) {
+                              setValue("Title", "Untitled");
+                            }
+                          }}
+                        />
+                      </>
+                    )}
+                  />
 
                   {!isEditing && (
                     <img
@@ -303,8 +308,14 @@ const TaskView = ({ editId, type, weightageShow }) => {
 
                   {isEditing && (
                     <div>
-                      <button onClick={() => setIsEditing(false)}>Yes</button>
                       <button
+                        onClick={() => setIsEditing(false)}
+                        className="yes-btn"
+                      >
+                        Yes
+                      </button>
+                      <button
+                      className="no-btn"
                         onClick={() => {
                           setValue("Title", getValues("Title"));
                           setIsEditing(false);

@@ -296,6 +296,18 @@ body .container .application-full-container .application-inner-container .filter
   font-weight: 400;
   color: white;
 }
+body .container .application-full-container .application-inner-container .filter-or-search-container .cancel-btn {
+  width: 14px;
+  cursor: pointer;
+}
+body .container .application-full-container .application-inner-container .no-data-container {
+  justify-content: center;
+  align-items: center;
+}
+body .container .application-full-container .application-inner-container .no-data-container .no-data-image {
+  max-width: 400px;
+  width: 100%;
+}
 body .container .application-full-container .application-inner-container .application-list-container {
   height: 400px;
   background-color: white;

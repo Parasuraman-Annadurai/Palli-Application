@@ -551,7 +551,102 @@ body {
         }
       }
     }
+    .popup-container {
+      position: absolute;
+      left: 160px;
+      top: 0;
+      background-color: white;
+      height: 100vh;
+      width: 301px;
+      z-index: 999;
+      padding: 20px;
+      .popup-content{
+        .inner-content{
+          align-items: center;
+          justify-content: space-between;
+          padding-bottom: 16px;
+          h3{
+            font-size: 14px;
+            font-family: $font-Roboto;
+            font-weight: 500;
+            color: $font-primary-color;
+            line-height: 18px;
+            padding-bottom: 4px;
+          }
+          .cancel-btn{
+            width: 16px;
+            cursor: pointer;
+          }
+        }
+        .add-batch{
+          padding-bottom: 10px;
+          .add-batch-btn{
+            width: 100%;
+            padding: 8px 0;
+            border: 1px solid $border-color;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            font-size: 12px;
+            line-height: 16px;
+            font-weight: 500;
+            background-color: #ffff;
+            font-family: $font-Roboto;
+            span {
+              font-size: 16px;
+              line-height: 20px;
+              font-weight: 400;
+              color: $font-primary-color;
+              font-family: $font-Roboto;
+            }
+          }
+        }
+      }
 
+      .switch-batch-list-container{
+        .switch-batch-card{
+          padding: 14px 16px;
+          border-radius: 4px;
+          justify-content: space-between;
+          border: 1px solid $border-color;
+          width: 100%;
+          margin-bottom: 12px;
+          .batch-left-side{
+            .batch-name-year{
+              h4{
+                font-size: 14px;
+                line-height: 18px;
+                font-family: $font-Roboto;
+                color: $font-primary-color;
+                font-weight: 500;
+              }
+              p{
+                color: $font-secondary-color;
+                font-size: 10px;
+                line-height: 14px;
+                font-family: $font-Roboto;
+                font-weight: 400;
+              }
+            }
+            .tag{
+              span{
+                padding: 2px 8px;
+                background-color: #EEFDB0;
+                color: $primary-color;
+                border-radius: 4px;
+                font-size: 10px;
+                line-height: 14px;
+                font-family: $font-Roboto;
+
+              }
+            }
+          }
+        }
+      }
+    }
+   
     //task listing container
     .listing-container {
       max-width: 301px;
@@ -665,12 +760,16 @@ body {
                 line-height: 16px;
                 font-weight: 500;
                 font-family: $font-Roboto;
+                flex: 1;
               }
 
               img {
                 width: 16px;
                 height: 16px;
                 display: none;
+              }
+              .delete-icon{
+                margin-left: 5px;
               }
             }
 
@@ -738,18 +837,39 @@ body {
           .module-title-section {
             gap: 8px;
 
-            input {
-              // width: 56px;
+            .task-title {
               font-size: 16px;
               line-height: 24px;
               font-weight: 500;
               font-family: $font-Roboto;
               color: $font-primary-color;
+              outline: #12160a;
             }
 
             img {
               width: 20px;
               height: 20px;
+            }
+            .yes-btn{
+              padding: 5px 15px 5px 15px;
+              background-color: $primary-color;
+              color: #ffff;
+              border: 1px solid $border-color;
+              border-radius: 4px;
+              font-size: 10px;
+              font-family: $font-Roboto;
+              cursor: pointer;
+            }
+            .no-btn{
+              padding: 5px 15px 5px 15px;
+              background-color: $border-color;
+              color: $font-primary-color;
+              border: 1px solid $border-color;
+              border-radius: 4px;
+              font-size: 10px;
+              font-family: $font-Roboto;
+              margin-left: 5px;
+              cursor: pointer;
             }
           }
         }
@@ -863,7 +983,7 @@ body {
           }
 
           .common-property {
-            max-width: 150px;
+            max-width: 200px;
             width: 100%;
           }
         }

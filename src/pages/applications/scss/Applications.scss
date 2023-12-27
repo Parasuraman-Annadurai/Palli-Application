@@ -273,8 +273,10 @@ body {
     // max-width: 1280px;
     // width: 100%;
     // margin: auto;
+  
     .application-full-container {
       width: 100%;
+      
       .application-main-container {
         padding: 15px 20px;
         align-items: center;
@@ -344,6 +346,8 @@ body {
           }
         }
         .filter-or-search-container{
+          padding-bottom: 10px;
+
           span{
             font-size: 10px;
             line-height: 14px;
@@ -351,8 +355,23 @@ body {
             font-weight: 400;
             color: #ffff;
           }
-          padding-bottom: 10px;
+          .cancel-btn{
+            width: 14px;
+            cursor: pointer;
+          }
         }
+
+        .no-data-container{
+          justify-content: center;
+          align-items: center;
+          .no-data-image{
+            max-width: 400px;
+            width: 100%;
+
+          }
+        }
+
+
         .application-list-container {
           height: 400px;
 
@@ -490,12 +509,16 @@ body {
             }
           }
         }
+
+       
         .application-pagination-container {
           padding-top: 10px;
           justify-content: center;
           align-items: center;
           // position: fixed;
         }
+
+        
       }
     }
   }

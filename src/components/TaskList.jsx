@@ -9,21 +9,23 @@ import axios from "axios";
 import { useAuth } from "../context/AuthContext";
 
 import { API_END_POINT } from "../../config";
+import dayjs from "dayjs";
 
 const TaskList = ({
   mode,
   filterShow,
-  onEditClick,
+  handleEdit,
   onEditModeChange,
   taskLists,
   setTaskSearchWord,
   loading,
   handleDelete,
+  handleAdd,
+  selectedTask
 }) => {
 
 
   const TaskCard = ({ task }) => {
-
     const truncateText = (text, maxLength) => {
       return text.length > maxLength
         ? text.substring(0, maxLength) + "..."
@@ -31,7 +33,7 @@ const TaskList = ({
     };
     return (
       <>
-        <div className="task-card active flex" key={task.id} id={task.id}>
+        <div className={`task-card ${selectedTask=== task.id ? "active" :""} flex`} key={task.id} id={task.id}>
           {loading ? (
             <Skeleton
               avatar={{ size: "small" }}
@@ -46,7 +48,7 @@ const TaskList = ({
 
               <div className="task-details">
                 <div className="task-name-with-icon flex">
-                  <h2>{truncateText(task.task_title, 15)}</h2>
+                  <h2>{truncateText(task.task_title,15)}</h2>
 
                    <>
                    <img
@@ -54,7 +56,7 @@ const TaskList = ({
                       alt="edit-icon"
                       className="edit-icon"
                       id={task.id}
-                      onClick={() =>onEditClick(task.id)}
+                      onClick={() =>handleEdit(task.id)}
                     />
                       <img
                       src="/icons/deleteIcon.svg"
@@ -71,9 +73,10 @@ const TaskList = ({
                     task.task_description.replace(/<[^>]*>/g, ""),
                     50
                   )}
+                  {/* { task.task_description} */}
                 </p>
                 <span className="btn btn-inprogress">Inprogress</span>
-                <span className="btn btn-deadline">Dec 25 2023</span>
+                <span className="btn btn-deadline">{dayjs(task.due_date).format("MMM,DD YYYY")}</span>
               </div>
             </>
           )}
@@ -106,12 +109,12 @@ const TaskList = ({
           )}
         </div>
         <div className="create-container">
-          <button className="btn create-btn" onClick={()=>onEditModeChange("")}>
+          <button className="btn create-btn" onClick={handleAdd}>
             <span>+</span>Create {mode}
           </button>
         </div>
         <div className="task-list-container">
-          {taskLists.data.map((task) => (
+          {taskLists && taskLists.data && taskLists.data.map((task) => (
             <TaskCard key={task.id} task={task} />
           ))}
         </div>

@@ -4,11 +4,11 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useForm } from "react-hook-form";
 
+import { Spin } from "antd";
+
 import { useAuth } from "../../context/AuthContext";
 
-
 import { isEmailValid, isPasswordValid } from "../../utils/validate";
-
 
 import { API_END_POINT } from "../../../config";
 
@@ -16,8 +16,8 @@ import "./scss/Login.css";
 const Login = () => {
   const navigate = useNavigate();
   const { setToken, setUser } = useAuth();
-  const [showPassword,setShowPassword] = useState(false);
-
+  const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
   const {
     register,
     handleSubmit,
@@ -32,6 +32,7 @@ const Login = () => {
     axios
       .post(`${API_END_POINT}/api/accounts/login/`, loginData)
       .then((res) => {
+        setLoading(true);
         axios({
           url: `${API_END_POINT}/api/accounts/get/user_info/`,
           method: "GET",
@@ -52,7 +53,7 @@ const Login = () => {
       })
       .catch((err) => {
         console.error("Authentication Failed", err);
-        
+
         navigate("/login");
       });
   };
@@ -61,7 +62,9 @@ const Login = () => {
     <>
       <div className="container">
         <main className="login-page-container">
-          <div className="logo-container">
+         {loading ? <Spin /> : (
+          <>
+             <div className="logo-container">
             <img
               className="logo"
               src="/images/dckap_palli_logo_sm.svg"
@@ -71,7 +74,7 @@ const Login = () => {
           </div>
           <div className="login-container flex">
             <div className="login-image-container">
-              <img src="/icons/Login Image.svg" alt="" draggable={false}/>
+              <img src="/icons/Login Image.svg" alt="" draggable={false} />
             </div>
             <div className="login-form-container">
               <form onSubmit={handleSubmit(handleLogin)}>
@@ -83,8 +86,9 @@ const Login = () => {
                   <label htmlFor="">Email id</label>
                   <input
                     type="text"
-                    className={`email-input ${errors.email ? "error-notify" : ""}`}
-
+                    className={`email-input ${
+                      errors.email ? "error-notify" : ""
+                    }`}
                     name="email"
                     placeholder="Type here..."
                     {...register("email", {
@@ -92,14 +96,18 @@ const Login = () => {
                       validate: isEmailValid,
                     })}
                   />
-                  <p className="error-message">{errors.email ? errors.email.message :""}</p>
+                  <p className="error-message">
+                    {errors.email ? errors.email.message : ""}
+                  </p>
                 </div>
                 <div className="password-container">
                   <label htmlFor="">Password</label>
                   <div className="password-field">
                     <input
-                      type={`${showPassword ? "text":"password"}`}
-                      className={`password-input ${errors.email ? "error-notify" : ""}`}
+                      type={`${showPassword ? "text" : "password"}`}
+                      className={`password-input ${
+                        errors.email ? "error-notify" : ""
+                      }`}
                       name="password"
                       placeholder="Type here..."
                       {...register("password", {
@@ -107,9 +115,18 @@ const Login = () => {
                         validate: isPasswordValid,
                       })}
                     />
-                    <img onClick={()=>setShowPassword(!showPassword)} src={`/icons/${showPassword ? "eye-close" :"eye-open"}.svg`} alt="eye-icon" className="eye-icon" />
+                    <img
+                      onClick={() => setShowPassword(!showPassword)}
+                      src={`/icons/${
+                        showPassword ? "eye-close" : "eye-open"
+                      }.svg`}
+                      alt="eye-icon"
+                      className="eye-icon"
+                    />
                   </div>
-                  <p className="error-message">{errors.password ? errors.password.message :""}</p>
+                  <p className="error-message">
+                    {errors.password ? errors.password.message : ""}
+                  </p>
                 </div>
                 <div className="remember-container flex">
                   <div className="remember-content flex">
@@ -126,6 +143,8 @@ const Login = () => {
               </form>
             </div>
           </div>
+          </>
+         )}
         </main>
       </div>
     </>

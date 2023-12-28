@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useParams, useNavigate, NavLink } from "react-router-dom";
 
-import { Button, Modal, List, Avatar, Tooltip } from "antd";
+import { Dropdown } from "antd";
 import axios from "axios";
 
+import { DASHBOARD } from "../routes/routes";
 import { useAuth } from "../context/AuthContext";
 
 import { API_END_POINT } from "../../config";
@@ -11,31 +12,10 @@ import { API_END_POINT } from "../../config";
 const Sidebar = ({ menu, activeMenuItem }) => {
   const navigate = useNavigate();
   const { id: batchId } = useParams();
-  const { token } = useAuth();
+  const { token, user } = useAuth();
 
   const currentPath = useLocation().pathname;
-  const isDashboardPage = currentPath === "/dashboard";
-
-  // const handleSwitch = (id, batchName) => {
-  //   Modal.confirm({
-  //     title: `Confirm Swith to ${batchName}`,
-  //     content: "Are you sure you want to Switch this Batch?",
-  //     onOk: () => {
-  //       navigate(`/batch/${id}/applications`);
-  //       setIsModalOpen(false);
-  //       window.location.reload();
-  //     },
-  //   });
-  // };
-  // useEffect(() => {
-  //   const headers = {
-  //     Authorization: `Bearer ${token.access}`,
-  //     "Content-type": "application/json",
-  //   };
-  //   axios.get(`${API_END_POINT}/api/list/batch/`, { headers }).then((res) => {
-  //     setBatches(res.data.data);
-  //   });
-  // }, []);
+  const isDashboardPage = currentPath.includes(DASHBOARD);
 
   const [activeState, setActiveState] = useState({ main: null, sub: null });
 
@@ -51,7 +31,6 @@ const Sidebar = ({ menu, activeMenuItem }) => {
     });
   }, []);
 
-  console.log(activeState);
   const handleMainLinkClick = (menuList) => {
     setActiveState({ main: menuList.id, sub: null });
   };
@@ -59,6 +38,22 @@ const Sidebar = ({ menu, activeMenuItem }) => {
   const handleSubLinkClick = (subLinkId) => {
     setActiveState({ ...activeState, sub: subLinkId });
   };
+
+  const handleLogout = ()=>{
+    axios.post(`${API_END_POINT}/api/accounts/logout/`,token,{headers}).then((res)=>{
+      navigate("/login")
+      console.log(res);
+    })
+  }
+  const items = [
+    {
+      label: (
+        <button className="btn primary-medium" onClick={handleLogout}>
+          Logout
+        </button>
+      ),
+      key: '0',
+    },]
   return (
     <>
       <nav className="side-nav-container flex">
@@ -85,7 +80,11 @@ const Sidebar = ({ menu, activeMenuItem }) => {
 
         <div className="nav-links">
           <ul>
-            <li className={`main-link ${activeState.main === "home" ? "main-active" : ""}`}>
+            <li
+              className={`main-link ${
+                activeState.main === "home" ? "main-active" : ""
+              }`}
+            >
               <a
                 href="#"
                 className="flex"
@@ -159,10 +158,19 @@ const Sidebar = ({ menu, activeMenuItem }) => {
           <div className="profile-img">
             <img src="/icons/profile.svg" alt="" />
           </div>
-          <div className="user-details">
-            <p>Kate Bishop</p>
-            <span>Trainer</span>
-          </div>
+
+         
+
+          <Dropdown
+            menu={{
+              items,
+            }}
+          >
+            <div className="user-details">
+              <p>{user.last_name}</p>
+              <span>Admin</span>
+            </div>
+          </Dropdown>
         </div>
       </nav>
 
@@ -188,7 +196,6 @@ const Sidebar = ({ menu, activeMenuItem }) => {
           </div>
           <div className="switch-batch-list-container">
             {batchList.map((batch, index) => {
-              console.log(batch);
               return (
                 <div className="switch-batch-card flex" key={index}>
                   <div className="batch-left-side flex">
@@ -217,110 +224,3 @@ const Sidebar = ({ menu, activeMenuItem }) => {
 };
 
 export default Sidebar;
-
-/*
-
- {!isDashboardPage && (
-              <>
-                <li
-                  className={`main-link ${
-                    isActive.application ? "main-active" : ""
-                  }`}
-                >
-                  <a
-                    href={`/batch/${batchId}/applications`}
-                    className="flex"
-                    onClick={() => handleMainLinkClick("application")}
-                  >
-                    <img src="/icons/application.svg" alt="home icon" />
-                    <span>Application</span>
-                  </a>
-                </li>
-                <li
-                  className={`main-link ${
-                    isActive.session ? "main-active" : ""
-                  }`}
-                >
-                  <a
-                    href="#"
-                    className="flex"
-                    onClick={() => handleMainLinkClick("session")}
-                  >
-                    <img src="/icons/application.svg" alt="home icon" />
-                    <span>Session</span>
-                  </a>
-                </li>
-                <li
-                  className={`main-link ${
-                    isActive.module ? "main-active" : ""
-                  }`}
-                >
-                  <a
-                    href="#"
-                    className="flex"
-                    onClick={() => handleMainLinkClick("module")}
-                  >
-                    <img src="/icons/application.svg" alt="home icon" />
-                    <span>Module</span>
-                  </a>
-                  {isModuleActive && (
-                    <ul className="sub-links">
-                      <li
-                        className={`sub-link ${
-                          isSubActive.task ? "sub-active" : ""
-                        }`}
-                        onClick={() => {
-                          handleSubLinkClick("task");
-                        }}
-                      >
-                        <a
-                          href={`/batch/${batchId}/module/task`}
-                          onClick={() => isModuleActive(true)}
-                        >
-                          Task
-                        </a>
-                      </li>
-                      <li
-                        className={`sub-link ${
-                          isSubActive.assessment ? "sub-active" : ""
-                        }`}
-                        onClick={() => handleSubLinkClick("assessment")}
-                      >
-                        <a
-                          href={`/batch/${batchId}/module/assessment`}
-                          onClick={() => isModuleActive(true)}
-                        >
-                          Assessment
-                        </a>
-                      </li>
-                      <li
-                        className={`sub-link ${
-                          isSubActive.quiz ? "sub-active" : ""
-                        }`}
-                        onClick={() => handleSubLinkClick("quiz")}
-                      >
-                        <a href="#" onClick={() => isModuleActive(true)}>
-                          Quiz
-                        </a>
-                      </li>
-                    </ul>
-                  )}
-                </li>
-                <li
-                  className={`main-link ${
-                    isActive.settings ? "main-active" : ""
-                  }`}
-                >
-                  <a
-                    href="#"
-                    className="flex"
-                    onClick={() => handleMainLinkClick("settings")}
-                  >
-                    <img src="/icons/application.svg" alt="home icon" />
-                    <span>Settings</span>
-                  </a>
-                </li>
-              </>
-            )}
-
-*/

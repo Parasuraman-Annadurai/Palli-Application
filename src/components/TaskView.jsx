@@ -16,147 +16,75 @@ import ReactQuill, { Quill } from "react-quill";
 import axios from "axios";
 import dayjs from "dayjs";
 
-
 import WeightageList from "./WeightageList";
 
 import { useAuth } from "../context/AuthContext";
 
 import { API_END_POINT } from "../../config";
 
-import "quill/dist/quill.snow.css"; 
+import "quill/dist/quill.snow.css";
+import Title from "antd/es/skeleton/Title";
 
-const TaskView = ({ editId, type, weightageShow }) => {
+const TaskView = ({
+  editId,
+  type,
+  weightageShow,
+  handleUpdateOrAdd,
+  currentTask,
+  students,
+  setSelectedStudents,
+  selectedStudents,
+  handleSave,
+}) => {
   const { id: batchId } = useParams();
 
   const { token } = useAuth();
   const [loading, setLoading] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
-  const [students, setStudents] = useState([]);
-  const [selectedStudents, setSelectedStudents] = useState([]);
 
   const {
     control,
     handleSubmit,
     reset,
     setError,
+    clearErrors,
     getValues,
     setValue,
     formState: { errors },
   } = useForm();
 
-  const headers = {
-    Authorization: `Bearer ${token.access}`,
-    "Content-type": "application/json",
-  };
 
-  useEffect(() => {
-    setLoading(true);
-        //this useEffect used to fetch students lists
-    axios
-      .get(`${API_END_POINT}/api/applicant/${batchId}/list/students/`, {
-        headers,
-      })
-      .then((res) => {
-        if (res.status === 200 && res.data.message === "Success") {
-          setStudents(res.data.data);
-          setLoading(false);
-          setSelectedStudents(res.data.data.map((student) => student.id));
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+  // Destructure the current task
+  const { task_title, task_description, due_date, draft , id } = currentTask[0] || {};
 
-    if (editId) {
-      //this fetch used if the task edit that task details autofill the fields
-      axios
-        .get(`${API_END_POINT}/api/task/${batchId}/get/task/${editId}`, {
-          headers,
-        })
-        .then((res) => {
-          if (res.data.status === 200 && res.data.message === "Success") {
-            const { task_title, task_description, due_date } = res.data.data;
-            setValue("Title", task_title);
-            setValue("Description", task_description);
-            setValue("Deadline", dayjs(due_date));
-          }
-        });
-    } else {
-      //other wise set empty value
-      setValue("Title", "");
-      setValue("Description", "");
-      setValue("Deadline", "");
+  useEffect(()=>{
+    // console.log(currentTask);
+
+    if(currentTask.length > 0){
+      setValue("Title",task_title);
+      setValue("Description",task_description);
+      setValue("Deadline",dayjs(due_date));
     }
-  }, [editId]);
+    else{
+      setValue("Title","");
+      setValue("Description","");
+      setValue("Deadline","");
+    }
+
+   
+
+  },[currentTask])
+
+ 
+
+  
 
   const validateNotEmpty = (fieldName, value) => {
     const trimmedValue = value ? value.replace(/<[^>]*>/g, "").trim() : null;
     return trimmedValue ? null : `${fieldName} is required`;
   };
 
-  const handleAddTask = (taskData) => {
-    if (selectedStudents.length === 0) {
-      setError("assignee", {
-        type: "manual",
-        message: "Assignee is required",
-      });
-      return;
-    }
-
-    const { Title, Description, Deadline, SubmissionLink } = taskData;
-
-    const formattedDate = Deadline.format("YYYY-MM-DD HH:mm:ss");
-
-    const createTaskPayload = {
-      task_title: Title,
-      task_description: Description,
-      task_type: type === "task" ? 0 : 1,
-      due_date: formattedDate,
-    };
-
-    const assignTask = {
-      user: selectedStudents,
-      task_status: 0,
-      submission_link: SubmissionLink,
-    };
-
-    const apiEndpoint = editId
-      ? `${API_END_POINT}/api/task/${batchId}/update_task/${editId}`
-      : `${API_END_POINT}/api/task/${batchId}/create_task/`;
-    const method = editId ? "PUT" : "POST";
-
-    
-    axios({
-      method,
-      url: apiEndpoint,
-      headers: {
-        Authorization: `Bearer ${token.access}`,
-        "Content-Type": "application/json",
-      },
-      data: createTaskPayload,
-    }).then((res) => {
-      notification.success({
-        message: "Success",
-        description: editId
-          ? `${type.charAt(0).toUpperCase() + type.slice(1)} Updated Successfully`
-          : `${type.charAt(0).toUpperCase() + type.slice(1)} Added Successfully`,
-        duration: 3,
-      });
-      reset({
-        SubmissionLink:""
-      });
-      axios({
-        method:"POST",
-        url: `${API_END_POINT}/api/task/${batchId}/assign/task/${res.data.data.id}`,
-        headers: {
-          Authorization: `Bearer ${token.access}`,
-          "Content-Type": "application/json",
-        },
-        data: assignTask,
-      }).then((res) => {
-      });
-    });
-  };
+ 
 
   const CustomIcons = () => {
     const icons = Quill.import("ui/icons");
@@ -251,13 +179,36 @@ const TaskView = ({ editId, type, weightageShow }) => {
     </Menu>
   );
 
+  const handleValidate =(formData)=>{
+
+    //if student not assign show the error
+    if (selectedStudents.length === 0) {
+      setError("assignee", {
+        type: "manual",
+        message: "Assignee is required",
+      });
+      return;
+    }
+
+  
+    handleSave(formData,draft);
+
+    reset({
+      Title: "",
+      Description: "",
+      Deadline: null,
+      SubmissionLink: "",
+    });
+    
+  }
+
   return (
     <>
       <main className="main-container">
         {loading ? (
           <Skeleton active paragraph={4} />
         ) : (
-          <form onSubmit={handleSubmit(handleAddTask)}>
+          <form onSubmit={handleSubmit(handleValidate)}>
             <div className="module-header-section-container">
               <div className="module-header-section flex">
                 <div className="module-title-section flex">
@@ -315,7 +266,7 @@ const TaskView = ({ editId, type, weightageShow }) => {
                         Yes
                       </button>
                       <button
-                      className="no-btn"
+                        className="no-btn"
                         onClick={() => {
                           setValue("Title", getValues("Title"));
                           setIsEditing(false);
@@ -329,7 +280,7 @@ const TaskView = ({ editId, type, weightageShow }) => {
 
                 <div className="task-create">
                   <button type="submit" className="btn primary-medium">
-                    {editId ? "Update" : "Create"}
+                    {draft ? "Create" : "Update"}
                   </button>
                 </div>
               </div>

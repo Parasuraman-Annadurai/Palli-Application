@@ -10,7 +10,6 @@ import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
 import dayjs from "dayjs";
 
-
 import TaskList from "../../components/TaskList";
 import TaskView from "../../components/TaskView";
 const AssessmentModule = () => {
@@ -21,7 +20,7 @@ const AssessmentModule = () => {
   const [assessmentSearchWord, setAssessmentSearchWord] = useState("");
   const [loading, setLoading] = useState(true);
   const [students, setStudents] = useState([]);
-  const [selectedStudents,setSelectedStudents] = useState([]);
+  const [selectedStudents, setSelectedStudents] = useState([]);
   const [selectId, setSelectId] = useState(null);
 
   const headers = {
@@ -43,7 +42,7 @@ const AssessmentModule = () => {
         console.log(error);
       });
 
-      axios
+    axios
       .get(`${API_END_POINT}/api/applicant/${batchId}/list/students/`, {
         headers,
       })
@@ -57,15 +56,14 @@ const AssessmentModule = () => {
       .catch((error) => {
         console.log(error);
       });
-
   }, [assessmentSearchWord]);
 
   const handleDelete = (deleteAssessmentId) => {
-   
-
     const updateAssessment = {
       ...assessmentList,
-      data: assessmentList.data.filter((assessment) => assessment.id !== deleteAssessmentId),
+      data: assessmentList.data.filter(
+        (assessment) => assessment.id !== deleteAssessmentId
+      ),
     };
     Modal.warning({
       title: "Success",
@@ -99,9 +97,9 @@ const AssessmentModule = () => {
     });
   };
 
-  const handleSave = (assessmentData, draft,) => {
+  const handleSave = (assessmentData, draft) => {
     const existingAssessmentIndex = assessmentList.data.findIndex(
-      (assessment) => assessment.draft=== draft
+      (assessment) => assessment.draft === draft
     );
 
     const { Title, Description, Deadline, SubmissionLink } = assessmentData;
@@ -136,7 +134,9 @@ const AssessmentModule = () => {
     }).then((res) => {
       notification.success({
         message: "Success",
-        description: draft ? `Assessment Added Successfully` : `Assessment Updated Successfully`,
+        description: draft
+          ? `Assessment Added Successfully`
+          : `Assessment Updated Successfully`,
         duration: 3,
       });
 
@@ -147,7 +147,6 @@ const AssessmentModule = () => {
         task_type: 1,
         due_date: formattedDate,
       };
-
 
       if (existingAssessmentIndex !== -1) {
         // Remove 'draft' key from the task at the found index
@@ -166,7 +165,7 @@ const AssessmentModule = () => {
               : assessment
           ),
         }));
-      } else{
+      } else {
         setAssessmentList((prevState) => ({
           ...prevState,
           data: [...prevState.data, { id: res.data.data.id, ...{} }],
@@ -184,8 +183,6 @@ const AssessmentModule = () => {
     });
 
     //once task create or update tasklist state update
-
-  
   };
 
   const handleAdd = () => {
@@ -207,7 +204,7 @@ const AssessmentModule = () => {
     setSelectId(uniqueId);
     setAssessmentList(concatNewTask);
   };
- 
+
   return (
     <>
       <TaskList
@@ -221,19 +218,28 @@ const AssessmentModule = () => {
         handleAdd={handleAdd}
         selectedTask={selectId}
       />
-      {editId && (
-         <TaskView
-         type={"assessment"}
-         editId={editId}
-         currentTask={
-          editId ? assessmentList?.data.filter((task) => task.id === editId) : {}
-        }
-         selectedStudents={selectedStudents}
-         students={students}
-         setSelectedStudents={setSelectedStudents}
-         handleSave={handleSave}
-         weightageShow={true}
-       />
+      {editId ? (
+        <TaskView
+          type={"assessment"}
+          editId={editId}
+          currentTask={
+            editId
+              ? assessmentList?.data.filter((task) => task.id === editId)
+              : {}
+          }
+          selectedStudents={selectedStudents}
+          students={students}
+          setSelectedStudents={setSelectedStudents}
+          handleSave={handleSave}
+          weightageShow={true}
+        />
+      ) : (
+        <div className="select-something-container flex">
+          <div className="image-container ">
+            <img src="/icons/select-something.svg" alt="" />
+            <p className="select-something-heading">Select Something</p>
+          </div>
+        </div>
       )}
     </>
   );

@@ -393,5 +393,8 @@ body .container .login-page-container .login-container .login-form-container for
   width: 100%;
   align-items: center;
 }
+body .container .login-page-container .login-container .login-form-container form .login-button-container button span .loader {
+  margin-left: 8px;
+}
 
 /*# sourceMappingURL=Login.css.map */

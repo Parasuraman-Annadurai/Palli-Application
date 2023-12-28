@@ -113,8 +113,6 @@ const TaskModule = () => {
       due_date: formattedDate,
     };
 
-  
-
     const apiEndpoint = draft
       ? `${API_END_POINT}/api/task/${batchId}/create_task/`
       : `${API_END_POINT}/api/task/${batchId}/update_task/${editId}`;
@@ -137,7 +135,9 @@ const TaskModule = () => {
     }).then((res) => {
       notification.success({
         message: "Success",
-        description: draft ? `Task Added Successfully`:`Task Updated Successfully`,
+        description: draft
+          ? `Task Added Successfully`
+          : `Task Updated Successfully`,
         duration: 3,
       });
       //this payload used set the loacl state
@@ -148,7 +148,7 @@ const TaskModule = () => {
         task_type: 0,
         due_date: formattedDate,
       };
-     
+
       if (existingTaskIndex !== -1) {
         // Remove 'draft' key from the task at the found index
         setTaskLists((prevState) => ({
@@ -166,8 +166,8 @@ const TaskModule = () => {
               : task
           ),
         }));
-      } 
-      setEditId(null)
+      }
+      setEditId(null);
       axios({
         method: "POST",
         url: `${API_END_POINT}/api/task/${batchId}/assign/task/${res.data.data.id}`,
@@ -229,8 +229,11 @@ const TaskModule = () => {
           handleSave={handleSave}
         />
       ) : (
-        <div>
-          <Empty description={false} />
+        <div className="select-something-container flex">
+          <div className="image-container ">
+            <img src="/icons/select-something.svg" alt="" />
+            <p className="select-something-heading">Select Something</p>
+          </div>
         </div>
       )}
     </>

@@ -456,6 +456,11 @@ body {
               button {
                 width: 100%;
                 align-items: center;
+                span{
+                 .loader{
+                  margin-left: 8px;
+                 }
+                }
               }
             }
           }

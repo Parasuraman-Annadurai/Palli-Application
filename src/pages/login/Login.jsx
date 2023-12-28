@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useForm } from "react-hook-form";
 
-import { Spin } from "antd";
+import { LoadingOutlined } from "@ant-design/icons";
 
 import { useAuth } from "../../context/AuthContext";
 
@@ -46,6 +46,7 @@ const Login = () => {
             setToken(res.data.data);
             setUser(userData.data.data);
             navigate("/dashboard");
+            setLoading(false);
           })
           .catch((err) => {
             console.error("userData fetch Failed", err);
@@ -62,9 +63,7 @@ const Login = () => {
     <>
       <div className="container">
         <main className="login-page-container">
-         {loading ? <Spin /> : (
-          <>
-             <div className="logo-container">
+          <div className="logo-container">
             <img
               className="logo"
               src="/images/dckap_palli_logo_sm.svg"
@@ -138,13 +137,20 @@ const Login = () => {
                   </div>
                 </div>
                 <div className="login-button-container ">
-                  <button className="btn primary-medium ">Login</button>
+                  <button className="btn primary-medium " disabled={loading}>
+                    {loading ? (
+                      <span>
+                        Logging in...
+                        <LoadingOutlined className="loader" />
+                      </span>
+                    ) : (
+                      "Login"
+                    )}
+                  </button>
                 </div>
               </form>
             </div>
           </div>
-          </>
-         )}
         </main>
       </div>
     </>

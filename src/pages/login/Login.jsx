@@ -45,7 +45,7 @@ const Login = () => {
             localStorage.setItem("user", JSON.stringify(userData.data.data));
             setToken(res.data.data);
             setUser(userData.data.data);
-            navigate("/dashboard");
+            navigate("/batch/140/applications");
             setLoading(false);
           })
           .catch((err) => {

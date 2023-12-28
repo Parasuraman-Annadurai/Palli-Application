@@ -65,11 +65,7 @@ const TaskView = ({
       setValue("Description",task_description);
       setValue("Deadline",dayjs(due_date));
     }
-    else{
-      setValue("Title","");
-      setValue("Description","");
-      setValue("Deadline","");
-    }
+    
 
    
 

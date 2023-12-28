@@ -59,42 +59,51 @@ const AssessmentModule = () => {
   }, [assessmentSearchWord]);
 
   const handleDelete = (deleteAssessmentId) => {
+    const isDraft = assessmentList.data.some((assessment) => assessment.id === deleteAssessmentId && assessment.draft);
+
     const updateAssessment = {
       ...assessmentList,
       data: assessmentList.data.filter(
         (assessment) => assessment.id !== deleteAssessmentId
       ),
     };
-    Modal.warning({
-      title: "Success",
-      content: "Assessment Deleted Successfully...",
-      okButtonProps: {
-        style: { background: "#49a843", borderColor: "#EAEAEA" },
-      },
-
-      onOk: () => {
-        axios
-          .delete(
-            `${API_END_POINT}/api/task/${batchId}/delete_task/${deleteAssessmentId}`,
-            {
-              headers: {
-                Authorization: `Bearer ${token.access}`,
-              },
-            }
-          )
-          .then((res) => {
-            notification.success({
-              message: "Success",
-              description: `Assessment Deleted Successfully`,
-              duration: 3,
+    
+    if(isDraft){
+      setAssessmentList(updateAssessment);
+      setEditId(null);
+    }
+    else{
+      Modal.warning({
+        title: "Success",
+        content: "Assessment Deleted Successfully...",
+        okButtonProps: {
+          style: { background: "#49a843", borderColor: "#EAEAEA" },
+        },
+  
+        onOk: () => {
+          axios
+            .delete(
+              `${API_END_POINT}/api/task/${batchId}/delete_task/${deleteAssessmentId}`,
+              {
+                headers: {
+                  Authorization: `Bearer ${token.access}`,
+                },
+              }
+            )
+            .then((res) => {
+              notification.success({
+                message: "Success",
+                description: `Assessment Deleted Successfully`,
+                duration: 3,
+              });
+              setAssessmentList(updateAssessment);
+            })
+            .catch((error) => {
+              console.log(error);
             });
-            setAssessmentList({ data: updateAssessment });
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      },
-    });
+        },
+      });
+    }
   };
 
   const handleSave = (assessmentData, draft) => {
@@ -165,12 +174,8 @@ const AssessmentModule = () => {
               : assessment
           ),
         }));
-      } else {
-        setAssessmentList((prevState) => ({
-          ...prevState,
-          data: [...prevState.data, { id: res.data.data.id, ...{} }],
-        }));
-      }
+      } 
+      setEditId(null)
       axios({
         method: "POST",
         url: `${API_END_POINT}/api/task/${batchId}/assign/task/${res.data.data.id}`,

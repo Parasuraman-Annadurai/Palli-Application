@@ -61,44 +61,54 @@ const TaskModule = () => {
   }, [taskSearchWord]);
 
   const handleDelete = (deleteTaskId) => {
+    const isDraft = taskLists.data.some((task) => task.id === deleteTaskId && task.draft);
+
     const updatedTasks = {
       ...taskLists,
       data: taskLists.data.filter((task) => task.id !== deleteTaskId),
     };
-    Modal.warning({
-      title: "Success",
-      content: "Task Deleted Successfully...",
-      okButtonProps: {
-        style: { background: "#49a843", borderColor: "#EAEAEA" },
-      },
 
-      onOk: () => {
-        axios
-          .delete(
-            `${API_END_POINT}/api/task/${batchId}/delete_task/${deleteTaskId}`,
-            {
-              headers: {
-                Authorization: `Bearer ${token.access}`,
-              },
-            }
-          )
-          .then((res) => {
-            notification.success({
-              message: "Success",
-              description: `Task Deleted Successfully`,
-              duration: 3,
+    if(isDraft){
+      setTaskLists(updatedTasks)
+      setEditId(null)
+    }
+    else{
+      Modal.warning({
+        title: "Success",
+        content: "Task Deleted Successfully...",
+        okButtonProps: {
+          style: { background: "#49a843", borderColor: "#EAEAEA" },
+        },
+  
+        onOk: () => {
+          axios
+            .delete(
+              `${API_END_POINT}/api/task/${batchId}/delete_task/${deleteTaskId}`,
+              {
+                headers: {
+                  Authorization: `Bearer ${token.access}`,
+                },
+              }
+            )
+            .then((res) => {
+              notification.success({
+                message: "Success",
+                description: `Task Deleted Successfully`,
+                duration: 3,
+              });
+              setTaskLists(updatedTasks);
+            })
+            .catch((error) => {
+              console.log(error);
             });
-            setTaskLists(updatedTasks);
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      },
-    });
+        },
+      });
+    }
+
+    
   };
 
-  console.log(taskLists);
-  const handleSave = (taskData, draft, id) => {
+  const handleSave = (taskData, draft) => {
     const existingTaskIndex = taskLists.data.findIndex(
       (task) => task.draft === draft
     );
@@ -140,7 +150,7 @@ const TaskModule = () => {
           : `Task Updated Successfully`,
         duration: 3,
       });
-      //this payload used set the loacl state
+      //this payload used set the local state
       const newTask = {
         id: res.data.data.id,
         task_title: Title,

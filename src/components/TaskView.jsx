@@ -1,44 +1,32 @@
 import React, { useEffect, useState } from "react";
 
-import { useParams } from "react-router-dom";
 
 import {
-  notification,
   DatePicker,
   Checkbox,
   Menu,
   Dropdown,
-  Button,
   Skeleton,
 } from "antd";
 import { useForm, Controller } from "react-hook-form";
 import ReactQuill, { Quill } from "react-quill";
-import axios from "axios";
 import dayjs from "dayjs";
 
 import WeightageList from "./WeightageList";
 
-import { useAuth } from "../context/AuthContext";
 
-import { API_END_POINT } from "../../config";
 
 import "quill/dist/quill.snow.css";
-import Title from "antd/es/skeleton/Title";
 
 const TaskView = ({
-  editId,
-  type,
   weightageShow,
-  handleUpdateOrAdd,
   currentTask,
   students,
   setSelectedStudents,
   selectedStudents,
   handleSave,
 }) => {
-  const { id: batchId } = useParams();
 
-  const { token } = useAuth();
   const [loading, setLoading] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
 
@@ -47,7 +35,6 @@ const TaskView = ({
     handleSubmit,
     reset,
     setError,
-    clearErrors,
     getValues,
     setValue,
     formState: { errors },
@@ -55,19 +42,18 @@ const TaskView = ({
 
 
   // Destructure the current task
-  const { task_title, task_description, due_date, draft , id } = currentTask[0] || {};
+  const { task_title, task_description, due_date, draft , task_users = [] } = currentTask[0] || {};
 
   useEffect(()=>{
-    // console.log(currentTask);
 
     if(currentTask.length > 0){
       setValue("Title",task_title);
       setValue("Description",task_description);
       setValue("Deadline",dayjs(due_date));
+      
     }
     
 
-   
 
   },[currentTask])
 

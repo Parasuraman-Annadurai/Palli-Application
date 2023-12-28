@@ -499,17 +499,17 @@ const Applications = () => {
                       <div className="application-info flex">
                         <div className="application-name-container">
                           <p>
-                            {application.first_name[0]}
-                            {application.last_name[0]}
+                            {application.first_name[0].toUpperCase()}
+                            {application.last_name[0].toUpperCase()}
                           </p>
                         </div>
                         <div className="application-email-container">
                           <p className="application-name">
                             <Tooltip
-                              title={`${application.first_name} ${application.last_name}`}
+                              title={`${application.first_name.charAt(0).toUpperCase()}${application.first_name.slice(1)} ${application.last_name.charAt(0).toUpperCase()}${application.last_name.slice(1)}`}
                             >
                               {truncateText(
-                                `${application.first_name} ${application.last_name}`,
+                                `${application.first_name.charAt(0).toUpperCase()}${application.first_name.slice(1)} ${application.last_name.charAt(0).toUpperCase()}${application.last_name.slice(1)}`,
                                 15
                               )}
                             </Tooltip>

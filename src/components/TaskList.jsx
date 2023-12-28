@@ -1,48 +1,29 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+
 import { useNavigate, useParams } from "react-router-dom";
 
-import { Skeleton } from "antd";
+
+import { Skeleton,Modal,notification } from "antd";
+import axios from "axios";
 
 import { useAuth } from "../context/AuthContext";
+
 import { API_END_POINT } from "../../config";
+import dayjs from "dayjs";
+
 const TaskList = ({
-  title,
-  limit,
-  filterType,
+  mode,
   filterShow,
-  onEditClick,
-  handleDelete,
+  handleEdit,
   onEditModeChange,
+  taskLists,
+  setTaskSearchWord,
+  loading,
+  handleDelete,
+  handleAdd,
+  selectedTask
 }) => {
-  const { id: batchId } = useParams();
-  const navigate = useNavigate();
-  const { token } = useAuth();
-  const [taskLists, setTaskLists] = useState({ data: [] });
-  const [taskSearchWord, setTaskSearchWord] = useState("");
-  const [loading, setLoading] = useState(true);
 
-  const headers = {
-    Authorization: `Bearer ${token.access}`,
-    "Content-type": "application/json",
-  };
-
-  useEffect(() => {
-    setLoading(true);
-    const url = `${API_END_POINT}/api/task/${batchId}/list_task/?limit=${limit}&page=1&filter_task_type=${filterType}&sort_key=&sort_order=&search=${taskSearchWord}`;
-    axios
-      .get(url, { headers })
-      .then((res) => {
-        if (res.status === 200 && res.data.message === "Success") {
-          setTaskLists(res.data);
-          setLoading(false);
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, [taskSearchWord]);
 
   const TaskCard = ({ task }) => {
     const truncateText = (text, maxLength) => {
@@ -52,7 +33,7 @@ const TaskList = ({
     };
     return (
       <>
-        <div className="task-card active flex" key={task.id} id={task.id}>
+        <div className={`task-card ${selectedTask=== task.id ? "active" :""} flex`} key={task.id} id={task.id}>
           {loading ? (
             <Skeleton
               avatar={{ size: "small" }}
@@ -67,7 +48,7 @@ const TaskList = ({
 
               <div className="task-details">
                 <div className="task-name-with-icon flex">
-                  <h2>{truncateText(task.task_title, 15)}</h2>
+                  <h2>{truncateText(task.task_title,15)}</h2>
 
                    <>
                    <img
@@ -75,12 +56,12 @@ const TaskList = ({
                       alt="edit-icon"
                       className="edit-icon"
                       id={task.id}
-                      onClick={() => onEditClick(task.id)}
+                      onClick={() =>handleEdit(task.id)}
                     />
                       <img
                       src="/icons/deleteIcon.svg"
-                      alt=""
-                      
+                      alt="delete-icon"
+                      className="delete-icon"
                       id={task.id}
                       onClick={() => handleDelete(task.id)}
                     />
@@ -92,9 +73,10 @@ const TaskList = ({
                     task.task_description.replace(/<[^>]*>/g, ""),
                     50
                   )}
+                  {/* { task.task_description} */}
                 </p>
                 <span className="btn btn-inprogress">Inprogress</span>
-                <span className="btn btn-deadline">Dec 25 2023</span>
+                <span className="btn btn-deadline">{dayjs(task.due_date).format("MMM,DD YYYY")}</span>
               </div>
             </>
           )}
@@ -106,7 +88,7 @@ const TaskList = ({
   return (
     <>
       <section className="listing-container">
-        <h1>{title} list</h1>
+        <h1>{mode} list</h1>
         <div className="search-container">
           <input
             type="input"
@@ -127,12 +109,12 @@ const TaskList = ({
           )}
         </div>
         <div className="create-container">
-          <button className="btn create-btn" onClick={onEditModeChange}>
-            <span>+</span>Create {title}
+          <button className="btn create-btn" onClick={handleAdd}>
+            <span>+</span>Create {mode}
           </button>
         </div>
         <div className="task-list-container">
-          {taskLists.data.map((task) => (
+          {taskLists && taskLists.data && taskLists.data.map((task) => (
             <TaskCard key={task.id} task={task} />
           ))}
         </div>

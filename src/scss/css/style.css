@@ -657,7 +657,9 @@ body .container .listing-container .task-list-container .task-card .task-details
   display: none;
 }
 body .container .listing-container .task-list-container .task-card .task-details .task-name-with-icon .edit-icon {
-  margin-right: 5px;
+  margin-right: 5px;}
+body .container .listing-container .task-list-container .task-card .task-details .task-name-with-icon .delete-icon {
+  margin-left: 5px;
 }
 body .container .listing-container .task-list-container .task-card .task-details .task-description {
   max-width: 205px;
@@ -697,6 +699,23 @@ body .container .listing-container .task-list-container .task-card:hover .task-n
 body .container .listing-container .task-list-container .task-card.active {
   background-color: #f8fbf2;
 }
+body .container .select-something-container {
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+}
+body .container .select-something-container .image-container img {
+  max-width: 350px;
+  width: 100%;
+}
+body .container .select-something-container .image-container .select-something-heading {
+  font-size: 14px;
+  line-height: 18px;
+  font-family: "Roboto";
+  color: #12160a;
+  font-weight: 500;
+  text-align: center;
+}
 body .container .main-container {
   padding: 20px;
   width: 100%;
@@ -711,16 +730,38 @@ body .container .main-container .module-header-section-container .module-header-
 body .container .main-container .module-header-section-container .module-header-section .module-title-section {
   gap: 8px;
 }
-body .container .main-container .module-header-section-container .module-header-section .module-title-section input {
+body .container .main-container .module-header-section-container .module-header-section .module-title-section .task-title {
   font-size: 16px;
   line-height: 24px;
   font-weight: 500;
   font-family: "Roboto";
   color: #12160a;
+  outline: #12160a;
 }
 body .container .main-container .module-header-section-container .module-header-section .module-title-section img {
   width: 20px;
   height: 20px;
+}
+body .container .main-container .module-header-section-container .module-header-section .module-title-section .yes-btn {
+  padding: 5px 15px 5px 15px;
+  background-color: #49a843;
+  color: white;
+  border: 1px solid #eaeaea;
+  border-radius: 4px;
+  font-size: 10px;
+  font-family: "Roboto";
+  cursor: pointer;
+}
+body .container .main-container .module-header-section-container .module-header-section .module-title-section .no-btn {
+  padding: 5px 15px 5px 15px;
+  background-color: #eaeaea;
+  color: #12160a;
+  border: 1px solid #eaeaea;
+  border-radius: 4px;
+  font-size: 10px;
+  font-family: "Roboto";
+  margin-left: 5px;
+  cursor: pointer;
 }
 body .container .main-container .task-details-header-container .task-label-container {
   padding-bottom: 16px;
@@ -805,7 +846,7 @@ body .container .main-container .task-details-header-container .task-details-mai
   height: 16px;
 }
 body .container .main-container .task-details-header-container .task-details-main-container .common-property {
-  max-width: 150px;
+  max-width: 200px;
   width: 100%;
 }
 body .container .main-container .task-details-header-container .task-editor-container {

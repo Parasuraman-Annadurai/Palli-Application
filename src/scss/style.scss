@@ -560,12 +560,12 @@ body {
       width: 301px;
       z-index: 999;
       padding: 20px;
-      .popup-content {
-        .inner-content {
+      .popup-content{
+        .inner-content{
           align-items: center;
           justify-content: space-between;
           padding-bottom: 16px;
-          h3 {
+          h3{
             font-size: 14px;
             font-family: $font-Roboto;
             font-weight: 500;
@@ -573,14 +573,14 @@ body {
             line-height: 18px;
             padding-bottom: 4px;
           }
-          .cancel-btn {
+          .cancel-btn{
             width: 16px;
             cursor: pointer;
           }
         }
-        .add-batch {
+        .add-batch{
           padding-bottom: 10px;
-          .add-batch-btn {
+          .add-batch-btn{
             width: 100%;
             padding: 8px 0;
             border: 1px solid $border-color;
@@ -799,6 +799,8 @@ body {
               }
               .edit-icon {
                 margin-right: 5px;
+              .delete-icon{
+                margin-left: 5px;
               }
             }
 
@@ -850,6 +852,26 @@ body {
       }
     }
 
+    .select-something-container{
+      width: 100%;
+      align-items: center;
+      justify-content: center;
+      .image-container{
+      
+        img{
+          max-width: 350px;
+          width: 100%;
+        }
+        .select-something-heading{
+          font-size: 14px;
+          line-height: 18px;
+          font-family: $font-Roboto;
+          color: $font-primary-color;
+          font-weight: 500;
+          text-align: center;
+        }
+      }
+    }
     //main-container
 
     .main-container {
@@ -866,18 +888,39 @@ body {
           .module-title-section {
             gap: 8px;
 
-            input {
-              // width: 56px;
+            .task-title {
               font-size: 16px;
               line-height: 24px;
               font-weight: 500;
               font-family: $font-Roboto;
               color: $font-primary-color;
+              outline: #12160a;
             }
 
             img {
               width: 20px;
               height: 20px;
+            }
+            .yes-btn{
+              padding: 5px 15px 5px 15px;
+              background-color: $primary-color;
+              color: #ffff;
+              border: 1px solid $border-color;
+              border-radius: 4px;
+              font-size: 10px;
+              font-family: $font-Roboto;
+              cursor: pointer;
+            }
+            .no-btn{
+              padding: 5px 15px 5px 15px;
+              background-color: $border-color;
+              color: $font-primary-color;
+              border: 1px solid $border-color;
+              border-radius: 4px;
+              font-size: 10px;
+              font-family: $font-Roboto;
+              margin-left: 5px;
+              cursor: pointer;
             }
           }
         }
@@ -991,7 +1034,7 @@ body {
           }
 
           .common-property {
-            max-width: 150px;
+            max-width: 200px;
             width: 100%;
           }
         }
@@ -1025,14 +1068,6 @@ body {
                 }
               }
             }
-
-            // p {
-            //     color: $font-primary-color;
-            //     font-family: $font-Roboto;
-            //     font-size: 12px;
-            //     line-height: 16px;
-            //     font-weight: 400;
-            // }
           }
         }
 
@@ -1189,6 +1224,7 @@ body {
   }
 }
   
+}
 :where(.css-dev-only-do-not-override-6j9yrn).ant-modal-confirm
 .ant-modal-confirm-btns
 .ant-btn

@@ -5,38 +5,40 @@ import "react-quill/dist/quill.snow.css"; // Import the styles
 import { useAuth } from "../context/AuthContext";
 import axios from "axios";
 import dayjs from "dayjs";
-import WeightageList from "../components/demo";
 import { API_END_POINT } from "../../config";
-import { useParams } from "react-router-dom";
+
 import {
-  notification,
-  Select,
   DatePicker,
   Checkbox,
   Menu,
   Dropdown,
-  Button,
   Skeleton,
   Input,
   InputNumber,
+  Select,
 } from "antd";
+import { useParams } from "react-router-dom";
 
-// import WeightageList from "./WeightageList";
-
-const TaskView = ({ editId, type, weightageShow }) => {
+const TaskView = ({
+  weightageShow,
+  currentTask,
+  students,
+  setSelectedStudents,
+  selectedStudents,
+  handleSave,
+}) => {
   const { id: batchId } = useParams();
-
   const { token } = useAuth();
   const [loading, setLoading] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
-  const [students, setStudents] = useState([]);
-  const [selectedStudents, setSelectedStudents] = useState([]);
+
   const [weightages, setWeighatages] = useState([]);
-  // const [selectWeightages, setSelectWeightages] = useState([{}]);
+
   const [selectWeightages, setSelectWeightages] = useState([
     { weightage: "", weightage_percentage: "" },
   ]);
 
+  console.log(weightageShow);
   const {
     control,
     handleSubmit,
@@ -53,65 +55,39 @@ const TaskView = ({ editId, type, weightageShow }) => {
     Authorization: `Bearer ${token.access}`,
     "Content-type": "application/json",
   };
+  // Destructure the current task
+  const {
+    task_title,
+    task_description,
+    due_date,
+    draft,
+    task_users = [],
+  } = currentTask[0] || {};
 
+  console.log(weightageShow);
   useEffect(() => {
-    setLoading(true);
-    axios
-      .get(`${API_END_POINT}/api/applicant/${batchId}/list/students/`, {
-        headers,
-      })
-      .then((res) => {
-        if (res.status === 200 && res.data.message === "Success") {
-          setStudents(res.data.data);
-          setLoading(false);
-          setSelectedStudents(res.data.data.map((student) => student.id));
-        }
-        //setStatemin update
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-
-    if (editId) {
+    if (currentTask.length > 0) {
+      setValue("Title", task_title);
+      setValue("Description", task_description);
+      setValue("Deadline", dayjs(due_date));
+    }
+    if (weightageShow) {
       axios
-        .get(`${API_END_POINT}/api/task/${batchId}/get/task/${editId}`, {
-          headers,
-        })
+        .get(`${API_END_POINT}/api/task/${batchId}/list/weightage`, { headers })
         .then((res) => {
-          if (res.data.status === 200 && res.data.message === "Success") {
-            const { task_title, task_description, due_date } = res.data.data;
-            setValue("title", task_title);
-            setValue("description", task_description);
-            setValue("dueDate", dayjs(due_date));
+          if (res.status === 200 && res.data.message === "Success") {
+            setWeighatages(res.data.data);
+            console.log(res);
           }
         });
-    } else {
-      setValue("title", "");
-      setValue("description", "");
-      setValue("due_date", "");
     }
-
-    //weightage
-    axios
-      .get(`${API_END_POINT}/api/task/${batchId}/list/weightage`, { headers })
-      .then((res) => {
-        if (res.status === 200 && res.data.message === "Success") {
-          setWeighatages(res.data.data);
-        }
-      });
-  }, [editId]);
+  }, [currentTask, weightageShow]);
 
   const validateNotEmpty = (fieldName, value) => {
     const trimmedValue = value ? value.replace(/<[^>]*>/g, "").trim() : null;
     return trimmedValue ? null : `${fieldName} is required`;
   };
 
-  const remainingPercentage =
-    100 -
-    selectWeightages.reduce(
-      (acc, curr) => acc + (curr.weightage_percentage || 0),
-      0
-    );
 
   const handleAddTask = (taskData) => {
     if (selectedStudents.length === 0) {
@@ -144,10 +120,6 @@ const TaskView = ({ editId, type, weightageShow }) => {
       : `${API_END_POINT}/api/task/${batchId}/create_task/`;
     const method = editId ? "PUT" : "POST";
 
-    // const headers = {
-    //   Authorization: `Bearer ${token.access}`,
-    //   "Content-Type": "application/json",
-    // };
     axios({
       method,
       url: apiEndpoint,
@@ -258,11 +230,11 @@ const TaskView = ({ editId, type, weightageShow }) => {
       <path d="M10.5 9H3.5" stroke="#969D88" stroke-linecap="round" stroke-linejoin="round"/>
     </svg>`;
     icons.alignJustify = `<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 10 8" fill="none">
-     <path d="M9.5 3H0.5" stroke="#969D88" stroke-linecap="round" stroke-linejoin="round"/>
-     <path d="M9.5 1H0.5" stroke="#969D88" stroke-linecap="round" stroke-linejoin="round"/>
-     <path d="M9.5 5H0.5" stroke="#969D88" stroke-linecap="round" stroke-linejoin="round"/>
-     <path d="M9.5 7H0.5" stroke="#969D88" stroke-linecap="round" stroke-linejoin="round"/>
-   </svg>`;
+    <path d="M9.5 3H0.5" stroke="#969D88" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M9.5 1H0.5" stroke="#969D88" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M9.5 5H0.5" stroke="#969D88" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M9.5 7H0.5" stroke="#969D88" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>`;
     return null; // This component doesn't render anything
   };
 
@@ -336,6 +308,11 @@ const TaskView = ({ editId, type, weightageShow }) => {
       });
     }
   };
+  const handleDeleteSelect = (index) => {
+    const updatedWeightages = [...selectWeightages];
+    updatedWeightages.splice(index, 1);
+    setSelectWeightages(updatedWeightages);
+  };
   const handleWeightageChange = (value, index) => {
     const updatedValues = [...selectWeightages];
     updatedValues[index].weightage = value;
@@ -349,71 +326,73 @@ const TaskView = ({ editId, type, weightageShow }) => {
         type: "manual",
         message: "Weightage percentage is required",
       });
+    }
+  };
+  const handleValidate = (formData) => {
+    //if student not assign show the error
+    if (selectedStudents.length === 0) {
+      setError("assignee", {
+        type: "manual",
+        message: "Assignee is required",
+      });
       return;
     }
 
-    if (weightagePercentage > 0 && weightagePercentage <= 100) {
-      const updatedValues = [...selectWeightages];
-      updatedValues[index].weightage_percentage = weightagePercentage;
-      setSelectWeightages(updatedValues);
-      clearErrors(`weightage_percentage`);
-    } else {
-      setError(`weightage_percentage`, {
-        type: "manual",
-        message: "Weightage must be between 0 and 100",
-      });
-    }
-  };
-  const handleDeleteSelect = (index) => {
-    const updatedWeightages = [...selectWeightages];
-    updatedWeightages.splice(index, 1);
-    setSelectWeightages(updatedWeightages);
+    handleSave(formData, draft);
+
+    reset({
+      Title: "",
+      Description: "",
+      Deadline: null,
+      SubmissionLink: "",
+    });
   };
 
-  console.log(errors);
   return (
     <>
       <main className="main-container">
         {loading ? (
           <Skeleton active paragraph={4} />
         ) : (
-          <form onSubmit={handleSubmit(handleAddTask)}>
+          <form onSubmit={handleSubmit(handleValidate)}>
             <div className="module-header-section-container">
               <div className="module-header-section flex">
                 <div className="module-title-section flex">
-                  <div>
-                    <Controller
-                      name="Title"
-                      control={control}
-                      rules={{
-                        validate: (value) => validateNotEmpty("Title", value),
-                      }}
-                      render={({ field }) => (
-                        <>
-                          <input
-                            {...field}
-                            style={{
-                              width: field.value
-                                ? `${Math.max(58, field.value.length * 8)}px`
-                                : "56px",
-                            }}
-                            type="text"
-                            placeholder={"Untitled"}
-                            className={`${errors.Title ? "error-notify" : ""} `}
-                            readOnly={!isEditing}
-                            onKeyUp={(e) => {
-                              if (
-                                e.key === "Enter" &&
-                                field.value.trim() === ""
-                              ) {
-                                setValue("Title", "Untitled");
-                              }
-                            }}
-                          />
-                        </>
-                      )}
-                    />
-                  </div>
+                  <Controller
+                    name="Title"
+                    control={control}
+                    rules={{
+                      validate: (value) => validateNotEmpty("Title", value),
+                    }}
+                    render={({ field }) => (
+                      <>
+                        <input
+                          {...field}
+                          style={{
+                            width: field.value
+                              ? `${field.value.length * 8}px`
+                              : "56px",
+                          }}
+                          type="text"
+                          placeholder={"Untitled"}
+                          className={`task-title ${
+                            errors.Title ? "error-notify" : ""
+                          } `}
+                          readOnly={!isEditing}
+                          onFocus={true}
+                          onBlur={() => setIsEditing(false)}
+                          onKeyUp={(e) => {
+                            if (
+                              e.key === "Enter" &&
+                              field.value.trim() === ""
+                            ) {
+                              setValue("Title", "Untitled");
+                            }
+                          }}
+                        />
+                      </>
+                    )}
+                  />
 
                   {!isEditing && (
                     <img
@@ -426,8 +405,14 @@ const TaskView = ({ editId, type, weightageShow }) => {
 
                   {isEditing && (
                     <div>
-                      <button onClick={() => setIsEditing(false)}>Yes</button>
                       <button
+                        onClick={() => setIsEditing(false)}
+                        className="yes-btn"
+                      >
+                        Yes
+                      </button>
+                      <button
+                        className="no-btn"
                         onClick={() => {
                           setValue("Title", getValues("Title"));
                           setIsEditing(false);
@@ -441,7 +426,7 @@ const TaskView = ({ editId, type, weightageShow }) => {
 
                 <div className="task-create">
                   <button type="submit" className="btn primary-medium">
-                    {editId ? "Update" : "Create"}
+                    {draft ? "Create" : "Update"}
                   </button>
                 </div>
               </div>
@@ -731,9 +716,9 @@ const TaskView = ({ editId, type, weightageShow }) => {
                           );
                         })}
 
-                        {remainingPercentage < 100 && (
+                        {/* {remainingPercentage < 100 && (
                           <p>Remaining Percentage: {remainingPercentage}%</p>
-                        )}
+                        )} */}
                       </div>
                     </div>
                   </>

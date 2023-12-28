@@ -69,8 +69,20 @@ const AssessmentModule = () => {
     };
     
     if(isDraft){
-      setAssessmentList(updateAssessment);
-      setEditId(null);
+ 
+
+      Modal.warning({
+        title: "Success",
+        content: "Assessment Deleted Successfully...",
+        okButtonProps: {
+          style: { background: "#49a843", borderColor: "#EAEAEA" },
+        },
+
+        onOk: () => {
+          setAssessmentList(updateAssessment);
+          setEditId(null);
+        },
+      });
     }
     else{
       Modal.warning({

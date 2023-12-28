@@ -61,25 +61,36 @@ const TaskModule = () => {
   }, [taskSearchWord]);
 
   const handleDelete = (deleteTaskId) => {
-    const isDraft = taskLists.data.some((task) => task.id === deleteTaskId && task.draft);
+    const isDraft = taskLists.data.some(
+      (task) => task.id === deleteTaskId && task.draft
+    );
 
     const updatedTasks = {
       ...taskLists,
       data: taskLists.data.filter((task) => task.id !== deleteTaskId),
     };
 
-    if(isDraft){
-      setTaskLists(updatedTasks)
-      setEditId(null)
-    }
-    else{
+    if (isDraft) {
       Modal.warning({
         title: "Success",
         content: "Task Deleted Successfully...",
         okButtonProps: {
           style: { background: "#49a843", borderColor: "#EAEAEA" },
         },
-  
+
+        onOk: () => {
+          setTaskLists(updatedTasks);
+          setEditId(null);
+        },
+      });
+    } else {
+      Modal.warning({
+        title: "Success",
+        content: "Task Deleted Successfully...",
+        okButtonProps: {
+          style: { background: "#49a843", borderColor: "#EAEAEA" },
+        },
+
         onOk: () => {
           axios
             .delete(
@@ -104,8 +115,6 @@ const TaskModule = () => {
         },
       });
     }
-
-    
   };
 
   const handleSave = (taskData, draft) => {

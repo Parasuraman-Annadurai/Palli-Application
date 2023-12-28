@@ -4,7 +4,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Popover,Avatar } from "antd";
 import axios from "axios";
 
-import Breadcrumbs from "../components/BreadCrumbs"
 
 import { useAuth } from "../context/AuthContext";
 

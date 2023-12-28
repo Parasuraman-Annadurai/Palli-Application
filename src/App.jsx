@@ -9,24 +9,18 @@ import {
   DASHBOARD,
   FORGOTPASSWORD,
   CHANGEPASSWORD,
-  TASK,
-  ADDTASK,
-  ADDQUIZ,
   INDEX,
-  EDITTASK,
-  WEIGHTAGE
+  TASKMODULE,
+  ASSESSMENTMODULE,
 } from "./routes/routes.jsx";
 //Define your routes for APP here
 import Login from "./pages/login/Login.jsx";
 import ChangePassword from "./pages/changePasswordPage/ResetPasswordPage";
 import ForgotPassword from "./pages/forgotPage/ForgotPage";
-import Applicantions from "./pages/applications/Applications.jsx";
+import Applications from "./pages/applications/Applications.jsx";
 import DashBoard from "./pages/dashBoard/DashBoard.jsx";
-import TaskModule from "./pages/taskModule/TaskModule.jsx";
-import AddTask from "./pages/addTaskPage/AddTask.jsx";
-import AddQuiz from "./pages/addQuiz/AddQuizz.jsx";
-import Weightage from "./pages/weightage/WeightAge.jsx";
-
+import TaskModule from "./pages/task/TaskModule.jsx";
+import AssessmentModule from "./pages/assessment/Assessment.jsx";
 import ErrorPage from "./pages/errorPage/ErrorPage.jsx";
 //Private Routes will be wrapped in below component
 import PrivateRoute from "./routes/PrivateRoute";
@@ -47,26 +41,19 @@ const App = () => {
           </Route>
           {/* Private Route, can't access without token */}
           <Route path={APPLICATIONS} element={<PrivateRoute />}>
-            <Route path={APPLICATIONS} element={<Applicantions />} />
+            <Route path={APPLICATIONS} element={<Applications />} />
           </Route>
 
-          <Route path={TASK} element={<PrivateRoute />}>
-            <Route path={TASK} element={<TaskModule />} />
+        
+          <Route path={TASKMODULE} element={<PrivateRoute />}>
+            <Route path={TASKMODULE} element={<TaskModule />} />
           </Route>
 
-          <Route path={ADDTASK} element={<PrivateRoute />}>
-            <Route path={ADDTASK} element={<AddTask />} />
-          </Route>
-          <Route path={ADDQUIZ} element={<PrivateRoute />}>
-            <Route path={ADDQUIZ} element={<AddQuiz />} />
+          <Route path={ASSESSMENTMODULE} element={<PrivateRoute />}>
+            <Route path={ASSESSMENTMODULE} element={<AssessmentModule />} />
           </Route>
 
-          <Route path={EDITTASK} element={<PrivateRoute />}>
-            <Route path={EDITTASK} element={<AddTask />} />
-          </Route>
-          <Route path={WEIGHTAGE} element={<PrivateRoute />}>
-             <Route path={WEIGHTAGE} element={<Weightage/>} />
-          </Route>
+         
           <Route path="*" element={<ErrorPage />} />
         </Routes>
       </BrowserRouter>

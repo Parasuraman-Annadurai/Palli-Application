@@ -4,8 +4,6 @@ import { Navigate, Outlet, useParams, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
 import Sidebar from "../layouts/Sidebar";
-import Navbar from "../layouts/Navbar";
-
 
 const PrivateRoute = () => {
   const { token } = useAuth();
@@ -17,21 +15,27 @@ const PrivateRoute = () => {
   // If authorized, return an outlet that will render child elements
   // If not, return element that will navigate to login page
   const menu = [
-    { label: "Applications", id: "applications" },
-    { label: "Module", id: "module" },
-    { label: "Weightage", id: "module/add/task/weightage" },
-  ];
 
+    { label: "Home", id: "home" },
+    { label: "Applications", id: "/applications" },
+    {
+      label: "Module",
+      id: "module",
+      subMenu: [
+        { label: "Task", id: "module/task" },
+        { label: "Assessment", id: "module/assessment" },
+        { label: "Quiz", id: "module/quiz" },
+      ],
+    },
+    { label: "Settings", id: "settings" },
+  ];
   const menuList = batchId ? menu : [{ label: "Dashboard", id: "dashboard" }];
   const activeMenuItem = menuList.find((menu) => pathname.includes(menu.id));
 
   return auth ? (
-    <div className="app">
-      <Sidebar menuList={menuList} activeMenuItem={activeMenuItem.id} />
-      <div className="main">
-        <Navbar />
-        <Outlet />
-      </div>
+    <div className="container">
+      <Sidebar menu={menu} activeMenuItem={activeMenuItem} />
+       <Outlet />
     </div>
   ) : (
     <Navigate to="/login" replace />

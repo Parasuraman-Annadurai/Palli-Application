@@ -13,7 +13,7 @@ const FilterComponent = ({ filter, applyFilter,setPopoverVisible }) => {
   };
 
   const handleClearFilter = () => {
-    applyFilter({});
+    applyFilter({...filterValues,...{}});
     setPopoverVisible(false)
   };
   return (
@@ -40,6 +40,7 @@ const FilterComponent = ({ filter, applyFilter,setPopoverVisible }) => {
                   />
                 </div>
               );
+            
             case "RangeFilter":
               return (
                 <div key={filterItem.name}>
@@ -102,11 +103,11 @@ const FilterComponent = ({ filter, applyFilter,setPopoverVisible }) => {
           }
         })}
       </div>
-      <button onClick={handleApplyFilter} className="btn apply-filter-btn">
-        Apply Filter
+      <button onClick={handleApplyFilter} className="btn primary-medium">
+        Apply
       </button>
-      <button onClick={handleClearFilter} className="btn clear-filter-btn">
-        Clear Filter
+      <button onClick={handleClearFilter} className="btn primary-default">
+        Clear
       </button>
     </div>
   );

@@ -5,7 +5,14 @@ const FORGOTPASSWORD = "/forgot/password";
 const CHANGEPASSWORD = "/change/password";
 const DASHBOARD = "/dashboard";
 const APPLICATIONS = "/batch/:id/applications";
-const TASK = "/batch/:id/module";
+const MODULE = "/batch/:id/module";
+
+//new changes
+const APPLICATIONVIEW = "/batch/:id/application/view/more"
+const TASKMODULE = "/batch/:id/module/task";
+const ASSESSMENTMODULE = "/batch/:id/module/assessment";
+//
+
 const ADDTASK = "/batch/:id/module/add/task";
 const EDITTASK = "/batch/:id/module/edit/task/:taskId";
 const ADDQUIZ = "/batch/:id/module/add/quiz";
@@ -17,10 +24,13 @@ export {
   APPLICATIONS,
   FORGOTPASSWORD,
   CHANGEPASSWORD,
-  TASK,
+  MODULE,
   WEIGHTAGE,
   ADDTASK,
   ADDQUIZ,
   INDEX,
   EDITTASK,
+  TASKMODULE,
+  ASSESSMENTMODULE,
+  APPLICATIONVIEW
 };

@@ -13,7 +13,6 @@ import { API_END_POINT } from "../../../config";
 
 import dashBoardHeaderImage from "../../../public/images/dashboard_header_image.svg";
 
-import "./DashBoard.css";
 
 const DashBoard = () => {
   const navigate = useNavigate();

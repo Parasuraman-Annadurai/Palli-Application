@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 import axios from "axios";
-import { Pagination, Popover, Tag, Skeleton, Tooltip } from "antd";
+import { Pagination, Popover, Tag, Skeleton, Tooltip, Modal } from "antd";
 import dayjs from "dayjs";
 
 import { API_END_POINT } from "../../../config";
@@ -43,6 +43,8 @@ const Applications = () => {
     mark_max: "",
     user_status: "",
   });
+
+  const [isDocsShow, setIsDocsShow] = useState(false);
 
   const headers = {
     Authorization: `Bearer ${token.access}`,
@@ -237,8 +239,11 @@ const Applications = () => {
                 <div className="Guardian-detial-background">
                   <div className="details-section">
                     <p className="Guardian-detial-title">Ration/Family Card</p>
+                    <Modal open={isDocsShow} onOk={()=>setIsDocsShow(false)} onCancel={()=>setIsDocsShow(false)}>
+                      <img src="/public/icons/marsheet.svg" alt="" />
+                    </Modal>
                     <p className="Guardian-detial-name">
-                      <a>View document</a>
+                      <a onClick={()=>setIsDocsShow(true)}>View document</a>
                     </p>
                   </div>
                 </div>

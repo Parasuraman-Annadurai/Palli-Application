@@ -51,12 +51,12 @@ const Sidebar = ({ menu, activeMenuItem }) => {
 
   const [isAddingBatch, setIsAddingBatch] = useState(false); // New state for switching text
 
-  const toggleInputFields = () => {
-    setShowInputFields((prevState) => !prevState); // Toggle input fields visibility directly using prevState
-    setIsAddingBatch(!showInputFields);
+  // const toggleInputFields = () => {
+  //   setShowInputFields((prevState) => !prevState); // Toggle input fields visibility directly using prevState
+  //   setIsAddingBatch(!showInputFields);
 
-    // setBatchList(true)// Update text directly based on the current state of input fields
-  };
+  //   // setBatchList(true)// Update text directly based on the current state of input fields
+  // };
 
   // const [loading, setLoading] = useState(false);
   // const [isModalOpen, setIsModalOpen] = useState(false);
@@ -239,11 +239,11 @@ const Sidebar = ({ menu, activeMenuItem }) => {
               </div>
             </div>
             <div className="add-batch">
-              <button className="add-batch-btn" onClick={toggleInputFields}>
+              <button className="add-batch-btn" >
                 Add New Batch
               </button>
             </div>
-            {showInputFields && (
+            {/* {showInputFields && (
               <div className="input-fields">
                 <div className="input-field">
                   <label htmlFor="">Batch Name</label>
@@ -314,7 +314,7 @@ const Sidebar = ({ menu, activeMenuItem }) => {
                   Submit
                 </button>
               </div>
-            )}
+            )} */}
           </div>
           <div className="switch-batch-list-container">
             {batchList.map((batch, index) => {

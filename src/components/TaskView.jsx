@@ -16,6 +16,7 @@ import {
   Input,
   InputNumber,
   Select,
+  notification,
 } from "antd";
 import { useParams } from "react-router-dom";
 
@@ -26,19 +27,22 @@ const TaskView = ({
   setSelectedStudents,
   selectedStudents,
   handleSave,
+
+  //weightage
+  weightages,
+  handleWeightageChange,
+  handleDeleteSelect,
+  handleAddSelect,
+  remainingPercentage,
+  selectWeightages,
+  handleInputChange
 }) => {
   const { id: batchId } = useParams();
   const { token } = useAuth();
   const [loading, setLoading] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
 
-  const [weightages, setWeighatages] = useState([]);
 
-  const [selectWeightages, setSelectWeightages] = useState([
-    { weightage: "", weightage_percentage: "" },
-  ]);
-
-  console.log(weightageShow);
   const {
     control,
     handleSubmit,
@@ -64,135 +68,20 @@ const TaskView = ({
     task_users = [],
   } = currentTask[0] || {};
 
-  console.log(weightageShow);
   useEffect(() => {
     if (currentTask.length > 0) {
       setValue("Title", task_title);
       setValue("Description", task_description);
       setValue("Deadline", dayjs(due_date));
     }
-    if (weightageShow) {
-      axios
-        .get(`${API_END_POINT}/api/task/${batchId}/list/weightage`, { headers })
-        .then((res) => {
-          if (res.status === 200 && res.data.message === "Success") {
-            setWeighatages(res.data.data);
-            console.log(res);
-          }
-        });
-    }
-  }, [currentTask, weightageShow]);
+    
+  }, [currentTask]);
 
   const validateNotEmpty = (fieldName, value) => {
     const trimmedValue = value ? value.replace(/<[^>]*>/g, "").trim() : null;
     return trimmedValue ? null : `${fieldName} is required`;
   };
 
-
-  const handleAddTask = (taskData) => {
-    if (selectedStudents.length === 0) {
-      setError("assignee", {
-        type: "manual",
-        message: "Assignee is required",
-      });
-      return;
-    }
-
-    const { Title, Description, Deadline, SubmissionLink } = taskData;
-
-    const formattedDate = Deadline.format("YYYY-MM-DD HH:mm:ss");
-
-    const createTaskPayload = {
-      task_title: Title,
-      task_description: Description,
-      task_type: type === "task" ? 0 : 1,
-      due_date: formattedDate,
-    };
-
-    const assignTask = {
-      user: selectedStudents,
-      task_status: 0,
-      submission_link: SubmissionLink,
-    };
-
-    const apiEndpoint = editId
-      ? `${API_END_POINT}/api/task/${batchId}/update_task/${editId}`
-      : `${API_END_POINT}/api/task/${batchId}/create_task/`;
-    const method = editId ? "PUT" : "POST";
-
-    axios({
-      method,
-      url: apiEndpoint,
-      headers: {
-        Authorization: `Bearer ${token.access}`,
-        "Content-Type": "application/json",
-      },
-      data: createTaskPayload,
-    }).then((res) => {
-      notification.success({
-        message: "Success",
-        description: editId
-          ? "Task Updated Successfully"
-          : "Task Added Successfully",
-        duration: 3,
-      });
-      clearErrors();
-
-      const requests = selectWeightages.map((item) => {
-        const headers = {
-          Authorization: `Bearer ${token.access}`,
-          "Content-type": "application/json",
-        };
-        const { weightage, weightage_percentage } = item;
-        const endpoint = `${API_END_POINT}/api/task/${batchId}/assign/task_weightage/${res.data.data.id}`;
-
-        return axios.post(
-          endpoint,
-          {
-            weightage,
-            weightage_percentage,
-          },
-          { headers }
-        );
-      });
-
-      Promise.all(requests)
-        .then((responses) => {
-          // Handle responses here
-          responses.forEach((response) => {
-            // Process each response from the POST requests
-            console.log(response.data, "ww"); // or perform other actions
-          });
-        })
-        .catch((error) => {
-          // Handle errors here
-          console.error(error);
-        });
-
-      //assignee
-      axios({
-        method,
-        url: `${API_END_POINT}/api/task/${batchId}/assign/task/${res.data.data.id}`,
-        headers: {
-          Authorization: `Bearer ${token.access}`,
-          "Content-Type": "application/json",
-        },
-        data: assignTask,
-      }).then((res) => {
-        // alert("task user assigned");
-        reset({
-          Title: "",
-          Description: "",
-          Deadline: null, // Assuming this is the name used for the Deadline field
-          SubmissionLink: "",
-          weightage: "", // Assuming this is the name used for the weightage field
-          weightage_percentage: "", // Assuming this is the name used for the weightage_percentage field
-        });
-        setWeighatages([{ weightage: "", weightage_percentage: "" }]);
-        setValue("weightage", "");
-      });
-    });
-  };
 
   const CustomIcons = () => {
     const icons = Quill.import("ui/icons");
@@ -287,47 +176,8 @@ const TaskView = ({
     </Menu>
   );
 
-  const handleAddSelect = () => {
-    let sum = 0;
+  ///------------------------------------------weightage section
 
-    for (let i = 0; i < selectWeightages.length; i++) {
-      sum += selectWeightages[i].weightage_percentage;
-    }
-
-    if (sum < 100 && sum !== 100) {
-      setSelectWeightages([
-        ...selectWeightages,
-        { weightage: "", weightage_percentage: "" },
-      ]);
-    } else {
-      notification.warning({
-        message: "Warning",
-        description:
-          "Total weightage cannot exceed 100% or no remaining percentage available",
-        duration: 3,
-      });
-    }
-  };
-  const handleDeleteSelect = (index) => {
-    const updatedWeightages = [...selectWeightages];
-    updatedWeightages.splice(index, 1);
-    setSelectWeightages(updatedWeightages);
-  };
-  const handleWeightageChange = (value, index) => {
-    const updatedValues = [...selectWeightages];
-    updatedValues[index].weightage = value;
-    setSelectWeightages(updatedValues);
-  };
-  const handleInputChange = (value, index) => {
-    let weightagePercentage = Number(value);
-
-    if (weightagePercentage === 0 || value === "") {
-      setError(`weightage_percentage`, {
-        type: "manual",
-        message: "Weightage percentage is required",
-      });
-    }
-  };
   const handleValidate = (formData) => {
     //if student not assign show the error
     if (selectedStudents.length === 0) {
@@ -337,7 +187,6 @@ const TaskView = ({
       });
       return;
     }
-
     handleSave(formData, draft);
 
     reset({
@@ -346,8 +195,11 @@ const TaskView = ({
       Deadline: null,
       SubmissionLink: "",
     });
+   
   };
 
+
+ 
   return (
     <>
       <main className="main-container">
@@ -379,6 +231,7 @@ const TaskView = ({
                             errors.Title ? "error-notify" : ""
                           } `}
                           readOnly={!isEditing}
+                          idex
                           onFocus={true}
                           onBlur={() => setIsEditing(false)}
                           onKeyUp={(e) => {
@@ -626,58 +479,35 @@ const TaskView = ({
                                 className="weightage-unit-container flex"
                                 key={index}
                               >
-                                <Controller
-                                  name={`weightage`}
-                                  control={control}
-                                  render={({ field }) => (
-                                    <Select
-                                      {...field}
-                                      style={{ width: "200px" }}
-                                      placeholder="Select Weightage..."
-                                      className={`${
-                                        errors.weightage ? "error-notify" : ""
-                                      }`}
-                                      value={weightage.weightage}
-                                      suffixIcon={
-                                        <img src="/icons/dropdown.svg" />
-                                      }
-                                      onChange={(value) =>
-                                        handleWeightageChange(value, index)
-                                      }
+                                <Select
+                                  style={{ width: "200px" }}
+                                  placeholder="Select Weightage..."
+                                  className={""}
+                                  value={weightage.weightage}
+                                  suffixIcon={<img src="/icons/dropdown.svg" />}
+                                  onChange={(value) =>
+                                    
+                                    handleWeightageChange(value, index,)
+                                  }
+                                >
+                                  {weightages.map((weightage, index) => (
+                                    <Select.Option
+                                      value={weightage.id}
+                                      key={index}
                                     >
-                                      {weightages.map((weightage, index) => (
-                                        <Select.Option
-                                          value={weightage.id}
-                                          key={index}
-                                        >
-                                          {weightage.weightage}
-                                        </Select.Option>
-                                      ))}
-                                    </Select>
-                                  )}
-                                />
-                                {errors.weightage &&
-                                  errors.weightage[index] && (
-                                    <p className="error-message"></p>
-                                  )}
-                                <Controller
-                                  name={`weightage_percentage`}
-                                  control={control}
-                                  render={({ field }) => (
-                                    <input
-                                      {...field}
-                                      type="number"
-                                      className={`task-weight-value-selector ${
-                                        errors.weightage_percentage
-                                          ? "error-notify"
-                                          : ""
-                                      }`}
-                                      placeholder="00"
-                                      onChange={(e) =>
-                                        handleInputChange(e.target.value, index)
-                                      }
-                                    />
-                                  )}
+                                      {weightage.weightage}
+                                    </Select.Option>
+                                  ))}
+                                </Select>
+
+                                <input
+                                  value={weightage.weightage_percentage}
+                                  type="number"
+                                  className={`task-weight-value-selector `}
+                                  placeholder="00"
+                                  onChange={(e) =>
+                                    handleInputChange(e.target.value, index)
+                                  }
                                 />
 
                                 <div className="weightage-action">
@@ -711,15 +541,15 @@ const TaskView = ({
                                     )}
                                   </span>
                                 </div>
+                               
                               </div>
+                             
                             </>
                           );
                         })}
-
-                        {/* {remainingPercentage < 100 && (
-                          <p>Remaining Percentage: {remainingPercentage}%</p>
-                        )} */}
+                         {<p>Remaining percentage {remainingPercentage}</p>}
                       </div>
+                     
                     </div>
                   </>
                 ) : (

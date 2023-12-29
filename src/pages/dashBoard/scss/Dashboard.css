@@ -70,8 +70,26 @@ li {
   list-style: none;
 }
 
+.content .greeting {
+  justify-content: space-around;
+  padding: 10px 0;
+  align-items: center;
+}
+.content .welcome-text p {
+  color: #969d88;
+  font-family: "Roboto";
+  margin-top: 5px;
+}
+.content .welcome-message {
+  font-size: 24px;
+  color: #12160a;
+  font-family: "Roboto";
+}
+
 .add__batch {
   padding: 20px 20px;
+  height: 400px;
+  overflow: scroll;
 }
 
 .batches__list {
@@ -114,7 +132,6 @@ li {
   align-items: center;
 }
 .main-batches .added-batches {
-  background-color: #ffffff;
   flex: 1;
 }
 .main-batches .added-batches .batches-list .batch-name {

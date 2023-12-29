@@ -88,22 +88,27 @@ li {
   list-style: none;
 }
 
-// .content{
-//     padding: 30px 40px;
-//     .greeting{
-//         max-width: 1040px;
-//         width: 100%;
-//         padding: 20px 0;
-//         justify-content: space-between;
-//         .welcome-text{
-//             padding-left: 40px;
-//             box-sizing: 0 4px 4px rgba(0, 0, 0, 0.027);
-
-//         }
-//     }
-// }
+.content {
+  .greeting {
+    justify-content: space-around;
+    padding: 10px 0;
+    align-items: center;
+  }
+  .welcome-text p{
+    color: $font-secondary-color;
+    font-family: $font-Roboto;
+    margin-top: 5px;
+  }
+.welcome-message{
+  font-size: 24px;
+  color: $font-primary-color;
+  font-family: $font-Roboto;
+}
+}
 .add__batch {
   padding: 20px 20px;
+  height: 400px;
+  overflow: scroll;
 }
 .batches__list {
   display: flex;
@@ -144,7 +149,6 @@ li {
   margin-bottom: 10px;
   align-items: center;
   .added-batches {
-    background-color: #d40c0c;
     flex: 1;
 
     .batches-list {

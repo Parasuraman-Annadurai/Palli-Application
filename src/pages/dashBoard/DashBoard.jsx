@@ -11,7 +11,7 @@ import { useAuth } from "../../context/AuthContext";
 
 import { API_END_POINT } from "../../../config";
 
-// import dashBoardHeaderImage from "../../../public/images/dashboard_header_image.svg";
+import dashBoardHeaderImage from "../../../public/images/dashboard_header_image.svg";
 
 import "./scss/Dashboard.css";
 
@@ -266,7 +266,7 @@ const DashBoard = () => {
   };
   return (
     <div className="content">
-      {/* <div className="greeting flex">
+      <div className="greeting flex">
           <div className="welcome-text">
             <h1 className="welcome-message">
               Welcome, {user.first_name} {user.last_name} <br />
@@ -280,7 +280,7 @@ const DashBoard = () => {
           <div className="header-img">
             <img src={dashBoardHeaderImage} alt="DashboardHeaderImage" />
           </div>
-      </div> */}
+      </div>
 
       <div className="add__batch">
         <div className="batches__list">

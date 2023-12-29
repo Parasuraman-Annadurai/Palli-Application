@@ -71,9 +71,9 @@ const AssessmentModule = () => {
     if(isDraft){
  
 
-      Modal.warning({
-        title: "Success",
-        content: "Assessment Deleted Successfully...",
+      Modal.confirm({
+        title: "Delete Conformation",
+        content: "Are you sure you want to delete this Assessment?",
         okButtonProps: {
           style: { background: "#49a843", borderColor: "#EAEAEA" },
         },
@@ -81,13 +81,19 @@ const AssessmentModule = () => {
         onOk: () => {
           setAssessmentList(updateAssessment);
           setEditId(null);
+          setSelectId(null);
+          notification.success({
+            message: "Success",
+            description: `Assessment Deleted Successfully`,
+            duration: 3,
+          });
         },
       });
     }
     else{
-      Modal.warning({
-        title: "Success",
-        content: "Assessment Deleted Successfully...",
+      Modal.confirm({
+        title: "Delete Conformation",
+        content: "Are you sure you want to delete this Assessment?",
         okButtonProps: {
           style: { background: "#49a843", borderColor: "#EAEAEA" },
         },
@@ -103,6 +109,8 @@ const AssessmentModule = () => {
               }
             )
             .then((res) => {
+              setEditId(null);
+              setSelectId(null);
               notification.success({
                 message: "Success",
                 description: `Assessment Deleted Successfully`,
@@ -234,6 +242,7 @@ const AssessmentModule = () => {
         handleDelete={handleDelete}
         handleAdd={handleAdd}
         selectedTask={selectId}
+        setSelectId={setSelectId}
       />
       {editId ? (
         <TaskView

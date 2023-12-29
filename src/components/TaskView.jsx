@@ -395,10 +395,7 @@ const TaskView = ({
                 <Controller
                   control={control}
                   name="SubmissionLink"
-                  rules={{
-                    validate: (value) =>
-                      validateNotEmpty("SubmissionLink", value),
-                  }}
+                  defaultValue={""}
                   render={({ field }) => (
                     <>
                       <input

@@ -491,16 +491,16 @@ body {
               font-weight: 500;
               font-family: $font-Roboto;
             }
-
-            &::after {
-              content: url(/icons/dropdown.svg);
-              rotate: 180deg;
-              height: 16px;
-              width: 16px;
-              position: absolute;
-              top: 0;
-              right: 0;
-            }
+            //its used to future
+            // &::after {
+            //   content: url(/icons/dropdown.svg);
+            //   rotate: 180deg;
+            //   height: 16px;
+            //   width: 16px;
+            //   position: absolute;
+            //   top: 0;
+            //   right: 0;
+            // }
           }
         }
       }
@@ -560,12 +560,12 @@ body {
       width: 301px;
       z-index: 999;
       padding: 20px;
-      .popup-content{
-        .inner-content{
+      .popup-content {
+        .inner-content {
           align-items: center;
           justify-content: space-between;
           padding-bottom: 16px;
-          h3{
+          h3 {
             font-size: 14px;
             font-family: $font-Roboto;
             font-weight: 500;
@@ -573,14 +573,14 @@ body {
             line-height: 18px;
             padding-bottom: 4px;
           }
-          .cancel-btn{
+          .cancel-btn {
             width: 16px;
             cursor: pointer;
           }
         }
-        .add-batch{
+        .add-batch {
           padding-bottom: 10px;
-          .add-batch-btn{
+          .add-batch-btn {
             width: 100%;
             padding: 8px 0;
             border: 1px solid $border-color;
@@ -605,24 +605,26 @@ body {
         }
       }
 
-      .switch-batch-list-container{
-        .switch-batch-card{
+      .switch-batch-list-container {
+        height: 500px;
+        overflow: scroll;
+        .switch-batch-card {
           padding: 14px 16px;
           border-radius: 4px;
           justify-content: space-between;
           border: 1px solid $border-color;
           width: 100%;
           margin-bottom: 12px;
-          .batch-left-side{
-            .batch-name-year{
-              h4{
+          .batch-left-side {
+            .batch-name-year {
+              h4 {
                 font-size: 14px;
                 line-height: 18px;
                 font-family: $font-Roboto;
                 color: $font-primary-color;
                 font-weight: 500;
               }
-              p{
+              p {
                 color: $font-secondary-color;
                 font-size: 10px;
                 line-height: 14px;
@@ -630,23 +632,22 @@ body {
                 font-weight: 400;
               }
             }
-            .tag{
-              span{
+            .tag {
+              span {
                 padding: 2px 8px;
-                background-color: #EEFDB0;
+                background-color: #eefdb0;
                 color: $primary-color;
                 border-radius: 4px;
                 font-size: 10px;
                 line-height: 14px;
                 font-family: $font-Roboto;
-
               }
             }
           }
         }
       }
     }
-   
+
     //task listing container
     .listing-container {
       max-width: 301px;
@@ -720,6 +721,8 @@ body {
       }
 
       .task-list-container {
+        height: 460px;
+        overflow: scroll;
         .task-card {
           max-width: 261px;
           height: 98px;
@@ -733,6 +736,9 @@ body {
           font-family: $font-Roboto;
           cursor: pointer;
 
+          &:hover {
+            background-color: $side_bar_bg;
+          }
           .task-icon {
             background-color: yellow;
             height: 26px;
@@ -768,7 +774,7 @@ body {
                 height: 16px;
                 display: none;
               }
-              .delete-icon{
+              .delete-icon {
                 margin-left: 5px;
               }
             }
@@ -821,17 +827,16 @@ body {
       }
     }
 
-    .select-something-container{
+    .select-something-container {
       width: 100%;
       align-items: center;
       justify-content: center;
-      .image-container{
-      
-        img{
+      .image-container {
+        img {
           max-width: 350px;
           width: 100%;
         }
-        .select-something-heading{
+        .select-something-heading {
           font-size: 14px;
           line-height: 18px;
           font-family: $font-Roboto;
@@ -870,7 +875,7 @@ body {
               width: 20px;
               height: 20px;
             }
-            .yes-btn{
+            .yes-btn {
               padding: 5px 15px 5px 15px;
               background-color: $primary-color;
               color: #ffff;
@@ -880,7 +885,7 @@ body {
               font-family: $font-Roboto;
               cursor: pointer;
             }
-            .no-btn{
+            .no-btn {
               padding: 5px 15px 5px 15px;
               background-color: $border-color;
               color: $font-primary-color;
@@ -896,6 +901,8 @@ body {
       }
 
       .task-details-header-container {
+        height: 510px;
+        overflow: scroll;
         .task-label-container {
           padding-bottom: 16px;
           align-items: center;
@@ -996,7 +1003,7 @@ body {
               font-family: $font-Roboto;
               color: $font-primary-color;
             }
-            img{
+            img {
               width: 16px;
               height: 16px;
             }

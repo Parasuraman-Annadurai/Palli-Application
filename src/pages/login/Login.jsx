@@ -4,7 +4,9 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useForm } from "react-hook-form";
 
-import { LoadingOutlined } from "@ant-design/icons";
+import { LoadingOutlined, } from "@ant-design/icons";
+
+import { notification } from "antd";
 
 import { useAuth } from "../../context/AuthContext";
 
@@ -53,8 +55,11 @@ const Login = () => {
           });
       })
       .catch((err) => {
-        console.error("Authentication Failed", err);
-
+        notification.error({
+          message: "Unauthorized",
+          description: `Credentials not found `,
+          duration: 3,
+        });
         navigate("/login");
       });
   };
@@ -73,12 +78,12 @@ const Login = () => {
           </div>
           <div className="login-container flex">
             <div className="login-image-container">
-              <img src="/icons/Login Image.svg" alt="" draggable={false} />
+              <img src="https://i.ibb.co/s6j8RkP/Login-Image-1.jpg" alt="" draggable={false} />
             </div>
             <div className="login-form-container">
               <form onSubmit={handleSubmit(handleLogin)}>
                 <div className="form-heading">
-                  <h1>Welcome Back</h1>
+                  <h1>Welcome Back 👋</h1>
                   <p>Please Login to your account</p>
                 </div>
                 <div className="email-container flex">
@@ -117,7 +122,7 @@ const Login = () => {
                     <img
                       onClick={() => setShowPassword(!showPassword)}
                       src={`/icons/${
-                        showPassword ? "eye-close" : "eye-open"
+                        showPassword ? "eye-open" : "eye-close"
                       }.svg`}
                       alt="eye-icon"
                       className="eye-icon"
@@ -129,8 +134,9 @@ const Login = () => {
                 </div>
                 <div className="remember-container flex">
                   <div className="remember-content flex">
-                    <input type="checkbox" className="remember-input" />
-                    <p>Remember me</p>
+                    {/* its used to in future */}
+                    {/* <input type="checkbox" className="remember-input" />
+                    <p>Remember me</p> */}
                   </div>
                   <div className="forgot-container">
                     <a href="/forgot/password">Forgot Password</a>

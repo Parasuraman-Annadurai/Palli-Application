@@ -245,7 +245,7 @@ li {
     font-family: $font-Roboto;
     color: $font-primary-color;
   }
-  input{
+  input {
     display: block;
     border: 1px solid $border-color;
     font-size: 12px;
@@ -255,7 +255,7 @@ li {
     width: 100%;
     font-family: $font-Roboto;
   }
-   select{
+  select {
     width: 100%;
     padding: 10px;
     border: 1px solid $border-color;
@@ -264,8 +264,6 @@ li {
     outline: none;
     background-color: #ffff;
   }
- 
- 
 }
 
 body {
@@ -273,10 +271,10 @@ body {
     // max-width: 1280px;
     // width: 100%;
     // margin: auto;
-  
+
     .application-full-container {
       width: 100%;
-      
+
       .application-main-container {
         padding: 15px 20px;
         align-items: center;
@@ -345,32 +343,30 @@ body {
             cursor: pointer;
           }
         }
-        .filter-or-search-container{
+        .filter-or-search-container {
           padding-bottom: 10px;
 
-          span{
+          span {
             font-size: 10px;
             line-height: 14px;
             font-family: $font-Roboto;
             font-weight: 400;
             color: #ffff;
           }
-          .cancel-btn{
+          .cancel-btn {
             width: 14px;
             cursor: pointer;
           }
         }
 
-        .no-data-container{
+        .no-data-container {
           justify-content: center;
           align-items: center;
-          .no-data-image{
+          .no-data-image {
             max-width: 400px;
             width: 100%;
-
           }
         }
-
 
         .application-list-container {
           height: 400px;
@@ -510,23 +506,19 @@ body {
           }
         }
 
-       
         .application-pagination-container {
           padding-top: 10px;
           justify-content: center;
           align-items: center;
           // position: fixed;
         }
-
-        
       }
     }
   }
 }
 
-
-body{
-  .container{
+body {
+  .container {
     .application-view-more-container {
       padding: 14px 20px 20px 20px;
 
@@ -545,7 +537,7 @@ body{
               font: 400 16px/20px $font-Roboto;
               color: $font-secondary-color;
             }
-            img{
+            img {
               width: 16px;
               height: 16px;
               rotate: -90deg;
@@ -578,21 +570,34 @@ body{
         }
 
         .personal-and-education-section {
+          height: 520px;
+          overflow: scroll;
+      
           .personal-details-heading-section {
             align-items: center;
             padding-bottom: 20px;
             .heading-name {
               font: 400 12px/16px $font-Roboto;
-                color:$font-primary-color;
+              color: $font-primary-color;
             }
           }
-
-          .personal-details-section {
-            max-width: 1038px;
+          .personal-details-section,.Guardian-details-section,.educational-details{
+            max-width: 100%;
             width: 100%;
-            justify-content: space-between; 
-            padding-bottom: 20px;           
+            justify-content: space-between;
+            padding-bottom: 20px;
+            flex-wrap: wrap;
+            &>div{
+              flex: 1 0 15%;
+              margin: 0;
+              padding: 0;
+              margin: 5px;
+            }
+          }
+          .personal-details-section {
+
             .personal-detial-background {
+
               .details-section {
                 .personal-detial-title {
                   font: 400 12px/16px $font-Roboto;
@@ -601,7 +606,7 @@ body{
 
                 .personal-detial-name {
                   font: 400 12px/16px $font-Roboto;
-                  a{
+                  a {
                     color: $primary-color;
                     padding-left: 2px;
                   }
@@ -609,18 +614,18 @@ body{
               }
             }
           }
-          .personal-details-section-two{
+          .personal-details-section-two {
             justify-content: space-between;
-            max-width: 640px;
+            max-width: 634px;
             width: 100%;
             padding-bottom: 20px;
-            p{
+            p {
               font-size: 12px;
               line-height: 16px;
               font-family: $font-Roboto;
               color: $font-secondary-color;
             }
-            span{
+            span {
               font-size: 12px;
               line-height: 16px;
               font-family: $font-Roboto;
@@ -644,7 +649,7 @@ body{
 
                 .Guardian-detial-name {
                   font: 400 12px/16px $font-Roboto;
-                  a{
+                  a {
                     color: $primary-color;
                     padding-left: 4px;
                   }
@@ -656,77 +661,79 @@ body{
           .Educational-details-heading-section {
             padding-bottom: 20px;
           }
-          .Educational-details-list-container{
-            .educational-background-one-container{
+          .Educational-details-list-container {
+            .educational-background-one-container {
               padding-bottom: 20px;
 
-              .curent-qul{
+              .curent-qul {
                 padding-bottom: 16px;
-                p{
+                p {
                   color: $font-primary-color;
                   font-size: 12px;
                   line-height: 16px;
                   font-family: $font-Roboto;
                   font-weight: 400;
-                  a{
+                  a {
                     color: $primary-color;
                   }
                 }
               }
-              .educational-details{
+              .educational-details {
+                width: 100%;
                 justify-content: space-between;
-                span{
+                
+                span {
                   color: $font-secondary-color;
                   font-size: 12px;
                   line-height: 16px;
                   font-weight: 400;
                   padding-bottom: 4px;
                 }
-                p{
+                p {
                   color: $font-primary-color;
                   font-size: 12px;
                   font-weight: 400;
                   line-height: 16px;
-                  a{
+                  a {
                     color: $primary-color;
                     padding-left: 2px;
                   }
                 }
               }
             }
-            .educational-background-second-container{
+            .educational-background-second-container {
               padding-bottom: 20px;
 
-              .curent-qul{
+              .curent-qul {
                 padding-bottom: 16px;
 
-                p{
+                p {
                   color: $font-primary-color;
                   font-size: 12px;
                   line-height: 16px;
                   font-family: $font-Roboto;
                   font-weight: 400;
-                  a{
+                  a {
                     color: $primary-color;
                   }
                 }
               }
-              .educational-details{
+              .educational-details {
                 justify-content: space-between;
                 padding-bottom: 20px;
-                span{
+                span {
                   color: $font-secondary-color;
                   font-size: 12px;
                   line-height: 16px;
                   font-weight: 400;
                   padding-bottom: 4px;
                 }
-                p{
+                p {
                   color: $font-primary-color;
                   font-size: 12px;
                   font-weight: 400;
                   line-height: 16px;
-                  a{
+                  a {
                     color: $primary-color;
                   }
                 }
@@ -737,15 +744,17 @@ body{
           .skillset-and-other-details {
             padding-bottom: 20px;
             justify-content: space-between;
+            &>div{
+              flex: 1;
+            }
             .skillset-container {
               .skillset-details-heading-section {
                 padding-bottom: 20px;
-                .heading-name{
+                .heading-name {
                   color: $font-primary-color;
                   font-family: 400;
                   font-size: 12px;
                   line-height: 16px;
-
                 }
               }
               .skillset-detial-background-section {
@@ -759,7 +768,6 @@ body{
                   .skillset-detial-name {
                     font: 400 12px/16px $font-Roboto;
                     color: $font-primary-color;
-
                   }
                 }
               }
@@ -767,7 +775,7 @@ body{
             .Learning-devices-section {
               .Learning-details-heading-section {
                 padding-bottom: 20px;
-                .heading-name{
+                .heading-name {
                   color: $font-primary-color;
                   font-size: 12px;
                   font-weight: 400;
@@ -779,7 +787,7 @@ body{
                 .details-section {
                   .Learning-detial-title {
                     font: 400 12px/16px $font-Roboto;
-                    color:$font-secondary-color;
+                    color: $font-secondary-color;
                   }
 
                   .Learning-detial-name {
@@ -794,23 +802,25 @@ body{
           .genaral-details-section {
             .genaral-details-heading-section {
               padding-bottom: 20px;
-              .heading-name{
+              .heading-name {
                 color: $font-primary-color;
                 font-size: 12px;
                 line-height: 16px;
                 font-family: $font-Roboto;
               }
             }
-            .general-details-list-container{
+            .general-details-list-container {
               justify-content: space-between;
-              // background-color: #33762f;
-              span{
+              &>div{
+                flex: 1;
+              }
+              span {
                 color: $font-secondary-color;
                 font-size: 12px;
                 line-height: 16px;
                 font-family: 400;
               }
-              p{
+              p {
                 color: $font-primary-color;
                 font-size: 12px;
                 line-height: 16px;

@@ -21,7 +21,8 @@ const TaskList = ({
   loading,
   handleDelete,
   handleAdd,
-  selectedTask
+  selectedTask,
+  setSelectId
 }) => {
 
 
@@ -33,7 +34,10 @@ const TaskList = ({
     };
     return (
       <>
-        <div className={`task-card ${selectedTask=== task.id ? "active" :""} flex`} key={task.id} id={task.id}>
+        <div onClick={() =>{
+          handleEdit(task.id)
+          setSelectId(task.id)
+        }} className={`task-card ${selectedTask === task.id ? "active" :""} flex`} key={task.id} id={task.id}>
           {loading ? (
             <Skeleton
               avatar={{ size: "small" }}
@@ -51,13 +55,7 @@ const TaskList = ({
                   <h2>{truncateText(task.task_title,15)}</h2>
 
                    <>
-                   <img
-                      src="/icons/edit-pencil.svg"
-                      alt="edit-icon"
-                      className="edit-icon"
-                      id={task.id}
-                      onClick={() =>handleEdit(task.id)}
-                    />
+                   
                       <img
                       src="/icons/deleteIcon.svg"
                       alt="delete-icon"

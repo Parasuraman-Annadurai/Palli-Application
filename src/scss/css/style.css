@@ -393,15 +393,6 @@ body .container .side-nav-container .nav-links ul .main-link.main-active a {
   font-weight: 500;
   font-family: "Roboto";
 }
-body .container .side-nav-container .nav-links ul .main-link.main-active::after {
-  content: url(/icons/dropdown.svg);
-  rotate: 180deg;
-  height: 16px;
-  width: 16px;
-  position: absolute;
-  top: 0;
-  right: 0;
-}
 body .container .side-nav-container .user-profile {
   gap: 7px;
   align-items: center;
@@ -488,6 +479,10 @@ body .container .popup-container .popup-content .add-batch .add-batch-btn span {
   color: #12160a;
   font-family: "Roboto";
 }
+body .container .popup-container .switch-batch-list-container {
+  height: 500px;
+  overflow: scroll;
+}
 body .container .popup-container .switch-batch-list-container .switch-batch-card {
   padding: 14px 16px;
   border-radius: 4px;
@@ -512,7 +507,7 @@ body .container .popup-container .switch-batch-list-container .switch-batch-card
 }
 body .container .popup-container .switch-batch-list-container .switch-batch-card .batch-left-side .tag span {
   padding: 2px 8px;
-  background-color: #EEFDB0;
+  background-color: #eefdb0;
   color: #49a843;
   border-radius: 4px;
   font-size: 10px;
@@ -581,6 +576,10 @@ body .container .listing-container .create-container .btn.create-btn span {
   color: #12160a;
   font-family: "Roboto";
 }
+body .container .listing-container .task-list-container {
+  height: 460px;
+  overflow: scroll;
+}
 body .container .listing-container .task-list-container .task-card {
   max-width: 261px;
   height: 98px;
@@ -593,6 +592,9 @@ body .container .listing-container .task-list-container .task-card {
   background-color: white;
   font-family: "Roboto";
   cursor: pointer;
+}
+body .container .listing-container .task-list-container .task-card:hover {
+  background-color: #f8fbf2;
 }
 body .container .listing-container .task-list-container .task-card .task-icon {
   background-color: yellow;
@@ -730,6 +732,10 @@ body .container .main-container .module-header-section-container .module-header-
   font-family: "Roboto";
   margin-left: 5px;
   cursor: pointer;
+}
+body .container .main-container .task-details-header-container {
+  height: 510px;
+  overflow: scroll;
 }
 body .container .main-container .task-details-header-container .task-label-container {
   padding-bottom: 16px;

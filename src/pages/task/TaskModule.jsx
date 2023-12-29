@@ -22,7 +22,7 @@ const TaskModule = () => {
   const [taskSearchWord, setTaskSearchWord] = useState("");
   const [loading, setLoading] = useState(true);
   const [students, setStudents] = useState([]);
-  const [selectedStudents, setSelectedStudents] = useState([]);
+  const [selectedStudents, setSelectedStudents] = useState([]); 
   const [selectId, setSelectId] = useState(null);
 
   const headers = {
@@ -31,7 +31,7 @@ const TaskModule = () => {
   };
   useEffect(() => {
     //this useEffect used to fetch task list and will re-run whenever filter or search is updated
-    const url = `${API_END_POINT}/api/task/${batchId}/list_task/?limit=5&page=1&filter_task_type=0&search=${taskSearchWord}`;
+    const url = `${API_END_POINT}/api/task/${batchId}/list_task/?limit=10&page=1&filter_task_type=0&search=${taskSearchWord}`;
     axios
       .get(url, { headers })
       .then((res) => {
@@ -71,9 +71,9 @@ const TaskModule = () => {
     };
 
     if (isDraft) {
-      Modal.warning({
-        title: "Success",
-        content: "Task Deleted Successfully...",
+      Modal.confirm({
+        title: "Delete Conformation",
+        content: "Are you sure you want to delete this Task?",
         okButtonProps: {
           style: { background: "#49a843", borderColor: "#EAEAEA" },
         },
@@ -81,12 +81,18 @@ const TaskModule = () => {
         onOk: () => {
           setTaskLists(updatedTasks);
           setEditId(null);
+          setSelectId(null);
+          notification.success({
+            message: "Success",
+            description: `Task Deleted Successfully`,
+            duration: 3,
+          });
         },
       });
     } else {
-      Modal.warning({
-        title: "Success",
-        content: "Task Deleted Successfully...",
+      Modal.confirm({
+        title: "Delete Conformation",
+        content: "Are you sure you want to delete this Task?",
         okButtonProps: {
           style: { background: "#49a843", borderColor: "#EAEAEA" },
         },
@@ -107,6 +113,8 @@ const TaskModule = () => {
                 description: `Task Deleted Successfully`,
                 duration: 3,
               });
+              setEditId(null);
+              setSelectId(null);
               setTaskLists(updatedTasks);
             })
             .catch((error) => {
@@ -233,6 +241,7 @@ const TaskModule = () => {
         handleDelete={handleDelete}
         handleAdd={handleAdd}
         selectedTask={selectId}
+        setSelectId={setSelectId}
       />
 
       {editId ? (

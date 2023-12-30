@@ -570,9 +570,15 @@ body {
         }
 
         .personal-and-education-section {
-          height: 520px;
-          overflow: scroll;
+          
+
+          height: calc(100vh - 100px);
+          overflow-y: auto;
       
+          &::-webkit-scrollbar{
+            width: 0;
+            height: 0;
+          }
           .personal-details-heading-section {
             align-items: center;
             padding-bottom: 20px;

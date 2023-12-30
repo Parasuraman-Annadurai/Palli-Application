@@ -59,7 +59,9 @@ const AssessmentModule = () => {
   }, [assessmentSearchWord]);
 
   const handleDelete = (deleteAssessmentId) => {
-    const isDraft = assessmentList.data.some((assessment) => assessment.id === deleteAssessmentId && assessment.draft);
+    const isDraft = assessmentList.data.some(
+      (assessment) => assessment.id === deleteAssessmentId && assessment.draft
+    );
 
     const updateAssessment = {
       ...assessmentList,
@@ -67,72 +69,77 @@ const AssessmentModule = () => {
         (assessment) => assessment.id !== deleteAssessmentId
       ),
     };
-    
-    if(isDraft){
- 
 
-      Modal.confirm({
-        title: "Delete Conformation",
-        content: "Are you sure you want to delete this Assessment?",
-        okButtonProps: {
-          style: { background: "#49a843", borderColor: "#EAEAEA" },
-        },
-
-        onOk: () => {
-          setAssessmentList(updateAssessment);
-          setEditId(null);
-          setSelectId(null);
-          notification.success({
-            message: "Success",
-            description: `Assessment Deleted Successfully`,
-            duration: 3,
-          });
-        },
-      });
-    }
-    else{
-      Modal.confirm({
-        title: "Delete Conformation",
-        content: "Are you sure you want to delete this Assessment?",
-        okButtonProps: {
-          style: { background: "#49a843", borderColor: "#EAEAEA" },
-        },
-  
-        onOk: () => {
-          axios
-            .delete(
-              `${API_END_POINT}/api/task/${batchId}/delete_task/${deleteAssessmentId}`,
-              {
-                headers: {
-                  Authorization: `Bearer ${token.access}`,
-                },
-              }
-            )
-            .then((res) => {
-              setEditId(null);
-              setSelectId(null);
-              notification.success({
-                message: "Success",
-                description: `Assessment Deleted Successfully`,
-                duration: 3,
-              });
-              setAssessmentList(updateAssessment);
-            })
-            .catch((error) => {
-              console.log(error);
+    const confirmDelete = () => {
+      if (isDraft) {
+        setAssessmentList(updateAssessment);
+        setEditId(null);
+        notification.success({
+          message: "Success",
+          description: "Assessment Deleted Successfully",
+          duration: 3,
+        });
+      } else {
+        axios
+          .delete(
+            `${API_END_POINT}/api/task/${batchId}/delete_task/${deleteAssessmentId}`,
+            {
+              headers: {
+                Authorization: `Bearer ${token.access}`,
+              },
+            }
+          )
+          .then((res) => {
+            setEditId(null);
+            notification.success({
+              message: "Success",
+              description: "Assessment Deleted Successfully",
+              duration: 3,
             });
-        },
-      });
-    }
+            setAssessmentList(updateAssessment);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
+    };
+
+    Modal.confirm({
+      title: "Delete Confirmation",
+      content: "Are you sure you want to delete this Assessment?",
+      okButtonProps: {
+        style: { background: "#49a843", borderColor: "#EAEAEA" },
+      },
+      onOk: confirmDelete,
+      mask: true, // Show the modal with a mask
+    });
   };
 
   const handleSave = (assessmentData, draft) => {
+    const { Title, Description, Deadline, SubmissionLink } = assessmentData;
+    const formattedDate = Deadline.format("YYYY-MM-DD HH:mm:ss");
+
+    let isAssessmentExists = false;
+
+    for (const assessment of assessmentList.data) {
+      if (assessment.task_title === Title) {
+        isAssessmentExists = true;
+        break;
+      }
+    }
+
+    if (isAssessmentExists) {
+      notification.error({
+        message: "Error",
+        description: `Assessment "${Title}" already exists`,
+        duration: 3,
+      });
+      return;
+    }
+
     const existingAssessmentIndex = assessmentList.data.findIndex(
       (assessment) => assessment.draft === draft
     );
-
-    const { Title, Description, Deadline, SubmissionLink } = assessmentData;
-    const formattedDate = Deadline.format("YYYY-MM-DD HH:mm:ss");
 
     const createAssessmentPayload = {
       task_title: Title,
@@ -194,8 +201,8 @@ const AssessmentModule = () => {
               : assessment
           ),
         }));
-      } 
-      setEditId(null)
+      }
+      setEditId(null);
       axios({
         method: "POST",
         url: `${API_END_POINT}/api/task/${batchId}/assign/task/${res.data.data.id}`,

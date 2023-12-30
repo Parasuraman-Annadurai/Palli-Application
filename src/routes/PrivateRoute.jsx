@@ -17,8 +17,8 @@ const PrivateRoute = () => {
   const menu = [
 
     { label: "Applications", id: "applications" },
-    {label:"Task",id :"module/task"},
-    {label:"Assessment",id: "module/assessment"},
+    {label:"Task",id :"task"},
+    {label:"Assessment",id: "assessment"},
     
   ];
   const menuList = batchId ? menu : [{ label: "Dashboard", id: "dashboard" }];

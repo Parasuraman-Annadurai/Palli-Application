@@ -473,8 +473,12 @@ body .container .application-view-more-container .left-side .top-section .search
   color: #969d88;
 }
 body .container .application-view-more-container .left-side .personal-and-education-section {
-  height: 520px;
-  overflow: scroll;
+  height: calc(100vh - 100px);
+  overflow-y: auto;
+}
+body .container .application-view-more-container .left-side .personal-and-education-section::-webkit-scrollbar {
+  width: 0;
+  height: 0;
 }
 body .container .application-view-more-container .left-side .personal-and-education-section .personal-details-heading-section {
   align-items: center;

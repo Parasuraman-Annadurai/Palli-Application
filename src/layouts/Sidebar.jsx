@@ -91,7 +91,7 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
               <li className={`main-link`}>
                 <a href={"/dashboard"} className="flex">
                   <img
-                    src="/public/icons/application.svg"
+                    src="/icons/backIcon.svg"
                     alt={"Back to Dashboard"}
                   />
                   <span>{"Back to Dashboard"}</span>

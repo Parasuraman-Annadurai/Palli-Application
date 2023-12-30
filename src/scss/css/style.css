@@ -479,10 +479,6 @@ body .container .popup-container .popup-content .add-batch .add-batch-btn span {
   color: #12160a;
   font-family: "Roboto";
 }
-body .container .popup-container .switch-batch-list-container {
-  height: 500px;
-  overflow: scroll;
-}
 body .container .popup-container .switch-batch-list-container .switch-batch-card {
   padding: 14px 16px;
   border-radius: 4px;
@@ -579,6 +575,13 @@ body .container .listing-container .create-container .btn.create-btn span {
 body .container .listing-container .task-list-container {
   height: 460px;
   overflow: scroll;
+  height: calc(100vh - 200px);
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+body .container .listing-container .task-list-container::-webkit-scrollbar {
+  width: 0;
+  height: 0;
 }
 body .container .listing-container .task-list-container .task-card {
   max-width: 261px;
@@ -734,8 +737,12 @@ body .container .main-container .module-header-section-container .module-header-
   cursor: pointer;
 }
 body .container .main-container .task-details-header-container {
-  height: 510px;
-  overflow: scroll;
+  height: calc(100vh - 110px);
+  overflow-y: auto;
+}
+body .container .main-container .task-details-header-container::-webkit-scrollbar {
+  width: 0;
+  height: 0;
 }
 body .container .main-container .task-details-header-container .task-label-container {
   padding-bottom: 16px;

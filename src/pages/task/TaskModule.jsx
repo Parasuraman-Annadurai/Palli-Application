@@ -22,7 +22,7 @@ const TaskModule = () => {
   const [taskSearchWord, setTaskSearchWord] = useState("");
   const [loading, setLoading] = useState(true);
   const [students, setStudents] = useState([]);
-  const [selectedStudents, setSelectedStudents] = useState([]); 
+  const [selectedStudents, setSelectedStudents] = useState([]);
   const [selectId, setSelectId] = useState(null);
 
   const headers = {
@@ -59,7 +59,7 @@ const TaskModule = () => {
         console.log(error);
       });
   }, [taskSearchWord]);
-
+  
   const handleDelete = (deleteTaskId) => {
     const isDraft = taskLists.data.some(
       (task) => task.id === deleteTaskId && task.draft
@@ -70,68 +70,100 @@ const TaskModule = () => {
       data: taskLists.data.filter((task) => task.id !== deleteTaskId),
     };
 
-    if (isDraft) {
-      Modal.confirm({
-        title: "Delete Conformation",
-        content: "Are you sure you want to delete this Task?",
-        okButtonProps: {
-          style: { background: "#49a843", borderColor: "#EAEAEA" },
-        },
-
-        onOk: () => {
-          setTaskLists(updatedTasks);
-          setEditId(null);
-          setSelectId(null);
-          notification.success({
-            message: "Success",
-            description: `Task Deleted Successfully`,
-            duration: 3,
-          });
-        },
-      });
-    } else {
-      Modal.confirm({
-        title: "Delete Conformation",
-        content: "Are you sure you want to delete this Task?",
-        okButtonProps: {
-          style: { background: "#49a843", borderColor: "#EAEAEA" },
-        },
-
-        onOk: () => {
-          axios
-            .delete(
-              `${API_END_POINT}/api/task/${batchId}/delete_task/${deleteTaskId}`,
-              {
-                headers: {
-                  Authorization: `Bearer ${token.access}`,
-                },
-              }
-            )
-            .then((res) => {
-              notification.success({
-                message: "Success",
-                description: `Task Deleted Successfully`,
-                duration: 3,
-              });
-              setEditId(null);
-              setSelectId(null);
-              setTaskLists(updatedTasks);
-            })
-            .catch((error) => {
-              console.log(error);
+    const confirmDelete = () => {
+      if (isDraft) {
+        setTaskLists(updatedTasks);
+        setEditId(null);
+        notification.success({
+          message: "Success",
+          description: "Task Deleted Successfully",
+          duration: 3,
+        });
+      } else {
+        axios
+          .delete(
+            `${API_END_POINT}/api/task/${batchId}/delete_task/${deleteTaskId}`,
+            {
+              headers: {
+                Authorization: `Bearer ${token.access}`,
+              },
+            }
+          )
+          .then((res) => {
+            notification.success({
+              message: "Success",
+              description: "Task Deleted Successfully",
+              duration: 3,
             });
-        },
-      });
-    }
+            setEditId(null);
+            setTaskLists(updatedTasks);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
+    };
+
+    Modal.confirm({
+      title: "Delete Confirmation",
+      content: "Are you sure you want to delete this Task?",
+      okButtonProps: {
+        style: { background: "#49a843", borderColor: "#EAEAEA" },
+      },
+      onOk: confirmDelete, // Call confirmDelete when OK button is clicked
+      mask: true, // Show the modal with a mask
+      maskClosable:false
+    });
   };
 
+  // useEffect(() => {
+  //   const id = editId;
+
+  //   const taskUserIds = [];
+
+  //   taskLists?.data.forEach((task) => {
+  //    if(task.id == id){
+  //     const {task_users} = task;
+  //      task_users && task_users.map((a)=>{
+  //       taskUserIds.push(a.user)
+  //      })
+  //    }
+  //   });
+
+  //   setSelectedStudents(taskUserIds);
+
+  // }, [editId])
+
   const handleSave = (taskData, draft) => {
+
+
+    const { Title, Description, Deadline, SubmissionLink } = taskData;
+    const formattedDate = Deadline.format("YYYY-MM-DD HH:mm:ss");
+
+
+    let isTaskExists = false;
+
+    for (const task of taskLists.data) {
+      if (task.task_title === Title) {
+        isTaskExists = true;
+        break;
+      }
+    }
+
+    if (isTaskExists) {
+      notification.error({
+        message: "Error",
+        description: `Task "${Title}" already exists`,
+        duration: 3,
+      });
+      return;
+    }
+
+
     const existingTaskIndex = taskLists.data.findIndex(
       (task) => task.draft === draft
     );
 
-    const { Title, Description, Deadline, SubmissionLink } = taskData;
-    const formattedDate = Deadline.format("YYYY-MM-DD HH:mm:ss");
 
     const createTaskPayload = {
       task_title: Title,
@@ -183,13 +215,13 @@ const TaskModule = () => {
           data: prevState.data.map((task, index) =>
             index === existingTaskIndex
               ? (() => {
-                  const updatedTask = {
-                    ...task,
-                    ...newTask,
-                  };
-                  delete updatedTask.draft;
-                  return updatedTask;
-                })()
+                const updatedTask = {
+                  ...task,
+                  ...newTask,
+                };
+                delete updatedTask.draft;
+                return updatedTask;
+              })()
               : task
           ),
         }));
@@ -203,11 +235,12 @@ const TaskModule = () => {
           "Content-Type": "application/json",
         },
         data: assignTask,
-      }).then((res) => {});
+      }).then((res) => { });
     });
 
     //once task create or update tasklist state update
   };
+
   const handleAdd = () => {
     const uniqueId = uuidv4();
 
@@ -240,7 +273,7 @@ const TaskModule = () => {
         filterShow={false}
         handleDelete={handleDelete}
         handleAdd={handleAdd}
-        selectedTask={selectId}
+        selectedTask={editId}
         setSelectId={setSelectId}
       />
 

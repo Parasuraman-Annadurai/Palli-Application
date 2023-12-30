@@ -9,8 +9,8 @@ const MODULE = "/batch/:id/module";
 
 //new changes
 const APPLICATIONVIEW = "/batch/:id/application/view/more"
-const TASKMODULE = "/batch/:id/module/task";
-const ASSESSMENTMODULE = "/batch/:id/module/assessment";
+const TASKMODULE = "/batch/:id/task";
+const ASSESSMENTMODULE = "/batch/:id/assessment";
 //
 
 const ADDTASK = "/batch/:id/module/add/task";

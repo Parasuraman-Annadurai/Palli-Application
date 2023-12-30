@@ -472,6 +472,14 @@ body .container .application-view-more-container .left-side .top-section .search
 body .container .application-view-more-container .left-side .top-section .search-input input::placeholder {
   color: #969d88;
 }
+body .container .application-view-more-container .left-side .personal-and-education-section {
+  height: calc(100vh - 100px);
+  overflow-y: auto;
+}
+body .container .application-view-more-container .left-side .personal-and-education-section::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
 body .container .application-view-more-container .left-side .personal-and-education-section .personal-details-heading-section {
   align-items: center;
   padding-bottom: 20px;
@@ -480,11 +488,18 @@ body .container .application-view-more-container .left-side .personal-and-educat
   font: 400 12px/16px "Roboto";
   color: #12160a;
 }
-body .container .application-view-more-container .left-side .personal-and-education-section .personal-details-section {
-  max-width: 1038px;
+body .container .application-view-more-container .left-side .personal-and-education-section .personal-details-section, body .container .application-view-more-container .left-side .personal-and-education-section .Guardian-details-section, body .container .application-view-more-container .left-side .personal-and-education-section .educational-details {
+  max-width: 100%;
   width: 100%;
   justify-content: space-between;
   padding-bottom: 20px;
+  flex-wrap: wrap;
+}
+body .container .application-view-more-container .left-side .personal-and-education-section .personal-details-section > div, body .container .application-view-more-container .left-side .personal-and-education-section .Guardian-details-section > div, body .container .application-view-more-container .left-side .personal-and-education-section .educational-details > div {
+  flex: 1 0 15%;
+  margin: 0;
+  padding: 0;
+  margin: 5px;
 }
 body .container .application-view-more-container .left-side .personal-and-education-section .personal-details-section .personal-detial-background .details-section .personal-detial-title {
   font: 400 12px/16px "Roboto";
@@ -499,7 +514,7 @@ body .container .application-view-more-container .left-side .personal-and-educat
 }
 body .container .application-view-more-container .left-side .personal-and-education-section .personal-details-section-two {
   justify-content: space-between;
-  max-width: 640px;
+  max-width: 634px;
   width: 100%;
   padding-bottom: 20px;
 }
@@ -553,6 +568,7 @@ body .container .application-view-more-container .left-side .personal-and-educat
   color: #49a843;
 }
 body .container .application-view-more-container .left-side .personal-and-education-section .Educational-details-list-container .educational-background-one-container .educational-details {
+  width: 100%;
   justify-content: space-between;
 }
 body .container .application-view-more-container .left-side .personal-and-education-section .Educational-details-list-container .educational-background-one-container .educational-details span {
@@ -612,6 +628,9 @@ body .container .application-view-more-container .left-side .personal-and-educat
   padding-bottom: 20px;
   justify-content: space-between;
 }
+body .container .application-view-more-container .left-side .personal-and-education-section .skillset-and-other-details > div {
+  flex: 1;
+}
 body .container .application-view-more-container .left-side .personal-and-education-section .skillset-and-other-details .skillset-container .skillset-details-heading-section {
   padding-bottom: 20px;
 }
@@ -661,6 +680,9 @@ body .container .application-view-more-container .left-side .personal-and-educat
 }
 body .container .application-view-more-container .left-side .personal-and-education-section .genaral-details-section .general-details-list-container {
   justify-content: space-between;
+}
+body .container .application-view-more-container .left-side .personal-and-education-section .genaral-details-section .general-details-list-container > div {
+  flex: 1;
 }
 body .container .application-view-more-container .left-side .personal-and-education-section .genaral-details-section .general-details-list-container span {
   color: #969d88;

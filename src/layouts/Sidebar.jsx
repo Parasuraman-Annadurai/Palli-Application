@@ -9,7 +9,7 @@ import { useAuth } from "../context/AuthContext";
 
 import { API_END_POINT } from "../../config";
 
-const Sidebar = ({ menu, activeMenuItem }) => {
+const Sidebar = ({ menuList, activeMenuItem }) => {
   const navigate = useNavigate();
   const { id: batchId } = useParams();
   const { token, user } = useAuth();
@@ -18,9 +18,10 @@ const Sidebar = ({ menu, activeMenuItem }) => {
   const isDashboardPage = currentPath.includes(DASHBOARD);
 
   const [activeState, setActiveState] = useState({ main: null, sub: null });
-
+  const [active, setActive] = useState(activeMenuItem);
   const [showSwitchBatch, setShowSwitchBatch] = useState(false);
   const [batchList, setBatchList] = useState([]);
+
   const headers = {
     Authorization: `Bearer ${token.access}`,
     "Content-type": "application/json",
@@ -39,12 +40,14 @@ const Sidebar = ({ menu, activeMenuItem }) => {
     setActiveState({ ...activeState, sub: subLinkId });
   };
 
-  const handleLogout = ()=>{
-    axios.post(`${API_END_POINT}/api/accounts/logout/`,token,{headers}).then((res)=>{
-      navigate("/login")
-      console.log(res);
-    })
-  }
+  const handleLogout = () => {
+    axios
+      .post(`${API_END_POINT}/api/accounts/logout/`, token, { headers })
+      .then((res) => {
+        navigate("/login");
+        console.log(res);
+      });
+  };
   const items = [
     {
       label: (
@@ -52,105 +55,76 @@ const Sidebar = ({ menu, activeMenuItem }) => {
           Logout
         </button>
       ),
-      key: '0',
-    },]
+      key: "0",
+    },
+  ];
   return (
     <>
       <nav className="side-nav-container flex">
         <div className="logo">
           <img src="/images/dckap_palli_logo_sm.svg" alt="DCKAP Palli logo" />
         </div>
-        <div
-          className="batch-switch-container flex"
-          onClick={() => setShowSwitchBatch(!showSwitchBatch)}
-        >
-          <div className="batch-content-container flex">
-            <div className="batch-logo">
-              <p>B1</p>
+
+        {!isDashboardPage && (
+          <div
+            className="batch-switch-container flex"
+            onClick={() => setShowSwitchBatch(!showSwitchBatch)}
+          >
+            <div className="batch-content-container flex">
+              <div className="batch-logo">
+                <p>B1</p>
+              </div>
+              <div className="batch-name">
+                <p>Batch 1</p>
+                <span>2023-2024</span>
+              </div>
             </div>
-            <div className="batch-name">
-              <p>Batch 1</p>
-              <span>2023-2024</span>
+            <div className="switch-icon">
+              <img src="/icons/dropdown.svg" alt="" />
             </div>
           </div>
-          <div className="switch-icon">
-            <img src="/icons/dropdown.svg" alt="" />
-          </div>
-        </div>
+        )}
 
         <div className="nav-links">
           <ul>
-            <li
-              className={`main-link ${
-                activeState.main === "home" ? "main-active" : ""
-              }`}
-            >
-              <a
-                href="#"
-                className="flex"
-                onClick={() => handleMainLinkClick("home")}
-              >
-                <img src="/icons/home.svg" alt="home icon" />
-                <span>Home</span>
-              </a>
-            </li>
             {!isDashboardPage && (
-              <>
-                <ul>
-                  {menu.map((menuList) => (
-                    <li
-                      key={menuList.id}
-                      className={`main-link ${
-                        activeState.main === menuList.id ? "main-active" : ""
-                      }`}
-                    >
-                      <a
-                        href={`/batch/${batchId}${menuList.id}`}
-                        className="flex"
-                        onClick={() => handleMainLinkClick(menuList)}
-                      >
-                        <img src="/icons/application.svg" alt="home icon" />
-                        <span>{menuList.label}</span>
-                      </a>
-                      {menuList.id === "module" && (
-                        <ul
-                          className={`sub-links ${
-                            activeState.main === "module" ? "open" : ""
-                          }`}
-                        >
-                          <li
-                            className={`sub-link ${
-                              activeState.sub === "task" ? "sub-active" : ""
-                            }`}
-                          >
-                            <a href={`/batch/${batchId}/module/task`}>Task</a>
-                          </li>
-                          <li
-                            className={`sub-link ${
-                              activeState.sub === "assessment"
-                                ? "sub-active"
-                                : ""
-                            }`}
-                            onClick={() => handleSubLinkClick("assessment")}
-                          >
-                            <a href={`/batch/${batchId}/module/assessment`}>
-                              Assessment
-                            </a>
-                          </li>
-                          <li
-                            className={`sub-link ${
-                              activeState.sub === "quiz" ? "sub-active" : ""
-                            }`}
-                          >
-                            <a href="#">Quiz</a>
-                          </li>
-                        </ul>
-                      )}
-                    </li>
-                  ))}
-                </ul>
-              </>
+              <li className={`main-link`}>
+                <a href={"/dashboard"} className="flex">
+                  <img
+                    src="/icons/backIcon.svg"
+                    alt={"Back to Dashboard"}
+                  />
+                  <span>{"Back to Dashboard"}</span>
+                </a>
+              </li>
             )}
+            {menuList &&
+              menuList.map((menu, index) => {
+                return (
+                  <li
+                    key={index}
+                    onClick={() => setActive(menu.id)}
+                    className={`main-link ${
+                      menu.id === active ? "main-active" : ""
+                    }`}
+                  >
+                    <a
+                      href={
+                        isDashboardPage
+                          ? "/dashboard"
+                          : `/batch/${batchId}/${menu.id}`
+                      }
+                      className="flex"
+                    >
+                      <img
+                        src="/public/icons/application.svg"
+                        alt={menu.label}
+                      />
+                      <span>{menu.label}</span>
+                    </a>
+                  </li>
+                );
+              })}
           </ul>
         </div>
 
@@ -158,8 +132,6 @@ const Sidebar = ({ menu, activeMenuItem }) => {
           <div className="profile-img">
             <img src="/icons/profile.svg" alt="" />
           </div>
-
-         
 
           <Dropdown
             menu={{

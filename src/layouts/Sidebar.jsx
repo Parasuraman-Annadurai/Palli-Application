@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useLocation, useParams, useNavigate, NavLink } from "react-router-dom";
 
 import { Button, Modal, Input, DatePicker, Skeleton, notification } from "antd";
@@ -22,7 +22,10 @@ const Sidebar = ({ menu, activeMenuItem }) => {
   const [activeState, setActiveState] = useState({ main: null, sub: null });
 
   const [showSwitchBatch, setShowSwitchBatch] = useState(false);
+
   const [batchList, setBatchList] = useState([]);
+  const showSwitchBatchRef = useRef(null);
+  const showSwitchBatchRefIcon = useRef(null);
   const headers = {
     Authorization: `Bearer ${token.access}`,
     "Content-type": "application/json",
@@ -31,7 +34,27 @@ const Sidebar = ({ menu, activeMenuItem }) => {
     axios.get(`${API_END_POINT}/api/list/batch/`, { headers }).then((res) => {
       setBatchList(res.data.data);
     });
-  }, []);
+    const closeonoutsideclick = (e) => {
+      if (
+        showSwitchBatch &&
+        showSwitchBatchRef.current &&
+        !showSwitchBatchRef.current.contains(e.target) &&
+        !showSwitchBatchRefIcon.current.contains(e.target)
+      ) {
+        setShowSwitchBatch(false);
+        // console.log(123);
+      }
+      
+    };
+    window.addEventListener("click", closeonoutsideclick);
+    return () => {
+      window.removeEventListener("click", closeonoutsideclick);
+    };
+  }, [showSwitchBatch]);
+
+ 
+
+
 
   const handleMainLinkClick = (menuList) => {
     setActiveState({ main: menuList.id, sub: null });
@@ -61,19 +84,17 @@ const Sidebar = ({ menu, activeMenuItem }) => {
   // const [loading, setLoading] = useState(false);
   // const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const [batch_name, setBatchName] = useState("");
-  const [start_date, setStartDate] = useState("");
-  const [end_date, setEndDate] = useState("");
-  const [company, setCompany] = useState(1);
+  // const [batch_name, setBatchName] = useState("");
+  // const [start_date, setStartDate] = useState("");
+  // const [end_date, setEndDate] = useState("");
+  // const [company, setCompany] = useState(1);
 
-  const [startError, setStartError] = useState("");
-  const [endError, setEndError] = useState("");
-  const [batchNameError, setBatchNameError] = useState(null);
+  // const [startError, setStartError] = useState("");
+  // const [endError, setEndError] = useState("");
+  // const [batchNameError, setBatchNameError] = useState(null);
 
-  const [isEditMode, setIsEditMode] = useState(false);
-  const [selectedBatch, setSelectedBatch] = useState(null);
-
- 
+  // const [isEditMode, setIsEditMode] = useState(false);
+  // const [selectedBatch, setSelectedBatch] = useState(null);
 
   const handleSwitch = (id, batchName) => {
     Modal.confirm({
@@ -87,15 +108,20 @@ const Sidebar = ({ menu, activeMenuItem }) => {
   };
 
   const currentBatch = batchList?.filter((a) => a.id === Number(batchId));
-  const {batch_name:batchName,start_date:startDate,end_date:endDate} = currentBatch[0] || []
+  const {
+    batch_name: batchName,
+    start_date: startDate,
+    end_date: endDate,
+  } = currentBatch[0] || [];
 
-
-  const handleLogout = ()=>{
-    axios.post(`${API_END_POINT}/api/accounts/logout/`,token,{headers}).then((res)=>{
-      navigate("/login")
-      console.log(res);
-    })
-  }
+  const handleLogout = () => {
+    axios
+      .post(`${API_END_POINT}/api/accounts/logout/`, token, { headers })
+      .then((res) => {
+        navigate("/login");
+        console.log(res);
+      });
+  };
   const items = [
     {
       label: (
@@ -103,30 +129,42 @@ const Sidebar = ({ menu, activeMenuItem }) => {
           Logout
         </button>
       ),
-      key: '0',
-    },]
+      key: "0",
+    },
+  ];
+
   return (
     <>
       <nav className="side-nav-container flex">
         <div className="logo">
           <img src="/images/dckap_palli_logo_sm.svg" alt="DCKAP Palli logo" />
         </div>
-     
+
         {!isDashboardPage && (
-         <div className="batch-switch-container flex" onClick={()=>setShowSwitchBatch(!showSwitchBatch)}>
-         <div className="batch-content-container flex">
-           <div className="batch-logo">
-             <p>B1</p>
-           </div>
-           <div className="batch-name">
-             <p>{batchName ? batchName : ""}</p>
-             <span>{startDate ? startDate.slice(0,4) :""}-{endDate ? endDate.slice(0,4) :""}</span>
-           </div>
-         </div>
-         <div className="switch-icon">
-           <img src="/icons/dropdown.svg" alt="" />
-         </div>
-       </div>
+          <div
+            className="batch-switch-container flex"
+            // ref={showSwitchBatchRefIcon}
+            ref={(ref) =>
+              (showSwitchBatchRefIcon.current = ref)
+            }
+            onClick={() => setShowSwitchBatch(!showSwitchBatch)}
+          >
+            <div className="batch-content-container flex">
+              <div className="batch-logo">
+                <p>B1</p>
+              </div>
+              <div className="batch-name">
+                <p>{batchName ? batchName : ""}</p>
+                <span>
+                  {startDate ? startDate.slice(0, 4) : ""}-
+                  {endDate ? endDate.slice(0, 4) : ""}
+                </span>
+              </div>
+            </div>
+            <div className="switch-icon">
+              <img src="/icons/dropdown.svg" alt="" />
+            </div>
+          </div>
         )}
         <div className="nav-links">
           <ul>
@@ -209,8 +247,6 @@ const Sidebar = ({ menu, activeMenuItem }) => {
             <img src="/icons/profile.svg" alt="" />
           </div>
 
-         
-
           <Dropdown
             menu={{
               items,
@@ -223,9 +259,8 @@ const Sidebar = ({ menu, activeMenuItem }) => {
           </Dropdown>
         </div>
       </nav>
-
       {showSwitchBatch && (
-        <div className="popup-container">
+        <div className="popup-container" ref={showSwitchBatchRef}>
           <div className="popup-content">
             <div className="inner-content flex">
               <h3>{isAddingBatch ? "Add Batch" : "Switch Batch"}</h3>
@@ -238,11 +273,11 @@ const Sidebar = ({ menu, activeMenuItem }) => {
                 />
               </div>
             </div>
-            <div className="add-batch">
+            {/* <div className="add-batch">
               <button className="add-batch-btn" >
                 Add New Batch
               </button>
-            </div>
+            </div> */}
             {/* {showInputFields && (
               <div className="input-fields">
                 <div className="input-field">
@@ -333,17 +368,17 @@ const Sidebar = ({ menu, activeMenuItem }) => {
                         {batch.end_date.slice(0, 4)}{" "}
                       </p>
                     </div>
-                    <div className="tag">
+                    {/* <div className="tag">
                       <span>Internship</span>
-                    </div>
+                    </div> */}
                   </div>
-                  <div className="batch-right-side">
+                  {/* <div className="batch-right-side">
                     <img
                       src="/public/icons/edit-pencil.svg"
                       alt=""
                       // handleEditClick={handleEditClick}
                     />
-                  </div>
+                  </div> */}
                 </div>
               );
             })}

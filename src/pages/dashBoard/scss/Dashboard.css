@@ -147,8 +147,16 @@ li {
   color: #969d88;
 }
 .main-batches .edit-icon {
+  display: none;
   font-size: 16px;
   vertical-align: middle;
+}
+.main-batches:hover {
+  background-color: #f8fbf2;
+  cursor: pointer;
+}
+.main-batches:hover .edit-icon {
+  display: block;
 }
 
 /*# sourceMappingURL=Dashboard.css.map */

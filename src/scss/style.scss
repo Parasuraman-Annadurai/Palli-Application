@@ -342,6 +342,7 @@ li {
 }
 body {
   .container {
+    
     // max-width: 1280px;
     // width: 100%;
     // margin: 0 auto;
@@ -362,7 +363,7 @@ body {
         padding: 16px;
       }
 
-      .batch-switch-container {
+      .batch-switch-container { 
         background-color: #f2f9e4;
         padding: 8px 16px;
         align-items: center;
@@ -552,6 +553,7 @@ body {
       }
     }
     .popup-container {
+      overflow: auto;
       position: absolute;
       left: 160px;
       top: 0;
@@ -613,6 +615,8 @@ body {
           border: 1px solid $border-color;
           width: 100%;
           margin-bottom: 12px;
+          cursor: pointer;
+          
           .batch-left-side {
             .batch-name-year {
               h4 {

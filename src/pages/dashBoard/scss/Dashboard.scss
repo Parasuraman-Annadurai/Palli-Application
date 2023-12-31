@@ -151,6 +151,7 @@ li {
   .added-batches {
     flex: 1;
 
+
     .batches-list {
       .batch-name {
         font: 400 14px/18px $font-Roboto;
@@ -167,7 +168,17 @@ li {
     }
   }
   .edit-icon {
+    display: none;
     font-size: 16px;
     vertical-align: middle;
+    
+  }
+  &:hover{
+    background-color: #f8fbf2;
+    cursor: pointer;
+    .edit-icon {
+      display: block;
+
+    }
   }
 }

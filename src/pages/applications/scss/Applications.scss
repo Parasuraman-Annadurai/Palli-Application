@@ -520,6 +520,7 @@ body {
 body {
   .container {
     .application-view-more-container {
+      width: 100%;
       padding: 14px 20px 20px 20px;
 
       .left-side {
@@ -636,6 +637,11 @@ body {
               line-height: 16px;
               font-family: $font-Roboto;
               color: $font-primary-color;
+              a{
+                margin-left: 5px;
+                color: $primary-color;
+                text-decoration: underline;
+              }
             }
           }
 
@@ -657,7 +663,8 @@ body {
                   font: 400 12px/16px $font-Roboto;
                   a {
                     color: $primary-color;
-                    padding-left: 4px;
+                    margin-left: 4px;
+                    text-decoration: underline;
                   }
                 }
               }
@@ -702,7 +709,8 @@ body {
                   line-height: 16px;
                   a {
                     color: $primary-color;
-                    padding-left: 2px;
+                    margin-left: 2px;
+                    text-decoration: underline;
                   }
                 }
               }
@@ -741,6 +749,7 @@ body {
                   line-height: 16px;
                   a {
                     color: $primary-color;
+                    text-decoration: underline;
                   }
                 }
               }

@@ -496,7 +496,7 @@ const Applications = () => {
           ) : (
             ""
           )}
-          {appliedFilterShow &&
+          {/* {appliedFilterShow &&
             Object.keys(appliedFilterShow).map((filterName) => (
               <>
                 <Tag color="#49a843">{`${filterName} : ${appliedFilterShow[filterName]} `}</Tag>
@@ -507,7 +507,7 @@ const Applications = () => {
                   onClick={() => handleRemoveFilter(filterName)}
                 />
               </>
-            ))}
+            ))} */}
         </div>
 
         {applications.data.length > 0 ? (

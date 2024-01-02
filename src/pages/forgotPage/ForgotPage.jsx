@@ -37,11 +37,12 @@ const ForgotPassword = () => {
           </div>
           <div className="">
             <div className="forgot-form-container">
-              <div className="back">
+              <div >
+              <a className="back" href="/">
                 <span className="material-symbols-outlined">
                   keyboard_backspace
                 </span>
-                <a href="/">Go back</a>
+               Go back</a>
               </div>
               <div className="form-heading">
                 <h1>Forgot Password?</h1>
@@ -62,7 +63,7 @@ const ForgotPassword = () => {
                         autoComplete="off"
                         type="text"
                         className="email-input"
-                        placeholder="Type here"
+                        placeholder="Type here..."
                         value={email}
                         onChange={handleEmail}
                         name="email"

@@ -320,7 +320,7 @@ body {
         animation-delay: 0.3s;
       }
     }
-    .login-page-container {
+    .forgot-page-container {
       width: 100%;
       background-image: url(/icons/login-frame.svg);
 
@@ -332,7 +332,7 @@ body {
           width: 100%;
         }
       }
-      .login-container {
+      .forgot-container {
         align-items: center;
         justify-content: center;
         gap: 115px;
@@ -343,7 +343,7 @@ body {
             height: 530px;
           }
         }
-        .login-form-container {
+        .forgot-form-container {
           background-color: #ffff;
           max-width: 375px;
           // height: 376px;
@@ -351,7 +351,17 @@ body {
           padding: 32px;
           border: 1px solid $border-color;
           border-radius: 4px;
-          form {
+          .back{
+            display: flex;
+            align-items: center;
+            margin-bottom: 16px;
+            cursor: pointer;
+            span{
+            color: $font-secondary-color;
+            }
+          }
+         
+
             .form-heading {
               h1 {
                 font-size: 24px;
@@ -365,7 +375,6 @@ body {
                 font-size: 16px;
                 line-height: 20px;
                 font-family: $font-Roboto;
-                font-family: 400;
                 color: $font-primary-color;
                 padding-bottom: 24px;
               }
@@ -380,90 +389,32 @@ body {
                 color: $font-secondary-color;
                 font-weight: 400;
                 padding-bottom: 6px;
+                span{
+                    color: red;
+                    margin-left: 5px;
+                }
               }
               .email-input {
                 color: $font-primary-color;
                 border: 1px solid $border-color;
                 padding: 10px 0px 10px 12px;
                 border-radius: 4px;
+                width: 100%;
               }
             }
-            .password-container {
-              margin-bottom: 10px;
 
-              label {
-                font-size: 12px;
-                line-height: 15px;
-                font-weight: 400;
-                font-family: $font-Roboto;
-                color: $font-secondary-color;
-              }
-              .password-field {
-                position: relative;
-                margin-top: 6px;
-                .password-input {
-                  width: 100%;
-                  padding: 10px 0px 10px 12px;
-                  border: 1px solid $border-color;
-                  color: $font-primary-color;
-                  border-radius: 4px;
-                }
-                .eye-icon {
-                  cursor: pointer;
-                  position: absolute;
-                  width: 16px;
-                  top: 10px;
-                  right: 12px;
-                }
-              }
-            }
-            .remember-container {
-              justify-content: space-between;
-              align-items: center;
-              margin-bottom: 32px;
-              .remember-content {
-                align-items: center;
-                gap: 2px;
-                .remember-input {
-                  width: 16px;
-                  height: 16px;
-                  border: 1px solid $border-color;
-                  color: $font-primary-color;
-                  background-color: #ffff;
-                  &:checked {
-                    background-color: $primary-color;
-                  }
-                }
-
-                p {
-                  font-size: 12px;
-                  line-height: 16px;
-                  font-weight: 500;
-                  color: $font-primary-color;
-                }
-              }
-              .forgot-container {
-                a {
-                  color: $font-primary-color;
-                  font-family: $font-Roboto;
-                  font-size: 12px;
-                  line-height: 16px;
-                  font-weight: 400;
-                }
-              }
-            }
-            .login-button-container {
+            .forgot-button-container {
               button {
                 width: 100%;
                 align-items: center;
-                span{
-                 .loader{
-                  margin-left: 8px;
-                 }
+                span {
+                  .loader {
+                    margin-left: 8px;
+                  }
                 }
               }
             }
-          }
+          
         }
       }
     }

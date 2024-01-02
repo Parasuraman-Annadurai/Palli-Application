@@ -265,29 +265,29 @@ body .container .loader-wrapper .shadow:nth-child(5) {
   right: 15%;
   animation-delay: 0.3s;
 }
-body .container .login-page-container {
+body .container .forgot-page-container {
   width: 100%;
   background-image: url(/icons/login-frame.svg);
 }
-body .container .login-page-container .logo-container {
+body .container .forgot-page-container .logo-container {
   padding: 24px 0px 0px 16px;
 }
-body .container .login-page-container .logo-container .logo {
+body .container .forgot-page-container .logo-container .logo {
   max-width: 146px;
   height: 47px;
   width: 100%;
 }
-body .container .login-page-container .login-container {
+body .container .forgot-page-container .forgot-container {
   align-items: center;
   justify-content: center;
   gap: 115px;
 }
-body .container .login-page-container .login-container .login-image-container img {
+body .container .forgot-page-container .forgot-container .login-image-container img {
   max-width: 530px;
   width: 100%;
   height: 530px;
 }
-body .container .login-page-container .login-container .login-form-container {
+body .container .forgot-page-container .forgot-container .forgot-form-container {
   background-color: white;
   max-width: 375px;
   width: 100%;
@@ -295,7 +295,16 @@ body .container .login-page-container .login-container .login-form-container {
   border: 1px solid #eaeaea;
   border-radius: 4px;
 }
-body .container .login-page-container .login-container .login-form-container form .form-heading h1 {
+body .container .forgot-page-container .forgot-container .forgot-form-container .back {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+  cursor: pointer;
+}
+body .container .forgot-page-container .forgot-container .forgot-form-container .back span {
+  color: #969d88;
+}
+body .container .forgot-page-container .forgot-container .forgot-form-container .form-heading h1 {
   font-size: 24px;
   line-height: 30px;
   font-weight: 500;
@@ -303,19 +312,18 @@ body .container .login-page-container .login-container .login-form-container for
   color: #12160a;
   padding-bottom: 6px;
 }
-body .container .login-page-container .login-container .login-form-container form .form-heading p {
+body .container .forgot-page-container .forgot-container .forgot-form-container .form-heading p {
   font-size: 16px;
   line-height: 20px;
   font-family: "Roboto";
-  font-family: 400;
   color: #12160a;
   padding-bottom: 24px;
 }
-body .container .login-page-container .login-container .login-form-container form .email-container {
+body .container .forgot-page-container .forgot-container .forgot-form-container .email-container {
   flex-direction: column;
   margin-bottom: 10px;
 }
-body .container .login-page-container .login-container .login-form-container form .email-container label {
+body .container .forgot-page-container .forgot-container .forgot-form-container .email-container label {
   font-family: "Roboto";
   font-size: 12px;
   line-height: 16px;
@@ -323,77 +331,22 @@ body .container .login-page-container .login-container .login-form-container for
   font-weight: 400;
   padding-bottom: 6px;
 }
-body .container .login-page-container .login-container .login-form-container form .email-container .email-input {
+body .container .forgot-page-container .forgot-container .forgot-form-container .email-container label span {
+  color: red;
+  margin-left: 5px;
+}
+body .container .forgot-page-container .forgot-container .forgot-form-container .email-container .email-input {
   color: #12160a;
   border: 1px solid #eaeaea;
   padding: 10px 0px 10px 12px;
   border-radius: 4px;
-}
-body .container .login-page-container .login-container .login-form-container form .password-container {
-  margin-bottom: 10px;
-}
-body .container .login-page-container .login-container .login-form-container form .password-container label {
-  font-size: 12px;
-  line-height: 15px;
-  font-weight: 400;
-  font-family: "Roboto";
-  color: #969d88;
-}
-body .container .login-page-container .login-container .login-form-container form .password-container .password-field {
-  position: relative;
-  margin-top: 6px;
-}
-body .container .login-page-container .login-container .login-form-container form .password-container .password-field .password-input {
   width: 100%;
-  padding: 10px 0px 10px 12px;
-  border: 1px solid #eaeaea;
-  color: #12160a;
-  border-radius: 4px;
 }
-body .container .login-page-container .login-container .login-form-container form .password-container .password-field .eye-icon {
-  cursor: pointer;
-  position: absolute;
-  width: 16px;
-  top: 10px;
-  right: 12px;
-}
-body .container .login-page-container .login-container .login-form-container form .remember-container {
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 32px;
-}
-body .container .login-page-container .login-container .login-form-container form .remember-container .remember-content {
-  align-items: center;
-  gap: 2px;
-}
-body .container .login-page-container .login-container .login-form-container form .remember-container .remember-content .remember-input {
-  width: 16px;
-  height: 16px;
-  border: 1px solid #eaeaea;
-  color: #12160a;
-  background-color: white;
-}
-body .container .login-page-container .login-container .login-form-container form .remember-container .remember-content .remember-input:checked {
-  background-color: #49a843;
-}
-body .container .login-page-container .login-container .login-form-container form .remember-container .remember-content p {
-  font-size: 12px;
-  line-height: 16px;
-  font-weight: 500;
-  color: #12160a;
-}
-body .container .login-page-container .login-container .login-form-container form .remember-container .forgot-container a {
-  color: #12160a;
-  font-family: "Roboto";
-  font-size: 12px;
-  line-height: 16px;
-  font-weight: 400;
-}
-body .container .login-page-container .login-container .login-form-container form .login-button-container button {
+body .container .forgot-page-container .forgot-container .forgot-form-container .forgot-button-container button {
   width: 100%;
   align-items: center;
 }
-body .container .login-page-container .login-container .login-form-container form .login-button-container button span .loader {
+body .container .forgot-page-container .forgot-container .forgot-form-container .forgot-button-container button span .loader {
   margin-left: 8px;
 }
 

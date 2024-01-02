@@ -22,7 +22,7 @@ const ForgotPassword = () => {
   };
   return (
     <div className="container">
-      <main className="login-page-container">
+      <main className="forgot-page-container">
         <div className="logo-container">
           <img
             className="logo"
@@ -31,12 +31,18 @@ const ForgotPassword = () => {
             draggable={false}
           />
         </div>
-        <div className="login-container flex">
+        <div className="forgot-container flex">
           <div className="login-image-container">
             <img src={forgotPasswordImage} alt="ForgotPasswordImage" />
           </div>
           <div className="">
-            <div className="login-form-container">
+            <div className="forgot-form-container">
+              <div className="back">
+                <span className="material-symbols-outlined">
+                  keyboard_backspace
+                </span>
+                <a href="/">Go back</a>
+              </div>
               <div className="form-heading">
                 <h1>Forgot Password?</h1>
                 <p>No Worries we’ll send you reset instructions</p>
@@ -45,18 +51,18 @@ const ForgotPassword = () => {
               <div className="form-container">
                 <form action="" onSubmit={handelSubmit}>
                   {/* Email input field section */}
-                  <div className="email-container flext">
+                  <div className="email-container flex">
                     <label htmlFor="Email">
-                      Email
+                      Email Id
                       <span className="required-symbole">*</span>
                     </label>
                     <div className="">
-                      <span className="material-symbols-outlined">mail</span>
+                      {/* <span className="material-symbols-outlined">mail</span> */}
                       <input
                         autoComplete="off"
                         type="text"
                         className="email-input"
-                        placeholder="Input Email"
+                        placeholder="Type here"
                         value={email}
                         onChange={handleEmail}
                         name="email"
@@ -69,7 +75,7 @@ const ForgotPassword = () => {
                   </div>
 
                   {/* Reset password button */}
-                  <div className="login-button-container">
+                  <div className="forgot-button-container">
                     <button className="btn primary-medium ">
                       Reset Password
                     </button>
@@ -77,12 +83,6 @@ const ForgotPassword = () => {
                 </form>
               </div>
               {/* Back link to go back */}
-              <div className="back">
-                <span className="material-symbols-outlined">
-                  keyboard_backspace
-                </span>
-                <a href="/">Go back</a>
-              </div>
             </div>
           </div>
         </div>

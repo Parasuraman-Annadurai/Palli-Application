@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { Button, Modal, Input, DatePicker, Skeleton ,notification} from "antd";
+import { Button, Modal, Input, DatePicker, Skeleton, notification } from "antd";
 import dayjs from "dayjs";
 import axios from "axios";
 
@@ -13,6 +13,7 @@ import { API_END_POINT } from "../../../config";
 
 import dashBoardHeaderImage from "../../../public/images/dashboard_header_image.svg";
 
+import "./scss/Dashboard.css";
 
 const DashBoard = () => {
   const navigate = useNavigate();
@@ -24,13 +25,13 @@ const DashBoard = () => {
 
   const [batch_name, setBatchName] = useState("");
   const [start_date, setStartDate] = useState("");
-  const [end_date, setEndDate] = useState(""); 
+  const [end_date, setEndDate] = useState("");
   const [company, setCompany] = useState(1);
 
   const [startError, setStartError] = useState("");
   const [endError, setEndError] = useState("");
   const [batchNameError, setBatchNameError] = useState(null);
- 
+
   const [isEditMode, setIsEditMode] = useState(false);
   const [selectedBatch, setSelectedBatch] = useState(null);
 
@@ -185,13 +186,12 @@ const DashBoard = () => {
           setBatchList(updatedArray);
           notification.success({
             message: "Success",
-            description:  "Batch Created Successfully",
+            description: "Batch Created Successfully",
             duration: 3,
           });
         })
         .catch((error) => {
           console.log(error);
-
         })
         .finally(() => {
           setLoading(false);
@@ -250,7 +250,7 @@ const DashBoard = () => {
           setBatchList(updatedData);
           notification.success({
             message: "Success",
-            description:  "Batch Updated Successfully",
+            description: "Batch Updated Successfully",
             duration: 3,
           });
         })
@@ -266,21 +266,20 @@ const DashBoard = () => {
   };
   return (
     <div className="content">
-      <div className="greeting">
-        <div className="heading">
-          <h1 className="welcome__message">
-            Welcome, {user.first_name} {user.last_name} <br />
-          </h1>
-          <p>
-            You have two batch students added to your domain. Please reach out
-            to <br />
-            the Head Teacher if you want them excluded from your domain.
-          </p>
-        </div>
-
-        <div className="header__img">
-          <img src={dashBoardHeaderImage} alt="DashboardHeaderImage" />
-        </div>
+      <div className="greeting flex">
+          <div className="welcome-text">
+            <h1 className="welcome-message">
+              Welcome, {user.first_name} {user.last_name} <br />
+            </h1>
+            <p>
+              You have two batch students added to your domain. Please reach out
+              to <br />
+              the Head Teacher if you want them excluded from your domain.
+            </p>
+          </div>
+          <div className="header-img">
+            <img src={dashBoardHeaderImage} alt="DashboardHeaderImage" />
+          </div>
       </div>
 
       <div className="add__batch">
@@ -306,6 +305,7 @@ const DashBoard = () => {
                 onOk={isEditMode ? handleUpdate : handleCLick}
                 onCancel={handleCancel}
                 okText={isEditMode ? "Update" : "Add Batch"}
+                maskClosable = {false}
               >
                 <div>
                   <div className="batch_name">

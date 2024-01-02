@@ -267,19 +267,19 @@ const DashBoard = () => {
   return (
     <div className="content">
       <div className="greeting flex">
-          <div className="welcome-text">
-            <h1 className="welcome-message">
-              Welcome, {user.first_name} {user.last_name} <br />
-            </h1>
-            <p>
-              You have two batch students added to your domain. Please reach out
-              to <br />
-              the Head Teacher if you want them excluded from your domain.
-            </p>
-          </div>
-          <div className="header-img">
-            <img src={dashBoardHeaderImage} alt="DashboardHeaderImage" />
-          </div>
+        <div className="welcome-text">
+          <h1 className="welcome-message">
+            Welcome, {user.first_name} {user.last_name} <br />
+          </h1>
+          <p>
+            You have two batch students added to your domain. Please reach out
+            to <br />
+            the Head Teacher if you want them excluded from your domain.
+          </p>
+        </div>
+        <div className="header-img">
+          <img src={dashBoardHeaderImage} alt="DashboardHeaderImage" />
+        </div>
       </div>
 
       <div className="add__batch">
@@ -294,7 +294,9 @@ const DashBoard = () => {
                   type="primary"
                   onClick={showModal}
                 >
-                  <h3>ADD BATCH</h3>
+                  <h3>
+                    <span style={{fontSize:18}}>+</span> ADD BATCH
+                  </h3>
                 </Button>
               </div>
 
@@ -305,7 +307,7 @@ const DashBoard = () => {
                 onOk={isEditMode ? handleUpdate : handleCLick}
                 onCancel={handleCancel}
                 okText={isEditMode ? "Update" : "Add Batch"}
-                maskClosable = {false}
+                maskClosable={false}
               >
                 <div>
                   <div className="batch_name">

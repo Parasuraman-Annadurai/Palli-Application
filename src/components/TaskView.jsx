@@ -127,7 +127,7 @@ const TaskView = ({
           onChange={handleAllCheckboxChange}
         >
           {selectedStudents.length === students.length
-            ? "Deselect All"
+            ? "Clear All"
             : "Select All"}
         </Checkbox>
       </Menu.Item>

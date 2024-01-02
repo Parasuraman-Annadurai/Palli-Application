@@ -112,8 +112,10 @@ const Applications = () => {
         <main className="application-view-more-container" key={details.id}>
           <div className="left-side">
             <div className="top-section">
-              <div className="application-name">
-                <p className="heading">Applications list</p>
+              <div className="application-name" style={{ cursor: "pointer" }}>
+                <p className="heading" onClick={() => handleViewMore([])}>
+                  Applications list
+                </p>
                 <img src="/public/icons/dropdown.svg" alt="" />
                 <p className="name">
                   {details.first_name} {details.last_name}
@@ -354,7 +356,9 @@ const Applications = () => {
                       {details.applicant_marks &&
                         details.applicant_marks.map((marks) => (
                           <div className="subject-score">
-                            <span>{marks.degree_subject.degree.name} Score</span>
+                            <span>
+                              {marks.degree_subject.degree.name} Score
+                            </span>
                             <p>{marks.mark}%</p>
                           </div>
                         ))}

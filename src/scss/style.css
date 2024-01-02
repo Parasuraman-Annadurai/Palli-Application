@@ -293,6 +293,7 @@ body .container .side-nav-container .logo {
   width: 100%;
   margin-bottom: 32px;
   padding: 16px;
+  cursor: pointer;
 }
 body .container .side-nav-container .batch-switch-container {
   background-color: #f2f9e4;

@@ -90,8 +90,8 @@ li {
 
 .content {
   .greeting {
-    justify-content: space-around;
-    padding: 10px 0;
+    justify-content: flex-start;
+    padding: 20px 20px;
     align-items: center;
   }
   .welcome-text p{

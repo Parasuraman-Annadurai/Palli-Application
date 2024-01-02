@@ -290,7 +290,9 @@ const TaskModule = () => {
         <div className="select-something-container flex">
           <div className="image-container ">
             <img src="/icons/select-something.svg" alt="" />
-            <p className="select-something-heading">Select Something</p>
+            <p className="select-something-heading">
+              Please Select any of the Available Tasks or Create New Task
+            </p>
           </div>
         </div>
       )}

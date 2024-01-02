@@ -177,6 +177,10 @@ const TaskView = ({
     setInitialTitle(getValues("Title"));
     setIsEditing(true);
   };
+
+  const disabledDate = (current) => {
+    return current && current.isBefore(dayjs().startOf('day'));
+  };
   return (
     <>
       <main className="main-container">
@@ -209,7 +213,7 @@ const TaskView = ({
                           placeholder={"Untitled"}
                           className={` ${errors.Title ? "error-notify" : ""} `}
                           readOnly={!isEditing}
-                         
+                          disabledDate={disabledDate}
                         />
                       </>
                     )}
@@ -263,6 +267,7 @@ const TaskView = ({
                     render={({ field }) => (
                       <>
                         <DatePicker
+                          disabledDate={disabledDate}
                           {...field}
                           showTime={{ format: "HH:mm" }}
                           placeholder="Select here..."

@@ -113,7 +113,7 @@ const Applications = () => {
           <div className="left-side">
             <div className="top-section">
               <div className="application-name">
-                <p className="heading">Applications list</p>
+                <p className="heading" onClick={() => handleViewMore([])}><a href="">Applications list</a></p>
                 <img src="/public/icons/dropdown.svg" alt="" />
                 <p className="name">
                   {details.first_name} {details.last_name}

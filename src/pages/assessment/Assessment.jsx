@@ -58,88 +58,30 @@ const AssessmentModule = () => {
       });
   }, [assessmentSearchWord]);
 
-  const handleDelete = (deleteAssessmentId) => {
-    const isDraft = assessmentList.data.some(
-      (assessment) => assessment.id === deleteAssessmentId && assessment.draft
-    );
 
-    const updateAssessment = {
-      ...assessmentList,
-      data: assessmentList.data.filter(
-        (assessment) => assessment.id !== deleteAssessmentId
-      ),
-    };
-
-    const confirmDelete = () => {
-      if (isDraft) {
-        setAssessmentList(updateAssessment);
-        setEditId(null);
-        notification.success({
-          message: "Success",
-          description: "Assessment Deleted Successfully",
-          duration: 3,
-        });
-      } else {
-        axios
-          .delete(
-            `${API_END_POINT}/api/task/${batchId}/delete_task/${deleteAssessmentId}`,
-            {
-              headers: {
-                Authorization: `Bearer ${token.access}`,
-              },
-            }
-          )
-          .then((res) => {
-            setEditId(null);
-            notification.success({
-              message: "Success",
-              description: "Assessment Deleted Successfully",
-              duration: 3,
-            });
-            setAssessmentList(updateAssessment);
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      }
-    };
-
-    Modal.confirm({
-      title: "Delete Confirmation",
-      content: "Are you sure you want to delete this Assessment?",
-      okButtonProps: {
-        style: { background: "#49a843", borderColor: "#EAEAEA" },
-      },
-      onOk: confirmDelete,
-      mask: true, // Show the modal with a mask
-    });
-  };
 
   const handleSave = (assessmentData, draft) => {
     const { Title, Description, Deadline, SubmissionLink } = assessmentData;
     const formattedDate = Deadline.format("YYYY-MM-DD HH:mm:ss");
 
-    let isAssessmentExists = false;
 
-    for (const assessment of assessmentList.data) {
-      if (assessment.task_title === Title) {
-        isAssessmentExists = true;
-        break;
+      
+    if (draft) {
+      // Check for existing tasks only if it's a new task
+      const isAssessmentExits = assessmentList.data.some((task) => task.task_title === Title);
+  
+      if (isAssessmentExits) {
+        notification.error({
+          message: "Error",
+          description: `Assessment "${Title}" already exists`,
+          duration: 3,
+        });
+        return;
       }
     }
 
-    if (isAssessmentExists) {
-      notification.error({
-        message: "Error",
-        description: `Assessment "${Title}" already exists`,
-        duration: 3,
-      });
-      return;
-    }
+    const existingAssessmentIndex = assessmentList.data.findIndex((task) => task.draft === draft);
 
-    const existingAssessmentIndex = assessmentList.data.findIndex(
-      (assessment) => assessment.draft === draft
-    );
 
     const createAssessmentPayload = {
       task_title: Title,
@@ -149,72 +91,62 @@ const AssessmentModule = () => {
     };
 
     const apiEndpoint = draft
-      ? `${API_END_POINT}/api/task/${batchId}/create_task/`
-      : `${API_END_POINT}/api/task/${batchId}/update_task/${editId}`;
-    const method = draft ? "POST" : "PUT";
+    ? `${API_END_POINT}/api/task/${batchId}/create_task/`
+    : `${API_END_POINT}/api/task/${batchId}/update_task/${editId}`;
+  const method = draft ? "POST" : "PUT";
 
-    const assignTask = {
-      user: selectedStudents,
-      task_status: 0,
-      submission_link: SubmissionLink,
+  const assignTask = {
+    user: selectedStudents,
+    task_status: 0,
+    submission_link: SubmissionLink,
+  };
+
+  axios({
+    method: method,
+    url: apiEndpoint,
+    headers: {
+      Authorization: `Bearer ${token.access}`,
+      "Content-Type": "application/json",
+    },
+    data: createAssessmentPayload,
+  }).then((res) => {
+    notification.success({
+      message: "Success",
+      description: draft
+        ? `Task Added Successfully`
+        : `Task Updated Successfully`,
+      duration: 3,
+    });
+
+    const newAssessment = {
+      id: res.data.data.id,
+      task_title: Title,
+      task_description: Description,
+      task_type: 1,
+      due_date: formattedDate,
     };
 
+    if (existingAssessmentIndex !== -1) {
+      setAssessmentList((prevState) => ({
+        ...prevState,
+        data: prevState.data.map((assessment, index) =>
+          index === existingAssessmentIndex ? newAssessment : assessment
+        ),
+      }));
+    }
+    setEditId(null);
+
     axios({
-      method: method,
-      url: apiEndpoint,
+      method: "POST",
+      url: `${API_END_POINT}/api/task/${batchId}/assign/task/${res.data.data.id}`,
       headers: {
         Authorization: `Bearer ${token.access}`,
         "Content-Type": "application/json",
       },
-      data: createAssessmentPayload,
-    }).then((res) => {
-      notification.success({
-        message: "Success",
-        description: draft
-          ? `Assessment Added Successfully`
-          : `Assessment Updated Successfully`,
-        duration: 3,
-      });
+      data: assignTask,
+    }).then((res) => {});
+  });
 
-      const newAssessment = {
-        id: res.data.data.id,
-        task_title: Title,
-        task_description: Description,
-        task_type: 1,
-        due_date: formattedDate,
-      };
-
-      if (existingAssessmentIndex !== -1) {
-        // Remove 'draft' key from the task at the found index
-        setAssessmentList((prevState) => ({
-          ...prevState,
-          data: prevState.data.map((assessment, index) =>
-            index === existingAssessmentIndex
-              ? (() => {
-                  const updatedTask = {
-                    ...assessment,
-                    ...newAssessment,
-                  };
-                  delete updatedTask.draft;
-                  return updatedTask;
-                })()
-              : assessment
-          ),
-        }));
-      }
-      setEditId(null);
-      axios({
-        method: "POST",
-        url: `${API_END_POINT}/api/task/${batchId}/assign/task/${res.data.data.id}`,
-        headers: {
-          Authorization: `Bearer ${token.access}`,
-          "Content-Type": "application/json",
-        },
-        data: assignTask,
-      }).then((res) => {});
-    });
-
-    //once task create or update tasklist state update
   };
 
   const handleAdd = () => {

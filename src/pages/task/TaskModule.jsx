@@ -124,50 +124,47 @@ const TaskModule = () => {
         });
     }
   };
+
+
+
   const handleSave = (taskData, draft) => {
     const { Title, Description, Deadline, SubmissionLink } = taskData;
     const formattedDate = Deadline.format("YYYY-MM-DD HH:mm:ss");
-
-    let isTaskExists = false;
-
-    for (const task of taskLists.data) {
-      if (task.task_title === Title) {
-        isTaskExists = true;
-        break;
+  
+    if (draft) {
+      // Check for existing tasks only if it's a new task
+      const isTaskExists = taskLists.data.some((task) => task.task_title === Title);
+  
+      if (isTaskExists) {
+        notification.error({
+          message: "Error",
+          description: `Task "${Title}" already exists`,
+          duration: 3,
+        });
+        return;
       }
     }
-
-    if (isTaskExists) {
-      notification.error({
-        message: "Error",
-        description: `Task "${Title}" already exists`,
-        duration: 3,
-      });
-      return;
-    }
-
-    const existingTaskIndex = taskLists.data.findIndex(
-      (task) => task.draft === draft
-    );
-
+  
+    const existingTaskIndex = taskLists.data.findIndex((task) => task.draft === draft);
+  
     const createTaskPayload = {
       task_title: Title,
       task_description: Description,
       task_type: 0,
       due_date: formattedDate,
     };
-
+  
     const apiEndpoint = draft
       ? `${API_END_POINT}/api/task/${batchId}/create_task/`
       : `${API_END_POINT}/api/task/${batchId}/update_task/${editId}`;
     const method = draft ? "POST" : "PUT";
-
+  
     const assignTask = {
       user: selectedStudents,
       task_status: 0,
       submission_link: SubmissionLink,
     };
-
+  
     axios({
       method: method,
       url: apiEndpoint,
@@ -184,7 +181,7 @@ const TaskModule = () => {
           : `Task Updated Successfully`,
         duration: 3,
       });
-      //this payload used set the local state
+  
       const newTask = {
         id: res.data.data.id,
         task_title: Title,
@@ -192,26 +189,17 @@ const TaskModule = () => {
         task_type: 0,
         due_date: formattedDate,
       };
-
+  
       if (existingTaskIndex !== -1) {
-        // Remove 'draft' key from the task at the found index
         setTaskLists((prevState) => ({
           ...prevState,
           data: prevState.data.map((task, index) =>
-            index === existingTaskIndex
-              ? (() => {
-                  const updatedTask = {
-                    ...task,
-                    ...newTask,
-                  };
-                  delete updatedTask.draft;
-                  return updatedTask;
-                })()
-              : task
+            index === existingTaskIndex ? newTask : task
           ),
         }));
       }
       setEditId(null);
+  
       axios({
         method: "POST",
         url: `${API_END_POINT}/api/task/${batchId}/assign/task/${res.data.data.id}`,
@@ -222,10 +210,8 @@ const TaskModule = () => {
         data: assignTask,
       }).then((res) => {});
     });
-
-    //once task create or update tasklist state update
   };
-
+  
   const handleAdd = () => {
     const uniqueId = uuidv4();
 

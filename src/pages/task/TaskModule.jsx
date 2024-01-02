@@ -23,15 +23,14 @@ const TaskModule = () => {
   const [loading, setLoading] = useState(true);
   const [students, setStudents] = useState([]);
   const [selectedStudents, setSelectedStudents] = useState([]);
-  const [selectId, setSelectId] = useState(null);
-
+  const [deleteTask, setDeleteTask] = useState({});
   const headers = {
     Authorization: `Bearer ${token.access}`,
     "Content-type": "application/json",
   };
   useEffect(() => {
     //this useEffect used to fetch task list and will re-run whenever filter or search is updated
-    const url = `${API_END_POINT}/api/task/${batchId}/list_task/?limit=5&page=1&filter_task_type=0&search=${taskSearchWord}`;
+    const url = `${API_END_POINT}/api/task/${batchId}/list_task/?limit=10&page=1&filter_task_type=0&search=${taskSearchWord}`;
     axios
       .get(url, { headers })
       .then((res) => {
@@ -60,75 +59,72 @@ const TaskModule = () => {
       });
   }, [taskSearchWord]);
 
-  const handleDelete = (deleteTaskId) => {
+  const handleConfirmDelete = () => {
     const isDraft = taskLists.data.some(
-      (task) => task.id === deleteTaskId && task.draft
+      (task) => task.id === deleteTask.id && task.draft
     );
 
     const updatedTasks = {
       ...taskLists,
-      data: taskLists.data.filter((task) => task.id !== deleteTaskId),
+      data: taskLists.data.filter((task) => task.id !== deleteTask.id),
     };
 
     if (isDraft) {
-      Modal.confirm({
-        title: "Delete Confirmation?",
-        content: "Are you sure you want to delete this Task",
-        okButtonProps: {
-          style: { background: "#49a843", borderColor: "#EAEAEA" },
-        },
-
-        onOk: () => {
-          setTaskLists(updatedTasks);
-          setEditId(null);
-          notification.success({
-            message: "Success",
-            description: `Task Deleted Successfully`,
-            duration: 3,
-          });
-        },
+      setTaskLists(updatedTasks);
+      setEditId(null);
+      notification.success({
+        message: "Success",
+        description: "Task Deleted Successfully",
+        duration: 3,
       });
     } else {
-      Modal.confirm({
-        title: "Delete Confirmation?",
-        content: "Are you sure you want to delete this Task.",
-        okButtonProps: {
-          style: { background: "#49a843", borderColor: "#EAEAEA" },
-        },
-
-        onOk: () => {
-          axios
-            .delete(
-              `${API_END_POINT}/api/task/${batchId}/delete_task/${deleteTaskId}`,
-              {
-                headers: {
-                  Authorization: `Bearer ${token.access}`,
-                },
-              }
-            )
-            .then((res) => {
-              notification.success({
-                message: "Success",
-                description: `Task Deleted Successfully`,
-                duration: 3,
-              });
-              setTaskLists(updatedTasks);
-            })
-            .catch((error) => {
-              console.log(error);
-            });
-        },
-      });
+      axios
+        .delete(
+          `${API_END_POINT}/api/task/${batchId}/delete_task/${deleteTask.id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token.access}`,
+            },
+          }
+        )
+        .then((res) => {
+          notification.success({
+            message: "Success",
+            description: "Task Deleted Successfully",
+            duration: 3,
+          });
+          setEditId(null);
+          setDeleteTask({});
+          setTaskLists(updatedTasks);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     }
   };
-
   const handleSave = (taskData, draft) => {
+    const { Title, Description, Deadline, SubmissionLink } = taskData;
+    const formattedDate = Deadline.format("YYYY-MM-DD HH:mm:ss");
+
+    if (draft) {
+      // Check for existing tasks only if it's a new task
+      const isTaskExists = taskLists.data.some(
+        (task) => task.task_title === Title
+      );
+
+      if (isTaskExists) {
+        notification.error({
+          message: "Error",
+          description: `Task "${Title}" already exists`,
+          duration: 3,
+        });
+        return;
+      }
+    }
+
     const existingTaskIndex = taskLists.data.findIndex(
       (task) => task.draft === draft
     );
-
-    const { Title, Description, Deadline, SubmissionLink } = taskData;
-    const formattedDate = Deadline.format("YYYY-MM-DD HH:mm:ss");
 
     const createTaskPayload = {
       task_title: Title,
@@ -164,7 +160,7 @@ const TaskModule = () => {
           : `Task Updated Successfully`,
         duration: 3,
       });
-      //this payload used set the local state
+
       const newTask = {
         id: res.data.data.id,
         task_title: Title,
@@ -174,24 +170,15 @@ const TaskModule = () => {
       };
 
       if (existingTaskIndex !== -1) {
-        // Remove 'draft' key from the task at the found index
         setTaskLists((prevState) => ({
           ...prevState,
           data: prevState.data.map((task, index) =>
-            index === existingTaskIndex
-              ? (() => {
-                  const updatedTask = {
-                    ...task,
-                    ...newTask,
-                  };
-                  delete updatedTask.draft;
-                  return updatedTask;
-                })()
-              : task
+            index === existingTaskIndex ? newTask : task
           ),
         }));
       }
       setEditId(null);
+
       axios({
         method: "POST",
         url: `${API_END_POINT}/api/task/${batchId}/assign/task/${res.data.data.id}`,
@@ -202,9 +189,8 @@ const TaskModule = () => {
         data: assignTask,
       }).then((res) => {});
     });
-
-    //once task create or update tasklist state update
   };
+
   const handleAdd = () => {
     const uniqueId = uuidv4();
 
@@ -221,12 +207,24 @@ const TaskModule = () => {
       data: [createTask, ...taskLists.data],
     };
     setEditId(uniqueId);
-    setSelectId(uniqueId);
     setTaskLists(concatNewTask);
   };
 
+  const modalConfig = {
+    title: "Delete Conformation",
+    okButtonProps: {
+      style: { background: "#49a843", borderColor: "#EAEAEA" },
+    },
+    onOk: handleConfirmDelete,
+    onCancel: () => setDeleteTask({}),
+  };
   return (
     <>
+      {deleteTask.id && (
+        <Modal open={true} {...modalConfig}>
+          <p>{`Are you sure you want to delete task ${deleteTask.task_title}?`}</p>
+        </Modal>
+      )}
       <TaskList
         //this mode used create task or assessment
         mode={"Task"}
@@ -235,9 +233,10 @@ const TaskModule = () => {
         setTaskSearchWord={setTaskSearchWord}
         loading={loading}
         filterShow={false}
-        handleDelete={handleDelete}
+        handleDelete={setDeleteTask}
         handleAdd={handleAdd}
-        selectedTask={selectId}
+        selectedTask={editId}
+        setSelectId={setEditId}
       />
 
       {editId ? (
@@ -252,7 +251,6 @@ const TaskModule = () => {
           setSelectedStudents={setSelectedStudents}
           handleSave={handleSave}
           weightageShow={false}
-
         />
       ) : (
         <div className="select-something-container flex">

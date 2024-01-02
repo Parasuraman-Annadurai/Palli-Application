@@ -1,24 +1,12 @@
 import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+import { DatePicker, Checkbox, Select, Menu, Dropdown, Skeleton } from "antd";
 import { useForm, Controller } from "react-hook-form";
 import ReactQuill, { Quill } from "react-quill";
-import "react-quill/dist/quill.snow.css"; // Import the styles
-import { useAuth } from "../context/AuthContext";
-import axios from "axios";
 import dayjs from "dayjs";
-import { API_END_POINT } from "../../config";
 
-import {
-  DatePicker,
-  Checkbox,
-  Menu,
-  Dropdown,
-  Skeleton,
-  Input,
-  InputNumber,
-  Select,
-  notification,
-} from "antd";
-import { useParams } from "react-router-dom";
+import "quill/dist/quill.snow.css";
 
 const TaskView = ({
   weightageShow,
@@ -27,22 +15,14 @@ const TaskView = ({
   setSelectedStudents,
   selectedStudents,
   handleSave,
-
-  //weightage
-  weightages,
-  handleWeightageChange,
-  handleDeleteSelect,
-  handleAddSelect,
-  remainingPercentage,
   selectWeightages,
-  handleInputChange
 }) => {
   const { id: batchId } = useParams();
   const { token } = useAuth();
   const [loading, setLoading] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
 
-
+  const [initialTitle, setInitialTitle] = useState(" ");
   const {
     control,
     handleSubmit,
@@ -67,21 +47,18 @@ const TaskView = ({
     draft,
     task_users = [],
   } = currentTask[0] || {};
-
   useEffect(() => {
     if (currentTask.length > 0) {
       setValue("Title", task_title);
       setValue("Description", task_description);
       setValue("Deadline", dayjs(due_date));
     }
-    
   }, [currentTask]);
 
   const validateNotEmpty = (fieldName, value) => {
     const trimmedValue = value ? value.replace(/<[^>]*>/g, "").trim() : null;
     return trimmedValue ? null : `${fieldName} is required`;
   };
-
 
   const CustomIcons = () => {
     const icons = Quill.import("ui/icons");
@@ -176,8 +153,6 @@ const TaskView = ({
     </Menu>
   );
 
-  ///------------------------------------------weightage section
-
   const handleValidate = (formData) => {
     //if student not assign show the error
     if (selectedStudents.length === 0) {
@@ -195,11 +170,20 @@ const TaskView = ({
       Deadline: null,
       SubmissionLink: "",
     });
-   
   };
 
+  const handleTick = () => {
+    setIsEditing(false);
+  };
+  const handleCancelClick = () => {
+    setValue("Title", initialTitle);
+    setIsEditing(false);
+  };
 
- 
+  const onDoubleClick = () => {
+    setInitialTitle(getValues("Title"));
+    setIsEditing(true);
+  };
   return (
     <>
       <main className="main-container">
@@ -212,6 +196,7 @@ const TaskView = ({
                 <div className="module-title-section flex">
                   <Controller
                     name="Title"
+                    defaultValue={""}
                     control={control}
                     rules={{
                       validate: (value) => validateNotEmpty("Title", value),
@@ -221,58 +206,37 @@ const TaskView = ({
                         <input
                           {...field}
                           style={{
+                            borderBottom: isEditing ? "1px solid green" : "",
                             width: field.value
                               ? `${field.value.length * 8}px`
-                              : "56px",
+                              : "40PX",
                           }}
                           type="text"
+                          onDoubleClick={onDoubleClick}
                           placeholder={"Untitled"}
-                          className={`task-title ${
-                            errors.Title ? "error-notify" : ""
-                          } `}
+                          className={` ${errors.Title ? "error-notify" : ""} `}
                           readOnly={!isEditing}
-                          idex
-                          onFocus={true}
-                          onBlur={() => setIsEditing(false)}
-                          onKeyUp={(e) => {
-                            if (
-                              e.key === "Enter" &&
-                              field.value.trim() === ""
-                            ) {
-                              setValue("Title", "Untitled");
-                            }
-                          }}
                         />
                       </>
                     )}
                   />
 
-                  {!isEditing && (
-                    <img
-                      src="/icons/edit-pencil.svg"
-                      alt=""
-                      onClick={() => setIsEditing(true)}
-                      style={{ cursor: "pointer" }}
-                    />
-                  )}
-
                   {isEditing && (
                     <div>
-                      <button
-                        onClick={() => setIsEditing(false)}
-                        className="yes-btn"
-                      >
-                        Yes
-                      </button>
-                      <button
-                        className="no-btn"
-                        onClick={() => {
-                          setValue("Title", getValues("Title"));
-                          setIsEditing(false);
-                        }}
-                      >
-                        No
-                      </button>
+                      <span className="yes-btn">
+                        <img
+                          src="/public/icons/tick.svg"
+                          alt=""
+                          onClick={handleTick}
+                        />
+                      </span>
+                      <span className="no-btn">
+                        <img
+                          src="/public/icons/remove.svg"
+                          alt=""
+                          onClick={handleCancelClick}
+                        />
+                      </span>
                     </div>
                   )}
                 </div>
@@ -306,9 +270,9 @@ const TaskView = ({
                       <>
                         <DatePicker
                           {...field}
-                          showTime={{ format: "HH:mm:ss" }}
+                          showTime={{ format: "HH:mm" }}
                           placeholder="Select here..."
-                          format="YYYY-MM-DD HH:mm:ss"
+                          format="YYYY-MM-DD HH:mm"
                           className={`datepicker ${
                             errors.Deadline
                               ? "error-notify"
@@ -412,10 +376,7 @@ const TaskView = ({
                 <Controller
                   control={control}
                   name="SubmissionLink"
-                  rules={{
-                    validate: (value) =>
-                      validateNotEmpty("SubmissionLink", value),
-                  }}
+                  defaultValue={""}
                   render={({ field }) => (
                     <>
                       <input
@@ -485,38 +446,17 @@ const TaskView = ({
                                   className={""}
                                   value={weightage.weightage}
                                   suffixIcon={<img src="/icons/dropdown.svg" />}
-                                  onChange={(value) =>
-                                    
-                                    handleWeightageChange(value, index,)
-                                  }
-                                >
-                                  {weightages.map((weightage, index) => (
-                                    <Select.Option
-                                      value={weightage.id}
-                                      key={index}
-                                    >
-                                      {weightage.weightage}
-                                    </Select.Option>
-                                  ))}
-                                </Select>
+                                ></Select>
 
                                 <input
                                   value={weightage.weightage_percentage}
                                   type="number"
                                   className={`task-weight-value-selector `}
                                   placeholder="00"
-                                  onChange={(e) =>
-                                    handleInputChange(e.target.value, index)
-                                  }
                                 />
 
                                 <div className="weightage-action">
-                                  <span
-                                    className="btn increment-btn"
-                                    onClick={handleAddSelect}
-                                  >
-                                    +
-                                  </span>
+                                  <span className="btn increment-btn">+</span>
                                   <span className="btn decrement-btn">
                                     {index > 0 ? (
                                       <img
@@ -525,9 +465,6 @@ const TaskView = ({
                                           width: "16px",
                                           height: "16px",
                                         }}
-                                        onClick={() =>
-                                          handleDeleteSelect(index)
-                                        }
                                       />
                                     ) : (
                                       <img
@@ -541,15 +478,11 @@ const TaskView = ({
                                     )}
                                   </span>
                                 </div>
-                               
                               </div>
-                             
                             </>
                           );
                         })}
-                         {<p>Remaining percentage {remainingPercentage}</p>}
                       </div>
-                     
                     </div>
                   </>
                 ) : (

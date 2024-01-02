@@ -250,6 +250,11 @@ li {
   color: #49a843;
 }
 
+.ant-picker-ok button {
+  background-color: #49a843;
+  color: #fff;
+}
+
 .pagination .ant-pagination-item {
   border: 1px solid #eaeaea;
   border-radius: 50px;
@@ -393,15 +398,6 @@ body .container .side-nav-container .nav-links ul .main-link.main-active a {
   font-weight: 500;
   font-family: "Roboto";
 }
-body .container .side-nav-container .nav-links ul .main-link.main-active::after {
-  content: url(/icons/dropdown.svg);
-  rotate: 180deg;
-  height: 16px;
-  width: 16px;
-  position: absolute;
-  top: 0;
-  right: 0;
-}
 body .container .side-nav-container .user-profile {
   gap: 7px;
   align-items: center;
@@ -488,6 +484,15 @@ body .container .popup-container .popup-content .add-batch .add-batch-btn span {
   font-weight: 400;
   color: #12160a;
   font-family: "Roboto";
+}
+body .container .popup-container .switch-batch-list-container {
+  overflow: scroll;
+  height: calc(100vh - 110px);
+  overflow-y: auto;
+}
+body .container .popup-container .switch-batch-list-container::-webkit-scrollbar {
+  width: 0;
+  height: 0;
 }
 body .container .popup-container .switch-batch-list-container .switch-batch-card {
   padding: 14px 16px;
@@ -613,6 +618,17 @@ body .container .listing-container .create-container .btn.create-btn span {
   color: #12160a;
   font-family: "Roboto";
 }
+body .container .listing-container .task-list-container {
+  height: 460px;
+  overflow: scroll;
+  height: calc(100vh - 200px);
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+body .container .listing-container .task-list-container::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
 body .container .listing-container .task-list-container .task-card {
   max-width: 261px;
   height: 98px;
@@ -625,6 +641,9 @@ body .container .listing-container .task-list-container .task-card {
   background-color: white;
   font-family: "Roboto";
   cursor: pointer;
+}
+body .container .listing-container .task-list-container .task-card:hover {
+  background-color: #f8fbf2;
 }
 body .container .listing-container .task-list-container .task-card .task-icon {
   background-color: yellow;
@@ -657,12 +676,14 @@ body .container .listing-container .task-list-container .task-card .task-details
   width: 16px;
   height: 16px;
   display: none;
+  cursor: pointer;
 }
 body .container .listing-container .task-list-container .task-card .task-details .task-name-with-icon .edit-icon {
   margin-right: 5px;
 }
 body .container .listing-container .task-list-container .task-card .task-details .task-name-with-icon .edit-icon .delete-icon {
   margin-left: 5px;
+  cursor: pointer;
 }
 body .container .listing-container .task-list-container .task-card .task-details .task-name-with-icon .task-description {
   max-width: 205px;
@@ -740,25 +761,24 @@ body .container .listing-container .main-container .module-header-section-contai
   font-family: "Roboto";
   color: #12160a;
   outline: #12160a;
+  padding-left: 10px;
 }
 body .container .listing-container .main-container .module-header-section-container .module-header-section .module-title-section img {
   width: 20px;
   height: 20px;
 }
-body .container .listing-container .main-container .module-header-section-container .module-header-section .module-title-section .yes-btn {
-  padding: 5px 15px 5px 15px;
-  background-color: #49a843;
-  color: white;
+body .container .main-container .module-header-section-container .module-header-section .module-title-section .yes-btn {
+  padding: 5px;
+  background-color: #eaeaea;
   border: 1px solid #eaeaea;
   border-radius: 4px;
   font-size: 10px;
   font-family: "Roboto";
   cursor: pointer;
 }
-body .container .listing-container .main-container .module-header-section-container .module-header-section .module-title-section .no-btn {
-  padding: 5px 15px 5px 15px;
+body .container .main-container .module-header-section-container .module-header-section .module-title-section .no-btn {
+  padding: 5px;
   background-color: #eaeaea;
-  color: #12160a;
   border: 1px solid #eaeaea;
   border-radius: 4px;
   font-size: 10px;
@@ -766,7 +786,15 @@ body .container .listing-container .main-container .module-header-section-contai
   margin-left: 5px;
   cursor: pointer;
 }
-body .container .listing-container .main-container .task-details-header-container .task-label-container {
+body .container .main-container .task-details-header-container {
+  height: calc(100vh - 110px);
+  overflow-y: auto;
+}
+body .container .main-container .task-details-header-container::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+body .container .main-container .task-details-header-container .task-label-container {
   padding-bottom: 16px;
   align-items: center;
   gap: 11px;

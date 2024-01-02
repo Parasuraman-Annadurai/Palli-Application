@@ -2,8 +2,7 @@ import React, { useEffect, useState } from "react";
 
 import { useNavigate, useParams } from "react-router-dom";
 
-
-import { Skeleton,Modal,notification } from "antd";
+import { Skeleton, Modal, notification } from "antd";
 import axios from "axios";
 
 import { useAuth } from "../context/AuthContext";
@@ -15,16 +14,14 @@ const TaskList = ({
   mode,
   filterShow,
   handleEdit,
-  onEditModeChange,
   taskLists,
   setTaskSearchWord,
   loading,
   handleDelete,
   handleAdd,
-  selectedTask
+  selectedTask,
+  setSelectId,
 }) => {
-
-
   const TaskCard = ({ task }) => {
     const truncateText = (text, maxLength) => {
       return text.length > maxLength
@@ -33,7 +30,17 @@ const TaskList = ({
     };
     return (
       <>
-        <div className={`task-card ${selectedTask=== task.id ? "active" :""} flex`} key={task.id} id={task.id}>
+        <div
+         onClick={() => {
+          handleEdit(task.id);
+          setSelectId(task.id);
+        }}
+          className={`task-card ${
+            selectedTask === task.id ? "active" : ""
+          } flex`}
+          key={task.id}
+          id={task.id}
+        >
           {loading ? (
             <Skeleton
               avatar={{ size: "small" }}
@@ -46,37 +53,36 @@ const TaskList = ({
                 <span>JS</span>
               </div>
 
-              <div className="task-details">
+              <div
+                className="task-details"
+               
+              >
                 <div className="task-name-with-icon flex">
-                  <h2>{truncateText(task.task_title,15)}</h2>
+                  <h2>{truncateText(task.task_title, 15)}</h2>
 
-                   <>
-                   <img
-                      src="/icons/edit-pencil.svg"
-                      alt="edit-icon"
-                      className="edit-icon"
-                      id={task.id}
-                      onClick={() =>handleEdit(task.id)}
-                    />
-                      <img
+                  <>
+                    <img
                       src="/icons/deleteIcon.svg"
                       alt="delete-icon"
                       className="delete-icon"
                       id={task.id}
-                      onClick={() => handleDelete(task.id)}
+                      onClick={(e) => {
+                        handleDelete(task)
+                        e.stopPropagation();
+                      }}
                     />
-                   </>
-                    {/* <img src="/icons/deleteIcon.svg" alt="" onClick={()=>handleDelete(task.id)}/> */}
+                  </>
                 </div>
                 <p className="task-description">
                   {truncateText(
                     task.task_description.replace(/<[^>]*>/g, ""),
                     50
                   )}
-                  {/* { task.task_description} */}
                 </p>
                 <span className="btn btn-inprogress">Inprogress</span>
-                <span className="btn btn-deadline">{dayjs(task.due_date).format("MMM,DD YYYY")}</span>
+                <span className="btn btn-deadline">
+                  {dayjs(task.due_date).format("MMM,DD YYYY")}
+                </span>
               </div>
             </>
           )}
@@ -114,9 +120,11 @@ const TaskList = ({
           </button>
         </div>
         <div className="task-list-container">
-          {taskLists && taskLists.data && taskLists.data.map((task) => (
-            <TaskCard key={task.id} task={task} />
-          ))}
+          {taskLists &&
+            taskLists.data &&
+            taskLists.data.map((task) => (
+              <TaskCard key={task.id} task={task} />
+            ))}
         </div>
       </section>
     </>

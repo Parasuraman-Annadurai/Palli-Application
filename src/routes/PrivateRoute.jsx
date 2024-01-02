@@ -16,24 +16,17 @@ const PrivateRoute = () => {
   // If not, return element that will navigate to login page
   const menu = [
 
-    { label: "Applications", id: "/applications" },
-    {
-      label: "Module",
-      id: "module",
-      subMenu: [
-        { label: "Task", id: "module/task" },
-        { label: "Assessment", id: "module/assessment" },
-        { label: "Quiz", id: "module/quiz" },
-      ],
-    },
-    { label: "Settings", id: "settings" },
+    { label: "Applications", id: "applications" },
+    {label:"Task",id :"task"},
+    {label:"Assessment",id: "assessment"},
+    
   ];
   const menuList = batchId ? menu : [{ label: "Dashboard", id: "dashboard" }];
   const activeMenuItem = menuList.find((menu) => pathname.includes(menu.id));
 
   return auth ? (
     <div className="container">
-      <Sidebar menu={menu} activeMenuItem={activeMenuItem} />
+      <Sidebar menuList={menuList} activeMenuItem={activeMenuItem.id} />
        <Outlet />
     </div>
   ) : (

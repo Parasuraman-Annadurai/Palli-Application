@@ -11,7 +11,7 @@ import { useAuth } from "../context/AuthContext";
 
 import { API_END_POINT } from "../../config";
 
-const Sidebar = ({ menu, activeMenuItem }) => {
+const Sidebar = ({ menuList, activeMenuItem }) => {
   const navigate = useNavigate();
   const { id: batchId } = useParams();
   const { token, user } = useAuth();
@@ -20,7 +20,7 @@ const Sidebar = ({ menu, activeMenuItem }) => {
   const isDashboardPage = currentPath.includes(DASHBOARD);
 
   const [activeState, setActiveState] = useState({ main: null, sub: null });
-
+  const [active, setActive] = useState(activeMenuItem);
   const [showSwitchBatch, setShowSwitchBatch] = useState(false);
 
   const [batchList, setBatchList] = useState([]);
@@ -44,17 +44,12 @@ const Sidebar = ({ menu, activeMenuItem }) => {
         setShowSwitchBatch(false);
         // console.log(123);
       }
-      
     };
     window.addEventListener("click", closeonoutsideclick);
     return () => {
       window.removeEventListener("click", closeonoutsideclick);
     };
   }, [showSwitchBatch]);
-
- 
-
-
 
   const handleMainLinkClick = (menuList) => {
     setActiveState({ main: menuList.id, sub: null });
@@ -73,28 +68,6 @@ const Sidebar = ({ menu, activeMenuItem }) => {
   const [showInputFields, setShowInputFields] = useState(false);
 
   const [isAddingBatch, setIsAddingBatch] = useState(false); // New state for switching text
-
-  // const toggleInputFields = () => {
-  //   setShowInputFields((prevState) => !prevState); // Toggle input fields visibility directly using prevState
-  //   setIsAddingBatch(!showInputFields);
-
-  //   // setBatchList(true)// Update text directly based on the current state of input fields
-  // };
-
-  // const [loading, setLoading] = useState(false);
-  // const [isModalOpen, setIsModalOpen] = useState(false);
-
-  // const [batch_name, setBatchName] = useState("");
-  // const [start_date, setStartDate] = useState("");
-  // const [end_date, setEndDate] = useState("");
-  // const [company, setCompany] = useState(1);
-
-  // const [startError, setStartError] = useState("");
-  // const [endError, setEndError] = useState("");
-  // const [batchNameError, setBatchNameError] = useState(null);
-
-  // const [isEditMode, setIsEditMode] = useState(false);
-  // const [selectedBatch, setSelectedBatch] = useState(null);
 
   const handleSwitch = (id, batchName) => {
     Modal.confirm({
@@ -132,7 +105,6 @@ const Sidebar = ({ menu, activeMenuItem }) => {
       key: "0",
     },
   ];
-
   return (
     <>
       <nav className="side-nav-container flex">
@@ -144,9 +116,7 @@ const Sidebar = ({ menu, activeMenuItem }) => {
           <div
             className="batch-switch-container flex"
             // ref={showSwitchBatchRefIcon}
-            ref={(ref) =>
-              (showSwitchBatchRefIcon.current = ref)
-            }
+            ref={(ref) => (showSwitchBatchRefIcon.current = ref)}
             onClick={() => setShowSwitchBatch(!showSwitchBatch)}
           >
             <div className="batch-content-container flex">
@@ -168,77 +138,41 @@ const Sidebar = ({ menu, activeMenuItem }) => {
         )}
         <div className="nav-links">
           <ul>
-            <li
-              className={`main-link ${
-                activeState.main === "home" ? "main-active" : ""
-              }`}
-            >
-              <a
-                href="#"
-                className="flex"
-                onClick={() => handleMainLinkClick("home")}
-              >
-                <img src="/icons/home.svg" alt="home icon" />
-                <span>Home</span>
-              </a>
-            </li>
             {!isDashboardPage && (
-              <>
-                <ul>
-                  {menu.map((menuList) => (
-                    <li
-                      key={menuList.id}
-                      className={`main-link ${
-                        activeState.main === menuList.id ? "main-active" : ""
-                      }`}
-                    >
-                      <a
-                        href={`/batch/${batchId}${menuList.id}`}
-                        className="flex"
-                        onClick={() => handleMainLinkClick(menuList)}
-                      >
-                        <img src="/icons/application.svg" alt="home icon" />
-                        <span>{menuList.label}</span>
-                      </a>
-                      {menuList.id === "module" && (
-                        <ul
-                          className={`sub-links ${
-                            activeState.main === "module" ? "open" : ""
-                          }`}
-                        >
-                          <li
-                            className={`sub-link ${
-                              activeState.sub === "task" ? "sub-active" : ""
-                            }`}
-                          >
-                            <a href={`/batch/${batchId}/module/task`}>Task</a>
-                          </li>
-                          <li
-                            className={`sub-link ${
-                              activeState.sub === "assessment"
-                                ? "sub-active"
-                                : ""
-                            }`}
-                            onClick={() => handleSubLinkClick("assessment")}
-                          >
-                            <a href={`/batch/${batchId}/module/assessment`}>
-                              Assessment
-                            </a>
-                          </li>
-                          <li
-                            className={`sub-link ${
-                              activeState.sub === "quiz" ? "sub-active" : ""
-                            }`}
-                          >
-                            <a href="#">Quiz</a>
-                          </li>
-                        </ul>
-                      )}
-                    </li>
-                  ))}
-                </ul>
-              </>
+              <li className={`main-link`}>
+                <a href={"/dashboard"} className="flex">
+                  <img src="/icons/backIcon.svg" alt={"Back to Dashboard"} />
+                  <span>{"Back to Dashboard"}</span>
+                </a>
+              </li>
             )}
+            {menuList &&
+              menuList.map((menu, index) => {
+                return (
+                  <li
+                    key={index}
+                    onClick={() => setActive(menu.id)}
+                    className={`main-link ${
+                      menu.id === active ? "main-active" : ""
+                    }`}
+                  >
+                    <a
+                      href={
+                        isDashboardPage
+                          ? "/dashboard"
+                          : `/batch/${batchId}/${menu.id}`
+                      }
+                      className="flex"
+                    >
+                      <img
+                        src="/public/icons/application.svg"
+                        alt={menu.label}
+                      />
+                      <span>{menu.label}</span>
+                    </a>
+                  </li>
+                );
+              })}
           </ul>
         </div>
 
@@ -273,83 +207,6 @@ const Sidebar = ({ menu, activeMenuItem }) => {
                 />
               </div>
             </div>
-            {/* <div className="add-batch">
-              <button className="add-batch-btn" >
-                Add New Batch
-              </button>
-            </div> */}
-            {/* {showInputFields && (
-              <div className="input-fields">
-                <div className="input-field">
-                  <label htmlFor="">Batch Name</label>
-                  <Input
-                    className="in"
-                    name="batchName"
-                    placeholder="Enter Batch Name"
-                    value={batch_name}
-                    // onChange={handleBatchNameChange}
-                  />
-
-                  <p className="error-message">
-                    {batchNameError && (
-                      <span style={{ color: "red" }}>{batchNameError}</span>
-                    )}
-                  </p>
-                </div>
-                <div className="input-field">
-                  <label htmlFor="">Start Year</label> <br />
-                  <DatePicker
-                    className="in"
-                    id="startYearInput"
-                    format="YYYY-MM-DD"
-                    value={start_date ? dayjs(start_date) : null}
-                    onChange={(date, dateString) =>
-                      handleDateChange(
-                        dateString,
-                        setStartDate,
-                        setStartError,
-                        "startError"
-                      )
-                    }
-                    placeholder="Start Year"
-                  />
-                  <p className="error-message">
-                    {startError && (
-                      <span style={{ color: "red" }}>{startError}</span>
-                    )}
-                  </p>
-                </div>
-                <div className="input-field">
-                  <label htmlFor="">End Year</label> <br />
-                  <DatePicker
-                    className="in"
-                    id="endYearInput"
-                    format="YYYY-MM-DD"
-                    value={end_date ? dayjs(end_date) : null}
-                    onChange={(date, dateString) =>
-                      handleDateChange(
-                        dateString,
-                        setEndDate,
-                        setEndError,
-                        "endError"
-                      )
-                    }
-                    placeholder="End Year"
-                  />
-                  <p className="error-message">
-                    {endError && (
-                      <span style={{ color: "red" }}>{endError}</span>
-                    )}
-                  </p>
-                </div>
-                <button
-                  className="btn primary-medium"
-                  // onClick={submitBatchData}
-                >
-                  Submit
-                </button>
-              </div>
-            )} */}
           </div>
           <div className="switch-batch-list-container">
             {batchList.map((batch, index) => {

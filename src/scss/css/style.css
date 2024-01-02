@@ -250,6 +250,11 @@ li {
   color: #49a843;
 }
 
+.ant-picker-ok button {
+  background-color: #49a843;
+  color: #fff;
+}
+
 .pagination .ant-pagination-item {
   border: 1px solid #eaeaea;
   border-radius: 50px;
@@ -479,6 +484,15 @@ body .container .popup-container .popup-content .add-batch .add-batch-btn span {
   color: #12160a;
   font-family: "Roboto";
 }
+body .container .popup-container .switch-batch-list-container {
+  overflow: scroll;
+  height: calc(100vh - 110px);
+  overflow-y: auto;
+}
+body .container .popup-container .switch-batch-list-container::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
 body .container .popup-container .switch-batch-list-container .switch-batch-card {
   padding: 14px 16px;
   border-radius: 4px;
@@ -630,9 +644,11 @@ body .container .listing-container .task-list-container .task-card .task-details
   width: 16px;
   height: 16px;
   display: none;
+  cursor: pointer;
 }
 body .container .listing-container .task-list-container .task-card .task-details .task-name-with-icon .delete-icon {
   margin-left: 5px;
+  cursor: pointer;
 }
 body .container .listing-container .task-list-container .task-card .task-details .task-description {
   max-width: 205px;
@@ -710,15 +726,15 @@ body .container .main-container .module-header-section-container .module-header-
   font-family: "Roboto";
   color: #12160a;
   outline: #12160a;
+  padding-left: 10px;
 }
 body .container .main-container .module-header-section-container .module-header-section .module-title-section img {
   width: 20px;
   height: 20px;
 }
 body .container .main-container .module-header-section-container .module-header-section .module-title-section .yes-btn {
-  padding: 5px 15px 5px 15px;
-  background-color: #49a843;
-  color: white;
+  padding: 5px;
+  background-color: #eaeaea;
   border: 1px solid #eaeaea;
   border-radius: 4px;
   font-size: 10px;
@@ -726,9 +742,8 @@ body .container .main-container .module-header-section-container .module-header-
   cursor: pointer;
 }
 body .container .main-container .module-header-section-container .module-header-section .module-title-section .no-btn {
-  padding: 5px 15px 5px 15px;
+  padding: 5px;
   background-color: #eaeaea;
-  color: #12160a;
   border: 1px solid #eaeaea;
   border-radius: 4px;
   font-size: 10px;

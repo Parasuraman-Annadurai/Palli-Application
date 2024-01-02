@@ -434,6 +434,7 @@ body .container .application-full-container .application-inner-container .applic
 }
 
 body .container .application-view-more-container {
+  width: 100%;
   padding: 14px 20px 20px 20px;
 }
 body .container .application-view-more-container .left-side .top-section {
@@ -530,6 +531,11 @@ body .container .application-view-more-container .left-side .personal-and-educat
   font-family: "Roboto";
   color: #12160a;
 }
+body .container .application-view-more-container .left-side .personal-and-education-section .personal-details-section-two span a {
+  margin-left: 5px;
+  color: #49a843;
+  text-decoration: underline;
+}
 body .container .application-view-more-container .left-side .personal-and-education-section .Guardian-details-heading-section {
   padding-bottom: 20px;
 }
@@ -546,7 +552,8 @@ body .container .application-view-more-container .left-side .personal-and-educat
 }
 body .container .application-view-more-container .left-side .personal-and-education-section .Guardian-details-section .Guardian-detial-background .details-section .Guardian-detial-name a {
   color: #49a843;
-  padding-left: 4px;
+  margin-left: 4px;
+  text-decoration: underline;
 }
 body .container .application-view-more-container .left-side .personal-and-education-section .Educational-details-heading-section {
   padding-bottom: 20px;
@@ -586,7 +593,8 @@ body .container .application-view-more-container .left-side .personal-and-educat
 }
 body .container .application-view-more-container .left-side .personal-and-education-section .Educational-details-list-container .educational-background-one-container .educational-details p a {
   color: #49a843;
-  padding-left: 2px;
+  margin-left: 2px;
+  text-decoration: underline;
 }
 body .container .application-view-more-container .left-side .personal-and-education-section .Educational-details-list-container .educational-background-second-container {
   padding-bottom: 20px;
@@ -623,6 +631,7 @@ body .container .application-view-more-container .left-side .personal-and-educat
 }
 body .container .application-view-more-container .left-side .personal-and-education-section .Educational-details-list-container .educational-background-second-container .educational-details p a {
   color: #49a843;
+  text-decoration: underline;
 }
 body .container .application-view-more-container .left-side .personal-and-education-section .skillset-and-other-details {
   padding-bottom: 20px;

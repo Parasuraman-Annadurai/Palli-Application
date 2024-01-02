@@ -23,8 +23,7 @@ const TaskModule = () => {
   const [loading, setLoading] = useState(true);
   const [students, setStudents] = useState([]);
   const [selectedStudents, setSelectedStudents] = useState([]);
-  const [selectId, setSelectId] = useState(null);
-
+  const [deleteTask, setDeleteTask] = useState({});
   const headers = {
     Authorization: `Bearer ${token.access}`,
     "Content-type": "application/json",
@@ -53,69 +52,16 @@ const TaskModule = () => {
           setStudents(res.data.data);
           setLoading(false);
           setSelectedStudents(res.data.data.map((student) => student.id));
+
+         
         }
       })
       .catch((error) => {
         console.log(error);
       });
   }, [taskSearchWord]);
-  
-  const handleDelete = (deleteTaskId) => {
-    const isDraft = taskLists.data.some(
-      (task) => task.id === deleteTaskId && task.draft
-    );
 
-    const updatedTasks = {
-      ...taskLists,
-      data: taskLists.data.filter((task) => task.id !== deleteTaskId),
-    };
-
-    const confirmDelete = () => {
-      if (isDraft) {
-        setTaskLists(updatedTasks);
-        setEditId(null);
-        notification.success({
-          message: "Success",
-          description: "Task Deleted Successfully",
-          duration: 3,
-        });
-      } else {
-        axios
-          .delete(
-            `${API_END_POINT}/api/task/${batchId}/delete_task/${deleteTaskId}`,
-            {
-              headers: {
-                Authorization: `Bearer ${token.access}`,
-              },
-            }
-          )
-          .then((res) => {
-            notification.success({
-              message: "Success",
-              description: "Task Deleted Successfully",
-              duration: 3,
-            });
-            setEditId(null);
-            setTaskLists(updatedTasks);
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      }
-    };
-
-    Modal.confirm({
-      title: "Delete Confirmation",
-      content: "Are you sure you want to delete this Task?",
-      okButtonProps: {
-        style: { background: "#49a843", borderColor: "#EAEAEA" },
-      },
-      onOk: confirmDelete, // Call confirmDelete when OK button is clicked
-      mask: true, // Show the modal with a mask
-      maskClosable:false
-    });
-  };
-
+ 
   // useEffect(() => {
   //   const id = editId;
 
@@ -134,12 +80,53 @@ const TaskModule = () => {
 
   // }, [editId])
 
+  
+  const handleConfirmDelete = () => {
+    const isDraft = taskLists.data.some(
+      (task) => task.id === deleteTask.id && task.draft
+    );
+
+    const updatedTasks = {
+      ...taskLists,
+      data: taskLists.data.filter((task) => task.id !== deleteTask.id),
+    };
+
+    if (isDraft) {
+      setTaskLists(updatedTasks);
+      setEditId(null);
+      notification.success({
+        message: "Success",
+        description: "Task Deleted Successfully",
+        duration: 3,
+      });
+    } else {
+      axios
+        .delete(
+          `${API_END_POINT}/api/task/${batchId}/delete_task/${deleteTask.id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token.access}`,
+            },
+          }
+        )
+        .then((res) => {
+          notification.success({
+            message: "Success",
+            description: "Task Deleted Successfully",
+            duration: 3,
+          });
+          setEditId(null);
+          setDeleteTask({});
+          setTaskLists(updatedTasks);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  };
   const handleSave = (taskData, draft) => {
-
-
     const { Title, Description, Deadline, SubmissionLink } = taskData;
     const formattedDate = Deadline.format("YYYY-MM-DD HH:mm:ss");
-
 
     let isTaskExists = false;
 
@@ -159,11 +146,9 @@ const TaskModule = () => {
       return;
     }
 
-
     const existingTaskIndex = taskLists.data.findIndex(
       (task) => task.draft === draft
     );
-
 
     const createTaskPayload = {
       task_title: Title,
@@ -215,13 +200,13 @@ const TaskModule = () => {
           data: prevState.data.map((task, index) =>
             index === existingTaskIndex
               ? (() => {
-                const updatedTask = {
-                  ...task,
-                  ...newTask,
-                };
-                delete updatedTask.draft;
-                return updatedTask;
-              })()
+                  const updatedTask = {
+                    ...task,
+                    ...newTask,
+                  };
+                  delete updatedTask.draft;
+                  return updatedTask;
+                })()
               : task
           ),
         }));
@@ -235,7 +220,7 @@ const TaskModule = () => {
           "Content-Type": "application/json",
         },
         data: assignTask,
-      }).then((res) => { });
+      }).then((res) => {});
     });
 
     //once task create or update tasklist state update
@@ -257,12 +242,24 @@ const TaskModule = () => {
       data: [createTask, ...taskLists.data],
     };
     setEditId(uniqueId);
-    setSelectId(uniqueId);
     setTaskLists(concatNewTask);
   };
 
+  const modalConfig = {
+    title: "Delete Conformation",
+    okButtonProps: {
+      style: { background: "#49a843", borderColor: "#EAEAEA" },
+    },
+    onOk: handleConfirmDelete,
+    onCancel: () => setDeleteTask({}),
+  };
   return (
     <>
+      {deleteTask.id && (
+        <Modal open={true} {...modalConfig}>
+          <p>{`Are you sure you want to delete task ${deleteTask.task_title}?`}</p>
+        </Modal>
+      )}
       <TaskList
         //this mode used create task or assessment
         mode={"Task"}
@@ -271,10 +268,10 @@ const TaskModule = () => {
         setTaskSearchWord={setTaskSearchWord}
         loading={loading}
         filterShow={false}
-        handleDelete={handleDelete}
+        handleDelete={setDeleteTask}
         handleAdd={handleAdd}
         selectedTask={editId}
-        setSelectId={setSelectId}
+        setSelectId={setEditId}
       />
 
       {editId ? (

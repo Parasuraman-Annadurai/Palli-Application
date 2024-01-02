@@ -16,7 +16,6 @@ import useFilter from "../../hooks/useFilter";
 
 import "./scss/css/Applications.css";
 
-
 const Applications = () => {
   const filterFields = useFilter("applicant");
   const { id: batchId } = useParams();
@@ -66,8 +65,8 @@ const Applications = () => {
   }, [applicationSearch, limit, page, filterState]);
 
   const handleApplyFilter = (filterData) => {
+    console.log(filterData);
     setAppliedFilterShow(filterData);
-
 
     Object.keys(filterData).forEach((key) => {
       setFilterState((prevFilterState) => ({
@@ -76,13 +75,13 @@ const Applications = () => {
       }));
     });
   };
-  const handleRemoveFilter =(fieldName)=>{
+  const handleRemoveFilter = (fieldName) => {
     const updatedFilterState = { ...filterState, [fieldName]: "" };
-    const updateAppliedFilterState = {...appliedFilterShow};
+    const updateAppliedFilterState = { ...appliedFilterShow };
     delete updateAppliedFilterState[fieldName];
-    setAppliedFilterShow(updateAppliedFilterState)
-    setFilterState(updatedFilterState)
-  }
+    setAppliedFilterShow(updateAppliedFilterState);
+    setFilterState(updatedFilterState);
+  };
 
   const content = (
     <div>
@@ -106,8 +105,6 @@ const Applications = () => {
       ? text.substring(0, maxLength) + "..."
       : text;
   };
-
-
 
   return viewMoreApplicant.length > 0 ? (
     viewMoreApplicant.map((details) => {
@@ -239,11 +236,15 @@ const Applications = () => {
                 <div className="Guardian-detial-background">
                   <div className="details-section">
                     <p className="Guardian-detial-title">Ration/Family Card</p>
-                    <Modal open={isDocsShow} onOk={()=>setIsDocsShow(false)} onCancel={()=>setIsDocsShow(false)}>
+                    <Modal
+                      open={isDocsShow}
+                      onOk={() => setIsDocsShow(false)}
+                      onCancel={() => setIsDocsShow(false)}
+                    >
                       <img src="/public/icons/marsheet.svg" alt="" />
                     </Modal>
                     <p className="Guardian-detial-name">
-                      <a onClick={()=>setIsDocsShow(true)}>View document</a>
+                      <a onClick={() => setIsDocsShow(true)}>View document</a>
                     </p>
                   </div>
                 </div>
@@ -253,7 +254,7 @@ const Applications = () => {
                 <div className="line"></div>
               </div>
               <div className="Educational-details-list-container">
-                <div className="educational-background-one-container">
+                {/* <div className="educational-background-one-container">
                   <div className="curent-qul">
                     <p>
                       Currently Eductional Qualification:
@@ -288,9 +289,9 @@ const Applications = () => {
                       </p>
                     </div>
                   </div>
-                </div>
+                </div> */}
 
-                <div className="educational-background-second-container">
+                {/* <div className="educational-background-second-container">
                   <div className="curent-qul">
                     <p>
                       Currently Eductional Qualification: <a href="">SSLC</a>
@@ -324,7 +325,48 @@ const Applications = () => {
                       </p>
                     </div>
                   </div>
-                </div>
+                </div> */}
+
+                {details.applicant_academies.map((academy) => (
+                  <div
+                    key={academy.id}
+                    className="educational-background-second-container"
+                  >
+                    <div className="curent-qul">
+                      <p>
+                        Educational Qualification:{" "}
+                        <a href="">{academy.degree.name}</a>
+                      </p>
+                    </div>
+                    <div className="educational-details flex">
+                      <div className="school-type">
+                        <span>School Type</span>
+                        <p>{academy.insitution_type}</p>
+                      </div>
+                      <div className="year-completion">
+                        <span>Year Completion</span>
+                        <p>{academy.year_of_completion}</p>
+                      </div>
+                      <div className="medium">
+                        <span>Medium</span>
+                        <p>{academy.medium_of_instruction}</p>
+                      </div>
+                      {details.applicant_marks &&
+                        details.applicant_marks.map((marks) => (
+                          <div className="subject-score">
+                            <span>{marks.degree_subject.degree.name} Score</span>
+                            <p>{marks.mark}%</p>
+                          </div>
+                        ))}
+                      <div className="total-percentage">
+                        <span>Total Percentage</span>
+                        <p>
+                          {academy.percentage}% <a href="">View document</a>
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
               </div>
 
               <div className="skillset-and-other-details flex">
@@ -339,12 +381,7 @@ const Applications = () => {
                       <p className="skillset-detial-title">
                         Extra cuticular certificates or creative work of yours
                       </p>
-                      <p className="skillset-detial-name">
-                        to popular belief, Lorem Ipsum is not simply random
-                        text. It has roots in a piece of classNameical Latin
-                        literature from 45 BC, making it over 2000 years old.
-                        Richard
-                      </p>
+                      <p className="skillset-detial-name"></p>
                     </div>
                   </div>
                   <div className="skillset-detial-background-section">
@@ -352,12 +389,7 @@ const Applications = () => {
                       <p className="skillset-detial-title">
                         Computer course certification
                       </p>
-                      <p className="skillset-detial-name">
-                        to popular belief, Lorem Ipsum is not simply random
-                        text. It has roots in a piece of classNameical Latin
-                        literature from 45 BC, making it over 2000 years old.
-                        Richard
-                      </p>
+                      <p className="skillset-detial-name"></p>
                     </div>
                   </div>
                 </div>
@@ -372,10 +404,7 @@ const Applications = () => {
                       <p className="Learning-detial-title">
                         What Device You/ Your Famil own?
                       </p>
-                      <p className="Learning-detial-name">
-                        I dont have accessibility to phone or any devices. Look
-                        forward to your support to appear in entrance exam
-                      </p>
+                      <p className="Learning-detial-name"></p>
                     </div>
                   </div>
                 </div>
@@ -391,30 +420,20 @@ const Applications = () => {
                   <div className="left-side-genaral-detial-background">
                     <div className="first-section">
                       <span>How did you come to know DCKAP Palli Program?</span>
-                      <p>DCKAP Employee</p>
+                      <p></p>
                     </div>
                     <div className="second-section">
                       <span>
                         Please leave any additional information if you would
                         like to share with us
                       </span>
-                      <p>
-                        To popular belief, Lorem Ipsum is not simply random
-                        text. It has roots in a piece of classNameical Latin
-                        literature from 45 BC, making it over 2000 years old.
-                        Richard
-                      </p>
+                      <p></p>
                     </div>
                   </div>
                   <div className="right-side-genaral-detial-background">
                     <div className="first-section">
                       <span> Why do you want to take up this training? </span>
-                      <p>
-                        to popular belief, Lorem Ipsum is not simply random
-                        text. It has roots in a piece of classNameical Latin
-                        literature from 45 BC, making it over 2000 years old.
-                        Richard
-                      </p>
+                      <p></p>
                     </div>
                   </div>
                 </div>
@@ -450,10 +469,13 @@ const Applications = () => {
             onChange={(e) => setApplicationSearch(e.target.value)}
           />
 
-          <Popover placement="leftTop" 
-          open={popoverVisible}
-          onOpenChange={(visible) => setPopoverVisible(visible)}
-          content={content} trigger={["click"]}>
+          <Popover
+            placement="leftTop"
+            open={popoverVisible}
+            onOpenChange={(visible) => setPopoverVisible(visible)}
+            content={content}
+            trigger={["click"]}
+          >
             <img
               src="/public/icons/filterIcon.svg"
               alt=""
@@ -474,13 +496,18 @@ const Applications = () => {
           ) : (
             ""
           )}
-          {appliedFilterShow &&
+          {/* {appliedFilterShow &&
             Object.keys(appliedFilterShow).map((filterName) => (
               <>
                 <Tag color="#49a843">{`${filterName} : ${appliedFilterShow[filterName]} `}</Tag>
-                <img src="/icons/Cancel.svg" alt="" className="cancel-btn" onClick={()=>handleRemoveFilter(filterName)}/>
+                <img
+                  src="/icons/Cancel.svg"
+                  alt=""
+                  className="cancel-btn"
+                  onClick={() => handleRemoveFilter(filterName)}
+                />
               </>
-            ))}
+            ))} */}
         </div>
 
         {applications.data.length > 0 ? (
@@ -506,10 +533,26 @@ const Applications = () => {
                         <div className="application-email-container">
                           <p className="application-name">
                             <Tooltip
-                              title={`${application.first_name.charAt(0).toUpperCase()}${application.first_name.slice(1)} ${application.last_name.charAt(0).toUpperCase()}${application.last_name.slice(1)}`}
+                              title={`${application.first_name
+                                .charAt(0)
+                                .toUpperCase()}${application.first_name.slice(
+                                1
+                              )} ${application.last_name
+                                .charAt(0)
+                                .toUpperCase()}${application.last_name.slice(
+                                1
+                              )}`}
                             >
                               {truncateText(
-                                `${application.first_name.charAt(0).toUpperCase()}${application.first_name.slice(1)} ${application.last_name.charAt(0).toUpperCase()}${application.last_name.slice(1)}`,
+                                `${application.first_name
+                                  .charAt(0)
+                                  .toUpperCase()}${application.first_name.slice(
+                                  1
+                                )} ${application.last_name
+                                  .charAt(0)
+                                  .toUpperCase()}${application.last_name.slice(
+                                  1
+                                )}`,
                                 15
                               )}
                             </Tooltip>

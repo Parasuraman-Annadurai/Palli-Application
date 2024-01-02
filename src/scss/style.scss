@@ -311,6 +311,13 @@ li {
     color: $primary-color;
   }
 }
+.ant-picker-ok{
+  button{
+    background-color: $primary-color;
+    color: #fff;
+  }
+  
+}
 
 //pagination
 
@@ -606,8 +613,14 @@ body {
       }
 
       .switch-batch-list-container {
-        // height: 500px;
-        // overflow: scroll;
+       
+        overflow: scroll;
+        height: calc(100vh - 110px);
+        overflow-y: auto;
+        &::-webkit-scrollbar{
+          width: 0;
+          height: 0;
+        }
         .switch-batch-card {
           padding: 14px 16px;
           border-radius: 4px;
@@ -780,9 +793,11 @@ body {
                 width: 16px;
                 height: 16px;
                 display: none;
+                cursor: pointer;
               }
               .delete-icon {
                 margin-left: 5px;
+                cursor: pointer;
               }
             }
 
@@ -876,6 +891,7 @@ body {
               font-family: $font-Roboto;
               color: $font-primary-color;
               outline: #12160a;
+              padding-left: 10px;
             }
 
             img {
@@ -883,9 +899,9 @@ body {
               height: 20px;
             }
             .yes-btn {
-              padding: 5px 15px 5px 15px;
-              background-color: $primary-color;
-              color: #ffff;
+              padding: 5px;
+              background-color: $border-color;
+             
               border: 1px solid $border-color;
               border-radius: 4px;
               font-size: 10px;
@@ -893,9 +909,8 @@ body {
               cursor: pointer;
             }
             .no-btn {
-              padding: 5px 15px 5px 15px;
+              padding: 5px;
               background-color: $border-color;
-              color: $font-primary-color;
               border: 1px solid $border-color;
               border-radius: 4px;
               font-size: 10px;

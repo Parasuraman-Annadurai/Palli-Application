@@ -21,7 +21,7 @@ const AssessmentModule = () => {
   const [loading, setLoading] = useState(true);
   const [students, setStudents] = useState([]);
   const [selectedStudents, setSelectedStudents] = useState([]);
-  const [selectId, setSelectId] = useState(null);
+  const [deleteAssessment, setDeleteAssessment] = useState({});
 
   const headers = {
     Authorization: `Bearer ${token.access}`,
@@ -233,12 +233,69 @@ const AssessmentModule = () => {
       data: [createAssessment, ...assessmentList.data],
     };
     setEditId(uniqueId);
-    setSelectId(uniqueId);
     setAssessmentList(concatNewTask);
   };
 
+  const handleConfirmDelete = ()=>{
+    const isDraft = assessmentList.data.some(
+      (assessment) => assessment.id === deleteAssessment.id && assessment.draft
+    );
+
+    const updateAssessment = {
+      ...assessmentList,
+      data: assessmentList.data.filter(
+        (assessment) => assessment.id !== deleteAssessment.id
+      ),
+    };
+
+    if (isDraft) {
+      setAssessmentList(updateAssessment);
+      setEditId(null);
+      notification.success({
+        message: "Success",
+        description: "Assessment Deleted Successfully",
+        duration: 3,
+      });
+    } else {
+      axios
+        .delete(
+          `${API_END_POINT}/api/task/${batchId}/delete_task/${deleteAssessment.id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token.access}`,
+            },
+          }
+        )
+        .then((res) => {
+          setEditId(null);
+          notification.success({
+            message: "Success",
+            description: "Assessment Deleted Successfully",
+            duration: 3,
+          });
+          setAssessmentList(updateAssessment);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+    setDeleteAssessment({})
+  }
+  const modalConfig = {
+    title: "Delete Conformation",
+    okButtonProps: {
+      style: { background: "#49a843", borderColor: "#EAEAEA" },
+    },
+    onOk: handleConfirmDelete,
+    onCancel: () => setDeleteAssessment({}),
+  };
   return (
     <>
+     {deleteAssessment.id && (
+        <Modal open={true} {...modalConfig}>
+          <p>{`Are you sure you want to delete Assessment ${deleteAssessment.task_title}?`}</p>
+        </Modal>
+      )}
       <TaskList
         mode={"Assessment"}
         handleEdit={setEditId}
@@ -246,10 +303,10 @@ const AssessmentModule = () => {
         setTaskSearchWord={setAssessmentSearchWord}
         loading={loading}
         filterShow={false}
-        handleDelete={handleDelete}
+        handleDelete={setDeleteAssessment}
         handleAdd={handleAdd}
-        selectedTask={selectId}
-        setSelectId={setSelectId}
+        selectedTask={editId}
+        setSelectId={editId}
       />
       {editId ? (
         <TaskView

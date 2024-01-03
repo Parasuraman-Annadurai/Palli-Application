@@ -433,7 +433,6 @@ body .container .side-nav-container .user-profile .user-details span {
   color: #969d88;
 }
 body .container .popup-container {
-  overflow: auto;
   position: absolute;
   left: 160px;
   top: 0;
@@ -501,7 +500,6 @@ body .container .popup-container .switch-batch-list-container .switch-batch-card
   border: 1px solid #eaeaea;
   width: 100%;
   margin-bottom: 12px;
-  cursor: pointer;
 }
 body .container .popup-container .switch-batch-list-container .switch-batch-card .batch-left-side .batch-name-year h4 {
   font-size: 14px;
@@ -525,36 +523,6 @@ body .container .popup-container .switch-batch-list-container .switch-batch-card
   font-size: 10px;
   line-height: 14px;
   font-family: "Roboto";
-}
-body .container .flex-content {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 16px;
-}
-body .container .add-batch {
-  width: 100%;
-}
-body .container .add-batch .add-batch-btn {
-  width: 100%;
-  padding: 8.5px 0;
-  font: 400 12px/16px ROBOTO, sans-serf;
-  background-color: white;
-  border: 1px solid;
-  border-radius: 4px;
-}
-body .container .input-fields {
-  margin: 16px 0;
-}
-body .container .input-fields .input-field {
-  width: 100%;
-}
-body .container .input-fields .input-field .in {
-  margin-top: 6px;
-  padding: 8.5px 10px;
-  width: 100%;
-  border: 1px solid;
-  border-radius: 4px;
 }
 body .container .listing-container {
   max-width: 301px;
@@ -678,14 +646,11 @@ body .container .listing-container .task-list-container .task-card .task-details
   display: none;
   cursor: pointer;
 }
-body .container .listing-container .task-list-container .task-card .task-details .task-name-with-icon .edit-icon {
-  margin-right: 5px;
-}
-body .container .listing-container .task-list-container .task-card .task-details .task-name-with-icon .edit-icon .delete-icon {
+body .container .listing-container .task-list-container .task-card .task-details .task-name-with-icon .delete-icon {
   margin-left: 5px;
   cursor: pointer;
 }
-body .container .listing-container .task-list-container .task-card .task-details .task-name-with-icon .task-description {
+body .container .listing-container .task-list-container .task-card .task-details .task-description {
   max-width: 205px;
   width: 100%;
   font-size: 12px;
@@ -695,7 +660,7 @@ body .container .listing-container .task-list-container .task-card .task-details
   color: #969d88;
   font-family: "Roboto";
 }
-body .container .listing-container .task-list-container .task-card .task-details .task-name-with-icon .btn-inprogress {
+body .container .listing-container .task-list-container .task-card .task-details .btn-inprogress {
   padding: 2px 8px;
   font-size: 10px;
   line-height: 14px;
@@ -705,7 +670,7 @@ body .container .listing-container .task-list-container .task-card .task-details
   color: #49a843;
   font-family: "Roboto";
 }
-body .container .listing-container .task-list-container .task-card .task-details .task-name-with-icon .btn-deadline {
+body .container .listing-container .task-list-container .task-card .task-details .btn-deadline {
   padding: 2px 8px;
   font-size: 10px;
   line-height: 14px;
@@ -716,23 +681,23 @@ body .container .listing-container .task-list-container .task-card .task-details
   background-color: #fef3c7;
   font-family: "Roboto";
 }
-body .container .listing-container .task-list-container .task-card .task-card:hover .task-name-with-icon img {
+body .container .listing-container .task-list-container .task-card:hover .task-name-with-icon img {
   display: inline-block;
   /* show the edit icon when task-card is hovered */
 }
-body .container .listing-container .task-list-container .task-card .task-card.active {
+body .container .listing-container .task-list-container .task-card.active {
   background-color: #f8fbf2;
 }
-body .container .listing-container .select-something-container {
+body .container .select-something-container {
   width: 100%;
   align-items: center;
   justify-content: center;
 }
-body .container .listing-container .select-something-container .image-container img {
+body .container .select-something-container .image-container img {
   max-width: 350px;
   width: 100%;
 }
-body .container .listing-container .select-something-container .image-container .select-something-heading {
+body .container .select-something-container .image-container .select-something-heading {
   font-size: 14px;
   line-height: 18px;
   font-family: "Roboto";
@@ -740,21 +705,21 @@ body .container .listing-container .select-something-container .image-container 
   font-weight: 500;
   text-align: center;
 }
-body .container .listing-container .main-container {
+body .container .main-container {
   padding: 20px;
   width: 100%;
 }
-body .container .listing-container .main-container .module-header-section-container {
+body .container .main-container .module-header-section-container {
   padding-bottom: 14px;
 }
-body .container .listing-container .main-container .module-header-section-container .module-header-section {
+body .container .main-container .module-header-section-container .module-header-section {
   justify-content: space-between;
   align-items: center;
 }
-body .container .listing-container .main-container .module-header-section-container .module-header-section .module-title-section {
+body .container .main-container .module-header-section-container .module-header-section .module-title-section {
   gap: 8px;
 }
-body .container .listing-container .main-container .module-header-section-container .module-header-section .module-title-section .task-title {
+body .container .main-container .module-header-section-container .module-header-section .module-title-section .task-title {
   font-size: 16px;
   line-height: 24px;
   font-weight: 500;
@@ -763,7 +728,7 @@ body .container .listing-container .main-container .module-header-section-contai
   outline: #12160a;
   padding-left: 10px;
 }
-body .container .listing-container .main-container .module-header-section-container .module-header-section .module-title-section img {
+body .container .main-container .module-header-section-container .module-header-section .module-title-section img {
   width: 20px;
   height: 20px;
 }
@@ -799,22 +764,22 @@ body .container .main-container .task-details-header-container .task-label-conta
   align-items: center;
   gap: 11px;
 }
-body .container .listing-container .main-container .task-details-header-container .task-label-container h4 {
+body .container .main-container .task-details-header-container .task-label-container h4 {
   font-size: 12px;
   line-height: 16px;
   font-weight: 500;
   font-family: "Roboto";
   color: #12160a;
 }
-body .container .listing-container .main-container .task-details-header-container .task-label-container .horizon-line {
+body .container .main-container .task-details-header-container .task-label-container .horizon-line {
   flex: 1;
   border: 1px solid #eaeaea;
 }
-body .container .listing-container .main-container .task-details-header-container .task-details-main-container {
+body .container .main-container .task-details-header-container .task-details-main-container {
   gap: 20px;
   padding-bottom: 20px;
 }
-body .container .listing-container .main-container .task-details-header-container .task-details-main-container .task-type-container .task-type-label {
+body .container .main-container .task-details-header-container .task-details-main-container .task-type-container .task-type-label {
   font-size: 12px;
   line-height: 16px;
   font-weight: 400;
@@ -822,7 +787,7 @@ body .container .listing-container .main-container .task-details-header-containe
   color: #969d88;
   padding-bottom: 6px;
 }
-body .container .listing-container .main-container .task-details-header-container .task-details-main-container .task-type-container .task-type-selector {
+body .container .main-container .task-details-header-container .task-details-main-container .task-type-container .task-type-selector {
   padding: 10px 12px;
   outline: none;
   background-color: white;
@@ -832,7 +797,7 @@ body .container .listing-container .main-container .task-details-header-containe
   width: 100%;
   font-family: "Roboto";
 }
-body .container .listing-container .main-container .task-details-header-container .task-details-main-container .task-deadline-container .task-deadline-label {
+body .container .main-container .task-details-header-container .task-details-main-container .task-deadline-container .task-deadline-label {
   font-size: 12px;
   line-height: 16px;
   font-weight: 400;
@@ -840,15 +805,15 @@ body .container .listing-container .main-container .task-details-header-containe
   color: #969d88;
   padding-bottom: 6px;
 }
-body .container .listing-container .main-container .task-details-header-container .task-details-main-container .task-deadline-container .datepicker.task-deadline-selector {
+body .container .main-container .task-details-header-container .task-details-main-container .task-deadline-container .datepicker.task-deadline-selector {
   max-width: 200px;
   width: 100%;
 }
-body .container .listing-container .main-container .task-details-header-container .task-details-main-container .task-assigner-container {
+body .container .main-container .task-details-header-container .task-details-main-container .task-assigner-container {
   max-width: 270px;
   width: 100%;
 }
-body .container .listing-container .main-container .task-details-header-container .task-details-main-container .task-assigner-container .task-assigner-label {
+body .container .main-container .task-details-header-container .task-details-main-container .task-assigner-container .task-assigner-label {
   font-size: 12px;
   line-height: 16px;
   font-weight: 400;
@@ -856,7 +821,7 @@ body .container .listing-container .main-container .task-details-header-containe
   color: #969d88;
   padding-bottom: 6px;
 }
-body .container .listing-container .main-container .task-details-header-container .task-details-main-container .task-assigner-container .task-assigner-selector {
+body .container .main-container .task-details-header-container .task-details-main-container .task-assigner-container .task-assigner-selector {
   max-width: 269px;
   width: 100%;
   height: 36px;
@@ -872,18 +837,18 @@ body .container .listing-container .main-container .task-details-header-containe
   font-family: "Roboto";
   color: #12160a;
 }
-body .container .listing-container .main-container .task-details-header-container .task-details-main-container .task-assigner-container img {
+body .container .main-container .task-details-header-container .task-details-main-container .task-assigner-container img {
   width: 16px;
   height: 16px;
 }
-body .container .listing-container .main-container .task-details-header-container .task-details-main-container .common-property {
+body .container .main-container .task-details-header-container .task-details-main-container .common-property {
   max-width: 200px;
   width: 100%;
 }
-body .container .listing-container .main-container .task-details-header-container .task-editor-container {
+body .container .main-container .task-details-header-container .task-editor-container {
   padding-bottom: 16px;
 }
-body .container .listing-container .main-container .task-details-header-container .task-editor-container .task-description-label {
+body .container .main-container .task-details-header-container .task-editor-container .task-description-label {
   padding-bottom: 6px;
   font-size: 12px;
   font-family: "Roboto";
@@ -891,22 +856,22 @@ body .container .listing-container .main-container .task-details-header-containe
   font-weight: 400;
   color: #969d88;
 }
-body .container .listing-container .main-container .task-details-header-container .task-editor-container .task-editor .quill .ql-toolbar.ql-snow {
+body .container .main-container .task-details-header-container .task-editor-container .task-editor .quill .ql-toolbar.ql-snow {
   border-radius: 4px 4px 0px 0px;
   border: 1px solid #eaeaea;
 }
-body .container .listing-container .main-container .task-details-header-container .task-editor-container .task-editor .quill .ql-container.ql-snow {
+body .container .main-container .task-details-header-container .task-editor-container .task-editor .quill .ql-container.ql-snow {
   height: 171px;
   border-radius: 0px 0px 4px 4px;
   border: 1px solid #eaeaea;
 }
-body .container .listing-container .main-container .task-details-header-container .task-editor-container .task-editor .quill .ql-container.ql-snow p {
+body .container .main-container .task-details-header-container .task-editor-container .task-editor .quill .ql-container.ql-snow p {
   color: #12160a;
 }
-body .container .listing-container .main-container .task-details-header-container .submission-folder-link-container {
+body .container .main-container .task-details-header-container .submission-folder-link-container {
   padding-bottom: 16px;
 }
-body .container .listing-container .main-container .task-details-header-container .submission-folder-link-container .task-submission-link {
+body .container .main-container .task-details-header-container .submission-folder-link-container .task-submission-link {
   padding: 10px 0px 10px 12px;
   width: 100%;
   font-family: "Roboto";
@@ -917,7 +882,7 @@ body .container .listing-container .main-container .task-details-header-containe
   border-radius: 4px;
   border: 1px solid #eaeaea;
 }
-body .container .listing-container .main-container .task-details-header-container .file-input-container {
+body .container .main-container .task-details-header-container .file-input-container {
   position: relative;
   width: 100%;
   padding: 14px 0;
@@ -931,25 +896,25 @@ body .container .listing-container .main-container .task-details-header-containe
   cursor: pointer;
   margin-bottom: 20px;
 }
-body .container .listing-container .main-container .task-details-header-container .file-input-container .upload-icon-container {
+body .container .main-container .task-details-header-container .file-input-container .upload-icon-container {
   align-items: center;
   gap: 8px;
 }
-body .container .listing-container .main-container .task-details-header-container .file-input-container .upload-icon-container .upload-icon {
+body .container .main-container .task-details-header-container .file-input-container .upload-icon-container .upload-icon {
   width: 16px;
   height: 16px;
 }
-body .container .listing-container .main-container .task-details-header-container .file-input-container .upload-icon-container p {
+body .container .main-container .task-details-header-container .file-input-container .upload-icon-container p {
   font-size: 12px;
   line-height: 16px;
   font-weight: 400;
   font-family: "Roboto";
 }
-body .container .listing-container .main-container .task-details-header-container .file-input-container .upload-icon-container p .highlight {
+body .container .main-container .task-details-header-container .file-input-container .upload-icon-container p .highlight {
   color: #49a843;
   padding-left: 2px;
 }
-body .container .listing-container .main-container .task-details-header-container .file-input-container .file-input {
+body .container .main-container .task-details-header-container .file-input-container .file-input {
   position: absolute;
   top: 0;
   left: 0;
@@ -958,23 +923,23 @@ body .container .listing-container .main-container .task-details-header-containe
   opacity: 0;
   cursor: pointer;
 }
-body .container .listing-container .main-container .task-details-header-container .weightage-label-container {
+body .container .main-container .task-details-header-container .weightage-label-container {
   align-items: center;
   gap: 11px;
   padding-bottom: 16px;
 }
-body .container .listing-container .main-container .task-details-header-container .weightage-label-container h3 {
+body .container .main-container .task-details-header-container .weightage-label-container h3 {
   font-size: 12px;
   line-height: 16px;
   font-weight: 400;
   font-family: "Roboto";
   color: #12160a;
 }
-body .container .listing-container .main-container .task-details-header-container .weightage-label-container .horizon-line {
+body .container .main-container .task-details-header-container .weightage-label-container .horizon-line {
   flex: 1;
   border: 1px solid #eaeaea;
 }
-body .container .listing-container .main-container .task-details-header-container .weightage-adding-container .weight-inputs p {
+body .container .main-container .task-details-header-container .weightage-adding-container .weight-inputs p {
   font-size: 12px;
   line-height: 16px;
   font-weight: 400;
@@ -982,7 +947,7 @@ body .container .listing-container .main-container .task-details-header-containe
   color: #969d88;
   padding-bottom: 6px;
 }
-body .container .listing-container .main-container .task-details-header-container .weightage-adding-container .weight-inputs .weightage-unit-container {
+body .container .main-container .task-details-header-container .weightage-adding-container .weight-inputs .weightage-unit-container {
   max-width: 364px;
   width: 100%;
   height: 36px;
@@ -990,7 +955,7 @@ body .container .listing-container .main-container .task-details-header-containe
   align-items: center;
   gap: 10px;
 }
-body .container .listing-container .main-container .task-details-header-container .weightage-adding-container .weight-inputs .weightage-unit-container .task-weightage-selector {
+body .container .main-container .task-details-header-container .weightage-adding-container .weight-inputs .weightage-unit-container .task-weightage-selector {
   padding: 10px 12px;
   max-width: 200px;
   width: 100%;
@@ -1001,14 +966,14 @@ body .container .listing-container .main-container .task-details-header-containe
   background-color: white;
   font-family: "Roboto";
 }
-body .container .listing-container .main-container .task-details-header-container .weightage-adding-container .weight-inputs .weightage-unit-container .task-weight-value-selector {
+body .container .main-container .task-details-header-container .weightage-adding-container .weight-inputs .weightage-unit-container .task-weight-value-selector {
   max-width: 72px;
   width: 100%;
   padding: 10px 0px 10px 12px;
   border: 1px solid #eaeaea;
   border-radius: 4px;
 }
-body .container .listing-container .main-container .task-details-header-container .weightage-adding-container .weight-inputs .weightage-unit-container .weightage-action .btn.increment-btn {
+body .container .main-container .task-details-header-container .weightage-adding-container .weight-inputs .weightage-unit-container .weightage-action .btn.increment-btn {
   background-color: white;
   cursor: pointer;
   color: #12160a;
@@ -1019,7 +984,7 @@ body .container .listing-container .main-container .task-details-header-containe
   border-radius: 4px 0px 0px 4px;
   font-family: "Roboto";
 }
-body .container .listing-container .main-container .task-details-header-container .weightage-adding-container .weight-inputs .weightage-unit-container .weightage-action .btn.decrement-btn {
+body .container .main-container .task-details-header-container .weightage-adding-container .weight-inputs .weightage-unit-container .weightage-action .btn.decrement-btn {
   background-color: white;
   cursor: pointer;
   color: #12160a;

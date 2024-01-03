@@ -1,3 +1,7 @@
+
+
+
+
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap");
 
 $font-Roboto: "Roboto";
@@ -558,7 +562,6 @@ body {
       }
     }
     .popup-container {
-      overflow: auto;
       position: absolute;
       left: 160px;
       top: 0;
@@ -627,8 +630,6 @@ body {
           border: 1px solid $border-color;
           width: 100%;
           margin-bottom: 12px;
-          cursor: pointer;
-
           .batch-left-side {
             .batch-name-year {
               h4 {
@@ -662,38 +663,6 @@ body {
       }
     }
 
-    // .flex-content {
-    //   display: flex;
-    //   justify-content: space-between;
-    //   align-items: center;
-    //   margin-bottom: 16px;
-    // }
-    // .add-batch {
-    //   width: 100%;
-    //   .add-batch-btn {
-    //     width: 100%;
-    //     padding: 8.5px 0;
-    //     font: 400 12px/16px ROBOTO, sans-serf;
-    //     background-color: #ffff;
-    //     border: 1px solid;
-    //     border-radius: 4px;
-    //   }
-    // }
-    // .input-fields {
-    //   margin: 16px 0;
-    //   .input-field {
-    //     width: 100%;
-    //     .in {
-    //       margin-top: 6px;
-    //       padding: 8.5px 10px;
-    //       width: 100%;
-    //       border: 1px solid;
-    //       border-radius: 4px;
-    //     }
-    //   }
-    // }
-
-    
     //task listing container
     .listing-container {
       max-width: 301px;
@@ -828,430 +797,435 @@ body {
                 display: none;
                 cursor: pointer;
               }
-              .edit-icon {
-                margin-right: 5px;
-                .delete-icon {
-                  margin-left: 5px;
-                  cursor: pointer;
-                }
-              }
-
-              .task-description {
-                max-width: 205px;
-                width: 100%;
-                font-size: 12px;
-                line-height: 16px;
-                font-weight: 400;
-                margin: 4px 0;
-                color: $font-secondary-color;
-                font-family: $font-Roboto;
-              }
-
-              .btn-inprogress {
-                padding: 2px 8px;
-                font-size: 10px;
-                line-height: 14px;
-                border-radius: 2px;
-                margin-right: 6px;
-                background-color: $completed-bg;
-                color: $primary-color;
-                font-family: $font-Roboto;
-              }
-
-              .btn-deadline {
-                padding: 2px 8px;
-                font-size: 10px;
-                line-height: 14px;
-                border-radius: 2px;
-                margin-right: 6px;
-                font-family: $font-Roboto;
-                color: $highlight-yellow;
-                background-color: $highlight-yellow-bg;
-                font-family: $font-Roboto;
-              }
-            }
-          }
-
-          //while hover the task card show edit icon
-          .task-card:hover .task-name-with-icon img {
-            display: inline-block;
-            /* show the edit icon when task-card is hovered */
-          }
-
-          .task-card.active {
-            background-color: $side_bar_bg;
-          }
-        }
-      }
-
-      .select-something-container {
-        width: 100%;
-        align-items: center;
-        justify-content: center;
-        .image-container {
-          img {
-            max-width: 350px;
-            width: 100%;
-          }
-          .select-something-heading {
-            font-size: 14px;
-            line-height: 18px;
-            font-family: $font-Roboto;
-            color: $font-primary-color;
-            font-weight: 500;
-            text-align: center;
-          }
-        }
-      }
-      //main-container
-
-      .main-container {
-        padding: 20px;
-        width: 100%;
-
-        .module-header-section-container {
-          padding-bottom: 14px;
-
-          .module-header-section {
-            justify-content: space-between;
-            align-items: center;
-
-            .module-title-section {
-              gap: 8px;
-
-              .task-title {
-                font-size: 16px;
-                line-height: 24px;
-                font-weight: 500;
-                font-family: $font-Roboto;
-                color: $font-primary-color;
-                outline: #12160a;
-                padding-left: 10px;
-              }
-
-              img {
-                width: 20px;
-                height: 20px;
-              }
-              .yes-btn {
-                padding: 5px;
-                background-color: $border-color;
-
-                border: 1px solid $border-color;
-                border-radius: 4px;
-                font-size: 10px;
-                font-family: $font-Roboto;
-                cursor: pointer;
-              }
-              .no-btn {
-                padding: 5px;
-                background-color: $border-color;
-                border: 1px solid $border-color;
-                border-radius: 4px;
-                font-size: 10px;
-                font-family: $font-Roboto;
+              .delete-icon {
                 margin-left: 5px;
                 cursor: pointer;
               }
             }
+
+            .task-description {
+              max-width: 205px;
+              width: 100%;
+              font-size: 12px;
+              line-height: 16px;
+              font-weight: 400;
+              margin: 4px 0;
+              color: $font-secondary-color;
+              font-family: $font-Roboto;
+            }
+
+            .btn-inprogress {
+              padding: 2px 8px;
+              font-size: 10px;
+              line-height: 14px;
+              border-radius: 2px;
+              margin-right: 6px;
+              background-color: $completed-bg;
+              color: $primary-color;
+              font-family: $font-Roboto;
+            }
+
+            .btn-deadline {
+              padding: 2px 8px;
+              font-size: 10px;
+              line-height: 14px;
+              border-radius: 2px;
+              margin-right: 6px;
+              font-family: $font-Roboto;
+              color: $highlight-yellow;
+              background-color: $highlight-yellow-bg;
+              font-family: $font-Roboto;
+            }
           }
         }
 
-        .task-details-header-container {
-          height: calc(100vh - 110px);
-          overflow-y: auto;
-          &::-webkit-scrollbar {
-            width: 0;
-            height: 0;
-          }
-          .task-label-container {
-            padding-bottom: 16px;
-            align-items: center;
-            gap: 11px;
+        //while hover the task card show edit icon
+        .task-card:hover .task-name-with-icon img {
+          display: inline-block;
+          /* show the edit icon when task-card is hovered */
+        }
 
-            h4 {
-              font-size: 12px;
-              line-height: 16px;
+        .task-card.active {
+          background-color: $side_bar_bg;
+        }
+      }
+    }
+
+    .select-something-container {
+      width: 100%;
+      align-items: center;
+      justify-content: center;
+      .image-container {
+        img {
+          max-width: 350px;
+          width: 100%;
+        }
+        .select-something-heading {
+          font-size: 14px;
+          line-height: 18px;
+          font-family: $font-Roboto;
+          color: $font-primary-color;
+          font-weight: 500;
+          text-align: center;
+        }
+      }
+    }
+    //main-container
+
+    .main-container {
+      padding: 20px;
+      width: 100%;
+
+      .module-header-section-container {
+        padding-bottom: 14px;
+
+        .module-header-section {
+          justify-content: space-between;
+          align-items: center;
+
+          .module-title-section {
+            gap: 8px;
+
+            .task-title {
+              font-size: 16px;
+              line-height: 24px;
               font-weight: 500;
-
               font-family: $font-Roboto;
               color: $font-primary-color;
+              outline: #12160a;
+              padding-left: 10px;
             }
 
-            .horizon-line {
-              flex: 1;
+            img {
+              width: 20px;
+              height: 20px;
+            }
+            .yes-btn {
+              padding: 5px;
+              background-color: $border-color;
+
               border: 1px solid $border-color;
-            }
-          }
-
-          .task-details-main-container {
-            gap: 20px;
-            // justify-content: space-between;
-            padding-bottom: 20px;
-
-            .task-type-container {
-              .task-type-label {
-                font-size: 12px;
-                line-height: 16px;
-                font-weight: 400;
-                font-family: $font-Roboto;
-                color: $font-secondary-color;
-                padding-bottom: 6px;
-              }
-
-              .task-type-selector {
-                padding: 10px 12px;
-                outline: none;
-                background-color: white;
-                color: $font-primary-color;
-                border-radius: 4px;
-                border: 1px solid $border-color;
-                width: 100%;
-                font-family: $font-Roboto;
-              }
-            }
-
-            .task-deadline-container {
-              .task-deadline-label {
-                font-size: 12px;
-                line-height: 16px;
-                font-weight: 400;
-                font-family: $font-Roboto;
-                color: $font-secondary-color;
-                padding-bottom: 6px;
-              }
-
-              .datepicker.task-deadline-selector {
-                max-width: 200px;
-                width: 100%;
-                // padding: 10px 12px;
-                // outline: none;
-                // background-color: white;
-                // color: $font-primary-color;
-                // border-radius: 4px;
-                // border: 1px solid $border-color;
-                // width: 100%;
-                // font-family: $font-Roboto;
-              }
-            }
-
-            .task-assigner-container {
-              max-width: 270px;
-              width: 100%;
-
-              .task-assigner-label {
-                font-size: 12px;
-                line-height: 16px;
-                font-weight: 400;
-                font-family: $font-Roboto;
-                color: $font-secondary-color;
-                padding-bottom: 6px;
-              }
-
-              .task-assigner-selector {
-                max-width: 269px;
-                width: 100%;
-                height: 36px;
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                padding: 10px 12px;
-                background-color: #ffff;
-                border: 1px solid $border-color;
-                border-radius: 4px;
-                font-size: 12px;
-                line-height: 16px;
-                font-family: $font-Roboto;
-                color: $font-primary-color;
-              }
-              img {
-                width: 16px;
-                height: 16px;
-              }
-            }
-
-            .common-property {
-              max-width: 200px;
-              width: 100%;
-            }
-          }
-
-          .task-editor-container {
-            padding-bottom: 16px;
-
-            .task-description-label {
-              padding-bottom: 6px;
-              font-size: 12px;
-              font-family: $font-Roboto;
-              line-height: 12px;
-              font-weight: 400;
-              color: $font-secondary-color;
-            }
-
-            .task-editor {
-              .quill {
-                .ql-toolbar.ql-snow {
-                  border-radius: 4px 4px 0px 0px;
-                  border: 1px solid $border-color;
-                }
-
-                .ql-container.ql-snow {
-                  height: 171px;
-                  border-radius: 0px 0px 4px 4px;
-                  border: 1px solid $border-color;
-
-                  p {
-                    color: $font-primary-color;
-                  }
-                }
-              }
-            }
-          }
-
-          .submission-folder-link-container {
-            .task-submission-link {
-              padding: 10px 0px 10px 12px;
-              width: 100%;
-              font-family: $font-Roboto;
-              font-size: 12px;
-              line-height: 16px;
-              font-weight: 400;
-              color: $font-primary-color;
               border-radius: 4px;
+              font-size: 10px;
+              font-family: $font-Roboto;
+              cursor: pointer;
+            }
+            .no-btn {
+              padding: 5px;
+              background-color: $border-color;
               border: 1px solid $border-color;
-            }
-
-            padding-bottom: 16px;
-          }
-
-          .file-input-container {
-            position: relative;
-            width: 100%;
-            padding: 14px 0;
-            border: 2px dashed $border-color;
-            border-radius: 5px;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            margin-bottom: 20px;
-
-            .upload-icon-container {
-              align-items: center;
-              gap: 8px;
-
-              .upload-icon {
-                width: 16px;
-                height: 16px;
-              }
-
-              p {
-                font-size: 12px;
-                line-height: 16px;
-                font-weight: 400;
-                font-family: $font-Roboto;
-
-                .highlight {
-                  color: $primary-color;
-                  padding-left: 2px;
-                }
-              }
-            }
-
-            .file-input {
-              position: absolute;
-              top: 0;
-              left: 0;
-              width: 100%;
-              height: 100%;
-              opacity: 0;
+              border-radius: 4px;
+              font-size: 10px;
+              font-family: $font-Roboto;
+              margin-left: 5px;
               cursor: pointer;
             }
           }
+        }
+      }
 
-          .weightage-label-container {
-            align-items: center;
-            gap: 11px;
-            padding-bottom: 16px;
+      .task-details-header-container {
+        height: calc(100vh - 110px);
+        overflow-y: auto;
+        &::-webkit-scrollbar {
+          width: 0;
+          height: 0;
+        }
+        .task-label-container {
+          padding-bottom: 16px;
+          align-items: center;
+          gap: 11px;
 
-            h3 {
+          h4 {
+            font-size: 12px;
+            line-height: 16px;
+            font-weight: 500;
+
+            font-family: $font-Roboto;
+            color: $font-primary-color;
+          }
+
+          .horizon-line {
+            flex: 1;
+            border: 1px solid $border-color;
+          }
+        }
+
+        .task-details-main-container {
+          gap: 20px;
+          // justify-content: space-between;
+          padding-bottom: 20px;
+
+          .task-type-container {
+            .task-type-label {
               font-size: 12px;
               line-height: 16px;
               font-weight: 400;
               font-family: $font-Roboto;
-              color: $font-primary-color;
+              color: $font-secondary-color;
+              padding-bottom: 6px;
             }
 
-            .horizon-line {
-              flex: 1;
+            .task-type-selector {
+              padding: 10px 12px;
+              outline: none;
+              background-color: white;
+              color: $font-primary-color;
+              border-radius: 4px;
               border: 1px solid $border-color;
+              width: 100%;
+              font-family: $font-Roboto;
             }
           }
 
-          .weightage-adding-container {
-            .weight-inputs {
-              p {
-                font-size: 12px;
-                line-height: 16px;
-                font-weight: 400;
-                font-family: $font-Roboto;
-                color: $font-secondary-color;
-                padding-bottom: 6px;
+          .task-deadline-container {
+            .task-deadline-label {
+              font-size: 12px;
+              line-height: 16px;
+              font-weight: 400;
+              font-family: $font-Roboto;
+              color: $font-secondary-color;
+              padding-bottom: 6px;
+            }
+
+            .datepicker.task-deadline-selector {
+              max-width: 200px;
+              width: 100%;
+              // padding: 10px 12px;
+              // outline: none;
+              // background-color: white;
+              // color: $font-primary-color;
+              // border-radius: 4px;
+              // border: 1px solid $border-color;
+              // width: 100%;
+              // font-family: $font-Roboto;
+            }
+          }
+
+          .task-assigner-container {
+            max-width: 270px;
+            width: 100%;
+
+            .task-assigner-label {
+              font-size: 12px;
+              line-height: 16px;
+              font-weight: 400;
+              font-family: $font-Roboto;
+              color: $font-secondary-color;
+              padding-bottom: 6px;
+            }
+
+            .task-assigner-selector {
+              max-width: 269px;
+              width: 100%;
+              height: 36px;
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              padding: 10px 12px;
+              background-color: #ffff;
+              border: 1px solid $border-color;
+              border-radius: 4px;
+              font-size: 12px;
+              line-height: 16px;
+              font-family: $font-Roboto;
+              color: $font-primary-color;
+            }
+            img {
+              width: 16px;
+              height: 16px;
+            }
+          }
+
+          .common-property {
+            max-width: 200px;
+            width: 100%;
+          }
+        }
+
+        .task-editor-container {
+          padding-bottom: 16px;
+
+          .task-description-label {
+            padding-bottom: 6px;
+            font-size: 12px;
+            font-family: $font-Roboto;
+            line-height: 12px;
+            font-weight: 400;
+            color: $font-secondary-color;
+          }
+
+          .task-editor {
+            .quill {
+              .ql-toolbar.ql-snow {
+                border-radius: 4px 4px 0px 0px;
+                border: 1px solid $border-color;
               }
 
-              .weightage-unit-container {
-                max-width: 364px;
-                width: 100%;
-                height: 36px;
-                justify-content: space-between;
-                align-items: center;
-                gap: 10px;
+              .ql-container.ql-snow {
+                height: 171px;
+                border-radius: 0px 0px 4px 4px;
+                border: 1px solid $border-color;
 
-                .task-weightage-selector {
-                  padding: 10px 12px;
-                  max-width: 200px;
-                  width: 100%;
-                  border: 1px solid $border-color;
-                  border-radius: 4px;
-                  outline: none;
+                p {
                   color: $font-primary-color;
-                  background-color: white;
+                }
+              }
+            }
+
+            // p {
+            //     color: $font-primary-color;
+            //     font-family: $font-Roboto;
+            //     font-size: 12px;
+            //     line-height: 16px;
+            //     font-weight: 400;
+            // }
+          }
+        }
+
+        .submission-folder-link-container {
+          .task-submission-link {
+            padding: 10px 0px 10px 12px;
+            width: 100%;
+            font-family: $font-Roboto;
+            font-size: 12px;
+            line-height: 16px;
+            font-weight: 400;
+            color: $font-primary-color;
+            border-radius: 4px;
+            border: 1px solid $border-color;
+          }
+
+          padding-bottom: 16px;
+        }
+
+        .file-input-container {
+          position: relative;
+          width: 100%;
+          padding: 14px 0;
+          border: 2px dashed $border-color;
+          border-radius: 5px;
+          text-align: center;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          cursor: pointer;
+          margin-bottom: 20px;
+
+          .upload-icon-container {
+            align-items: center;
+            gap: 8px;
+
+            .upload-icon {
+              width: 16px;
+              height: 16px;
+            }
+
+            p {
+              font-size: 12px;
+              line-height: 16px;
+              font-weight: 400;
+              font-family: $font-Roboto;
+
+              .highlight {
+                color: $primary-color;
+                padding-left: 2px;
+              }
+            }
+          }
+
+          .file-input {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+          }
+        }
+
+        .weightage-label-container {
+          align-items: center;
+          gap: 11px;
+          padding-bottom: 16px;
+
+          h3 {
+            font-size: 12px;
+            line-height: 16px;
+            font-weight: 400;
+            font-family: $font-Roboto;
+            color: $font-primary-color;
+          }
+
+          .horizon-line {
+            flex: 1;
+            border: 1px solid $border-color;
+          }
+        }
+
+        .weightage-adding-container {
+          .weight-inputs {
+            p {
+              font-size: 12px;
+              line-height: 16px;
+              font-weight: 400;
+              font-family: $font-Roboto;
+              color: $font-secondary-color;
+              padding-bottom: 6px;
+            }
+
+            .weightage-unit-container {
+              max-width: 364px;
+              width: 100%;
+              height: 36px;
+              justify-content: space-between;
+              align-items: center;
+              gap: 10px;
+
+              .task-weightage-selector {
+                padding: 10px 12px;
+                max-width: 200px;
+                width: 100%;
+                border: 1px solid $border-color;
+                border-radius: 4px;
+                outline: none;
+                color: $font-primary-color;
+                background-color: white;
+                font-family: $font-Roboto;
+              }
+
+              .task-weight-value-selector {
+                max-width: 72px;
+                width: 100%;
+                padding: 10px 0px 10px 12px;
+                border: 1px solid $border-color;
+                border-radius: 4px;
+              }
+
+              .weightage-action {
+                .btn.increment-btn {
+                  background-color: #ffff;
+                  cursor: pointer;
+                  color: $font-primary-color;
+                  border: 1px solid $border-color;
+                  padding: 10px;
+                  font-family: $font-Roboto;
+                  border-right: none;
+                  border-radius: 4px 0px 0px 4px;
                   font-family: $font-Roboto;
                 }
 
-                .task-weight-value-selector {
-                  max-width: 72px;
-                  width: 100%;
-                  padding: 10px 0px 10px 12px;
+                .btn.decrement-btn {
+                  background-color: #ffff;
+                  cursor: pointer;
+                  color: $font-primary-color;
                   border: 1px solid $border-color;
-                  border-radius: 4px;
-                }
-
-                .weightage-action {
-                  .btn.increment-btn {
-                    background-color: #ffff;
-                    cursor: pointer;
-                    color: $font-primary-color;
-                    border: 1px solid $border-color;
-                    padding: 10px;
-                    font-family: $font-Roboto;
-                    border-right: none;
-                    border-radius: 4px 0px 0px 4px;
-                    font-family: $font-Roboto;
-                  }
-
-                  .btn.decrement-btn {
-                    background-color: #ffff;
-                    cursor: pointer;
-                    color: $font-primary-color;
-                    border: 1px solid $border-color;
-                    padding: 10px;
-                    font-family: $font-Roboto;
-                    border-radius: 0px 4px 4px 0px;
-                    font-family: $font-Roboto;
-                  }
+                  padding: 10px;
+                  font-family: $font-Roboto;
+                  border-radius: 0px 4px 4px 0px;
+                  font-family: $font-Roboto;
                 }
               }
             }

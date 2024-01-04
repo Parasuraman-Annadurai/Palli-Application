@@ -11,7 +11,7 @@ import { useAuth } from "../../context/AuthContext";
 
 import { API_END_POINT } from "../../../config";
 
-import dashBoardHeaderImage from "../../../public/images/dashboard_header_image.svg";
+import dashBoardHeaderImage from "/images/dashboard_header_image.svg";
 
 import "./scss/Dashboard.css";
 

@@ -32,6 +32,8 @@ const ResetPasswordPage = () => {
 
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
+
+  
     const token = searchParams.get("token");
     setVerificationToken(token)
   }, [location.search]);
@@ -60,7 +62,7 @@ const ResetPasswordPage = () => {
     e.preventDefault();
     let validateField = validateNewpassword(newPassword, setPasswordError);
     if (validateField) {
-      //make api call
+
       const headers = {
         "Content-type": "application/json",
       };
@@ -70,10 +72,9 @@ const ResetPasswordPage = () => {
             message : "Success",
             description : `${res.data.message}`,
             duration:2
-          })
+          });
         }).catch((error)=>{
           if (error.response && error.response.status === 400) {
-            console.log(error.response.data);
             notification.error({
               message: "Link Used",
               description: `The link has expired Please request a new one`,

@@ -11,7 +11,6 @@ import { useAuth } from "../../context/AuthContext";
 
 import { API_END_POINT } from "../../../config";
 
-import dashBoardHeaderImage from "../../../public/images/dashboard_header_image.svg";
 
 import "./scss/Dashboard.css";
 
@@ -278,7 +277,7 @@ const DashBoard = () => {
           </p>
         </div>
         <div className="header-img">
-          <img src={dashBoardHeaderImage} alt="DashboardHeaderImage" />
+          <img src="/images/dashboard_header_image.svg" alt="DashboardHeaderImage" />
         </div>
       </div>
 

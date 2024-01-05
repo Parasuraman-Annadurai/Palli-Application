@@ -78,7 +78,7 @@ const Login = () => {
           </div>
           <div className="login-container flex">
             <div className="login-image-container">
-              <img src="/public/icons/Login Image.svg" alt="" draggable={false} />
+              <img src="/icons/Login Image.svg" alt="" draggable={false} />
             </div>
             <div className="login-form-container">
               <form onSubmit={handleSubmit(handleLogin)}>

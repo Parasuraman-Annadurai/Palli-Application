@@ -1,11 +1,19 @@
 import React, { useState } from "react";
 import forgotPasswordImage from "/images/forgot_password.svg";
 import { isEmailValid } from "../../utils/validate";
+import axios from "axios";
+import { API_END_POINT } from "../../../config";
+import { useAuth } from "../../context/AuthContext";
+import { notification } from "antd";
 
 const ForgotPassword = () => {
-  const [email, setEmail] = useState("");
+  const {token} = useAuth()
+  const [email, setEmail] = useState("testui@gmail.com");
   const [emailError, setEmailError] = useState({});
-
+  const headers = {
+    Authorization : `Bearer ${token.access}`,
+    "Content-type" : "application/json"
+  }
   const handleEmail = (e) => {
     const { name, value } = e.target;
     setEmail(value);
@@ -18,6 +26,25 @@ const ForgotPassword = () => {
       setEmailError({ ...emailError, email: isvalidEmail });
     } else {
       //doing api call
+      axios.post(`${API_END_POINT}/api/accounts/forgot_password/`,{email}).then((res)=>{
+        notification.success({
+          message: "Success",
+          description: `${res.data.message}`,
+          duration: 2,
+        });
+      }).catch((error)=>{
+        if (error.response && error.response.status === 400) {
+            notification.error({
+              message: "InvalidUser",
+              description: `Email Not Found`,
+              duration: 2,
+            });
+          // Handle the error or take necessary actions
+        } else {
+         
+        }
+
+      })
     }
   };
   return (

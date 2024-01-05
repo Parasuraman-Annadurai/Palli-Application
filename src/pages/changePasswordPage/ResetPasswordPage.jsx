@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 //External packages here
+
 import { Popover } from "antd";
+import { notification } from "antd";
 //Supporting utilities files here
 import { validateNewpassword } from "../../utils/validate";
 import { checkPasswordCriteria } from "../../components/PasswordRequirement";
@@ -8,23 +10,25 @@ import { checkPasswordCriteria } from "../../components/PasswordRequirement";
 //Images here
 import Logo from "/images/dckap_palli_logo_lg.svg";
 import ResetPasswordImage from "/images/change_password.svg";
-//CSS here
-
-
-
+import axios from "axios";
+import { API_END_POINT } from "../../../config";
 
 const ResetPasswordPage = () => {
   const [passwordError, setPasswordError] = useState({});
   const [passwordCriteria,setpasswordCriteria] = useState(null);
   const [popoverShow,setPopovershow] = useState(false);
   const [newPassword, setNewPassword] = useState({
-    newPassword: "",
-    confirmPassword: "",
+    newPassword: "Parasuapt@2002",
+    confirmPassword: "Parasuapt@2002",
   });
   const [showPassword, setShowPassword] = useState({
     newPassword: false,
     confirmPassword: false,
   });
+
+  const token_verification = `token=gAAAAABlZhkJh-dZrmxq__iyn2KxSoUmRz0CNzu2XrpI7gLwX4yL8ew7_fv4qtjTrVXSGUXrMQNlBNeUVDWKWFYGocPePLZ3tPQrW5JghvOQB_F9Y7DkMhnfGnQ_DIr9Ir-N5C6beJ-NJsXtZ7JYZJL9Z5gQq3M6hN54YvdygS4GINLutIWabf9llRWWa2Vvk1KPHOWBB3mj`;
+
+
   const handleInputs = (e) => {
     const { name, value } = e.target;
     setNewPassword({ ...newPassword, [name]: value });
@@ -48,6 +52,23 @@ const ResetPasswordPage = () => {
     let validateField = validateNewpassword(newPassword,setPasswordError)
     if(validateField){
       //make api call
+      const headers = {
+        "Content-type" : "application/json"
+      }
+      axios.post(`${API_END_POINT}/api/accounts/change/password?token=gAAAAABlZhkJh-dZrmxq__iyn2KxSoUmRz0CNzu2XrpI7gLwX4yL8ew7_fv4qtjTrVXSGUXrMQNlBNeUVDWKWFYGocPePLZ3tPQrW5JghvOQB_F9Y7DkMhnfGnQ_DIr9Ir-N5C6beJ-NJsXtZ7JYZJL9Z5gQq3M6hN54YvdygS4GINLutIWabf9llRWWa2Vvk1KPHOWBB3mj`,{password:newPassword.confirmPassword},{headers}).then((res)=>{
+        // console.log(res);
+      }).catch((error)=>{
+        if (error.response && error.response.status === 400) {
+          notification.error({
+            message: "Link Used",
+            description: `The link has used. Please request a new one.`,
+            duration: 2,
+          });
+        // Handle the error or take necessary actions
+      } else {
+       
+      }
+      })
     }
 
   

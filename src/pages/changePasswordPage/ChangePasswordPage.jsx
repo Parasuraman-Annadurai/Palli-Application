@@ -5,10 +5,8 @@ import { Popover } from "antd";
 import { validateNewpassword } from "../../utils/validate";
 import { checkPasswordCriteria } from "../../components/PasswordRequirement";
 
-//Images here
-import Logo from "/images/dckap_palli_logo_sm.svg";
-import ResetPasswordImage from "/images/change_password1.svg";
-import "./scss/ResetPasswordPage.css";
+//CSS here
+import "./scss/ChangePasswordPage.css";
 const ResetPasswordPage = () => {
   const [passwordError, setPasswordError] = useState({});
   const [passwordCriteria, setpasswordCriteria] = useState(null);
@@ -50,9 +48,11 @@ const ResetPasswordPage = () => {
   return (
     <div className="reset-password-container">
       <div className="reset-container">
-        <div className="logo">
-          <img src={Logo} alt="Logo" />
-        </div>
+        <a href="/">
+          <div className="logo">
+            <img src="/images/dckap_palli_logo_sm.svg" alt="Logo" />
+          </div>
+        </a>
         <div className="content-wrapper flex">
           <div className="input-container">
             <div className="headings">
@@ -67,11 +67,12 @@ const ResetPasswordPage = () => {
             <div className="inputs">
               <div className="rest-password-input">
                 <div className="input-eye-icon">
-                <label htmlFor="Password" className="password">
-                  New Password
-                  <span className="required-symbole">*</span>
-                </label>
+                  <label htmlFor="Password" className="password">
+                    New Password
+                    <span className="required-symbole">*</span>
+                  </label>
                   <Popover
+                    className="popover"
                     content={passwordCriteria}
                     trigger={"focus"}
                     placement="right"
@@ -81,7 +82,7 @@ const ResetPasswordPage = () => {
                       type={showPassword.newPassword ? "text" : "password"}
                       id="Password"
                       name="newPassword"
-                      placeholder="Input password"
+                      placeholder="Input Password"
                       className="input-field"
                       value={newPassword.newPassword}
                       onChange={handleNewpassword}
@@ -96,10 +97,11 @@ const ResetPasswordPage = () => {
                   >
                     {showPassword.newPassword ? "visibility" : "visibility_off"}
                   </span>
+                  <p className="error-message">
+                    {passwordError.newPassword ? passwordError.newPassword : ""}
+                  </p>
                 </div>
-                <p className="error-message">
-                  {passwordError.newPassword ? passwordError.newPassword : ""}
-                </p>
+
                 <div className="input-eye-icon">
                   <label htmlFor="Password" className="password confirm">
                     Confirm New Password
@@ -109,8 +111,8 @@ const ResetPasswordPage = () => {
                     type={showPassword.confirmPassword ? "text" : "password"}
                     id="ConfirmPassword"
                     name="confirmPassword"
-                    className="input-field" 
-                    placeholder="Input password"
+                    className="input-field"
+                    placeholder="Input Password"
                     value={newPassword.confirmPassword}
                     onChange={handleInputs}
                   />
@@ -118,29 +120,32 @@ const ResetPasswordPage = () => {
                     id="eye--on"
                     name="confirmPassword"
                     className="material-symbols-outlined eye-icon"
-                    onClick={() => togglePasswordVisibility("ConfirmPassword")}
+                    onClick={() => togglePasswordVisibility("confirmPassword")}
                   >
                     {showPassword.confirmPassword
                       ? "visibility"
                       : "visibility_off"}
                   </span>
+                  <p className="error-message">
+                    {passwordError.confirmPassword
+                      ? passwordError.confirmPassword
+                      : ""}
+                  </p>
                 </div>
               </div>
               <div className="reset-password">
-                <p className="error-message">
-                  {passwordError.confirmPassword
-                    ? passwordError.confirmPassword
-                    : ""}
-                </p>
-
-                <button type="submit" className="reset-sbmt-btn" onClick={handleSubmit}>
+                <button
+                  type="submit"
+                  className="reset-sbmt-btn"
+                  onClick={handleSubmit}
+                >
                   Reset Password
                 </button>
               </div>
             </div>
           </div>
           <div className="resetImage">
-            <img src={ResetPasswordImage} alt="ResetPasswordImage" />
+            <img src="/images/change_password1.svg" alt="ResetPasswordImage" />
           </div>
         </div>
       </div>

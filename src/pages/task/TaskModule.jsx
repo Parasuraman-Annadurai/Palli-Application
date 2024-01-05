@@ -24,10 +24,12 @@ const TaskModule = () => {
   const [students, setStudents] = useState([]);
   const [selectedStudents, setSelectedStudents] = useState([]);
   const [deleteTask, setDeleteTask] = useState({});
+
   const headers = {
     Authorization: `Bearer ${token.access}`,
     "Content-type": "application/json",
   };
+
   useEffect(() => {
     //this useEffect used to fetch task list and will re-run whenever filter or search is updated
     const url = `${API_END_POINT}/api/task/${batchId}/list_task/?limit=10&page=1&filter_task_type=0&search=${taskSearchWord}`;
@@ -62,24 +64,6 @@ const TaskModule = () => {
   }, [taskSearchWord]);
 
  
-  // useEffect(() => {
-  //   const id = editId;
-
-  //   const taskUserIds = [];
-
-  //   taskLists?.data.forEach((task) => {
-  //    if(task.id == id){
-  //     const {task_users} = task;
-  //      task_users && task_users.map((a)=>{
-  //       taskUserIds.push(a.user)
-  //      })
-  //    }
-  //   });
-
-  //   setSelectedStudents(taskUserIds);
-
-  // }, [editId])
-
   
   const handleConfirmDelete = () => {
     const isDraft = taskLists.data.some(
@@ -124,50 +108,57 @@ const TaskModule = () => {
         });
     }
   };
-  const handleSave = (taskData, draft) => {
-    const { Title, Description, Deadline, SubmissionLink } = taskData;
-    const formattedDate = Deadline.format("YYYY-MM-DD HH:mm:ss");
 
-    let isTaskExists = false;
+  const handleSave = () => {
+    // const { Title, Description, Deadline, SubmissionLink } = taskData;
+    // const formattedDate = Deadline.format("YYYY-MM-DD HH:mm:ss");
 
-    for (const task of taskLists.data) {
-      if (task.task_title === Title) {
-        isTaskExists = true;
-        break;
-      }
-    }
+    // let isTaskExists = false;
 
-    if (isTaskExists) {
-      notification.error({
-        message: "Error",
-        description: `Task "${Title}" already exists`,
-        duration: 3,
-      });
-      return;
-    }
+    // for (const task of taskLists.data) {
+    //   if (task.task_title === Title) {
+    //     isTaskExists = true;
+    //     break;
+    //   }
+    // }
 
-    const existingTaskIndex = taskLists.data.findIndex(
-      (task) => task.draft === draft
-    );
+    // if (isTaskExists) {
+    //   notification.error({
+    //     message: "Error",
+    //     description: `Task "${Title}" already exists`,
+    //     duration: 3,
+    //   });
+    //   return;
+    // }
 
-    const createTaskPayload = {
-      task_title: Title,
-      task_description: Description,
-      task_type: 0,
-      due_date: formattedDate,
-    };
+    // const existingTaskIndex = taskLists.data.findIndex(
+    //   (task) => task.draft === draft
+    // );
 
-    const apiEndpoint = draft
+    // const createTaskPayload = {
+    //   task_title: Title,
+    //   task_description: Description,
+    //   task_type: 0,
+    //   due_date: formattedDate,
+    // };
+
+    const apiEndpoint = true
       ? `${API_END_POINT}/api/task/${batchId}/create_task/`
       : `${API_END_POINT}/api/task/${batchId}/update_task/${editId}`;
-    const method = draft ? "POST" : "PUT";
+    const method = true ? "POST" : "PUT";
 
     const assignTask = {
       user: selectedStudents,
       task_status: 0,
-      submission_link: SubmissionLink,
+      // submission_link: SubmissionLink,
     };
 
+
+    // Added logic only for new task 
+    const payload = taskLists.data.find((task)=> task.draft)
+
+    // Existing taskslogic need to be handled here
+    
     axios({
       method: method,
       url: apiEndpoint,
@@ -175,11 +166,11 @@ const TaskModule = () => {
         Authorization: `Bearer ${token.access}`,
         "Content-Type": "application/json",
       },
-      data: createTaskPayload,
+      data: payload,
     }).then((res) => {
       notification.success({
         message: "Success",
-        description: draft
+        description: true
           ? `Task Added Successfully`
           : `Task Updated Successfully`,
         duration: 3,
@@ -212,15 +203,15 @@ const TaskModule = () => {
         }));
       }
       setEditId(null);
-      axios({
-        method: "POST",
-        url: `${API_END_POINT}/api/task/${batchId}/assign/task/${res.data.data.id}`,
-        headers: {
-          Authorization: `Bearer ${token.access}`,
-          "Content-Type": "application/json",
-        },
-        data: assignTask,
-      }).then((res) => {});
+        axios({
+          method: "POST",
+          url: `${API_END_POINT}/api/task/${batchId}/assign/task/${res.data.data.id}`,
+          headers: {
+            Authorization: `Bearer ${token.access}`,
+            "Content-Type": "application/json",
+          },
+          data: assignTask,
+        }).then((res) => {});
     });
 
     //once task create or update tasklist state update
@@ -233,15 +224,18 @@ const TaskModule = () => {
       id: uniqueId,
       task_title: "Untitled",
       task_description: "",
-      due_date: dayjs(),
+      due_date:dayjs().format("YYYY-MM-DD HH:mm:ss"),
       draft: true,
+      task_type: 0
     };
 
     const concatNewTask = {
       ...taskLists,
       data: [createTask, ...taskLists.data],
     };
+
     setEditId(uniqueId);
+
     setTaskLists(concatNewTask);
   };
 
@@ -253,6 +247,26 @@ const TaskModule = () => {
     onOk: handleConfirmDelete,
     onCancel: () => setDeleteTask({}),
   };
+
+
+  const handleInputChange = (name, value) => {
+    const updatedList = taskLists.data.map((task) => {
+      if (task.id === editId) {
+        return {
+          ...task,
+          [name]: value,
+        };
+      }
+      return task
+    });
+
+
+
+    updatedList["data"] = updatedList
+
+    setTaskLists(updatedList);
+  };
+
   return (
     <>
       {deleteTask.id && (
@@ -279,12 +293,13 @@ const TaskModule = () => {
           type={"task"}
           editId={editId}
           currentTask={
-            editId ? taskLists?.data.filter((task) => task.id === editId) : {}
+            editId ? taskLists?.data.find((task) => task.id === editId) : {}
           }
           selectedStudents={selectedStudents}
           students={students}
           setSelectedStudents={setSelectedStudents}
           handleSave={handleSave}
+          handleInputChange={handleInputChange}
         />
       ) : (
         <div className="select-something-container flex">

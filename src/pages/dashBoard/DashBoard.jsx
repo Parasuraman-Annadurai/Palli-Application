@@ -84,6 +84,7 @@ const DashBoard = () => {
       setError("");
     }
   };
+
   const handleBatchNameChange = (e) => {
     const input = e.target.value;
     const regex = /^[A-Za-z0-9\- ]*$/;
@@ -201,6 +202,7 @@ const DashBoard = () => {
     }
   };
   const [EditId, setEditId] = useState();
+
   const handleEditClick = (batch) => {
     setEditId(batch.id);
     setIsEditMode(batch.id);
@@ -212,6 +214,7 @@ const DashBoard = () => {
     setEndDate(dayjs(batch.end_date));
     setBatchNameError(null);
   };
+  
   const handleUpdate = () => {
     const hasError = validateForm();
 

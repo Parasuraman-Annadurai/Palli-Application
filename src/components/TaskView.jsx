@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
-
 import { DatePicker, Checkbox, Menu, Dropdown, Skeleton } from "antd";
-import { useForm, Controller } from "react-hook-form";
+// import { useForm, Controller } from "react-hook-form";
 import ReactQuill, { Quill } from "react-quill";
 import dayjs from "dayjs";
 
@@ -16,20 +15,13 @@ const TaskView = ({
   setSelectedStudents,
   selectedStudents,
   handleSave,
+  handleInputChange
 }) => {
+
   const [loading, setLoading] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
-
   const [initialTitle, setInitialTitle] = useState("");
-  const {
-    control,
-    handleSubmit,
-    reset,
-    setError,
-    getValues,
-    setValue,
-    formState: { errors },
-  } = useForm();
+
 
   // Destructure the current task
   const {
@@ -38,19 +30,13 @@ const TaskView = ({
     due_date,
     draft,
     task_users = [],
-  } = currentTask[0] || {};
-  useEffect(() => {
-    if (currentTask.length > 0) {
-      setValue("Title", task_title);
-      setValue("Description", task_description);
-      setValue("Deadline", dayjs(due_date));
-    }
-  }, [currentTask]);
-
+  } = currentTask;
+  
   const validateNotEmpty = (fieldName, value) => {
     const trimmedValue = value ? value.replace(/<[^>]*>/g, "").trim() : null;
     return trimmedValue ? null : `${fieldName} is required`;
   };
+
 
   const CustomIcons = () => {
     const icons = Quill.import("ui/icons");
@@ -177,45 +163,35 @@ const TaskView = ({
     setInitialTitle(getValues("Title"));
     setIsEditing(true);
   };
+
+
   return (
     <>
       <main className="main-container">
         {loading ? (
           <Skeleton active paragraph={4} />
         ) : (
-          <form onSubmit={handleSubmit(handleValidate)}>
+          <div>
             <div className="module-header-section-container">
               <div className="module-header-section flex">
                 <div className="module-title-section flex">
-                  <Controller
-                    name="Title"
-                    defaultValue={""}
-                    control={control}
-                    rules={{
-                      validate: (value) => validateNotEmpty("Title", value),
-                    }}
-                    render={({ field }) => (
-                      <>
-                        <input
-                          {...field}
-                          style={{
-                            borderBottom: isEditing ? "1px solid green" : "",
-                            width: field.value
-                              ? `${field.value.length * 8}px`
-                              : "40PX",
-                          }}
-                          type="text"
-                          onDoubleClick={onDoubleClick}
-                          placeholder={"Untitled"}
-                          className={` ${errors.Title ? "error-notify" : ""} `}
-                          readOnly={!isEditing}
-                         
-                        />
-                      </>
-                    )}
+                  <input
+                    value={task_title ? task_title : "Untitled"}
+                    // style={{
+                    //   borderBottom: isEditing ? "1px solid green" : "",
+                    // }}
+                    name="task_title"
+                    type="text"
+                    onChange={(e) =>
+                      handleInputChange("task_title", e.target.value)
+                    }
+                    // onDoubleClick={onDoubleClick}
+                    placeholder={"Untitled"}
+                    // className={` ${errors.Title ? "error-notify" : ""} `}
+                    // readOnly={!isEditing}
                   />
 
-                  {isEditing && (
+                  {/* {isEditing && (
                     <div>
                       <span className="yes-btn">
                         <img
@@ -232,17 +208,21 @@ const TaskView = ({
                         />
                       </span>
                     </div>
-                  )}
+                  )} */}
                 </div>
 
                 <div className="task-create">
-                  <button type="submit" className="btn primary-medium">
+                  <button
+                    type="submit"
+                    className="btn primary-medium"
+                    onClick={() => handleSave()}
+                  >
                     {draft ? "Create" : "Update"}
                   </button>
                 </div>
               </div>
               <p className="error-message">
-                {errors.Title ? errors.Title.message : ""}
+                {/* {errors.Title ? errors.Title.message : ""} */}
               </p>
             </div>
 
@@ -256,58 +236,43 @@ const TaskView = ({
                 <div className="task-deadline-container common-property">
                   <p className="task-deadline-label">Deadline</p>
 
-                  <Controller
-                    name="Deadline"
-                    control={control}
-                    rules={{ required: "Deadline is required" }}
-                    render={({ field }) => (
-                      <>
-                        <DatePicker
-                          {...field}
-                          showTime={{ format: "HH:mm" }}
-                          placeholder="Select here..."
-                          format="YYYY-MM-DD HH:mm"
-                          className={`datepicker ${
-                            errors.Deadline
-                              ? "error-notify"
-                              : "task-deadline-selector"
-                          }`}
-                          suffixIcon={<img src={`/icons/calendorIcon.svg`} />}
-                        />
-                        <p className="error-message">
-                          {errors.Deadline ? errors.Deadline.message : ""}
-                        </p>
-                      </>
-                    )}
+                  <DatePicker
+                    // {...field}
+                    value={due_date ? dayjs(due_date) : null}
+                    showTime={{ format: "HH:mm" }}
+                    placeholder="Select here..."
+                    format="YYYY-MM-DD HH:mm"
+                    onChange={(date, dateString) =>
+                      handleInputChange("due_date", dateString)
+                    }
+                    // className={`datepicker ${
+                    //   errors.Deadline
+                    //     ? "error-notify"
+                    //     : "task-deadline-selector"
+                    // }`}
+                    suffixIcon={<img src={`/icons/calendorIcon.svg`} />}
                   />
+                  <p className="error-message">
+                    {/* {errors.Deadline ? errors.Deadline.message : ""} */}
+                  </p>
                 </div>
 
                 <div className="task-assigner-container">
                   <p className="task-assigner-label">Assignee</p>
-                  <Controller
-                    name="assignee"
-                    control={control}
-                    render={({ field }) => (
-                      <Dropdown overlay={menu} trigger={["click"]}>
-                        <span
-                          className={`task-assigner-selector  ${
-                            errors.assignee ? "error-notify" : ""
+                  <Dropdown overlay={menu} trigger={["click"]}>
+                    <span className={`task-assigner-selector`}>
+                      {selectedStudents.length === students.length
+                        ? `All Students`
+                        : `${
+                            selectedStudents.length === 0
+                              ? "Select Students"
+                              : `${selectedStudents.length} Student`
                           }`}
-                        >
-                          {selectedStudents.length === students.length
-                            ? `All Students`
-                            : `${
-                                selectedStudents.length === 0
-                                  ? "Select Students"
-                                  : `${selectedStudents.length} Student`
-                              }`}
-                          <img src="/icons/dropdown.svg" alt="" />
-                        </span>
-                      </Dropdown>
-                    )}
-                  />
+                      <img src="/icons/dropdown.svg" alt="" />
+                    </span>
+                  </Dropdown>
                   <p className="error-message">
-                    {errors.assignee ? errors.assignee.message : ""}
+                    {/* {errors.assignee ? errors.assignee.message : ""} */}
                   </p>
                 </div>
               </div>
@@ -315,80 +280,53 @@ const TaskView = ({
               <div className="task-editor-container">
                 <p className="task-description-label">Description</p>
                 <div className="task-editor">
-                  <Controller
-                    name="Description"
-                    control={control}
-                    rules={{
-                      validate: (value) =>
-                        validateNotEmpty("Description", value),
-                    }}
-                    render={({ field }) => (
-                      <>
-                        <CustomIcons />
-                        <ReactQuill
-                          placeholder="Type here"
-                          {...field}
-                          className={errors.Description ? "error-notify" : ""}
-                          modules={{
-                            toolbar: {
-                              container: [
-                                [{ header: [1, 2, false] }],
-                                ["bold", "italic", "underline"],
-                                [
-                                  "alignLeft",
-                                  "alignCenter",
-                                  "alignRight",
-                                  "alignJustify",
-                                ],
-                              ],
-                            },
-                          }}
-                          formats={[
-                            "header",
-                            "bold",
-                            "italic",
-                            "underline",
-                            "list",
-                            "bullet",
-                            "alignLeft",
-                            "alignCenter",
-                            "alignRight",
-                            "alignJustify",
-                          ]}
-                          theme="snow"
-                        />
-                        <p className="error-message">
+                  <>
+                    <CustomIcons />
+                    <ReactQuill
+                      placeholder="Type here"
+                      value={task_description ? task_description : ""}
+                      modules={{
+                        toolbar: {
+                          container: [
+                            [{ header: [1, 2, false] }],
+                            ["bold", "italic", "underline"],
+                            [
+                              "alignLeft",
+                              "alignCenter",
+                              "alignRight",
+                              "alignJustify",
+                            ],
+                          ],
+                        },
+                      }}
+                      formats={[
+                        "header",
+                        "bold",
+                        "italic",
+                        "underline",
+                        "list",
+                        "bullet",
+                        "alignLeft",
+                        "alignCenter",
+                        "alignRight",
+                        "alignJustify",
+                      ]}
+                      theme="snow"
+                      onChange={(value) =>
+                        handleInputChange("task_description", value)
+                      }
+                    />
+                    {/* <p className="error-message">
                           {errors.Description ? errors.Description.message : ""}
-                        </p>
-                      </>
-                    )}
-                  />
+                        </p> */}
+                  </>
                 </div>
               </div>
 
               <div className="submission-folder-link-container">
-                <Controller
-                  control={control}
-                  name="SubmissionLink"
-                  defaultValue={""}
-                  render={({ field }) => (
-                    <>
-                      <input
-                        {...field}
-                        className={`task-submission-link ${
-                          errors.SubmissionLink ? "error-notify" : ""
-                        }`}
-                        type="link"
-                        placeholder="Paste your link here..."
-                      />
-                      <p className="error-message">
-                        {errors.SubmissionLink
-                          ? errors.SubmissionLink.message
-                          : ""}
-                      </p>
-                    </>
-                  )}
-                />
+                <>
+                  <input type="link" placeholder="Paste your link here..." />
+                </>
               </div>
 
               <div>
@@ -400,27 +338,18 @@ const TaskView = ({
                       <span className="highlight">click to upload</span>
                     </p>
                   </div>
-                  <Controller
-                    name="fileInput"
-                    control={control}
-                    render={({ field }) => (
-                      <>
-                        <input
-                          {...field}
-                          type="file"
-                          className="file-input"
-                          onChange={(e) =>
-                            setValue("fileInput", e.target.value)
-                          }
-                        />
-                      </>
-                    )}
-                  />
+                  <>
+                    <input
+                      type="file"
+                      className="file-input"
+                      onChange={(e) => setValue("fileInput", e.target.value)}
+                    />
+                  </>
                 </div>
                 {weightageShow && <WeightageList />}
               </div>
             </div>
-          </form>
+          </div>
         )}
       </main>
     </>

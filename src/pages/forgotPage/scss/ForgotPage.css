@@ -283,6 +283,7 @@ body .container .forgot-page-container .logo-container .logo {
   width: 100%;
 }
 body .container .forgot-page-container .forgot-container {
+  height: calc(100vh - 80px);
   align-items: center;
   justify-content: center;
   gap: 115px;
@@ -345,6 +346,10 @@ body .container .forgot-page-container .forgot-container .forgot-form-container 
   padding: 10px 0px 10px 12px;
   border-radius: 4px;
   width: 100%;
+}
+body .container .forgot-page-container .forgot-container .forgot-form-container .email-container .email-input:focus {
+  border: 1px solid #49a843;
+  outline: none;
 }
 body .container .forgot-page-container .forgot-container .forgot-form-container .forgot-button-container button {
   width: 100%;

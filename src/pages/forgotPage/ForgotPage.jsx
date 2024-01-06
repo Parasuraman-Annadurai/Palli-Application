@@ -63,7 +63,7 @@ const ForgotPassword = () => {
                       <input
                         autoComplete="off"
                         type="text"
-                        className="email-input"
+                        className={`email-input ${emailError.email ? "error-notify":""}`}
                         placeholder="Type here..."
                         value={email}
                         onChange={handleEmail}

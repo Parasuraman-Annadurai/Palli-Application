@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useForm } from "react-hook-form";
 
-import { LoadingOutlined, } from "@ant-design/icons";
+import { LoadingOutlined } from "@ant-design/icons";
 
 import { notification } from "antd";
 

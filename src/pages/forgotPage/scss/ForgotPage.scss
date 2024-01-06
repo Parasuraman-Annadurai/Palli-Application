@@ -334,6 +334,7 @@ body {
         }
       }
       .forgot-container {
+        height: calc(100vh - 80px);
         align-items: center;
         justify-content: center;
         gap: 115px;
@@ -399,6 +400,10 @@ body {
               padding: 10px 0px 10px 12px;
               border-radius: 4px;
               width: 100%;
+            }
+            .email-input:focus {
+              border: 1px solid $primary-color;
+              outline: none;
             }
           }
 

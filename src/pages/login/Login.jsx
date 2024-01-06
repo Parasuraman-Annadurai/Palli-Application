@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useForm } from "react-hook-form";
 
-import { LoadingOutlined, } from "@ant-design/icons";
+import { LoadingOutlined } from "@ant-design/icons";
 
 import { notification } from "antd";
 
@@ -78,7 +78,7 @@ const Login = () => {
           </div>
           <div className="login-container flex">
             <div className="login-image-container">
-              <img src="/public/icons/Login Image.svg" alt="" draggable={false} />
+              <img src="/icons/Login Image.svg" alt="" draggable={false} />
             </div>
             <div className="login-form-container">
               <form onSubmit={handleSubmit(handleLogin)}>
@@ -96,7 +96,7 @@ const Login = () => {
                     name="email"
                     placeholder="Type here..."
                     {...register("email", {
-                      required: "Email id is required",
+                      required: "Required field cannot be empty",
                       validate: isEmailValid,
                     })}
                   />
@@ -115,7 +115,7 @@ const Login = () => {
                       name="password"
                       placeholder="Type here..."
                       {...register("password", {
-                        required: "Password is required",
+                        required: "Required field cannot be empty",
                         validate: isPasswordValid,
                       })}
                     />

@@ -22,8 +22,8 @@ const ResetPasswordPage = () => {
   const [passwordCriteria, setpasswordCriteria] = useState(null);
   const [popoverShow, setPopovershow] = useState(false);
   const [newPassword, setNewPassword] = useState({
-    newPassword: "Parasuapt@2002",
-    confirmPassword: "Parasuapt@2002",
+    newPassword: "",
+    confirmPassword: "",
   });
   const [showPassword, setShowPassword] = useState({
     newPassword: false,

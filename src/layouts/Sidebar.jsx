@@ -1,11 +1,6 @@
 import React, { useState, useEffect } from "react";
-import {
-  useLocation,
-  useParams,
-  useNavigate,
-  NavLink,
-  Link,
-} from "react-router-dom";
+import {Modal} from "antd";
+import { useLocation, useParams, useNavigate, NavLink, Link } from "react-router-dom";
 
 import { Dropdown } from "antd";
 import axios from "axios";
@@ -73,6 +68,23 @@ const Sidebar = ({ menuList }) => {
     },
   ];
   const listBatchLists =  batchList.filter((batch)=>batch.id !== currentBatch?.id);
+
+
+  const handleSwitch = (id, batchName) => {
+    Modal.confirm({
+      width: 400,
+      title: `Confirm Switch to ${batchName}`,
+      content: "Are you sure you want to Switch this Batch?",
+      okText: "Switch",
+      onOk: () => {
+        navigate(`/batch/${id}/applications`);
+        window.location.reload();
+      },
+      closable: true,
+      cancelButtonProps: { style: { display: "none" } },
+    });
+  };
+
   return (
     <>
       <nav className="side-nav-container flex">
@@ -182,15 +194,17 @@ const Sidebar = ({ menuList }) => {
               </div>
             </div>
             <div className="add-batch">
-              <button className="add-batch-btn">
+              {/* <button className="add-batch-btn">
                 <span>+</span> Add New Batch
-              </button>
+              </button> */}
             </div>
           </div>
           <div className="switch-batch-list-container">
             {batchList.map((batch, index) => {
               return (
-                <div className="switch-batch-card flex" key={index}>
+                <div className="switch-batch-card flex" 
+                onClick={() => handleSwitch(batch.id, batch.batch_name)}
+                key={index}>
                   <div className="batch-left-side flex">
                     <div className="batch-name-year">
                       <h4>{batch.batch_name}</h4>
@@ -203,9 +217,9 @@ const Sidebar = ({ menuList }) => {
                       <span>Internship</span>
                     </div>
                   </div>
-                  <div className="batch-right-side">
+                  {/* <div className="batch-right-side">
                     <img src="/public/icons/edit-pencil.svg" alt="" />
-                  </div>
+                  </div> */}
                 </div>
               );
             })}

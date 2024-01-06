@@ -115,7 +115,7 @@ const Login = () => {
                       name="password"
                       placeholder="Type here..."
                       {...register("password", {
-                        required: "Invalid Password",
+                        required: "Required field cannot be empty",
                         validate: isPasswordValid,
                       })}
                     />

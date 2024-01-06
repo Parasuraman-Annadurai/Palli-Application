@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { Button, Modal, Input, DatePicker, Skeleton ,notification} from "antd";
+import { Button, Modal, Input, DatePicker, Skeleton, notification } from "antd";
 import dayjs from "dayjs";
 import axios from "axios";
 
@@ -13,6 +13,7 @@ import { API_END_POINT } from "../../../config";
 
 import dashBoardHeaderImage from "../../../public/images/dashboard_header_image.svg";
 
+import "./scss/Dashboard.css";
 
 const DashBoard = () => {
   const navigate = useNavigate();
@@ -24,13 +25,13 @@ const DashBoard = () => {
 
   const [batch_name, setBatchName] = useState("");
   const [start_date, setStartDate] = useState("");
-  const [end_date, setEndDate] = useState(""); 
+  const [end_date, setEndDate] = useState("");
   const [company, setCompany] = useState(1);
 
   const [startError, setStartError] = useState("");
   const [endError, setEndError] = useState("");
   const [batchNameError, setBatchNameError] = useState(null);
- 
+
   const [isEditMode, setIsEditMode] = useState(false);
   const [selectedBatch, setSelectedBatch] = useState(null);
 
@@ -84,6 +85,7 @@ const DashBoard = () => {
       setError("");
     }
   };
+
   const handleBatchNameChange = (e) => {
     const input = e.target.value;
     const regex = /^[A-Za-z0-9\- ]*$/;
@@ -185,13 +187,12 @@ const DashBoard = () => {
           setBatchList(updatedArray);
           notification.success({
             message: "Success",
-            description:  "Batch Created Successfully",
+            description: "Batch Created Successfully",
             duration: 3,
           });
         })
         .catch((error) => {
           console.log(error);
-
         })
         .finally(() => {
           setLoading(false);
@@ -202,6 +203,7 @@ const DashBoard = () => {
     }
   };
   const [EditId, setEditId] = useState();
+
   const handleEditClick = (batch) => {
     setEditId(batch.id);
     setIsEditMode(batch.id);
@@ -213,6 +215,7 @@ const DashBoard = () => {
     setEndDate(dayjs(batch.end_date));
     setBatchNameError(null);
   };
+  
   const handleUpdate = () => {
     const hasError = validateForm();
 
@@ -250,7 +253,7 @@ const DashBoard = () => {
           setBatchList(updatedData);
           notification.success({
             message: "Success",
-            description:  "Batch Updated Successfully",
+            description: "Batch Updated Successfully",
             duration: 3,
           });
         })
@@ -266,9 +269,9 @@ const DashBoard = () => {
   };
   return (
     <div className="content">
-      <div className="greeting">
-        <div className="heading">
-          <h1 className="welcome__message">
+      <div className="greeting flex">
+        <div className="welcome-text">
+          <h1 className="welcome-message">
             Welcome, {user.first_name} {user.last_name} <br />
           </h1>
           <p>
@@ -277,8 +280,7 @@ const DashBoard = () => {
             the Head Teacher if you want them excluded from your domain.
           </p>
         </div>
-
-        <div className="header__img">
+        <div className="header-img">
           <img src={dashBoardHeaderImage} alt="DashboardHeaderImage" />
         </div>
       </div>
@@ -295,7 +297,9 @@ const DashBoard = () => {
                   type="primary"
                   onClick={showModal}
                 >
-                  <h3>ADD BATCH</h3>
+                  <h3>
+                    <span style={{fontSize:18}}>+</span> ADD BATCH
+                  </h3>
                 </Button>
               </div>
 
@@ -306,6 +310,7 @@ const DashBoard = () => {
                 onOk={isEditMode ? handleUpdate : handleCLick}
                 onCancel={handleCancel}
                 okText={isEditMode ? "Update" : "Add Batch"}
+                maskClosable={false}
               >
                 <div>
                   <div className="batch_name">

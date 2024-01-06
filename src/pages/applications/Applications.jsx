@@ -43,7 +43,6 @@ const Applications = () => {
     user_status: "",
   });
 
-  const [isDocsShow, setIsDocsShow] = useState(false);
 
   const headers = {
     Authorization: `Bearer ${token.access}`,
@@ -112,8 +111,10 @@ const Applications = () => {
         <main className="application-view-more-container" key={details.id}>
           <div className="left-side">
             <div className="top-section">
-              <div className="application-name">
-                <p className="heading" onClick={() => handleViewMore([])}><a href="">Applications list</a></p>
+              <div className="application-name" style={{ cursor: "pointer" }}>
+                <p className="heading" onClick={() => handleViewMore([])}>
+                  Applications list
+                </p>
                 <img src="/public/icons/dropdown.svg" alt="" />
                 <p className="name">
                   {details.first_name} {details.last_name}
@@ -236,15 +237,8 @@ const Applications = () => {
                 <div className="Guardian-detial-background">
                   <div className="details-section">
                     <p className="Guardian-detial-title">Ration/Family Card</p>
-                    <Modal
-                      open={isDocsShow}
-                      onOk={() => setIsDocsShow(false)}
-                      onCancel={() => setIsDocsShow(false)}
-                    >
-                      <img src="/public/icons/marsheet.svg" alt="" />
-                    </Modal>
                     <p className="Guardian-detial-name">
-                      <a onClick={() => setIsDocsShow(true)}>View document</a>
+                      <a>View document</a>
                     </p>
                   </div>
                 </div>
@@ -254,80 +248,7 @@ const Applications = () => {
                 <div className="line"></div>
               </div>
               <div className="Educational-details-list-container">
-                {/* <div className="educational-background-one-container">
-                  <div className="curent-qul">
-                    <p>
-                      Currently Eductional Qualification:
-                      <a>Completed Diploma</a>
-                    </p>
-                  </div>
-                  <div className="educational-details flex">
-                    <div className="institution">
-                      <span>Institute or School</span>
-                      <p>Government</p>
-                    </div>
-                    <div className="year-completion">
-                      <span>Year completion</span>
-                      <p>2019</p>
-                    </div>
-                    <div className="medium">
-                      <span>Medium</span>
-                      <p>English</p>
-                    </div>
-                    <div className="score">
-                      <span>English score</span>
-                      <p>067</p>
-                    </div>
-                    <div className="math-score">
-                      <span>Maths score</span>
-                      <p>092</p>
-                    </div>
-                    <div className="total-percentage">
-                      <span>Total Percentage</span>
-                      <p>
-                        84% <a href="">View document</a>
-                      </p>
-                    </div>
-                  </div>
-                </div> */}
-
-                {/* <div className="educational-background-second-container">
-                  <div className="curent-qul">
-                    <p>
-                      Currently Eductional Qualification: <a href="">SSLC</a>
-                    </p>
-                  </div>
-                  <div className="educational-details flex">
-                    <div className="school-type">
-                      <span>School Type</span>
-                      <p>Government</p>
-                    </div>
-                    <div className="year-completion">
-                      <span>Year Completion</span>
-                      <p>2023</p>
-                    </div>
-                    <div className="medium">
-                      <span>Medium</span>
-                      <p>English</p>
-                    </div>
-                    <div className="english">
-                      <span>English score</span>
-                      <p>067</p>
-                    </div>
-                    <div className="math">
-                      <span>Maths score</span>
-                      <p>092</p>
-                    </div>
-                    <div className="total-percentage">
-                      <span>Total Percentage</span>
-                      <p>
-                        84% <a href="">View document</a>
-                      </p>
-                    </div>
-                  </div>
-                </div> */}
-
-                {details.applicant_academies.map((academy) => (
+              {details.applicant_academies.map((academy) => (
                   <div
                     key={academy.id}
                     className="educational-background-second-container"
@@ -354,7 +275,9 @@ const Applications = () => {
                       {details.applicant_marks &&
                         details.applicant_marks.map((marks) => (
                           <div className="subject-score">
-                            <span>{marks.degree_subject.degree.name} Score</span>
+                            <span>
+                              {marks.degree_subject.degree.name} Score
+                            </span>
                             <p>{marks.mark}%</p>
                           </div>
                         ))}
@@ -369,7 +292,7 @@ const Applications = () => {
                 ))}
               </div>
 
-              <div className="skillset-and-other-details flex">
+              {/* <div className="skillset-and-other-details flex">
                 <div className="skillset-container">
                   <div className="skillset-details-heading-section">
                     <p className="heading-name">Other Skillset</p>
@@ -437,7 +360,7 @@ const Applications = () => {
                     </div>
                   </div>
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
         </main>
@@ -574,7 +497,7 @@ const Applications = () => {
                       </div>
                       <div className="application-district">
                         <p>District</p>
-                        <span>{application.district}</span>
+                        <span>{application.district.charAt(0).toUpperCase()}{application.district.slice(1).toLowerCase()}</span>
                       </div>
                       <div className="application-qualification">
                         <p>Qualification</p>

@@ -10,19 +10,18 @@ import { useAuth } from "../context/AuthContext";
 import { API_END_POINT } from "../../config";
 import dayjs from "dayjs";
 
-const TaskList = ({
+const AssessmentList = ({
   mode,
   filterShow,
   handleEdit,
-  taskLists,
-  setTaskSearchWord,
+  assessmentList,
+  setAssessmentSearchWord,
   loading,
   handleDelete,
   handleAdd,
-  selectedTask,
-  setSelectId,
+  selectedAssessment,
 }) => {
-  const TaskCard = ({ task }) => {
+  const TaskCard = ({ assessment }) => {
     const truncateText = (text, maxLength) => {
       return text.length > maxLength
         ? text.substring(0, maxLength) + "..."
@@ -31,15 +30,11 @@ const TaskList = ({
     return (
       <>
         <div
-         onClick={() => {
-          handleEdit(task.id);
-          setSelectId(task.id);
-        }}
           className={`task-card ${
-            selectedTask === task.id ? "active" : ""
+            selectedAssessment === assessment.id ? "active" : ""
           } flex`}
-          key={task.id}
-          id={task.id}
+          key={assessment.id}
+          id={assessment.id}
         >
           {loading ? (
             <Skeleton
@@ -53,35 +48,41 @@ const TaskList = ({
                 <span>JS</span>
               </div>
 
-              <div
-                className="task-details"
-               
-              >
+              <div className="task-details">
                 <div className="task-name-with-icon flex">
-                  <h2>{truncateText(task.task_title, 15)}</h2>
+                  <h2>{truncateText(assessment.task_title, 15)}</h2>
 
                   <>
                     <img
                       src="/icons/deleteIcon.svg"
                       alt="delete-icon"
                       className="delete-icon"
-                      id={task.id}
+                      id={assessment.id}
                       onClick={(e) => {
-                        handleDelete(task)
+                        handleDelete(assessment);
                         e.stopPropagation();
+                      }}
+                    />
+
+                    <img
+                      src="/icons/edit-pencil.svg"
+                      className="edit-icon"
+                      alt="edit-icon"
+                      onClick={() => {
+                        handleEdit(assessment.id);
                       }}
                     />
                   </>
                 </div>
                 <p className="task-description">
                   {truncateText(
-                    task.task_description.replace(/<[^>]*>/g, ""),
+                    assessment.task_description.replace(/<[^>]*>/g, ""),
                     50
                   )}
                 </p>
                 <span className="btn btn-inprogress">Inprogress</span>
                 <span className="btn btn-deadline">
-                  {dayjs(task.due_date).format("MMM,DD YYYY")}
+                  {dayjs(assessment.due_date).format("MMM,DD YYYY")}
                 </span>
               </div>
             </>
@@ -99,7 +100,7 @@ const TaskList = ({
           <input
             type="input"
             placeholder="search..."
-            onChange={(e) => setTaskSearchWord(e.target.value)}
+            onChange={(e) => setAssessmentSearchWord(e.target.value)}
           />{" "}
           <img
             src="/icons/searchIcon.svg"
@@ -120,10 +121,9 @@ const TaskList = ({
           </button>
         </div>
         <div className="task-list-container">
-          {taskLists &&
-            taskLists.data &&
-            taskLists.data.map((task) => (
-              <TaskCard key={task.id} task={task} />
+          {assessmentList &&
+            assessmentList.map((assessment) => (
+              <TaskCard key={assessment.id} assessment={assessment} />
             ))}
         </div>
       </section>
@@ -131,4 +131,4 @@ const TaskList = ({
   );
 };
 
-export default TaskList;
+export default AssessmentList;

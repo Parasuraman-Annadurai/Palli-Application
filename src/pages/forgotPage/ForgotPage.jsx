@@ -24,12 +24,14 @@ const ForgotPassword = () => {
     <div className="container">
       <main className="forgot-page-container">
         <div className="logo-container">
+        <a className="back" href="/">
           <img
             className="logo"
             src="/images/dckap_palli_logo_sm.svg"
             alt=""
             draggable={false}
           />
+          </a>
         </div>
         <div className="forgot-container flex">
           <div className="login-image-container">

@@ -12,11 +12,11 @@ import Logo from "/images/dckap_palli_logo_lg.svg";
 import ResetPasswordImage from "/images/change_password.svg";
 import axios from "axios";
 import { API_END_POINT } from "../../../config";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const ResetPasswordPage = () => {
   const location = useLocation();
-
+  const navigate = useNavigate()
   const [verificationToken,setVerificationToken] = useState("")
   const [passwordError, setPasswordError] = useState({});
   const [passwordCriteria, setpasswordCriteria] = useState(null);
@@ -32,10 +32,21 @@ const ResetPasswordPage = () => {
 
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
-
-  
     const token = searchParams.get("token");
-    setVerificationToken(token)
+    axios.get(`${API_END_POINT}/api/accounts/password/token_verification/?token=${token}`).then((res)=>{
+      if(res.data.message){
+        setVerificationToken(token);
+      }
+    }).catch((error)=>{
+      if(error.response && error.response.data.status === 400){
+        notification.error({
+          message: "Error",
+          description: `${error.response.data.errors}`,
+        })
+        navigate("/forgot/password")
+      }
+      
+    })
   }, [location.search]);
 
 
@@ -73,6 +84,7 @@ const ResetPasswordPage = () => {
             description : `${res.data.message}`,
             duration:2
           });
+          navigate("/login")
         }).catch((error)=>{
           if (error.response && error.response.status === 400) {
             notification.error({

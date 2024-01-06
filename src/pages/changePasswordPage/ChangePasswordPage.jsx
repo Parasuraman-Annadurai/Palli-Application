@@ -3,7 +3,8 @@ import React, { useState } from "react";
 import { Popover } from "antd";
 //Supporting utilities files here
 import { validateNewpassword } from "../../utils/validate";
-import { checkPasswordCriteria } from "../../components/PasswordRequirement";
+
+import { checkPasswordCriteria } from "../../components/PasswordRequirement/PasswordRequirement";
 
 //CSS here
 import "./scss/ChangePasswordPage.css";
@@ -56,12 +57,18 @@ const ResetPasswordPage = () => {
         <div className="content-wrapper flex">
           <div className="input-container">
             <div className="headings">
+              <a className="back" href="/">
+                <span>
+                  <img src="/icons/backIcon.svg" alt="" />
+                </span>
+                <span className="backtologin">Back to login</span>
+              </a>
               <h3>
                 Change Your <br /> Password.?
               </h3>
               <p>
-                Your password must be at least 8 characters long <br /> Avoid
-                common words or patterns.
+                Your password must be at least 8 characters long. Avoid common
+                words or patterns.
               </p>
             </div>
             <div className="inputs">
@@ -83,7 +90,9 @@ const ResetPasswordPage = () => {
                       id="Password"
                       name="newPassword"
                       placeholder="Input Password"
-                      className={`input-field ${passwordError.newPassword ? "error-notify " : ""}`}
+                      className={`input-field ${
+                        passwordError.newPassword ? "error-notify " : ""
+                      }`}
                       value={newPassword.newPassword}
                       onChange={handleNewpassword}
                       onBlur={() => setPopovershow(false)}
@@ -111,7 +120,9 @@ const ResetPasswordPage = () => {
                     type={showPassword.confirmPassword ? "text" : "password"}
                     id="ConfirmPassword"
                     name="confirmPassword"
-                    className={`input-field ${passwordError.confirmPassword ? "error-notify " : ""}`}
+                    className={`input-field ${
+                      passwordError.confirmPassword ? "error-notify " : ""
+                    }`}
                     placeholder="Input Password"
                     value={newPassword.confirmPassword}
                     onChange={handleInputs}

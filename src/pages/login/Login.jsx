@@ -96,7 +96,7 @@ const Login = () => {
                     name="email"
                     placeholder="Type here..."
                     {...register("email", {
-                      required: "Email id is required",
+                      required: "Required field cannot be empty",
                       validate: isEmailValid,
                     })}
                   />
@@ -115,7 +115,7 @@ const Login = () => {
                       name="password"
                       placeholder="Type here..."
                       {...register("password", {
-                        required: "Password is required",
+                        required: "Invalid Password",
                         validate: isPasswordValid,
                       })}
                     />

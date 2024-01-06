@@ -83,7 +83,7 @@ const ResetPasswordPage = () => {
                       id="Password"
                       name="newPassword"
                       placeholder="Input Password"
-                      className="input-field"
+                      className={`input-field ${passwordError.newPassword ? "error-notify " : ""}`}
                       value={newPassword.newPassword}
                       onChange={handleNewpassword}
                       onBlur={() => setPopovershow(false)}
@@ -111,7 +111,7 @@ const ResetPasswordPage = () => {
                     type={showPassword.confirmPassword ? "text" : "password"}
                     id="ConfirmPassword"
                     name="confirmPassword"
-                    className="input-field"
+                    className={`input-field ${passwordError.confirmPassword ? "error-notify " : ""}`}
                     placeholder="Input Password"
                     value={newPassword.confirmPassword}
                     onChange={handleInputs}

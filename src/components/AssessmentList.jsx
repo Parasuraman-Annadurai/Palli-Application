@@ -28,7 +28,7 @@ const TaskCard = ({
     <>
       <div
         className={`task-card ${
-          selectedAssessment === assessment.id ? "active" : ""
+            assessment.id  === selectedAssessment? "active" : ""
         } flex`}
         key={assessment.id}
         id={assessment.id}
@@ -52,7 +52,7 @@ const TaskCard = ({
                     className="delete-icon"
                     id={assessment.id}
                     onClick={(e) => {
-                      handleDelete(assessment);
+                      handleDelete(true)
                       e.stopPropagation();
                     }}
                   />
@@ -98,7 +98,6 @@ const AssessmentList = ({
 }) => {
 
 
-  
   return (
     <>
       <section className="listing-container">

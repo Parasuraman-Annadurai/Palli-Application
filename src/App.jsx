@@ -45,11 +45,11 @@ const App = () => {
 
         
           <Route path={TASKMODULE} element={<PrivateRoute />}>
-            <Route path={TASKMODULE} element={<AssessmentModule type="Task"/>} />
+            <Route path={TASKMODULE} element={<AssessmentModule type="task"/>} />
           </Route>
 
           <Route path={ASSESSMENTMODULE} element={<PrivateRoute />}>
-            <Route path={ASSESSMENTMODULE} element={<AssessmentModule type="Assessment"/>} />
+            <Route path={ASSESSMENTMODULE} element={<AssessmentModule type="assessment"/>} />
           </Route>
 
          

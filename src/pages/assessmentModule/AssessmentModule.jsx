@@ -17,14 +17,14 @@ import { API_END_POINT } from "../../../config";
 const AssessmentModule = ({ type }) => {
   const { token } = useAuth();
   const { id: batchId } = useParams();
-  const [editId, setEditId] = useState("");
+  const [editId, setEditId] = useState(null);
   const [assessmentList, setAssessmentList] = useState([]);
   const [assessmentSearchWord, setAssessmentSearchWord] = useState("");
   const [loading, setLoading] = useState(true);
   const [students, setStudents] = useState([]);
   const [selectedStudents, setSelectedStudents] = useState([]);
-  const [deleteAssessment, setDeleteAssessment] = useState({});
-  const [assessmentType, setAssessmentType] = useState(type === "Task" ? 0 : 1);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+
   const headers = {
     Authorization: `Bearer ${token.access}`,
     "Content-type": "application/json",
@@ -32,13 +32,18 @@ const AssessmentModule = ({ type }) => {
 
   useEffect(() => {
     //this useEffect used to fetch task list and will re-run whenever filter or search is updated
-    const url = `${API_END_POINT}/api/task/${batchId}/list_task/?limit=10&page=1&filter_task_type=${assessmentType}&search=${assessmentSearchWord}`;
+    const url = `${API_END_POINT}/api/task/${batchId}/list_task/?limit=10&page=1&filter_task_type=${type === "task" ? 0 : 1}&search=${assessmentSearchWord}`;
     axios
       .get(url, { headers })
       .then((res) => {
         if (res.status === 200 && res.data.message === "Success") {
           setAssessmentList(res.data.data);
           setLoading(false);
+          if (!editId) {
+            // Set the editId to the first task's id in the updated list
+            setEditId(res.data.data.length > 0 ? res.data.data[0].id : null);
+
+          }
         }
       })
       .catch((error) => {
@@ -54,34 +59,37 @@ const AssessmentModule = ({ type }) => {
           setStudents(res.data.data);
           setLoading(false);
           setSelectedStudents(res.data.data.map((student) => student.id));
+          
         }
       })
       .catch((error) => {
         console.log(error);
       });
-  }, [assessmentSearchWord]);
+  }, [assessmentSearchWord,editId]);
+
 
   const handleConfirmDelete = () => {
     const isDraft = assessmentList.some(
-      (task) => task.id === deleteAssessment.id && task.draft
+      (task) => task.id === editId && task.draft
     );
 
     const updatedTasks = assessmentList.filter(
-      (task) => task.id !== deleteAssessment.id
+      (task) => task.id !== editId
     );
 
     if (isDraft) {
       setAssessmentList(updatedTasks);
-      setEditId(null);
       notification.success({
         message: "Success",
         description: "Task Deleted Successfully",
         duration: 3,
       });
+      setEditId(updatedTasks.length > 0 ? updatedTasks[0].id : null);
+
     } else {
       axios
         .delete(
-          `${API_END_POINT}/api/task/${batchId}/delete_task/${deleteAssessment.id}`,
+          `${API_END_POINT}/api/task/${batchId}/delete_task/${editId}`,
           {
             headers: {
               Authorization: `Bearer ${token.access}`,
@@ -94,9 +102,10 @@ const AssessmentModule = ({ type }) => {
             description: "Task Deleted Successfully",
             duration: 3,
           });
-          setEditId(null);
-          setDeleteAssessment({});
           setAssessmentList(updatedTasks);
+          setIsDeleteModalOpen(false);
+          setEditId(updatedTasks.length > 0 ? updatedTasks[0].id : null);
+
         })
         .catch((error) => {
           console.log(error);
@@ -196,7 +205,7 @@ const AssessmentModule = ({ type }) => {
       task_description: "",
       due_date: dayjs().format("YYYY-MM-DD HH:mm:ss"),
       draft: true,
-      task_type: type == "Assessment" ? 1 : 0,
+      task_type: type == "assessment" ? 1 : 0,
     };
 
     const concatNewAssessment = [createAssessment, ...assessmentList];
@@ -212,7 +221,7 @@ const AssessmentModule = ({ type }) => {
       style: { background: "#49a843", borderColor: "#EAEAEA" },
     },
     onOk: handleConfirmDelete,
-    onCancel: () => setDeleteAssessment({}),
+    onCancel: () => setIsDeleteModalOpen(false),
   };
 
   const handleInputChange = (name, value) => {
@@ -229,23 +238,21 @@ const AssessmentModule = ({ type }) => {
 
     setAssessmentList(updatedList);
   };
-
   return (
     <>
-      {deleteAssessment.id && (
+      {isDeleteModalOpen && (
         <Modal open={true} {...modalConfig}>
-          <p>{`Are you sure you want to delete ${type} ${deleteAssessment.task_title}?`}</p>
+          <p>{`Are you sure you want to delete ${type} ${ assessmentList.find((asses) => asses.id === editId).task_title}?`}</p>
         </Modal>
       )}
       <AssessmentList
-        //this mode used create task or assessment
         mode={type}
         filterShow={false}
         handleEdit={(editId) => setEditId(editId)}
         assessmentList={assessmentList}
         setAssessmentSearchWord={setAssessmentSearchWord}
         loading={loading}
-        handleDelete={setDeleteAssessment}
+        handleDelete={setIsDeleteModalOpen}
         handleAdd={handleAdd}
         selectedAssessment={editId}
       />
@@ -262,7 +269,7 @@ const AssessmentModule = ({ type }) => {
                   setSelectedStudents={setSelectedStudents}
                   handleSave={handleSave}
                   handleInputChange={handleInputChange}
-                  weightageShow={type === "Task" ? false : true}
+                  weightageShow={type === "task" ? false : true}
                 />
               );
             }

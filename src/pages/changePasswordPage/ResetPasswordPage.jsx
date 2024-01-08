@@ -33,6 +33,8 @@ const ResetPasswordPage = () => {
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
     const token = searchParams.get("token");
+
+   if(token){
     axios.get(`${API_END_POINT}/api/accounts/password/token_verification/?token=${token}`).then((res)=>{
       if(res.data.message){
         setVerificationToken(token);
@@ -43,10 +45,11 @@ const ResetPasswordPage = () => {
           message: "Error",
           description: `${error.response.data.errors}`,
         })
-        navigate("/forgot/password")
+        navigate("/login")
       }
       
     })
+   }
   }, [location.search]);
 
 

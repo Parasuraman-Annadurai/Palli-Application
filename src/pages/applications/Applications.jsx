@@ -571,7 +571,7 @@ const Applications = () => {
                       </div>
                       <div className="application-district">
                         <p>District</p>
-                        <span>{application.district.charAt(0).toUpperCase()}{application.district.slice(1).toLowerCase()}</span>
+                        <p className="district-heading">{application.district}</p>
                       </div>
                       <div className="application-qualification">
                         <p>Qualification</p>

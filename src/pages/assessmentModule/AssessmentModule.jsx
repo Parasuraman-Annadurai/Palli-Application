@@ -18,7 +18,7 @@ const AssessmentModule = ({ type }) => {
   const { token } = useAuth();
   const { id: batchId } = useParams();
   const [editId, setEditId] = useState("");
-  const [assessmentList, setAssessmentList] = useState();
+  const [assessmentList, setAssessmentList] = useState([]);
   const [assessmentSearchWord, setAssessmentSearchWord] = useState("");
   const [loading, setLoading] = useState(true);
   const [students, setStudents] = useState([]);
@@ -105,37 +105,6 @@ const AssessmentModule = ({ type }) => {
   };
 
   const handleSave = (assessment) => {
-    // const { Title, Description, Deadline, SubmissionLink } = taskData;
-    // const formattedDate = Deadline.format("YYYY-MM-DD HH:mm:ss");
-
-    // let isTaskExists = false;
-
-    // for (const task of AssessmentList.data) {
-    //   if (task.task_title === Title) {
-    //     isTaskExists = true;
-    //     break;
-    //   }
-    // }
-
-    // if (isTaskExists) {
-    //   notification.error({
-    //     message: "Error",
-    //     description: `Task "${Title}" already exists`,
-    //     duration: 3,
-    //   });
-    //   return;
-    // }
-
-    // const existingTaskIndex = AssessmentList.findIndex(
-    //   (task) => task.draft === draft
-    // );
-
-    // const createTaskPayload = {
-    //   task_title: Title,
-    //   task_description: Description,
-    //   task_type: 0,
-    //   due_date: formattedDate,
-    // };
 
     const isNew = "draft" in assessment;
     const {
@@ -145,14 +114,9 @@ const AssessmentModule = ({ type }) => {
       batch,
       updated_by,
       is_deleted,
-      task_type,
       ...currentAssessment
     } = assessment;
 
-
- 
-    // Map task_type to 0 if it's "TASK," otherwise assign 1
-    currentAssessment.task_type = type === "Task" ? 0 : 1;
     if (isNew) {
       delete currentAssessment["draft"];
       delete currentAssessment["id"];
@@ -189,29 +153,37 @@ const AssessmentModule = ({ type }) => {
         duration: 3,
       });
 
+
+
       let cloneAssessmentList = [...assessmentList];
       //finding and filtering the assessment which is new create the assessment
 
-      cloneAssessmentList = cloneAssessmentList.filter(
-        (assessment) => "id" in assessment
-      );
-
-      // console.log(cloneAssessmentLis);
-      currentAssessment["id"] = res.data.data.id;
-
-      cloneAssessmentList = [currentAssessment, ...cloneAssessmentList];
+      if (isNew) {
+        cloneAssessmentList = cloneAssessmentList.filter(
+          (assessment) => "id" in assessment
+        );
+        currentAssessment["id"] = res.data.data.id;
+        cloneAssessmentList = [currentAssessment, ...cloneAssessmentList];
+      } else {
+        cloneAssessmentList = cloneAssessmentList.map((assessment) => {
+          if (assessment.id === res.data.data.id) {
+            assessment = currentAssessment;
+          }
+          return assessment;
+        });
+      }
 
       setAssessmentList(cloneAssessmentList);
-      setEditId(res.data.data.id);
-      axios({
-        method: "POST",
-        url: `${API_END_POINT}/api/task/${batchId}/assign/task/${res.data.data.id}`,
-        headers: {
-          Authorization: `Bearer ${token.access}`,
-          "Content-Type": "application/json",
-        },
-        data: assignAssessment,
-      }).then((res) => {});
+
+      // axios({
+      //   method: "POST",
+      //   url: `${API_END_POINT}/api/task/${batchId}/assign/task/${res.data.data.id}`,
+      //   headers: {
+      //     Authorization: `Bearer ${token.access}`,
+      //     "Content-Type": "application/json",
+      //   },
+      //   data: assignAssessment,
+      // }).then((res) => {});
     });
   };
 
@@ -224,14 +196,14 @@ const AssessmentModule = ({ type }) => {
       task_description: "",
       due_date: dayjs().format("YYYY-MM-DD HH:mm:ss"),
       draft: true,
-      task_type: assessmentType,
+      task_type: type == "Assessment" ? 1 : 0,
     };
 
     const concatNewAssessment = [createAssessment, ...assessmentList];
 
-    setEditId(uniqueId);
-
     setAssessmentList(concatNewAssessment);
+    setEditId(uniqueId)
+
   };
 
   const modalConfig = {
@@ -244,7 +216,8 @@ const AssessmentModule = ({ type }) => {
   };
 
   const handleInputChange = (name, value) => {
-    const updatedList = assessmentList.map((assessment) => {
+    const cloneAssessmentList = [...assessmentList]
+    const updatedList = cloneAssessmentList.map((assessment) => {
       if (assessment.id === editId) {
         return {
           ...assessment,
@@ -268,7 +241,7 @@ const AssessmentModule = ({ type }) => {
         //this mode used create task or assessment
         mode={type}
         filterShow={false}
-        handleEdit={setEditId}
+        handleEdit={(editId) => setEditId(editId)}
         assessmentList={assessmentList}
         setAssessmentSearchWord={setAssessmentSearchWord}
         loading={loading}
@@ -278,17 +251,23 @@ const AssessmentModule = ({ type }) => {
       />
 
       {editId ? (
-        <AssessmentView
-          currentAssessment={
-            editId ? assessmentList?.find((assessment) => assessment.id === editId) : {}
-          }
-          students={students}
-          selectedStudents={selectedStudents}
-          setSelectedStudents={setSelectedStudents}
-          handleSave={handleSave}
-          handleInputChange={handleInputChange}
-          weightageShow={type === "Task" ? false : true}
-        />
+        <>
+          {assessmentList.map((assessment) => {
+            if (assessment.id == editId) {
+              return (
+                <AssessmentView
+                  currentAssessment={assessment}
+                  students={students}
+                  selectedStudents={selectedStudents}
+                  setSelectedStudents={setSelectedStudents}
+                  handleSave={handleSave}
+                  handleInputChange={handleInputChange}
+                  weightageShow={type === "Task" ? false : true}
+                />
+              );
+            }
+          })}
+        </>
       ) : (
         <div className="select-something-container flex">
           <div className="image-container ">

@@ -175,7 +175,7 @@ const AssessmentView = ({
               <div className="module-header-section flex">
                 <div className="module-title-section flex">
                   <input
-                    value={task_title ? task_title : "Untitled"}
+                    value={task_title ? task_title : ""}
                    
                     name="task_title"
                     type="text"

@@ -10,6 +10,81 @@ import { useAuth } from "../context/AuthContext";
 import { API_END_POINT } from "../../config";
 import dayjs from "dayjs";
 
+
+
+const TaskCard = ({
+  loading,
+  assessment,
+  selectedAssessment,
+  handleEdit,
+  handleDelete,
+}) => {
+  const truncateText = (text, maxLength) => {
+    return text.length > maxLength
+      ? text.substring(0, maxLength) + "..."
+      : text;
+  };
+  return (
+    <>
+      <div
+        className={`task-card ${
+          selectedAssessment === assessment.id ? "active" : ""
+        } flex`}
+        key={assessment.id}
+        id={assessment.id}
+      >
+        {loading ? (
+          <Skeleton avatar={{ size: "small" }} active paragraph={{ rows: 1 }} />
+        ) : (
+          <>
+            <div className="task-icon flex">
+              <span>JS</span>
+            </div>
+
+            <div className="task-details">
+              <div className="task-name-with-icon flex">
+                <h2>{truncateText(assessment.task_title, 15)}</h2>
+
+                <>
+                  <img
+                    src="/icons/deleteIcon.svg"
+                    alt="delete-icon"
+                    className="delete-icon"
+                    id={assessment.id}
+                    onClick={(e) => {
+                      handleDelete(assessment);
+                      e.stopPropagation();
+                    }}
+                  />
+
+                  <img
+                    src="/icons/edit-pencil.svg"
+                    className="edit-icon"
+                    alt="edit-icon"
+                    onClick={() => {
+                      handleEdit(assessment.id);
+                    }}
+                  />
+                </>
+              </div>
+              <p className="task-description">
+                {truncateText(
+                  assessment.task_description.replace(/<[^>]*>/g, ""),
+                  50
+                )}
+              </p>
+              <span className="btn btn-inprogress">Inprogress</span>
+              <span className="btn btn-deadline">
+                {dayjs(assessment.due_date).format("MMM,DD YYYY")}
+              </span>
+            </div>
+          </>
+        )}
+      </div>
+    </>
+  );
+};
+
 const AssessmentList = ({
   mode,
   filterShow,
@@ -21,77 +96,9 @@ const AssessmentList = ({
   handleAdd,
   selectedAssessment,
 }) => {
-  const TaskCard = ({ assessment }) => {
-    const truncateText = (text, maxLength) => {
-      return text.length > maxLength
-        ? text.substring(0, maxLength) + "..."
-        : text;
-    };
-    return (
-      <>
-        <div
-          className={`task-card ${
-            selectedAssessment === assessment.id ? "active" : ""
-          } flex`}
-          key={assessment.id}
-          id={assessment.id}
-        >
-          {loading ? (
-            <Skeleton
-              avatar={{ size: "small" }}
-              active
-              paragraph={{ rows: 1 }}
-            />
-          ) : (
-            <>
-              <div className="task-icon flex">
-                <span>JS</span>
-              </div>
 
-              <div className="task-details">
-                <div className="task-name-with-icon flex">
-                  <h2>{truncateText(assessment.task_title, 15)}</h2>
 
-                  <>
-                    <img
-                      src="/icons/deleteIcon.svg"
-                      alt="delete-icon"
-                      className="delete-icon"
-                      id={assessment.id}
-                      onClick={(e) => {
-                        handleDelete(assessment);
-                        e.stopPropagation();
-                      }}
-                    />
-
-                    <img
-                      src="/icons/edit-pencil.svg"
-                      className="edit-icon"
-                      alt="edit-icon"
-                      onClick={() => {
-                        handleEdit(assessment.id);
-                      }}
-                    />
-                  </>
-                </div>
-                <p className="task-description">
-                  {truncateText(
-                    assessment.task_description.replace(/<[^>]*>/g, ""),
-                    50
-                  )}
-                </p>
-                <span className="btn btn-inprogress">Inprogress</span>
-                <span className="btn btn-deadline">
-                  {dayjs(assessment.due_date).format("MMM,DD YYYY")}
-                </span>
-              </div>
-            </>
-          )}
-        </div>
-      </>
-    );
-  };
-
+  
   return (
     <>
       <section className="listing-container">
@@ -123,7 +130,14 @@ const AssessmentList = ({
         <div className="task-list-container">
           {assessmentList &&
             assessmentList.map((assessment) => (
-              <TaskCard key={assessment.id} assessment={assessment} />
+              <TaskCard
+                key={assessment.id}
+                loading = {loading}
+                assessment={assessment}
+                handleEdit={handleEdit}
+                handleDelete={handleDelete}
+                selectedAssessment = {selectedAssessment}
+              />
             ))}
         </div>
       </section>

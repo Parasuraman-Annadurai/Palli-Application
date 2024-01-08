@@ -12,40 +12,49 @@ const ResetPasswordPage = () => {
   const [passwordError, setPasswordError] = useState({});
   const [passwordCriteria, setpasswordCriteria] = useState(null);
   const [popoverShow, setPopovershow] = useState(false);
-  const [newPassword, setNewPassword] = useState({
-    newPassword: "",
-    confirmPassword: "",
-  });
-  const [showPassword, setShowPassword] = useState({
-    newPassword: false,
-    confirmPassword: false,
-  });
+
+  // State for newPassword and confirmPassword separately
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [showNewPassword, setShowNewPassword] = useState(false);
+
   const handleInputs = (e) => {
     const { name, value } = e.target;
-    setNewPassword({ ...newPassword, [name]: value });
+    if (name === "newPassword") {
+      setNewPassword(value);
+    } else if (name === "confirmPassword") {
+      setConfirmPassword(value);
+    }
     if (passwordError[name]) delete passwordError[name];
   };
 
-  const togglePasswordVisibility = (field) => {
-    setShowPassword({ ...showPassword, [field]: !showPassword[field] });
-  };
-  const handleNewpassword = (e) => {
+  const handleNewPassword = (e) => {
     handleInputs(e);
     const { value } = e.target;
     checkPasswordCriteria(value, setpasswordCriteria);
   };
   const handleFocus = () => {
     setPopovershow(true);
-    checkPasswordCriteria(newPassword.newPassword, setpasswordCriteria);
+    checkPasswordCriteria(newPassword, setpasswordCriteria);
   };
   const handleSubmit = (e) => {
     e.preventDefault();
-    let validateField = validateNewpassword(newPassword, setPasswordError);
+    const validateField = validateNewpassword(
+      { newPassword, confirmPassword },
+      setPasswordError
+    );
     if (validateField) {
-      //make api call
+      // make api call or perform necessary actions
     }
   };
 
+  const handleEyeIconLongPress = (field) => {
+    setShowNewPassword((prevState) => ({ ...prevState, [field]: true }));
+  };
+
+  const handleEyeIconEndPress = (field) => {
+    setShowNewPassword((prevState) => ({ ...prevState, [field]: false }));
+  };
   return (
     <div className="reset-password-container">
       <div className="reset-container">
@@ -86,7 +95,7 @@ const ResetPasswordPage = () => {
                     open={popoverShow}
                   >
                     <input
-                      type={showPassword.newPassword ? "text" : "password"}
+                      type={showNewPassword.newPassword ? "text" : "password"}
                       id="Password"
                       name="newPassword"
                       placeholder="Input Password"
@@ -94,17 +103,23 @@ const ResetPasswordPage = () => {
                         passwordError.newPassword ? "error-notify " : ""
                       }`}
                       value={newPassword.newPassword}
-                      onChange={handleNewpassword}
-                      onBlur={() => setPopovershow(false)}
+                      onChange={handleNewPassword}
                       onFocus={handleFocus}
+                      onBlur={() => setPopovershow(false)}
                     />
                   </Popover>
                   <span
                     id="eye--off"
                     className="material-symbols-outlined eye-icon"
-                    onClick={() => togglePasswordVisibility("newPassword")}
+                    onTouchStart={() => handleEyeIconLongPress("newPassword")}
+                    onTouchEnd={() => handleEyeIconEndPress("newPassword")}
+                    onMouseDown={() => handleEyeIconLongPress("newPassword")}
+                    onMouseUp={() => handleEyeIconEndPress("newPassword")}
+                    onMouseLeave={() => handleEyeIconEndPress("newPassword")}
                   >
-                    {showPassword.newPassword ? "visibility" : "visibility_off"}
+                    {showNewPassword.newPassword
+                      ? "visibility"
+                      : "visibility_off"}
                   </span>
                   <p className="error-message">
                     {passwordError.newPassword ? passwordError.newPassword : ""}
@@ -117,7 +132,7 @@ const ResetPasswordPage = () => {
                     <span className="required-symbole">*</span>
                   </label>
                   <input
-                    type={showPassword.confirmPassword ? "text" : "password"}
+                    type={showNewPassword.confirmPassword ? "text" : "password"}
                     id="ConfirmPassword"
                     name="confirmPassword"
                     className={`input-field ${
@@ -131,9 +146,19 @@ const ResetPasswordPage = () => {
                     id="eye--on"
                     name="confirmPassword"
                     className="material-symbols-outlined eye-icon"
-                    onClick={() => togglePasswordVisibility("confirmPassword")}
+                    onTouchStart={() =>
+                      handleEyeIconLongPress("confirmPassword")
+                    }
+                    onTouchEnd={() => handleEyeIconEndPress("confirmPassword")}
+                    onMouseDown={() =>
+                      handleEyeIconLongPress("confirmPassword")
+                    }
+                    onMouseUp={() => handleEyeIconEndPress("confirmPassword")}
+                    onMouseLeave={() =>
+                      handleEyeIconEndPress("confirmPassword")
+                    }
                   >
-                    {showPassword.confirmPassword
+                    {showNewPassword.confirmPassword
                       ? "visibility"
                       : "visibility_off"}
                   </span>

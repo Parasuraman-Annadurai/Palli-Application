@@ -257,7 +257,7 @@ const AssessmentView = ({
                 <div className="task-assigner-container">
                   <p className="task-assigner-label">Assignee</p>
                   <Dropdown overlay={menu} trigger={["click"]}>
-                    <span className={`task-assigner-selector`}>
+                    <span className={`task-assigner-selector`} onClick={(e)=>e.preventDefault()}>
                       {selectedStudents.length === students.length
                         ? `All Students`
                         : `${

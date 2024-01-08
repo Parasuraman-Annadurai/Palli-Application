@@ -65,7 +65,7 @@ const AssessmentModule = ({ type }) => {
       .catch((error) => {
         console.log(error);
       });
-  }, [assessmentSearchWord,editId]);
+  }, [assessmentSearchWord]);
 
 
   const handleConfirmDelete = () => {
@@ -154,6 +154,7 @@ const AssessmentModule = ({ type }) => {
       },
       data: currentAssessment,
     }).then((res) => {
+      console.log(res.message);
       notification.success({
         message: "Success",
         description: isNew
@@ -162,6 +163,7 @@ const AssessmentModule = ({ type }) => {
         duration: 3,
       });
 
+      console.log(res.response.data,"jjj");
 
 
       let cloneAssessmentList = [...assessmentList];
@@ -193,7 +195,15 @@ const AssessmentModule = ({ type }) => {
       //   },
       //   data: assignAssessment,
       // }).then((res) => {});
-    });
+    }).catch((error)=>{
+      console.log();
+      if(error.response.data.status === 400 || "errors" in error.response.data){
+        notification.error({
+          message:"Error",
+          description : `${type} Not Save`
+        })
+      }
+    })
   };
 
   const handleAdd = () => {

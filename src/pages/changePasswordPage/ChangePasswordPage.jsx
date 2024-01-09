@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 //External packages here
 import { Popover } from "antd";
 //Supporting utilities files here
 import { validateNewpassword } from "../../utils/validate";
 
-import { checkPasswordCriteria } from "../../components/PasswordRequirement/PasswordRequirement";
+import GetPasswordPopover from "../../components/PasswordRequirement/PasswordRequirement";
+// import { checkPasswordCriteria } from "../../components/PasswordRequirement/PasswordRequirement";
 
 //CSS here
 import "./scss/ChangePasswordPage.css";
@@ -30,13 +31,9 @@ const ResetPasswordPage = () => {
 
   const handleNewPassword = (e) => {
     handleInputs(e);
-    const { value } = e.target;
-    checkPasswordCriteria(value, setpasswordCriteria);
-  };
-  const handleFocus = () => {
     setPopovershow(true);
-    checkPasswordCriteria(newPassword, setpasswordCriteria);
   };
+  const handleFocus = () => {};
   const handleSubmit = (e) => {
     e.preventDefault();
     const validateField = validateNewpassword(
@@ -55,6 +52,8 @@ const ResetPasswordPage = () => {
   const handleEyeIconEndPress = (field) => {
     setShowNewPassword((prevState) => ({ ...prevState, [field]: false }));
   };
+
+  
   return (
     <div className="reset-password-container">
       <div className="reset-container">
@@ -89,10 +88,13 @@ const ResetPasswordPage = () => {
                   </label>
                   <Popover
                     className="popover"
-                    content={passwordCriteria}
-                    trigger={"focus"}
+                    // content={passwordCriteria.error ? passwordCriteria.content : null}
+                    // trigger={"focus"}
+
                     placement="right"
+                    trigger={["click"]}
                     open={popoverShow}
+                    content={<GetPasswordPopover password={newPassword} />}
                   >
                     <input
                       type={showNewPassword.newPassword ? "text" : "password"}

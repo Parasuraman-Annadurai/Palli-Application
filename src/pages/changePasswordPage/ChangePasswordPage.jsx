@@ -33,7 +33,9 @@ const ResetPasswordPage = () => {
     handleInputs(e);
     setPopovershow(true);
   };
-  const handleFocus = () => {};
+  const handleFocus = () => {
+    setPopovershow(true);
+  };
   const handleSubmit = (e) => {
     e.preventDefault();
     const validateField = validateNewpassword(

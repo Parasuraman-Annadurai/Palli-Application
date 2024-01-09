@@ -99,8 +99,7 @@ export const validateAddTask = (addTaskData,setErrors) => {
 
 
 
-//neww
-
+//PasswordRequirement.jsx
 
 // export const checkPasswordRequirements = (inputPwd) => {
 //   const requirements = [
@@ -136,7 +135,6 @@ export const validateAddTask = (addTaskData,setErrors) => {
 //       criteria: errors
 //   };
 // };
-
 const content = [
   {
     error: false,
@@ -147,6 +145,11 @@ const content = [
     error: false,
     content: 'At least one lowercase letter is required',
     key: 'lowercaseError'
+  },
+  {
+    error: false,
+    content: 'At least one uppercase letter is required', 
+    key: 'uppercaseError' 
   },
   {
     error: false,
@@ -163,6 +166,7 @@ const content = [
 export const trackPwdRequirement = (password) => {
   let specialCharRegex = /[!@#$%^&*()_+{}\[\]:;<>,.?~]/;
   let lowercaseRegex = /[a-z]/;
+  let uppercaseRegex = /[A-Z]/; 
   let numberRegex = /\d/;
   
   let updatedContent = content.map((item) => ({ ...item }));
@@ -173,6 +177,9 @@ export const trackPwdRequirement = (password) => {
         break;
       case 'lowercaseError':
         item.error = !lowercaseRegex.test(password);
+        break;
+      case 'uppercaseError': 
+        item.error = !uppercaseRegex.test(password);
         break;
       case 'numberError':
         item.error = !numberRegex.test(password);

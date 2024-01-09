@@ -211,7 +211,7 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
         <div className="popup-container" ref={showSwitchBatchRef}>
           <div className="popup-content">
             <div className="inner-content flex">
-              <h3>{isAddingBatch ? "Add Batch" : "Switch Batch"}</h3>
+            <h3>{isAddingBatch ? "Add Batch" : "Switch Batch"}</h3>
               <div className="close-icon">
                 <img
                   src="/public/icons/Cancel.svg"
@@ -221,6 +221,44 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
                 />
               </div>
             </div>
+            <div className="add-batch">
+              <button> <span>+</span>Add New Batch</button>
+            </div>
+            {showInputFields && (
+              <div className="input-fields">
+                <div className="input-field">
+                  <input
+                    type="text"
+                    placeholder="Enter the Batch"
+                    name="batchName"
+                    value={batchData.batchName}
+                    onChange={handleInputChange}
+                  />
+                  <div className="error-message">{errors.batchNameError}</div>
+                </div>
+                <div className="input-field">
+                  <input
+                    type="date"
+                    placeholder="Start Year"
+                    name="startYear"
+                    value={batchData.startYear}
+                    onChange={handleInputChange}
+                  />
+                  <div className="error-message">{errors.startYearError}</div>
+                </div>
+                <div className="input-field">
+                  <input
+                    type="date"
+                    placeholder="End Year"
+                    name="endYear"
+                    value={batchData.endYear}
+                    onChange={handleInputChange}
+                  />
+                  <div className="error-message">{errors.endYearError}</div>
+                </div>
+                <button onClick={submitBatchData}>Submit</button>
+              </div>
+            )}
           </div>
           <div className="switch-batch-list-container">
             {batchList.map((batch, index) => {

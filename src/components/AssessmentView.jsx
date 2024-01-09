@@ -164,6 +164,7 @@ const AssessmentView = ({
     setIsEditing(true);
   };
 
+
   return (
     <>
       <main className="main-container">
@@ -176,7 +177,7 @@ const AssessmentView = ({
                 <div className="module-title-section flex">
                   <input
                     value={task_title ? task_title : ""}
-                   
+
                     name="task_title"
                     type="text"
                     onChange={(e) =>
@@ -186,6 +187,9 @@ const AssessmentView = ({
                     placeholder={"Untitled"}
                     // className={` ${errors.Title ? "error-notify" : ""} `}
                     // readOnly={!isEditing}
+
+                   autoFocus={true}
+
                   />
 
                   {/* {isEditing && (

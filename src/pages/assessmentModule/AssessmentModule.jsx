@@ -24,6 +24,8 @@ const AssessmentModule = ({ type }) => {
   const [students, setStudents] = useState([]);
   const [selectedStudents, setSelectedStudents] = useState([]);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  //for check task or assessment new created or old;
+  const [isDraft, setIsDraft] = useState(false); 
 
   const headers = {
     Authorization: `Bearer ${token.access}`,
@@ -39,7 +41,29 @@ const AssessmentModule = ({ type }) => {
       .get(url, { headers })
       .then((res) => {
         if (res.status === 200 && res.data.message === "Success") {
-          setAssessmentList(res.data.data);
+
+          //manipulate the assessment list task type assessment put the 1 otherwise 0 and remove duplicate
+          let assessmentList = [...res.data.data];
+
+          const uniqueTitles = new Set();
+          assessmentList = assessmentList
+            .filter((assessment) => {
+              // Check if the title is already in the Set
+              if (uniqueTitles.has(assessment.task_title)) {
+                return false; // Skip duplicates
+              }
+              
+              uniqueTitles.add(assessment.task_title);
+              return true; // Include unique assessments
+            })
+            .map((assessment) => ({
+              ...assessment,
+              task_type: assessment.task_type === "ASSESSMENT" ? 1 : 0,
+            }));
+
+          
+          setAssessmentList(assessmentList);
+          
           setLoading(false);
           if (!editId) {
             // Set the editId to the first task's id in the updated list
@@ -67,20 +91,26 @@ const AssessmentModule = ({ type }) => {
       });
   }, [assessmentSearchWord]);
 
-  const handleConfirmDelete = () => {
-    const isDraft = assessmentList.some(
-      (task) => task.id == editId && task.draft
-    );
+  
 
-    const updatedTasks = assessmentList.filter((task) => task.id !== editId);
+  const handleDeleteAssessment = (deleteId) => {
+    setEditId(deleteId)
+    setIsDraft([...assessmentList].some((task) => task.id === editId && task.draft));
+    setIsDeleteModalOpen(true);
+  };
+
+  const handleConfirmDelete = () => {
+  
+    const updatedTasks = [...assessmentList].filter((task) => task.id !== editId);
 
     if (isDraft) {
       setAssessmentList(updatedTasks);
       notification.success({
         message: "Success",
-        description: "Task Deleted Successfully",
+        description: "Task Discard Successfully",
         duration: 3,
       });
+      setIsDeleteModalOpen(false);
       setEditId(updatedTasks.length > 0 ? updatedTasks[0].id : null);
     } else {
       axios
@@ -213,7 +243,6 @@ const AssessmentModule = ({ type }) => {
       task_type: type == "assessment" ? 1 : 0,
     };
 
-    console.log("Before state update:", assessmentList);
 
     const concatNewAssessment = [createAssessment, ...assessmentList];
 
@@ -221,16 +250,8 @@ const AssessmentModule = ({ type }) => {
 
     setEditId(uniqueId);
   };
-  console.log("After state update:", assessmentList);
 
-  const modalConfig = {
-    title: "Delete Conformation",
-    okButtonProps: {
-      style: { background: "#49a843", borderColor: "#EAEAEA" },
-    },
-    onOk: handleConfirmDelete,
-    onCancel: () => setIsDeleteModalOpen(false),
-  };
+
 
   const handleInputChange = (name, value) => {
     const cloneAssessmentList = [...assessmentList];
@@ -246,13 +267,13 @@ const AssessmentModule = ({ type }) => {
 
     setAssessmentList(updatedList);
   };
+
+ 
   return (
     <>
       {isDeleteModalOpen && (
-        <Modal open={true} {...modalConfig}>
-          <p>{`Are you sure you want to delete ${type} ${
-            assessmentList.find((asses) => asses.id === editId).task_title
-          }?`}</p>
+        <Modal open={true}   title={`${isDraft ? "Discard" : "Delete"} Confirmation`} onOk={handleConfirmDelete} onCancel={() => setIsDeleteModalOpen(false)}  okButtonProps={{ style: { background: "#49a843", borderColor: "#EAEAEA" } }} >
+          <p>{`${isDraft ? "Are you sure you want to discard the changes" :"Are you sure you want to delete"} ${type} ${assessmentList.find((asses) => asses.id === editId).task_title }?`}</p>
         </Modal>
       )}
 
@@ -263,7 +284,7 @@ const AssessmentModule = ({ type }) => {
         assessmentList={assessmentList}
         setAssessmentSearchWord={setAssessmentSearchWord}
         loading={loading}
-        handleDelete={setIsDeleteModalOpen}
+        handleDelete={handleDeleteAssessment}
         handleAdd={handleAdd}
         selectedAssessment={editId}
       />

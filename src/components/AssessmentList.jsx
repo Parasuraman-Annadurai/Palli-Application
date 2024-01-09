@@ -1,13 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 
-import { useNavigate, useParams } from "react-router-dom";
 
-import { Skeleton, Modal, notification } from "antd";
-import axios from "axios";
+import { Skeleton } from "antd";
 
-import { useAuth } from "../context/AuthContext";
 
-import { API_END_POINT } from "../../config";
 import dayjs from "dayjs";
 
 
@@ -52,7 +48,7 @@ const TaskCard = ({
                     className="delete-icon"
                     id={assessment.id}
                     onClick={(e) => {
-                      handleDelete(true)
+                      handleDelete(assessment.id)
                       e.stopPropagation();
                     }}
                   />

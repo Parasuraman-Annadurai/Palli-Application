@@ -105,20 +105,6 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
       key: "0",
     },
   ];
-
-  function getInitials(str) {
-    const words = str.split(" ");
-    if (words.length >= 2) {
-      const initials =
-        words[0].charAt(0).toUpperCase() + words[1].charAt(0).toUpperCase();
-      return initials;
-    } else if (words.length === 1) {
-      return words[0].charAt(0).toUpperCase();
-    } else {
-      return "";
-    }
-  }
-
   return (
     <>
       <nav className="side-nav-container flex">
@@ -135,7 +121,7 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
           >
             <div className="batch-content-container flex">
               <div className="batch-logo">
-                <p>{batchName ? getInitials(batchName) : ""}</p>
+                <p>B1</p>
               </div>
               <div className="batch-name">
                 <p>{batchName ? batchName : ""}</p>

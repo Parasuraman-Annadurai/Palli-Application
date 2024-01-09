@@ -481,7 +481,7 @@ const Applications = () => {
             trigger={["click"]}
           >
             <img
-              src="/public/icons/filterIcon.svg"
+              src="/icons/filterIcon.svg"
               alt=""
               className="filter-icon"
             />

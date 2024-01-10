@@ -8,7 +8,7 @@ $border-color: #eaeaea;
 $primary-color: #49a843;
 $btn-hover-color: #33762f;
 $btn-default: #e6e6e6;
-$error-message: #ef4444;
+// $error-message: #ef4444;
 
 $highlight-yellow: #f59e0b;
 $highlight-yellow-bg: #fef3c7;
@@ -348,9 +348,6 @@ li {
 }
 body {
   .container {
-    // max-width: 1280px;
-    // width: 100%;
-    // margin: 0 auto;
     display: flex;
 
     //side bar

@@ -237,8 +237,9 @@ const Applications = () => {
                 <div className="Guardian-detial-background">
                   <div className="details-section">
                     <p className="Guardian-detial-title">Ration/Family Card</p>
+                    
                     <p className="Guardian-detial-name">
-                      <a>View document</a>
+                      <a >View document</a>
                     </p>
                   </div>
                 </div>
@@ -497,7 +498,7 @@ const Applications = () => {
                       </div>
                       <div className="application-district">
                         <p>District</p>
-                        <span>{application.district.charAt(0).toUpperCase()}{application.district.slice(1).toLowerCase()}</span>
+                        <p className="district-heading">{application.district}</p>
                       </div>
                       <div className="application-qualification">
                         <p>Qualification</p>

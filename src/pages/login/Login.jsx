@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useForm } from "react-hook-form";
 
-import { LoadingOutlined, } from "@ant-design/icons";
+import { LoadingOutlined } from "@ant-design/icons";
 
 import { notification } from "antd";
 
@@ -18,7 +18,7 @@ import "./scss/Login.css";
 const Login = () => {
   const navigate = useNavigate();
   const { setToken, setUser } = useAuth();
-  const [showPassword, setShowPassword] = useState(false);
+  const [showPassword, setShowPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const {
     register,
@@ -63,7 +63,13 @@ const Login = () => {
         navigate("/login");
       });
   };
+  const handleEyeIconLongPress = (field) => {
+    setShowPassword((prevState) => ({ ...prevState, [field]: true }));
+  };
 
+  const handleEyeIconEndPress = (field) => {
+    setShowPassword((prevState) => ({ ...prevState, [field]: false }));
+  };
   return (
     <>
       <div className="container">
@@ -78,7 +84,7 @@ const Login = () => {
           </div>
           <div className="login-container flex">
             <div className="login-image-container">
-              <img src="/public/icons/Login Image.svg" alt="" draggable={false} />
+              <img src="/icons/Login Image.svg" alt="" draggable={false} />
             </div>
             <div className="login-form-container">
               <form onSubmit={handleSubmit(handleLogin)}>
@@ -96,7 +102,7 @@ const Login = () => {
                     name="email"
                     placeholder="Type here..."
                     {...register("email", {
-                      required: "Email id is required",
+                      required: "Required field cannot be empty",
                       validate: isEmailValid,
                     })}
                   />
@@ -108,25 +114,36 @@ const Login = () => {
                   <label htmlFor="">Password</label>
                   <div className="password-field">
                     <input
-                      type={`${showPassword ? "text" : "password"}`}
+                      type={`${showPassword.password ? "text" : "password"}`}
                       className={`password-input ${
                         errors.password ? "error-notify" : ""
                       }`}
                       name="password"
                       placeholder="Type here..."
                       {...register("password", {
-                        required: "Password is required",
+                        required: "Required field cannot be empty",
                         validate: isPasswordValid,
                       })}
                     />
-                    <img
-                      onClick={() => setShowPassword(!showPassword)}
-                      src={`/icons/${
-                        showPassword ? "eye-open" : "eye-close"
-                      }.svg`}
-                      alt="eye-icon"
-                      className="eye-icon"
-                    />
+                   <span  
+                    id="eye--on"
+                    className="material-symbols-outlined eye-icon"
+                    onTouchStart={() =>
+                      handleEyeIconLongPress("password")
+                    }
+                    onTouchEnd={() => handleEyeIconEndPress("password")}
+                    onMouseDown={() =>
+                      handleEyeIconLongPress("password")
+                    }
+                    onMouseUp={() => handleEyeIconEndPress("password")}
+                    onMouseLeave={() =>
+                      handleEyeIconEndPress("password")
+                    }
+                  >
+                    {showPassword.password
+                      ? "visibility"
+                      : "visibility_off"}
+                  </span>
                   </div>
                   <p className="error-message">
                     {errors.password ? errors.password.message : ""}

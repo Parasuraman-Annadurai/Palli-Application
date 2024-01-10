@@ -6,12 +6,10 @@ import { LoadingOutlined } from "@ant-design/icons";
 
 
 import { isEmailValid } from "../../utils/validate";
-
 import { API_END_POINT } from "../../../config";
+import "../forgotPassword/scss/ForgotPassword.css";
 
-import { useAuth } from "../../context/AuthContext";
 
-import "../forgotPage/scss/ForgotPage.css";
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState({});

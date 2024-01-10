@@ -1,16 +1,24 @@
 import React, { useState, useEffect } from "react";
+
 //External packages here
-import { Popover } from "antd";
+import { useLocation, useNavigate } from "react-router-dom";
+import { Popover,notification } from "antd";
+import axios from "axios";
+
 //Supporting utilities files here
 import { validateNewpassword } from "../../utils/validate";
-
+import { API_END_POINT } from "../../../config";
 import GetPasswordPopover from "../../components/PasswordRequirement/PasswordRequirement";
-// import { checkPasswordCriteria } from "../../components/PasswordRequirement/PasswordRequirement";
 
 //CSS here
 import "./scss/ChangePassword.css";
 
 const ChangePassword = () => {
+
+  const location = useLocation();
+  const navigate = useNavigate()
+
+  const [verificationToken,setVerificationToken] = useState("")
   const [popoverShow, setPopovershow] = useState(false);
 
   // State for newPassword and confirmPassword separately
@@ -21,6 +29,30 @@ const ChangePassword = () => {
   const [showConfirmPassword,setShowConfirmPassword] = useState(false)
 
   const [passwordError, setPasswordError] = useState({});
+
+
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+    const token = searchParams.get("token");
+
+   if(token){
+    axios.get(`${API_END_POINT}/api/accounts/password/token_verification/?token=${token}`).then((res)=>{
+      if(res.data.message){
+        setVerificationToken(token);
+      }
+    }).catch((error)=>{
+      if(error.response && error.response.data.status === 400){
+        notification.error({
+          message: "Error",
+          description: `${error.response.data.errors}`,
+        })
+        navigate("/login")
+      }
+      
+    })
+   }
+  }, [location.search]);
+
 
 
   const handleInputs = (e) => {
@@ -48,9 +80,33 @@ const ChangePassword = () => {
       { newPassword, confirmPassword },
       setPasswordError
     );
+
     if (validateField) {
-      // make api call or perform necessary actions
+
+      const headers = {
+        "Content-type": "application/json",
+      };
+      if(verificationToken){
+        axios.post(`${API_END_POINT}/api/accounts/change/password?token=${verificationToken}`,{password:confirmPassword},{headers}).then((res)=>{
+          notification.success({
+            message : "Success",
+            description : `${res.data.message}`,
+            duration:2
+          });
+          navigate("/login")
+        }).catch((error)=>{
+          if (error.response && error.response.status === 400) {
+            notification.error({
+              message: "Link Used",
+              description: `The link has expired Please request a new one`,
+              duration: 2,
+            });
+          
+          } 
+        })
+      }
     }
+
   };
 
   const handlePasswordVisiblity = (name,toggleValue) => {

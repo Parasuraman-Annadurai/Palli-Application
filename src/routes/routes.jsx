@@ -3,7 +3,7 @@ const INDEX = "/";
 const LOGIN = "/login";
 const FORGOTPASSWORD = "/forgot/password";
 //
-const CHANGEPASSWORD = "/change/password/token_verification";
+const CHANGEPASSWORD = "/change/password/:token";
 
 const DASHBOARD = "/dashboard";
 const APPLICATIONS = "/batch/:id/applications";

@@ -4,6 +4,7 @@ import { trackPwdRequirement } from "../../utils/validate";
 
 import "./scss/PasswordRequirement.css";
 const GetPasswordPopover = ({ password }) => {
+ 
   const requirementsList = trackPwdRequirement(password);
   console.log(requirementsList);
   return (

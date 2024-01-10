@@ -8,9 +8,9 @@
   border: none;
   -webkit-user-select: none;
   /* Safari */
-  -ms-user-select: none;
   /* IE 10 and IE 11 */
-  user-select: none;
+  -moz-user-select: none;
+       user-select: none;
   /* Standard syntax */
 }
 
@@ -315,6 +315,4 @@ body .container .login-page-container .login-container .login-form-container for
 }
 body .container .login-page-container .login-container .login-form-container form .login-button-container button span .loader {
   margin-left: 8px;
-}
-
-/*# sourceMappingURL=Login.css.map */
+}/*# sourceMappingURL=Login.css.map */

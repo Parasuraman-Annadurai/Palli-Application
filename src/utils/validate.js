@@ -169,28 +169,28 @@ export const trackPwdRequirement = (password) => {
   let uppercaseRegex = /[A-Z]/; 
   let numberRegex = /\d/;
   
-  let updatedContent = content.map((item) => ({ ...item }));
-  updatedContent.forEach((item) => {
-    switch (item.key) {
-      case 'specialCharError':
-        item.error = !specialCharRegex.test(password);
-        break;
-      case 'lowercaseError':
-        item.error = !lowercaseRegex.test(password);
-        break;
-      case 'uppercaseError': 
-        item.error = !uppercaseRegex.test(password);
-        break;
-      case 'numberError':
-        item.error = !numberRegex.test(password);
-        break;
-      case 'lengthError':
-        item.error = password.length < 8;
-        break;
-      default:
-        break;
-    }
-  });
+  let updatedContent = content.map((item) => {
+     switch (item.key) {
+       case "specialCharError":
+         item.error = !specialCharRegex.test(password);
+         break;
+       case "lowercaseError":
+         item.error = !lowercaseRegex.test(password);
+         break;
+       case "uppercaseError":
+         item.error = !uppercaseRegex.test(password);
+         break;
+       case "numberError":
+         item.error = !numberRegex.test(password);
+         break;
+       case "lengthError":
+         item.error = password.length < 8;
+         break;
+       default:
+         break;
+     }
+     return item;
+   });
 
   return updatedContent;
 };

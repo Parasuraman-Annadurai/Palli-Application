@@ -41,7 +41,7 @@ const TaskCard = ({
               <div className="task-name-with-icon flex">
                 <h2>{truncateText(assessment.task_title, 15)}</h2>
 
-                <>
+                  <>
                   <img
                     src="/icons/deleteIcon.svg"
                     alt="delete-icon"

@@ -311,12 +311,11 @@ li {
     color: $primary-color;
   }
 }
-.ant-picker-ok{
-  button{
+.ant-picker-ok {
+  button {
     background-color: $primary-color;
     color: #fff;
   }
-  
 }
 
 //pagination
@@ -571,11 +570,8 @@ body {
           justify-content: space-between;
           padding-bottom: 16px;
           h3 {
-            font-size: 14px;
-            font-family: $font-Roboto;
-            font-weight: 500;
+            font: 500 14px/18px $font-Roboto;
             color: $font-primary-color;
-            line-height: 18px;
             padding-bottom: 4px;
           }
           .cancel-btn {
@@ -597,25 +593,52 @@ body {
             font-size: 12px;
             line-height: 16px;
             font-weight: 500;
-            background-color: #ffff;
+            background-color: $side_bar_bg;
+            // background-color: #ffff;
             font-family: $font-Roboto;
             span {
-              font-size: 16px;
-              line-height: 20px;
-              font-weight: 400;
+              font: 400 12px/16px $font-Roboto;
               color: $font-primary-color;
-              font-family: $font-Roboto;
             }
+          }
+        }
+        .input-fields {
+          p {
+            font: 400 12px/16px $font-Roboto;
+            color: $font-secondary-color;
+            margin-bottom: 6px;
+          }
+          .batch-inputs {
+            width: 100%;
+            padding: 8px 0;
+            border: 1px solid $border-color;
+            border-radius: 4px;
+            font: 400 12px/16px $font-Roboto;
+            padding: 10px 15px 10px 12px;
+            color: $font-secondary-color;
+            background-color: #ffff;
+          }
+          button {
+            width: 100%;
+            padding: 8px 0;
+            border: 1px solid $border-color;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            font: 400 12px/16px $font-Roboto;
+            background-color: $primary-color;
+            color: #ffff;
           }
         }
       }
 
       .switch-batch-list-container {
-       
         overflow: scroll;
         height: calc(100vh - 110px);
         overflow-y: auto;
-        &::-webkit-scrollbar{
+        &::-webkit-scrollbar {
           width: 0;
           height: 0;
         }
@@ -737,7 +760,7 @@ body {
         height: calc(100vh - 200px);
         overflow-y: auto;
         box-sizing: border-box;
-        &::-webkit-scrollbar{
+        &::-webkit-scrollbar {
           width: 0;
           height: 0;
         }
@@ -899,7 +922,7 @@ body {
             .yes-btn {
               padding: 5px;
               background-color: $border-color;
-             
+
               border: 1px solid $border-color;
               border-radius: 4px;
               font-size: 10px;
@@ -921,10 +944,9 @@ body {
       }
 
       .task-details-header-container {
-       
         height: calc(100vh - 110px);
         overflow-y: auto;
-        &::-webkit-scrollbar{
+        &::-webkit-scrollbar {
           width: 0;
           height: 0;
         }

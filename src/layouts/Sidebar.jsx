@@ -118,6 +118,70 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
       return "";
     }
   }
+  // const [showInputFields, setShowInputFields] = useState(false);
+  const [batchData, setBatchData] = useState({
+    batchName: "",
+    startYear: "",
+    endYear: "",
+  });
+  const [errors, setErrors] = useState({
+    batchNameError: "",
+    startYearError: "",
+    endYearError: "",
+  });
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setBatchData({
+      ...batchData,
+      [name]: value,
+    });
+  };
+
+  const validateForm = () => {
+    let isValid = true;
+    const newErrors = { ...errors };
+
+    // Your validation logic
+    // For example, checking if fields are not empty
+
+    if (batchData.batchName === "") {
+      newErrors.batchNameError = "Batch name cannot be empty";
+      isValid = false;
+    } else {
+      newErrors.batchNameError = "";
+    }
+
+    // Similarly, add validation for startYear and endYear
+
+    setErrors(newErrors);
+    return isValid;
+  };
+
+  const submitBatchData = () => {
+    if (validateForm()) {
+      // Logic to submit batch data when the form is valid
+      // Example: API call, dispatch an action, etc.
+      console.log("Submitting batch data:", batchData);
+    }
+  };
+
+  const handleAddBatchClick = () => {
+    setShowInputFields(!showInputFields);
+    // Resetting form fields and errors when the "Add New Batch" button is clicked
+    if (!showInputFields) {
+      setBatchData({
+        batchName: "",
+        startYear: "",
+        endYear: "",
+      });
+      setErrors({
+        batchNameError: "",
+        startYearError: "",
+        endYearError: "",
+      });
+    }
+  };
 
   return (
     <>
@@ -128,8 +192,7 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
 
         {!isDashboardPage && (
           <div
-            className="batch-switch-container flex"
-            // ref={showSwitchBatchRefIcon}
+            className="batch-switch-container flex "
             ref={(ref) => (showSwitchBatchRefIcon.current = ref)}
             onClick={() => setShowSwitchBatch(!showSwitchBatch)}
           >
@@ -211,7 +274,7 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
         <div className="popup-container" ref={showSwitchBatchRef}>
           <div className="popup-content">
             <div className="inner-content flex">
-            <h3>{isAddingBatch ? "Add Batch" : "Switch Batch"}</h3>
+              <h3>{isAddingBatch ? "Add Batch" : "Switch Batch"}</h3>
               <div className="close-icon">
                 <img
                   src="/public/icons/Cancel.svg"
@@ -222,12 +285,17 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
               </div>
             </div>
             <div className="add-batch">
-              <button> <span>+</span>Add New Batch</button>
+              <button className="add-batch-btn" onClick={handleAddBatchClick}>
+                <span>+</span>Add New Batch
+              </button>
             </div>
+
             {showInputFields && (
               <div className="input-fields">
                 <div className="input-field">
+                  <p>Batch Name</p>
                   <input
+                  className="batch-inputs"
                     type="text"
                     placeholder="Enter the Batch"
                     name="batchName"
@@ -236,8 +304,11 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
                   />
                   <div className="error-message">{errors.batchNameError}</div>
                 </div>
+              
                 <div className="input-field">
+                <p>Start Year</p>
                   <input
+                     className="batch-inputs"
                     type="date"
                     placeholder="Start Year"
                     name="startYear"
@@ -247,7 +318,9 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
                   <div className="error-message">{errors.startYearError}</div>
                 </div>
                 <div className="input-field">
+                  <p>End Year</p>
                   <input
+                     className="batch-inputs"
                     type="date"
                     placeholder="End Year"
                     name="endYear"
@@ -256,6 +329,7 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
                   />
                   <div className="error-message">{errors.endYearError}</div>
                 </div>
+
                 <button onClick={submitBatchData}>Submit</button>
               </div>
             )}

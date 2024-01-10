@@ -293,6 +293,7 @@ body .container .side-nav-container .logo {
   width: 100%;
   margin-bottom: 32px;
   padding: 16px;
+  cursor: pointer;
 }
 body .container .side-nav-container .batch-switch-container {
   background-color: #f2f9e4;
@@ -448,11 +449,8 @@ body .container .popup-container .popup-content .inner-content {
   padding-bottom: 16px;
 }
 body .container .popup-container .popup-content .inner-content h3 {
-  font-size: 14px;
-  font-family: "Roboto";
-  font-weight: 500;
+  font: 500 14px/18px "Roboto";
   color: #12160a;
-  line-height: 18px;
   padding-bottom: 4px;
 }
 body .container .popup-container .popup-content .inner-content .cancel-btn {
@@ -474,15 +472,40 @@ body .container .popup-container .popup-content .add-batch .add-batch-btn {
   font-size: 12px;
   line-height: 16px;
   font-weight: 500;
-  background-color: white;
+  background-color: #f8fbf2;
   font-family: "Roboto";
 }
 body .container .popup-container .popup-content .add-batch .add-batch-btn span {
-  font-size: 16px;
-  line-height: 20px;
-  font-weight: 400;
+  font: 400 12px/16px "Roboto";
   color: #12160a;
-  font-family: "Roboto";
+}
+body .container .popup-container .popup-content .input-fields p {
+  font: 400 12px/16px "Roboto";
+  color: #969d88;
+  margin-bottom: 6px;
+}
+body .container .popup-container .popup-content .input-fields .batch-inputs {
+  width: 100%;
+  padding: 8px 0;
+  border: 1px solid #eaeaea;
+  border-radius: 4px;
+  font: 400 12px/16px "Roboto";
+  padding: 10px 15px 10px 12px;
+  color: #969d88;
+  background-color: white;
+}
+body .container .popup-container .popup-content .input-fields button {
+  width: 100%;
+  padding: 8px 0;
+  border: 1px solid #eaeaea;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  font: 400 12px/16px "Roboto";
+  background-color: #49a843;
+  color: white;
 }
 body .container .popup-container .switch-batch-list-container {
   overflow: scroll;

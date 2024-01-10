@@ -38,7 +38,7 @@ const ForgotPassword = () => {
       }).catch((error)=>{
         if (error.response && error.response.status === 400) {
             notification.error({
-              message: "InvalidUser",
+              message: "Invalid User",
               description: `Email Not Found`,
               duration: 2,
             });

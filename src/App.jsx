@@ -34,7 +34,6 @@ const App = () => {
 
           <Route path={LOGIN} element={<Login />} />
           <Route path={FORGOTPASSWORD} element={<ForgotPassword />} />
-          <Route path={CHANGEPASSWORD} element={<ChangePassword />} />
           <Route path={`${CHANGEPASSWORD}/:token_verification`} element={<ChangePassword />} />
 
           <Route path={DASHBOARD} element={<PrivateRoute />}>

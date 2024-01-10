@@ -8,7 +8,7 @@ $border-color: #eaeaea;
 $primary-color: #49a843;
 $btn-hover-color: #33762f;
 $btn-default: #e6e6e6;
-// $error-message: #ef4444;
+$error-message: #ef4444;
 
 $highlight-yellow: #f59e0b;
 $highlight-yellow-bg: #fef3c7;
@@ -844,10 +844,12 @@ body {
           background-color: $side_bar_bg;
         }
 
-        .task-card.active .task-name-with-icon .edit-icon,
-        .task-card.active .task-name-with-icon .delete-icon {
+        .task-card.active .task-name-with-icon .edit-icon
+         {
           visibility: visible;
         }
+
+        
       }
     }
 

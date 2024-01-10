@@ -690,8 +690,7 @@ body .container .listing-container .task-list-container .task-card:hover .task-n
 body .container .listing-container .task-list-container .task-card.active {
   background-color: #f8fbf2;
 }
-body .container .listing-container .task-list-container .task-card.active .task-name-with-icon .edit-icon,
-body .container .listing-container .task-list-container .task-card.active .task-name-with-icon .delete-icon {
+body .container .listing-container .task-list-container .task-card.active .task-name-with-icon .edit-icon {
   visibility: visible;
 }
 body .container .select-something-container {

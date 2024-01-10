@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import forgotPasswordImage from "/images/forgot_password1.svg";
 import { isEmailValid } from "../../utils/validate";
-import "../forgotPage/scss/ForgotPage.css";
+import "../forgotPassword/scss/ForgotPassword.css";
+
+
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState({});

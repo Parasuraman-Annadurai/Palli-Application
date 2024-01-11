@@ -15,8 +15,8 @@ import {
 } from "./routes/routes.jsx";
 //Define your routes for APP here
 import Login from "./pages/login/Login.jsx";
-import ChangePassword from "./pages/changePasswordPage/ResetPasswordPage";
-import ForgotPassword from "./pages/forgotPage/ForgotPage";
+import ChangePassword from "./pages/changePassword/ChangePassword.jsx";
+import ForgotPassword from "./pages/forgotPassword/ForgotPassword.jsx";
 import Applications from "./pages/applications/Applications.jsx";
 import DashBoard from "./pages/dashBoard/DashBoard.jsx";
 import TaskModule from "./pages/task/TaskModule.jsx";
@@ -34,7 +34,7 @@ const App = () => {
 
           <Route path={LOGIN} element={<Login />} />
           <Route path={FORGOTPASSWORD} element={<ForgotPassword />} />
-          <Route path={CHANGEPASSWORD} element={<ChangePassword />} />
+          <Route path={`${CHANGEPASSWORD}/:token_verification`} element={<ChangePassword />} />
 
           <Route path={DASHBOARD} element={<PrivateRoute />}>
             <Route path={DASHBOARD} element={<DashBoard />} />

@@ -8,9 +8,9 @@
   border: none;
   -webkit-user-select: none;
   /* Safari */
-  -ms-user-select: none;
   /* IE 10 and IE 11 */
-  user-select: none;
+  -moz-user-select: none;
+       user-select: none;
   /* Standard syntax */
 }
 
@@ -385,16 +385,11 @@ body .container .application-full-container .application-inner-container .applic
   font-weight: 400;
   color: #969d88;
 }
-body .container .application-full-container .application-inner-container .application-list-container .application-card-container .application-details-container .application-district .district-heading::first-letter {
-  text-transform: uppercase;
-}
-body .container .application-full-container .application-inner-container .application-list-container .application-card-container .application-details-container .application-district .district-heading {
+body .container .application-full-container .application-inner-container .application-list-container .application-card-container .application-details-container .application-district span {
   font-size: 12px;
   line-height: 16px;
-  font-family: "Roboto";
-  font-weight: 400;
+  font-family: 400;
   color: #12160a;
-  text-transform: lowercase;
 }
 body .container .application-full-container .application-inner-container .application-list-container .application-card-container .application-details-container .application-qualification p {
   font-size: 12px;
@@ -474,6 +469,9 @@ body .container .application-view-more-container .left-side .top-section .search
   color: #969d88;
   border: 1px solid #eaeaea;
   border-radius: 4px;
+}
+body .container .application-view-more-container .left-side .top-section .search-input input::-moz-placeholder {
+  color: #969d88;
 }
 body .container .application-view-more-container .left-side .top-section .search-input input::placeholder {
   color: #969d88;
@@ -709,6 +707,4 @@ body .container .application-view-more-container .left-side .personal-and-educat
   font-size: 12px;
   line-height: 16px;
   font-family: 400;
-}
-
-/*# sourceMappingURL=Applications.css.map */
+}/*# sourceMappingURL=Applications.css.map */

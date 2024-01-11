@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import {Modal} from "antd";
-import { useLocation, useParams, useNavigate, NavLink, Link } from "react-router-dom";
+import { useLocation, useParams, useNavigate,Link } from "react-router-dom";
 
 import { Dropdown } from "antd";
 import axios from "axios";
@@ -39,11 +39,9 @@ const Sidebar = ({ menuList }) => {
       axios
         .get(`${API_END_POINT}/api/list/batch/`, { headers })
         .then((res) => {
-          const batchListData = res.data.data;
+          const batchListData = res.data.data
           setBatchList(batchListData.filter((batch)=>batch.id !== Number(batchId)));
-          setCurrentBatch(
-            batchListData.find((batch) => batch.id === Number(batchId))
-          );
+          setCurrentBatch(batchListData.find((batch) => batch.id === Number(batchId)));
         })
         .catch((err) => console.log(err));
     }

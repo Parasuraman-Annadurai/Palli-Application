@@ -8,7 +8,7 @@ $border-color: #eaeaea;
 $primary-color: #49a843;
 $btn-hover-color: #33762f;
 $btn-default: #e6e6e6;
-// $error-message: #ef4444;
+$error-message: #ef4444;
 
 $highlight-yellow: #f59e0b;
 $highlight-yellow-bg: #fef3c7;
@@ -311,12 +311,11 @@ li {
     color: $primary-color;
   }
 }
-.ant-picker-ok{
-  button{
+.ant-picker-ok {
+  button {
     background-color: $primary-color;
     color: #fff;
   }
-  
 }
 
 //pagination
@@ -611,11 +610,10 @@ body {
       }
 
       .switch-batch-list-container {
-       
         overflow: scroll;
         height: calc(100vh - 110px);
         overflow-y: auto;
-        &::-webkit-scrollbar{
+        &::-webkit-scrollbar {
           width: 0;
           height: 0;
         }
@@ -672,6 +670,7 @@ body {
         margin-bottom: 16px;
         font-weight: 500;
         font-family: $font-Roboto;
+        text-transform: capitalize;
       }
 
       .search-container {
@@ -720,6 +719,7 @@ body {
           font-weight: 500;
           background-color: #ffff;
           font-family: $font-Roboto;
+          text-transform: capitalize;
 
           span {
             font-size: 16px;
@@ -737,7 +737,7 @@ body {
         height: calc(100vh - 200px);
         overflow-y: auto;
         box-sizing: border-box;
-        &::-webkit-scrollbar{
+        &::-webkit-scrollbar {
           width: 0;
           height: 0;
         }
@@ -790,7 +790,7 @@ body {
               img {
                 width: 16px;
                 height: 16px;
-                display: none;
+                visibility: hidden;
                 cursor: pointer;
               }
               .delete-icon {
@@ -837,13 +837,19 @@ body {
 
         //while hover the task card show edit icon
         .task-card:hover .task-name-with-icon img {
-          display: inline-block;
-          /* show the edit icon when task-card is hovered */
+          visibility: visible;
         }
 
         .task-card.active {
           background-color: $side_bar_bg;
         }
+
+        .task-card.active .task-name-with-icon .edit-icon
+         {
+          visibility: visible;
+        }
+
+        
       }
     }
 
@@ -899,7 +905,7 @@ body {
             .yes-btn {
               padding: 5px;
               background-color: $border-color;
-             
+
               border: 1px solid $border-color;
               border-radius: 4px;
               font-size: 10px;
@@ -921,10 +927,9 @@ body {
       }
 
       .task-details-header-container {
-       
         height: calc(100vh - 110px);
         overflow-y: auto;
-        &::-webkit-scrollbar{
+        &::-webkit-scrollbar {
           width: 0;
           height: 0;
         }

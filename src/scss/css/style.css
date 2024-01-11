@@ -293,6 +293,7 @@ body .container .side-nav-container .logo {
   width: 100%;
   margin-bottom: 32px;
   padding: 16px;
+  cursor: pointer;
 }
 body .container .side-nav-container .batch-switch-container {
   background-color: #f2f9e4;
@@ -536,6 +537,7 @@ body .container .listing-container h1 {
   margin-bottom: 16px;
   font-weight: 500;
   font-family: "Roboto";
+  text-transform: capitalize;
 }
 body .container .listing-container .search-container {
   position: relative;
@@ -578,6 +580,7 @@ body .container .listing-container .create-container .btn.create-btn {
   font-weight: 500;
   background-color: white;
   font-family: "Roboto";
+  text-transform: capitalize;
 }
 body .container .listing-container .create-container .btn.create-btn span {
   font-size: 16px;
@@ -643,7 +646,7 @@ body .container .listing-container .task-list-container .task-card .task-details
 body .container .listing-container .task-list-container .task-card .task-details .task-name-with-icon img {
   width: 16px;
   height: 16px;
-  display: none;
+  visibility: hidden;
   cursor: pointer;
 }
 body .container .listing-container .task-list-container .task-card .task-details .task-name-with-icon .delete-icon {
@@ -682,11 +685,13 @@ body .container .listing-container .task-list-container .task-card .task-details
   font-family: "Roboto";
 }
 body .container .listing-container .task-list-container .task-card:hover .task-name-with-icon img {
-  display: inline-block;
-  /* show the edit icon when task-card is hovered */
+  visibility: visible;
 }
 body .container .listing-container .task-list-container .task-card.active {
   background-color: #f8fbf2;
+}
+body .container .listing-container .task-list-container .task-card.active .task-name-with-icon .edit-icon {
+  visibility: visible;
 }
 body .container .select-something-container {
   width: 100%;

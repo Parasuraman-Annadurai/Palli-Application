@@ -570,6 +570,7 @@ body {
         margin-bottom: 16px;
         font-weight: 500;
         font-family: $font-Roboto;
+        text-transform: capitalize;
       }
 
       .search-container {
@@ -618,6 +619,7 @@ body {
           font-weight: 500;
           background-color: #ffff;
           font-family: $font-Roboto;
+          text-transform: capitalize;
 
           span {
             font-size: 16px;
@@ -688,7 +690,7 @@ body {
               img {
                 width: 16px;
                 height: 16px;
-                display: none;
+                visibility: hidden;
                 cursor: pointer;
               }
               .delete-icon {
@@ -735,13 +737,19 @@ body {
 
         //while hover the task card show edit icon
         .task-card:hover .task-name-with-icon img {
-          display: inline-block;
-          /* show the edit icon when task-card is hovered */
+          visibility: visible;
         }
 
         .task-card.active {
           background-color: $side_bar_bg;
         }
+
+        .task-card.active .task-name-with-icon .edit-icon
+         {
+          visibility: visible;
+        }
+
+        
       }
     }
 

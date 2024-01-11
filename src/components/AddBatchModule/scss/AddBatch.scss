@@ -306,8 +306,11 @@ li {
       border: 1px solid $border-color;
       width: 100%;
       margin-bottom: 12px;
-      &:hover{
+      &:hover {
         background-color: $side_bar_bg;
+        .batch-left-side {
+          visibility: visible;
+        }
       }
       .batch-left-side {
         .batch-name-year {
@@ -337,6 +340,9 @@ li {
             font-family: $font-Roboto;
           }
         }
+      }
+      .batch-right-side {
+        visibility: hidden;
       }
     }
   }

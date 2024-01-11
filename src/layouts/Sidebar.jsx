@@ -16,6 +16,7 @@ import { API_END_POINT } from "../../config";
 const Sidebar = ({ menuList, activeMenuItem }) => {
   const navigate = useNavigate();
   const { id: batchId } = useParams();
+ 
   const { token, user } = useAuth();
 
   const currentPath = useLocation().pathname;
@@ -28,7 +29,7 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
 
   const showSwitchBatchRef = useRef(null);
   const showSwitchBatchRefIcon = useRef(null);
-
+ 
   const headers = {
     Authorization: `Bearer ${token.access}`,
     "Content-type": "application/json",
@@ -44,13 +45,9 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
       axios
         .get(`${API_END_POINT}/api/list/batch/`, { headers })
         .then((res) => {
-          const batchListData = res.data.data;
-          setBatchList(
-            batchListData.filter((batch) => batch.id !== Number(batchId))
-          );
-          setCurrentBatch(
-            batchListData.find((batch) => batch.id === Number(batchId))
-          );
+          const batchListData = res.data.data
+          setBatchList(batchListData.filter((batch)=>batch.id !== Number(batchId)));
+          setCurrentBatch(batchListData.find((batch) => batch.id === Number(batchId)));
         })
         .catch((err) => console.log(err));
     }
@@ -192,6 +189,7 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
         batchList={listBatchLists}
         setShowSwitchBatch={setShowSwitchBatch}
         setBatchList={setBatchList}
+        ref={showSwitchBatchRef}
       />
     </>
   );

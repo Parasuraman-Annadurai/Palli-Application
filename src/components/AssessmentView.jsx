@@ -8,9 +8,9 @@ import WeightageList from "./WeightageList";
 
 import "quill/dist/quill.snow.css";
 
-const TaskView = ({
+const AssessmentView = ({
   weightageShow,
-  currentTask,
+  currentAssessment,
   students,
   setSelectedStudents,
   selectedStudents,
@@ -30,7 +30,7 @@ const TaskView = ({
     due_date,
     draft,
     task_users = [],
-  } = currentTask;
+  } = currentAssessment;
   
   const validateNotEmpty = (fieldName, value) => {
     const trimmedValue = value ? value.replace(/<[^>]*>/g, "").trim() : null;
@@ -176,10 +176,8 @@ const TaskView = ({
               <div className="module-header-section flex">
                 <div className="module-title-section flex">
                   <input
-                    value={task_title ? task_title : "Untitled"}
-                    // style={{
-                    //   borderBottom: isEditing ? "1px solid green" : "",
-                    // }}
+                    value={task_title ? task_title : ""}
+
                     name="task_title"
                     type="text"
                     onChange={(e) =>
@@ -189,6 +187,9 @@ const TaskView = ({
                     placeholder={"Untitled"}
                     // className={` ${errors.Title ? "error-notify" : ""} `}
                     // readOnly={!isEditing}
+
+                   autoFocus={true}
+
                   />
 
                   {/* {isEditing && (
@@ -215,7 +216,7 @@ const TaskView = ({
                   <button
                     type="submit"
                     className="btn primary-medium"
-                    onClick={() => handleSave()}
+                    onClick={() => handleSave(currentAssessment)}
                   >
                     {draft ? "Create" : "Update"}
                   </button>
@@ -237,7 +238,6 @@ const TaskView = ({
                   <p className="task-deadline-label">Deadline</p>
 
                   <DatePicker
-                    // {...field}
                     value={due_date ? dayjs(due_date) : null}
                     showTime={{ format: "HH:mm" }}
                     placeholder="Select here..."
@@ -251,6 +251,7 @@ const TaskView = ({
                     //     : "task-deadline-selector"
                     // }`}
                     suffixIcon={<img src={`/icons/calendorIcon.svg`} />}
+                    disabledDate={current => current && current < dayjs().startOf('day')}
                   />
                   <p className="error-message">
                     {/* {errors.Deadline ? errors.Deadline.message : ""} */}
@@ -260,7 +261,7 @@ const TaskView = ({
                 <div className="task-assigner-container">
                   <p className="task-assigner-label">Assignee</p>
                   <Dropdown overlay={menu} trigger={["click"]}>
-                    <span className={`task-assigner-selector`}>
+                    <span className={`task-assigner-selector`} onClick={(e)=>e.preventDefault()}>
                       {selectedStudents.length === students.length
                         ? `All Students`
                         : `${
@@ -328,8 +329,8 @@ const TaskView = ({
                   <input type="link" placeholder="Paste your link here..." />
                 </>
               </div>
-
-              <div>
+              {/* file upload used in future */}
+              {/* <div>
                 <div className="file-input-container">
                   <div className="upload-icon-container flex">
                     <img src="/icons/upload.svg" className="upload-icon" />
@@ -347,7 +348,7 @@ const TaskView = ({
                   </>
                 </div>
                 {weightageShow && <WeightageList />}
-              </div>
+              </div> */}
             </div>
           </div>
         )}
@@ -356,4 +357,4 @@ const TaskView = ({
   );
 };
 
-export default TaskView;
+export default AssessmentView;

@@ -272,6 +272,9 @@ li {
 .popup-container .switch-batch-list-container .switch-batch-card:hover {
   background-color: #f8fbf2;
 }
+.popup-container .switch-batch-list-container .switch-batch-card:hover .batch-left-side {
+  visibility: visible;
+}
 .popup-container .switch-batch-list-container .switch-batch-card .batch-left-side .batch-name-year h4 {
   font-size: 14px;
   line-height: 18px;
@@ -294,6 +297,9 @@ li {
   font-size: 10px;
   line-height: 14px;
   font-family: "Roboto";
+}
+.popup-container .switch-batch-list-container .switch-batch-card .batch-right-side {
+  visibility: hidden;
 }
 
 /*# sourceMappingURL=AddBatch.css.map */

@@ -10,7 +10,8 @@ const FilterComponent = ({ filter, applyFilter,setPopoverVisible }) => {
   const handleApplyFilter = () => {
     applyFilter(filterValues);
     setPopoverVisible(false)
-  };
+  }
+
 
   const handleClearFilter = () => {
     applyFilter({...filterValues,...{}});

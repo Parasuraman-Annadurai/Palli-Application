@@ -69,7 +69,7 @@ const AssessmentModule = ({ type }) => {
         if (res.status === 200 && res.data.message === "Success") {
           setStudents(res.data.data);
           setLoading(false);
-          setSelectedStudents(res.data.data.map((student) => student.id));
+          // setSelectedStudents(res.data.data.map((student) => student.id));
         }
       })
       .catch((error) => {

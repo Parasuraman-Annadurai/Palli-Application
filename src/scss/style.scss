@@ -877,6 +877,7 @@ body {
     .main-container {
       padding: 20px;
       width: 100%;
+      border-right: 1px solid $border-color;
 
       .module-header-section-container {
         padding-bottom: 14px;
@@ -1233,7 +1234,84 @@ body {
             }
           }
         }
+        .task-create-btn-section{
+          justify-content: end;
+        }
       }
+    }
+    .assignee-and-weightage-container{
+      max-width: 301px;
+      width: 100%;
+      padding: 24px 20px;
+      .title-section{
+        max-width: 167px;
+        width: 100%;
+        margin: 0 auto;
+        gap: 24px;
+        .selection{
+          cursor: pointer;
+          h4{
+            font-size: 16px;
+            font-weight: 500;
+            font-family: $font-Roboto;
+            line-height: 20px;
+            padding-bottom: 5px;
+          }
+        }
+        .selection.active{
+          border-bottom: 2px solid $primary-color;
+        }
+      }
+      .assignee-search-container{
+
+      }
+      .assign-listing-container{
+        padding-top: 20px;
+        .select-all{
+          gap: 10px;
+          align-items: center;
+          padding-bottom: 20px;
+          .global-checkbox{
+
+          }
+          .span{
+            font-size: 12px;
+            font-family: $font-Roboto;
+          }
+        }
+        .assignee-card-listing-container{
+          .individual-assignee-card {
+            gap: 10px;
+            align-items: center;
+            padding-top: 10px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #EAEAEA;
+            input[type="checkbox"]:checked {
+              color: $primary-color;
+            }
+            input:checked:before{
+              background-color:green;
+              }
+            .profile{
+              gap: 6px;
+              align-items: center;
+
+              .profile-letter{
+                background-color: $primary-color;
+                height: 24px;
+                width: 24px;
+                border-radius: 50%;
+                text-align: center;
+
+                span{
+                  font-size:10px;
+                }
+              }
+            }
+          }
+        }
+      }
+
     }
   }
 }

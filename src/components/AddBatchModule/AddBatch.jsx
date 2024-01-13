@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
+import { Navigate, useNavigate } from "react-router-dom";
 
-// import { useNavigate } from "react-router-dom";
-
-import { DatePicker, Skeleton, notification } from "antd";
-import { LoadingOutlined } from "@ant-design/icons";
+import { DatePicker, Modal, notification } from "antd";
+// import { LoadingOutlined } from "@ant-design/icons";
 
 import dayjs from "dayjs";
 import axios from "axios";
@@ -20,15 +19,14 @@ const AddBatch = (props) => {
     setShowSwitchBatch,
     batchList,
     setBatchList,
-    showSwitchBatchRef,
+    popUp,
+    modelRef,
   } = props;
 
-  const [batchinputs, setBatchInputs] = useState(false);
-  const [batchShow, setBatchshow] = useState(true);
-
   const { user, token } = useAuth();
+  const navigate = useNavigate();
   const company = 1;
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
   const [batch_name, setBatchName] = useState("");
   const [start_date, setStartDate] = useState("");
   const [end_date, setEndDate] = useState("");
@@ -37,6 +35,8 @@ const AddBatch = (props) => {
   const [batchNameError, setBatchNameError] = useState(null);
   const [selectedBatch, setSelectedBatch] = useState(null);
   const [editId, setEditId] = useState(null);
+  const [batchinputs, setBatchInputs] = useState(false);
+  const [batchShow, setBatchshow] = useState(true);
 
   useEffect(() => {
     if (!showSwitchBatch) {
@@ -44,6 +44,46 @@ const AddBatch = (props) => {
       setBatchshow(true);
     }
   }, [showSwitchBatch]);
+
+  const handleSwitch = (batch) => {
+    //   <Modal
+    //   open={true}
+    //   title={`Confirm Switch to ${batch.batch_name}`}
+    //   content= {`Are you sure you want to Switch this Batch?`}
+    //   onOk={() => {
+    //     navigate(`/batch/${batch.id}/applications`);
+    //     window.location.reload();
+    //   }}
+
+    //   onCancel={() => {
+    //     // setIsDeleteModalOpen(false);
+    //     // setIsDraft(false);
+
+    //   }}
+    //   okButtonProps={{
+    //     style: { background: "#49a843", borderColor: "#EAEAEA" },
+    //   }}
+    // >
+    //   <p>{`${
+    //     isDraft
+    //       ? "Are you sure you want to discard the changes"
+    //       : "Are you sure you want to delete"
+    //   } ${type} ${
+    //     assessmentList.find((asses) => asses.id === editId).task_title
+    //   }?`}</p>
+    // </Modal>
+
+    Modal.confirm({
+      title: `Confirm Switch to ${batch.batch_name}`,
+      content: "Are you sure you want to Switch this Batch?",
+      onOk: () => {
+        navigate(`/batch/${batch.id}/applications`);
+        window.location.reload();
+      },
+      // Attach the ref to the modal
+      ref: modelRef,
+    });
+  };
 
   const resetFields = () => {
     setBatchName("");
@@ -101,12 +141,6 @@ const AddBatch = (props) => {
       hasError = true;
     }
 
-    if (start_date === end_date) {
-      setStartError("Start date should not be equal to end date");
-      setEndError("End date should not be equal to start date");
-      hasError = true;
-    }
-
     const startDateObj = new Date(start_date);
     const endDateObj = new Date(end_date);
 
@@ -142,7 +176,7 @@ const AddBatch = (props) => {
   };
 
   const handleCLick = (e) => {
-    setLoading(true);
+    // setLoading(true);
     e.preventDefault();
     const hasError = validateForm();
 
@@ -170,7 +204,7 @@ const AddBatch = (props) => {
             duration: 3,
           });
           resetFields();
-          setLoading(false);
+          // setLoading(false);
           setBatchInputs(false);
           setBatchshow(true);
         })
@@ -183,6 +217,7 @@ const AddBatch = (props) => {
   const handleEditClick = (batch) => {
     setEditId(batch.id);
     setSelectedBatch(batch);
+
     setBatchName(batch.batch_name);
     setStartDate(dayjs(batch.start_date));
     setEndDate(dayjs(batch.end_date));
@@ -190,7 +225,7 @@ const AddBatch = (props) => {
   };
 
   const handleUpdate = (e) => {
-    setLoading(true);
+    // setLoading(true);
 
     e.preventDefault();
     const hasError = validateForm();
@@ -237,7 +272,7 @@ const AddBatch = (props) => {
             description: "Batch Updated Successfully",
             duration: 3,
           });
-          setLoading(false);
+          // setLoading(false);
         })
         .catch((error) => {
           console.log(error);
@@ -248,7 +283,7 @@ const AddBatch = (props) => {
   return (
     <>
       {showSwitchBatch && (
-        <div className="popup-container">
+        <div className="popup-container" ref={popUp}>
           <div className="popup-content">
             <div className="inner-content flex">
               <h3>
@@ -272,12 +307,13 @@ const AddBatch = (props) => {
                 />
               </div>
             </div>
-            <div className="add-batch">
+            <div className="add-batch" ref={popUp}>
               <button
                 className="add-batch-btn"
                 onClick={() => {
                   setBatchInputs(!batchinputs);
                   setBatchshow(!batchShow);
+                  resetFields();
                 }}
               >
                 <span>+</span>Add New Batch
@@ -290,12 +326,15 @@ const AddBatch = (props) => {
                   <div className="input-field">
                     <p>Batch Name</p>
                     <input
-                      className="batch-inputs"
+                      className={`batch-inputs  ${
+                        batchNameError ? "error-notify" : ""
+                      }`}
                       type="text"
                       placeholder="Enter the Batch"
                       name="batchName"
                       value={batch_name}
                       onChange={handleBatchNameChange}
+                      autoComplete="off"
                     />
                     <p className="error-message">
                       {batchNameError && (
@@ -307,7 +346,9 @@ const AddBatch = (props) => {
                   <div className="input-field">
                     <p>Start Year</p>
                     <DatePicker
-                      className="batch-inputs"
+                      className={`datepicker ${
+                        startError ? "error-notify" : ""
+                      }`}
                       id="startYearInput"
                       format="YYYY-MM-DD"
                       value={start_date ? dayjs(start_date) : null}
@@ -330,7 +371,7 @@ const AddBatch = (props) => {
                   <div className="input-field">
                     <p>End Year</p>
                     <DatePicker
-                      className="batch-inputs"
+                      className={`datepicker ${endError ? "error-notify" : ""}`}
                       id="endYearInput"
                       format="YYYY-MM-DD"
                       value={end_date ? dayjs(end_date) : null}
@@ -352,26 +393,32 @@ const AddBatch = (props) => {
                   </div>
 
                   {editId ? (
-                    <button className="btn primary-medium " disabled={loading}>
-                      {loading ? (
-                        <span>
-                          Updating Batch...
-                          <LoadingOutlined className="loader" />
-                        </span>
-                      ) : (
-                        "Update Batch"
-                      )}
+                    <button
+                      className="btn primary-medium "
+                      // disabled={loading}
+                    >
+                      {/* {loading ? ( */}
+                      <span>
+                        {/* Updating Batch... */}
+                        {/* <LoadingOutlined className="loader" /> */}
+                      </span>
+                      {/* ) : ( */}
+                      Update Batch
+                      {/* // )} */}
                     </button>
                   ) : (
-                    <button className="btn primary-medium " disabled={loading}>
-                      {loading ? (
-                        <span>
-                          Creating Batch...
-                          <LoadingOutlined className="loader" />
-                        </span>
-                      ) : (
-                        "Create Batch"
-                      )}
+                    <button
+                      className="btn primary-medium "
+                      // disabled={loading}
+                    >
+                      {/* {loading ? ( */}
+                      <span>
+                        {/* Creating Batch... */}
+                        {/* <LoadingOutlined className="loader" /> */}
+                      </span>
+                      {/* ) : ( */}
+                      Create Batch
+                      {/* )} */}
                     </button>
                   )}
                 </div>
@@ -382,37 +429,42 @@ const AddBatch = (props) => {
             {batchShow && batchList.length > 0 && (
               <>
                 {batchList.map((batch, index) => (
-                  <div
-                    className="switch-batch-card flex"
-                    // onClick={() => handleSwitch(batch.id, batch.batch_name)}
-                    key={index}
-                  >
-                    <div className="batch-left-side flex">
-                      <div className="batch-name-year">
-                        <h4>{batch.batch_name}</h4>
-                        <p>
-                          {batch.start_date.slice(0, 4)} -{" "}
-                          {batch.end_date.slice(0, 4)}
-                        </p>
+                  <>
+                    <div className="switchbatch-container">
+                      <div
+                        className="switch-batch-card flex"
+                        onClick={() => handleSwitch(batch)}
+                        key={index}
+                      >
+                        <div className="batch-left-side flex">
+                          <div className="batch-name-year">
+                            <h4>{batch.batch_name}</h4>
+                            <p>
+                              {batch.start_date.slice(0, 4)} -{" "}
+                              {batch.end_date.slice(0, 4)}
+                            </p>
+                          </div>
+                          {/* Uncomment the following lines if needed */}
+                          {/* <div className="tag">
+                        <span>Internship</span>
+                      </div> */}
+                        </div>
+                        {/* Uncomment the following lines if needed */}
                       </div>
-                      {/* Uncomment the following lines if needed */}
-                      {/* <div className="tag">
-            <span>Internship</span>
-          </div> */}
+                      <div className="batch-right-side" ref={popUp}>
+                        <img
+                          className="edit-icon"
+                          src="/icons/edit-pencil.svg"
+                          alt=""
+                          onClick={() => {
+                            handleEditClick(batch);
+                            setBatchshow(false);
+                            setBatchInputs(true);
+                          }}
+                        />
+                      </div>
                     </div>
-                    {/* Uncomment the following lines if needed */}
-                    <div className="batch-right-side">
-                      <img
-                        src="/icons/edit-pencil.svg"
-                        alt=""
-                        onClick={() => {
-                          handleEditClick(batch);
-                          setBatchshow(false);
-                          setBatchInputs(true);
-                        }}
-                      />
-                    </div>
-                  </div>
+                  </>
                 ))}
               </>
             )}

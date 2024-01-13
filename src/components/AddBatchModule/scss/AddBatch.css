@@ -88,6 +88,7 @@ li {
   background-color: #49a843;
   color: white;
   cursor: pointer;
+  width: 100%;
 }
 .btn.primary-medium:hover {
   background-color: #33762f;
@@ -223,34 +224,27 @@ li {
   font: 400 12px/16px "Roboto";
   color: #12160a;
 }
-.popup-container .popup-content .input-fields p {
+.popup-container .popup-content .input-fields .input-field p {
   font: 400 12px/16px "Roboto";
   color: #969d88;
   margin-bottom: 6px;
 }
-.popup-container .popup-content .input-fields .batch-inputs {
+.popup-container .popup-content .input-fields .input-field .batch-inputs {
   width: 100%;
   padding: 8px 0;
   border: 1px solid #eaeaea;
   border-radius: 4px;
   font: 400 12px/16px "Roboto";
-  padding: 10px 15px 10px 12px;
-  color: #969d88;
+  padding: 9px 15px 9px 12px;
   background-color: white;
+  color: #12160a;
 }
-.popup-container .popup-content .input-fields button {
-  width: 100%;
-  padding: 8px 0;
-  border: 1px solid #eaeaea;
-  border-radius: 4px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 5px;
-  font: 400 12px/16px "Roboto";
-  background-color: #49a843;
-  color: white;
-  cursor: pointer;
+.popup-container .popup-content .input-fields .input-field .batch-inputs::placeholder {
+  color: #969d88;
+}
+.popup-container .popup-content .input-fields .input-field .batch-inputs:focus {
+  border: 1px solid #49a843;
+  outline: none;
 }
 .popup-container .switch-batch-list-container {
   overflow: scroll;
@@ -261,35 +255,33 @@ li {
   width: 0;
   height: 0;
 }
-.popup-container .switch-batch-list-container .switch-batch-card {
-  padding: 14px 16px;
+.popup-container .switch-batch-list-container .switchbatch-container {
+  position: relative;
+}
+.popup-container .switch-batch-list-container .switchbatch-container .switch-batch-card {
+  padding: 13px 16px;
   border-radius: 4px;
   justify-content: space-between;
   border: 1px solid #eaeaea;
   width: 100%;
   margin-bottom: 12px;
 }
-.popup-container .switch-batch-list-container .switch-batch-card:hover {
-  background-color: #f8fbf2;
-}
-.popup-container .switch-batch-list-container .switch-batch-card:hover .batch-left-side {
-  visibility: visible;
-}
-.popup-container .switch-batch-list-container .switch-batch-card .batch-left-side .batch-name-year h4 {
+.popup-container .switch-batch-list-container .switchbatch-container .switch-batch-card .batch-left-side .batch-name-year h4 {
   font-size: 14px;
   line-height: 18px;
   font-family: "Roboto";
   color: #12160a;
   font-weight: 500;
+  margin-bottom: 4px;
 }
-.popup-container .switch-batch-list-container .switch-batch-card .batch-left-side .batch-name-year p {
+.popup-container .switch-batch-list-container .switchbatch-container .switch-batch-card .batch-left-side .batch-name-year p {
   color: #969d88;
   font-size: 10px;
   line-height: 14px;
   font-family: "Roboto";
   font-weight: 400;
 }
-.popup-container .switch-batch-list-container .switch-batch-card .batch-left-side .tag span {
+.popup-container .switch-batch-list-container .switchbatch-container .switch-batch-card .batch-left-side .tag span {
   padding: 2px 8px;
   background-color: #eefdb0;
   color: #49a843;
@@ -298,8 +290,24 @@ li {
   line-height: 14px;
   font-family: "Roboto";
 }
-.popup-container .switch-batch-list-container .switch-batch-card .batch-right-side {
+.popup-container .switch-batch-list-container .switchbatch-container .batch-right-side {
+  width: 20px;
+  position: absolute;
+  top: 22px;
+  right: 16px;
+}
+.popup-container .switch-batch-list-container .switchbatch-container .batch-right-side .edit-icon {
   visibility: hidden;
+  vertical-align: middle;
+}
+.popup-container .switch-batch-list-container .switchbatch-container:hover .switch-batch-card {
+  background-color: #f8fbf2;
+}
+.popup-container .switch-batch-list-container .switchbatch-container:hover .batch-right-side .edit-icon {
+  visibility: visible;
+}
+.popup-container .switch-batch-list-container .switchbatch-container:hover .batch-right-side .edit-icon:hover {
+  border: 1px solid red;
 }
 
 /*# sourceMappingURL=AddBatch.css.map */

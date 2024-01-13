@@ -218,23 +218,28 @@ li {
 }
 
 .datepicker {
-  max-width: 150px;
+  max-width: 261px;
   height: 36px;
   width: 100%;
   font-size: 12px;
   border-radius: 4px;
   outline: none;
   box-shadow: none !important;
+  border: 1px solid #eaeaea;
+}
+.datepicker::placeholder {
+  color: #969d88;
+  font-size: 12px;
 }
 .datepicker:focus {
-  border: 1px solid green !important;
+  border: 1px solid #49a843 !important;
   box-shadow: none !important;
 }
 .datepicker:hover {
   border: 1px solid #eaeaea;
 }
 .datepicker:active {
-  border-color: green;
+  border-color: #49a843;
 }
 
 .ant-picker-cell-selected .ant-picker-cell-inner {

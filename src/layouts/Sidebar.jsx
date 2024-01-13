@@ -16,7 +16,7 @@ import { API_END_POINT } from "../../config";
 const Sidebar = ({ menuList, activeMenuItem }) => {
   const navigate = useNavigate();
   const { id: batchId } = useParams();
- 
+
   const { token, user } = useAuth();
 
   const currentPath = useLocation().pathname;
@@ -27,13 +27,18 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
   const [batchList, setBatchList] = useState([]);
   const [currentBatch, setCurrentBatch] = useState(null);
 
-  const showSwitchBatchRef = useRef(null);
-  const showSwitchBatchRefIcon = useRef(null);
- 
+  // const [showSwitchBatch, setShowSwitchBatch] = useState(false);
+  const popUp = useRef(null);
+  const addRef = useRef(null);
+  const modelRef = useRef(null);
+
+
+
   const headers = {
     Authorization: `Bearer ${token.access}`,
     "Content-type": "application/json",
   };
+
   useEffect(() => {
     if (batchId) {
       // On Batch, setting Applications as default page
@@ -45,30 +50,40 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
       axios
         .get(`${API_END_POINT}/api/list/batch/`, { headers })
         .then((res) => {
-          const batchListData = res.data.data
-          setBatchList(batchListData.filter((batch)=>batch.id !== Number(batchId)));
-          setCurrentBatch(batchListData.find((batch) => batch.id === Number(batchId)));
+          const batchListData = res.data.data;
+          setBatchList(
+            batchListData.filter((batch) => batch.id !== Number(batchId))
+          );
+          setCurrentBatch(
+            batchListData.find((batch) => batch.id === Number(batchId))
+          );
         })
         .catch((err) => console.log(err));
     }
+  }, [batchId]);
 
+  useEffect(() => {
     const closeonoutsideclick = (e) => {
-      if (
-        showSwitchBatch &&
-        showSwitchBatchRef.current &&
-        !showSwitchBatchRef.current.contains(e.target) &&
-        !showSwitchBatchRefIcon.current.contains(e.target)
-      ) {
-        setShowSwitchBatch(false);
-        // console.log(123);
+      console.log(modelRef.current);
+
+      if (popUp.current) {
+        if (
+          showSwitchBatch &&
+          !addRef.current.contains(e.target) &&
+          !popUp.current.contains(e.target)
+        ) {
+          console.log("he;;p");
+          setShowSwitchBatch(false);
+        }
       }
+      // console.log(showSwitchBatchRef.current.contains(e.target), "kjhgf");
     };
+
     window.addEventListener("click", closeonoutsideclick);
     return () => {
       window.removeEventListener("click", closeonoutsideclick);
     };
-  }, [batchId, showSwitchBatch]);
-
+  }, [showSwitchBatch]);
   const handleLogout = () => {
     axios
       .post(`${API_END_POINT}/api/accounts/logout/`, token, { headers })
@@ -103,28 +118,28 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
 
         {!isDashboardPage && (
           <div
-            className="batch-switch-container flex "
-            ref={(ref) => (showSwitchBatchRefIcon.current = ref)}
+            className="batch-switch-container flex popup"
             onClick={() => setShowSwitchBatch(!showSwitchBatch)}
+            ref={addRef}
           >
-            <div className="batch-content-container flex">
-              <div className="batch-logo">
-                <p>
+            <div className="batch-content-container flex popup">
+              <div className="batch-logo popup ">
+                <p className="popup">
                   {currentBatch?.batch_name
                     .split(" ")
                     .map((word) => word.slice(0, 1).toUpperCase())
                     .join("")}
                 </p>
               </div>
-              <div className="batch-name">
-                <p>{currentBatch?.batch_name}</p>
-                <span>
+              <div className="batch-name popup">
+                <p className="popup">{currentBatch?.batch_name}</p>
+                <span className="popup">
                   {currentBatch?.start_date?.slice(0, 4)}-
                   {currentBatch?.end_date?.slice(0, 4)}
                 </span>
               </div>
             </div>
-            <div className="switch-icon">
+            <div className="switch-icon popup">
               <img src="/icons/dropdown.svg" alt="" />
             </div>
           </div>
@@ -149,8 +164,8 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
                       menu.id === active ? "main-active" : ""
                     }`}
                   >
-                    <a
-                      href={
+                    <Link
+                      to={
                         isDashboardPage
                           ? "/dashboard"
                           : `/batch/${batchId}/${menu.id}`
@@ -159,7 +174,7 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
                     >
                       <img src="/icons/application.svg" alt={menu.label} />
                       <span>{menu.label}</span>
-                    </a>
+                    </Link>
                   </li>
                 );
               })}
@@ -189,7 +204,8 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
         batchList={listBatchLists}
         setShowSwitchBatch={setShowSwitchBatch}
         setBatchList={setBatchList}
-        ref={showSwitchBatchRef}
+        popUp={popUp}
+        modelRef={modelRef}
       />
     </>
   );

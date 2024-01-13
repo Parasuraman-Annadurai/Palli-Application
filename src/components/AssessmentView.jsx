@@ -37,6 +37,8 @@ const AssessmentView = ({
   const [loading, setLoading] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [initialTitle, setInitialTitle] = useState("");
+  const [toggleAssigneeWeightage,setToggleAssigneeWeightage] = useState("weightage");
+  const [selectedWeightage,setSeletedWeightage] = useState([{weightage:null,weightage_percentage : null}])
 
   const headers = {
     Authorization: `Bearer ${token.access}`,
@@ -50,8 +52,13 @@ const AssessmentView = ({
     due_date,
     draft,
     task_users = [],
+    task_weightages =[]
   } = currentAssessment;
 
+
+ 
+
+  // console.log(simplifiedArray);
   //default which students assigned the task
   useEffect(() => {
     if (task_users) {
@@ -66,7 +73,16 @@ const AssessmentView = ({
         setSelectedStudents(updatedSelectedStudents);
       }
     }
-  }, [task_users]);
+    
+
+    if(task_weightages){
+      const currentAppliedWeightage = task_weightages.map(item => ({
+        weightage: item.weightage,
+        weightage_percentage: Number(item.weightage_percentage)
+      }));
+      setSeletedWeightage(currentAppliedWeightage)
+    }
+  }, [task_users,task_weightages]);
 
   const validateNotEmpty = (fieldName, value) => {
     const trimmedValue = value ? value.replace(/<[^>]*>/g, "").trim() : null;
@@ -247,6 +263,7 @@ const AssessmentView = ({
     setIsEditing(true);
   };
 
+
   return (
     <>
       <section className="main-container">
@@ -385,13 +402,15 @@ const AssessmentView = ({
         <section className="assignee-and-weightage-container">
           <div className="title-section flex">
             <div className="assignee-title selection active">
-              <h4>Assignee</h4>
+              <h4 onClick={()=>setToggleAssigneeWeightage("assignee")}>Assignee</h4>
             </div>
             <div className="weightage-title selection ">
-              <h4>Weightage</h4>
+              {weightageShow && <h4 onClick={()=>setToggleAssigneeWeightage("weightage")}>Weightage</h4>}
             </div>
           </div>
-          <div className="assignee-search-container">
+          {toggleAssigneeWeightage === "assignee" ? (
+            <>
+                <div className="assignee-search-container">
             {/* search bar use in future */}
             <input
               type="text"
@@ -440,6 +459,8 @@ const AssessmentView = ({
               })}
             </div>
           </div>
+            </>
+          ) : (weightageShow && <WeightageList taskId={taskId} selectedWeightage={selectedWeightage} setSeletedWeightage={setSeletedWeightage}/>)}
         </section>
       )}
     </>

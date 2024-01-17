@@ -9,7 +9,7 @@ import { API_END_POINT } from "../../config";
 import { useAuth } from "../context/AuthContext";
 
 
-const WeightageList = ({ taskId, selectedWeightage, setSeletedWeightage }) => {
+const WeightageList = ({ taskId, selectedWeightage, setSeletedWeightage,appliedWeightage }) => {
   const { id: batchId } = useParams();
   const { token } = useAuth();
   const [weightages, setWeighatages] = useState([]);
@@ -49,19 +49,22 @@ const WeightageList = ({ taskId, selectedWeightage, setSeletedWeightage }) => {
     const copyWeightage = [...selectedWeightage];
     copyWeightage.splice(deleteIndex, 1);
 
-    // const url = `${API_END_POINT}/api/task/${batchId}/delete_weightage/${weightages[deleteIndex]["id"]}/`;
-    // axios.delete(url,{headers}).then((res)=>{
-    //  if(res.data.status === 200){
-    //    notification.success({
-    //     message:"Success",
-    //     description:`${res.data.message}`
-    //    });
-    //    setSeletedWeightage(copyWeightage);
+    
+    const removeWeightageId = appliedWeightage[deleteIndex]["weightage_details"]["id"];
+    const url = `${API_END_POINT}/api/task/${batchId}/delete_weightage/${removeWeightageId}/`;
 
-    //  }
-    // }).catch((error)=>{
-    //   console.log(error);
-    // })
+    axios.delete(url,{headers}).then((res)=>{
+     if(res.data.status === 200){
+       notification.success({
+        message:"Success",
+        description:`${res.data.message}`
+       });
+       setSeletedWeightage(copyWeightage);
+
+     }
+    }).catch((error)=>{
+      console.log(error);
+    })
 
   };
 

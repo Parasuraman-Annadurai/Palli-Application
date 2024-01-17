@@ -37,8 +37,11 @@ const AssessmentView = ({
   const [loading, setLoading] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [initialTitle, setInitialTitle] = useState("");
-  const [toggleAssigneeWeightage,setToggleAssigneeWeightage] = useState("weightage");
-  const [selectedWeightage,setSeletedWeightage] = useState([{weightage:null,weightage_percentage : null}])
+  const [toggleAssigneeWeightage, setToggleAssigneeWeightage] =
+    useState("weightage");
+  const [selectedWeightage, setSeletedWeightage] = useState([
+    { weightage: null, weightage_percentage: null },
+  ]);
 
   const headers = {
     Authorization: `Bearer ${token.access}`,
@@ -52,11 +55,8 @@ const AssessmentView = ({
     due_date,
     draft,
     task_users = [],
-    task_weightages =[]
+    task_weightages = [],
   } = currentAssessment;
-
-
- 
 
   // console.log(simplifiedArray);
   //default which students assigned the task
@@ -73,16 +73,16 @@ const AssessmentView = ({
         setSelectedStudents(updatedSelectedStudents);
       }
     }
-    
 
-    if(task_weightages){
-      const currentAppliedWeightage = task_weightages.map(item => ({
-        weightage: item.weightage,
-        weightage_percentage: Number(item.weightage_percentage)
-      }));
-      setSeletedWeightage(currentAppliedWeightage)
-    }
-  }, [task_users,task_weightages]);
+    // if (task_weightages) {
+    //   const weightageObject = task_weightages.map((task_weightages) => ({
+    //     weightage: task_weightages.weightage,
+    //     weightage_percentage: Number(task_weightages.weightage_percentage),
+    //   }));
+
+    //   setSeletedWeightage(weightageObject);
+    // }
+  }, [task_users, task_weightages]);
 
   const validateNotEmpty = (fieldName, value) => {
     const trimmedValue = value ? value.replace(/<[^>]*>/g, "").trim() : null;
@@ -228,8 +228,6 @@ const AssessmentView = ({
     }
   };
 
-
-
   const handleValidate = (formData) => {
     //if student not assign show the error
     if (selectedStudents.length === 0) {
@@ -262,7 +260,6 @@ const AssessmentView = ({
     setInitialTitle(getValues("Title"));
     setIsEditing(true);
   };
-
 
   return (
     <>
@@ -402,65 +399,86 @@ const AssessmentView = ({
         <section className="assignee-and-weightage-container">
           <div className="title-section flex">
             <div className="assignee-title selection active">
-              <h4 onClick={()=>setToggleAssigneeWeightage("assignee")}>Assignee</h4>
+              <h4 onClick={() => setToggleAssigneeWeightage("assignee")}>
+                Assignee
+              </h4>
             </div>
             <div className="weightage-title selection ">
-              {weightageShow && <h4 onClick={()=>setToggleAssigneeWeightage("weightage")}>Weightage</h4>}
+              {weightageShow && (
+                <h4 onClick={() => setToggleAssigneeWeightage("weightage")}>
+                  Weightage
+                </h4>
+              )}
             </div>
           </div>
           {toggleAssigneeWeightage === "assignee" ? (
             <>
-                <div className="assignee-search-container">
-            {/* search bar use in future */}
-            <input
-              type="text"
-              style={{ border: "1px solid grey" }}
-              placeholder="Search here..."
-            />
-          </div>
-          <div className="assign-listing-container">
-            <div className="select-all flex">
-              <input
-                className="global-checkbox"
-                type="checkbox"
-                onChange={handleAllCheckboxChange}
-                checked={selectedStudents.length == students.length}
-              />
-              <span>{selectedStudents.length === students.length ? "All Students" : selectedStudents.length == 0  ? "Select Students" : `${selectedStudents.length} Selected`}</span>
-            </div>
-            <div className="assignee-card-listing-container">
-              {students.map((student) => {
-                return (
-                  <div
-                    className="individual-assignee-card flex"
-                    key={student.id}
-                  >
-                    <input
-                      type="checkbox"
-                      onChange={() => handleCheckboxChange(student.id)}
-                      checked={selectedStudents.includes(student.id)}
-                    />
-                    <div className="profile flex">
-                      <div className="profile-letter">
-                        <span>
-                          {student?.first_name[0]}
-                          {student?.last_name[0]}
-                        </span>
-                      </div>
+              <div className="assignee-search-container">
+                {/* search bar use in future */}
+                <input
+                  type="text"
+                  style={{ border: "1px solid grey" }}
+                  placeholder="Search here..."
+                />
+              </div>
+              <div className="assign-listing-container">
+                <div className="select-all flex">
+                  <input
+                    className="global-checkbox"
+                    type="checkbox"
+                    onChange={handleAllCheckboxChange}
+                    checked={selectedStudents.length == students.length}
+                  />
+                  <span>
+                    {selectedStudents.length === students.length
+                      ? "All Students"
+                      : selectedStudents.length == 0
+                      ? "Select Students"
+                      : `${selectedStudents.length} Selected`}
+                  </span>
+                </div>
+                <div className="assignee-card-listing-container">
+                  {students.map((student) => {
+                    return (
+                      <div
+                        className="individual-assignee-card flex"
+                        key={student.id}
+                      >
+                        <input
+                          type="checkbox"
+                          onChange={() => handleCheckboxChange(student.id)}
+                          checked={selectedStudents.includes(student.id)}
+                        />
+                        <div className="profile flex">
+                          <div className="profile-letter">
+                            <span>
+                              {student?.first_name[0]}
+                              {student?.last_name[0]}
+                            </span>
+                          </div>
 
-                      <div className="assignee-name">
-                        <p>
-                          {student.first_name} {student.last_name}
-                        </p>
+                          <div className="assignee-name">
+                            <p>
+                              {student.first_name} {student.last_name}
+                            </p>
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
+                    );
+                  })}
+                </div>
+              </div>
             </>
-          ) : (weightageShow && <WeightageList taskId={taskId} selectedWeightage={selectedWeightage} setSeletedWeightage={setSeletedWeightage}/>)}
+          ) : (
+            weightageShow && (
+              <WeightageList
+                taskId={taskId}
+                selectedWeightage={selectedWeightage}
+                appliedWeightage={task_weightages}
+                setSeletedWeightage={setSeletedWeightage}
+              />
+            )
+          )}
         </section>
       )}
     </>

@@ -265,6 +265,7 @@ li {
   border: 1px solid #eaeaea;
   width: 100%;
   margin-bottom: 12px;
+  cursor: pointer;
 }
 .popup-container .switch-batch-list-container .switchbatch-container .switch-batch-card .batch-left-side .batch-name-year h4 {
   font-size: 14px;
@@ -292,6 +293,7 @@ li {
 }
 .popup-container .switch-batch-list-container .switchbatch-container .batch-right-side {
   width: 20px;
+  transition: filter 0.3s ease;
   position: absolute;
   top: 22px;
   right: 16px;
@@ -305,9 +307,16 @@ li {
 }
 .popup-container .switch-batch-list-container .switchbatch-container:hover .batch-right-side .edit-icon {
   visibility: visible;
+  transition: filter 0.3s ease;
 }
 .popup-container .switch-batch-list-container .switchbatch-container:hover .batch-right-side .edit-icon:hover {
-  border: 1px solid red;
+  filter: brightness(5 0.5);
+  cursor: pointer;
+}
+
+.dark-overlay {
+  background-color: black;
+  opacity: 0.4;
 }
 
 /*# sourceMappingURL=AddBatch.css.map */

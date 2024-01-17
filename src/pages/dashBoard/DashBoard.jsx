@@ -298,8 +298,10 @@ const DashBoard = () => {
                   type="primary"
                   onClick={showModal}
                 >
-                  <h3>
-                    <span style={{ fontSize: 18 }}>+</span> ADD BATCH
+                  <h3 style={{ width: "215px" }}>
+                    <span style={{ fontSize: 18 }} >+</span>
+                    
+                     ADD BATCH 
                   </h3>
                 </Button>
               </div>

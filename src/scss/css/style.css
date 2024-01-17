@@ -439,6 +439,10 @@ body .container .side-nav-container .user-profile .user-details span {
   font-weight: 400;
   color: #969d88;
 }
+body .container .dark-overlay {
+  background-color: black;
+  opacity: 0.4;
+}
 body .container .listing-container {
   max-width: 301px;
   width: 100%;

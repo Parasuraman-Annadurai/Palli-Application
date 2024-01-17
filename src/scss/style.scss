@@ -562,7 +562,10 @@ body {
         }
       }
     }
-
+    .dark-overlay {
+      background-color: black;
+      opacity: 0.4;
+    }
     //task listing container
     .listing-container {
       max-width: 301px;

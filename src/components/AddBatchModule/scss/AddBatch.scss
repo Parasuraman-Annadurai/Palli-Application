@@ -210,7 +210,10 @@ li {
     opacity: 30%;
   }
 }
-
+// .dark-overlay {
+//   background-color: black;
+//   opacity: 0.4;
+// }
 .popup-container {
   position: absolute;
   left: 160px;
@@ -304,6 +307,7 @@ li {
         border: 1px solid $border-color;
         width: 100%;
         margin-bottom: 12px;
+        cursor: pointer;
         .batch-left-side {
           .batch-name-year {
             h4 {
@@ -337,6 +341,7 @@ li {
       }
       .batch-right-side {
         width: 20px;
+        transition: filter 0.3s ease;
         position: absolute;
         top: 22px;
         right: 16px;
@@ -352,12 +357,19 @@ li {
         .batch-right-side {
           .edit-icon {
             visibility: visible;
+            transition: filter 0.3s ease;
             &:hover {
-              border: 1px solid red;
+              // border: 1px solid red;
+              filter: brightness(5  .5);
+              cursor: pointer;
             }
           }
         }
       }
     }
   }
+}
+.dark-overlay{
+  background-color: black;
+  opacity: 0.4;
 }

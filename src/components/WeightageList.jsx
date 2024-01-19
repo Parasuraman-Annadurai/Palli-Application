@@ -31,7 +31,7 @@ const WeightageList = ({ taskId, selectedWeightage, setSeletedWeightage,appliedW
   const handleAddWeightage = () => {
     const copyWeightage = [
       ...selectedWeightage,
-      { weightage: "", weightage_percentage: "" },
+      { weightage: null, weightage_percentage: null },
     ];
     setSeletedWeightage(copyWeightage);
    
@@ -50,8 +50,10 @@ const WeightageList = ({ taskId, selectedWeightage, setSeletedWeightage,appliedW
     copyWeightage.splice(deleteIndex, 1);
 
     
-    const removeWeightageId = appliedWeightage[deleteIndex]["weightage_details"]["id"];
-    const url = `${API_END_POINT}/api/task/${batchId}/delete_weightage/${removeWeightageId}/`;
+    const removeWeightageId = appliedWeightage[deleteIndex]["id"];
+    const url = `${API_END_POINT}/api/task/${batchId}/delete/task_weightage/${removeWeightageId}`;
+
+    console.log(url);
 
     axios.delete(url,{headers}).then((res)=>{
      if(res.data.status === 200){
@@ -79,13 +81,13 @@ const WeightageList = ({ taskId, selectedWeightage, setSeletedWeightage,appliedW
    setSeletedWeightage(copyWeightage)
 
   }
-
   return (
     <>
       <div className="weightage-adding-container flex">
         <div className="weight-inputs">
-          {selectedWeightage.map((slectWeightage, index) => (
-            <div key={index}>
+          {selectedWeightage.map((slectWeightage,index)=>{
+            return(
+              <div key={index}>
               <Select
                 style={{ width: "100px" }}
                 placeholder={"Select Weightage"}
@@ -111,15 +113,14 @@ const WeightageList = ({ taskId, selectedWeightage, setSeletedWeightage,appliedW
               <div className="weightage-unit-container flex">
                 <div className="weightage-action">
                   {/* Show the delete icon only if weightage is greater than 0 */}
-                  {index > 0 && (
-                    <span onClick={() => handleDeleteWeightage(index)}>
+                  <span onClick={() => handleDeleteWeightage(index)}>
                       Delete
                     </span>
-                  )}
                 </div>
               </div>
             </div>
-          ))}
+            )
+          })}
         </div>
         <div className="add-weightage-button">
           <button

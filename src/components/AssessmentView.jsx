@@ -62,8 +62,9 @@ const AssessmentView = ({
   //default which students assigned the task
   useEffect(() => {
     if (task_users) {
-      const taskAssignedUsers = task_users.map((assigned) => assigned.user);
-      const updatedSelectedStudents = taskAssignedUsers;
+      const taskAssignedUsers = task_users.map((assigned) =>assigned.user.id)
+
+      const updatedSelectedStudents = [...taskAssignedUsers];
 
       // Check if the state actually needs to be updated
       if (
@@ -140,7 +141,7 @@ const AssessmentView = ({
       let updateTheStudent = [...selectedStudents];
       updateTheStudent = updateTheStudent.filter((id) => id != studentId);
       //remove user API call
-      const url = `${API_END_POINT}/api/task/${batchId}/remove/user/${taskId}/`;
+      const url = `${API_END_POINT}/api/task/${batchId}/remove/user/${studentId}/task/${taskId}/`
       axios
         .delete(url, { user: [studentId] }, { headers })
         .then((res) => {
@@ -160,7 +161,6 @@ const AssessmentView = ({
         });
     } else {
       const updatedStudents = [...selectedStudents, studentId];
-
       //students add in task
       const url = `${API_END_POINT}/api/task/${batchId}/assign/task/${taskId}`;
       axios.post(url, { user: [studentId] }, { headers }).then((res) => {
@@ -184,28 +184,13 @@ const AssessmentView = ({
     if (isNotAllSelected) {
       //Deselect all students in tasks
 
-      axios
-        .delete(`${API_END_POINT}/api/task/${batchId}/remove/user/${taskId}/`, {
-          data: { user: "__all__" },
-          headers: headers,
-        })
-        .then((res) => {
-          if (res.data.status === 200) {
-            setSelectedStudents([]);
-            notification.success({
-              message: "Success",
-              description: "All Students Removed Successfully",
-              duration: 1,
-            });
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      //not ready in backend
+
+    
     } else {
       const allStudentIds = [...students].map((student) => student.id);
 
-      //selectAll students in tasks
+      // selectAll students in tasks
       axios
         .post(
           `${API_END_POINT}/api/task/${batchId}/assign/task/${taskId}`,

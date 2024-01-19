@@ -31,12 +31,14 @@ const AssessmentView = ({
   selectedStudents,
   handleSave,
   handleInputChange,
+  isCardClick,
 }) => {
   const { id: batchId } = useParams();
   const { token } = useAuth();
   const [loading, setLoading] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [initialTitle, setInitialTitle] = useState("");
+  const [isOpenWeightage, setIsOpenWeightage] = useState(false);
 
   const headers = {
     Authorization: `Bearer ${token.access}`,
@@ -212,8 +214,6 @@ const AssessmentView = ({
     }
   };
 
-
-
   const handleValidate = (formData) => {
     //if student not assign show the error
     if (selectedStudents.length === 0) {
@@ -247,31 +247,66 @@ const AssessmentView = ({
     setIsEditing(true);
   };
 
+  const taskAndWeightageDetails = [
+    {
+      task_user: [...currentAssessment.task_users],
+      task_weightages: [...currentAssessment.task_weightages],
+    },
+  ];
+
+  // const aa = [{ task_weightage: 1, task_user: 2, task_score: 16 }];
+  const [score, setScore] = useState([]);
+  console.log();
+
+  const handleAddScore = (scoreDetails) => {
+  
+
+    const { task_weightage,task_user,task_score} = scoreDetails
+
+    const requestBody = {
+      task_weightage,
+      task_user,
+      task_score,
+    };
+    if(isOpenWeightage){
+      const url = `${API_END_POINT}/api/task/${batchId}/create/task_score/`;
+
+      axios.post(url,requestBody,{headers}).then((res)=>{
+        console.log(res);
+       
+      }).catch((error)=>{
+        console.log(error);
+      })
+
+    }
+  };
   return (
     <>
-      <section className="main-container">
-        {loading ? (
-          <Skeleton active paragraph={4} />
-        ) : (
-          <>
-            <div className="module-header-section-container">
-              <div className="module-header-section flex">
-                <div className="module-title-section flex">
-                  <input
-                    value={task_title ? task_title : ""}
-                    name="task_title"
-                    type="text"
-                    onChange={(e) =>
-                      handleInputChange("task_title", e.target.value)
-                    }
-                    // onDoubleClick={onDoubleClick}
-                    placeholder={"Untitled"}
-                    // className={` ${errors.Title ? "error-notify" : ""} `}
-                    // readOnly={!isEditing}
-                    autoFocus={true}
-                  />
+      {!isCardClick ? (
+        <>
+          <section className="main-container">
+            {loading ? (
+              <Skeleton active paragraph={4} />
+            ) : (
+              <>
+                <div className="module-header-section-container">
+                  <div className="module-header-section flex">
+                    <div className="module-title-section flex">
+                      <input
+                        value={task_title ? task_title : ""}
+                        name="task_title"
+                        type="text"
+                        onChange={(e) =>
+                          handleInputChange("task_title", e.target.value)
+                        }
+                        // onDoubleClick={onDoubleClick}
+                        placeholder={"Untitled"}
+                        // className={` ${errors.Title ? "error-notify" : ""} `}
+                        // readOnly={!isEditing}
+                        autoFocus={true}
+                      />
 
-                  {/* {isEditing && (
+                      {/* {isEditing && (
                     <div>
                       <span className="yes-btn">
                         <img
@@ -289,158 +324,268 @@ const AssessmentView = ({
                       </span>
                     </div>
                   )} */}
-                </div>
-              </div>
-              <p className="error-message"></p>
-            </div>
-
-            <div className="task-details-header-container">
-              <div className="task-label-container flex">
-                <h4>Task Details</h4>
-                <div className="horizon-line"></div>
-              </div>
-
-              <div className="task-details-main-container flex">
-                <div className="task-deadline-container common-property">
-                  <p className="task-deadline-label">Deadline</p>
-
-                  <DatePicker
-                    value={due_date ? dayjs(due_date) : null}
-                    showTime={{ format: "HH:mm" }}
-                    placeholder="Select here..."
-                    format="YYYY-MM-DD HH:mm"
-                    onChange={(date, dateString) =>
-                      handleInputChange("due_date", dateString)
-                    }
-                    suffixIcon={<img src={`/icons/calendorIcon.svg`} />}
-                    disabledDate={(current) =>
-                      current && current < dayjs().startOf("day")
-                    }
-                  />
-                  <p className="error-message"></p>
-                </div>
-              </div>
-
-              <div className="task-editor-container">
-                <p className="task-description-label">Description</p>
-                <div className="task-editor">
-                  <>
-                    <CustomIcons />
-                    <ReactQuill
-                      placeholder="Type here"
-                      value={task_description ? task_description : ""}
-                      modules={{
-                        toolbar: {
-                          container: [
-                            [{ header: [1, 2, false] }],
-                            ["bold", "italic", "underline"],
-                            [
-                              "alignLeft",
-                              "alignCenter",
-                              "alignRight",
-                              "alignJustify",
-                            ],
-                          ],
-                        },
-                      }}
-                      formats={[
-                        "header",
-                        "bold",
-                        "italic",
-                        "underline",
-                        "list",
-                        "bullet",
-                        "alignLeft",
-                        "alignCenter",
-                        "alignRight",
-                        "alignJustify",
-                      ]}
-                      theme="snow"
-                      onChange={(value) =>
-                        handleInputChange("task_description", value)
-                      }
-                    />
-                    <p className="error-message"></p>
-                  </>
-                </div>
-              </div>
-
-              <div className="submission-folder-link-container">
-                <input type="link" placeholder="Paste your link here..." />
-              </div>
-              <div className="task-create-btn-section flex">
-                <button
-                  type="submit"
-                  className="btn primary-medium"
-                  onClick={() => handleSave(currentAssessment)}
-                >
-                  {draft ? "Create" : "Update"}
-                </button>
-              </div>
-            </div>
-          </>
-        )}
-      </section>
-      {!draft && (
-        <section className="assignee-and-weightage-container">
-          <div className="title-section flex">
-            <div className="assignee-title selection active">
-              <h4>Assignee</h4>
-            </div>
-            <div className="weightage-title selection ">
-              <h4>Weightage</h4>
-            </div>
-          </div>
-          <div className="assignee-search-container">
-            {/* search bar use in future */}
-            <input
-              type="text"
-              style={{ border: "1px solid grey" }}
-              placeholder="Search here..."
-            />
-          </div>
-          <div className="assign-listing-container">
-            <div className="select-all flex">
-              <input
-                className="global-checkbox"
-                type="checkbox"
-                onChange={handleAllCheckboxChange}
-                checked={selectedStudents.length == students.length}
-              />
-              <span>{selectedStudents.length === students.length ? "All Students" : selectedStudents.length == 0  ? "Select Students" : `${selectedStudents.length} Selected`}</span>
-            </div>
-            <div className="assignee-card-listing-container">
-              {students.map((student) => {
-                return (
-                  <div
-                    className="individual-assignee-card flex"
-                    key={student.id}
-                  >
-                    <input
-                      type="checkbox"
-                      onChange={() => handleCheckboxChange(student.id)}
-                      checked={selectedStudents.includes(student.id)}
-                    />
-                    <div className="profile flex">
-                      <div className="profile-letter">
-                        <span>
-                          {student?.first_name[0]}
-                          {student?.last_name[0]}
-                        </span>
-                      </div>
-
-                      <div className="assignee-name">
-                        <p>
-                          {student.first_name} {student.last_name}
-                        </p>
-                      </div>
                     </div>
                   </div>
-                );
-              })}
-            </div>
-          </div>
-        </section>
+                  <p className="error-message"></p>
+                </div>
+
+                <div className="task-details-header-container">
+                  <div className="task-label-container flex">
+                    <h4>Task Details</h4>
+                    <div className="horizon-line"></div>
+                  </div>
+
+                  <div className="task-details-main-container flex">
+                    <div className="task-deadline-container common-property">
+                      <p className="task-deadline-label">Deadline</p>
+
+                      <DatePicker
+                        value={due_date ? dayjs(due_date) : null}
+                        showTime={{ format: "HH:mm" }}
+                        placeholder="Select here..."
+                        format="YYYY-MM-DD HH:mm"
+                        onChange={(date, dateString) =>
+                          handleInputChange("due_date", dateString)
+                        }
+                        suffixIcon={<img src={`/icons/calendorIcon.svg`} />}
+                        disabledDate={(current) =>
+                          current && current < dayjs().startOf("day")
+                        }
+                      />
+                      <p className="error-message"></p>
+                    </div>
+                  </div>
+
+                  <div className="task-editor-container">
+                    <p className="task-description-label">Description</p>
+                    <div className="task-editor">
+                      <>
+                        <CustomIcons />
+                        <ReactQuill
+                          placeholder="Type here"
+                          value={task_description ? task_description : ""}
+                          modules={{
+                            toolbar: {
+                              container: [
+                                [{ header: [1, 2, false] }],
+                                ["bold", "italic", "underline"],
+                                [
+                                  "alignLeft",
+                                  "alignCenter",
+                                  "alignRight",
+                                  "alignJustify",
+                                ],
+                              ],
+                            },
+                          }}
+                          formats={[
+                            "header",
+                            "bold",
+                            "italic",
+                            "underline",
+                            "list",
+                            "bullet",
+                            "alignLeft",
+                            "alignCenter",
+                            "alignRight",
+                            "alignJustify",
+                          ]}
+                          theme="snow"
+                          onChange={(value) =>
+                            handleInputChange("task_description", value)
+                          }
+                        />
+                        <p className="error-message"></p>
+                      </>
+                    </div>
+                  </div>
+
+                  <div className="submission-folder-link-container">
+                    <input type="link" placeholder="Paste your link here..." />
+                  </div>
+                  <div className="task-create-btn-section flex">
+                    <button
+                      type="submit"
+                      className="btn primary-medium"
+                      onClick={() => handleSave(currentAssessment)}
+                    >
+                      {draft ? "Create" : "Update"}
+                    </button>
+                  </div>
+                </div>
+              </>
+            )}
+          </section>
+          {!draft && (
+            <section className="assignee-and-weightage-container">
+              <div className="title-section flex">
+                <div className="assignee-title selection active">
+                  <h4>Assignee</h4>
+                </div>
+                <div className="weightage-title selection ">
+                  <h4>Weightage</h4>
+                </div>
+              </div>
+              <div className="assignee-search-container">
+                {/* search bar use in future */}
+                <input
+                  type="text"
+                  style={{ border: "1px solid grey" }}
+                  placeholder="Search here..."
+                />
+              </div>
+              <div className="assign-listing-container">
+                <div className="select-all flex">
+                  <input
+                    className="global-checkbox"
+                    type="checkbox"
+                    onChange={handleAllCheckboxChange}
+                    checked={selectedStudents.length == students.length}
+                  />
+                  <span>
+                    {selectedStudents.length === students.length
+                      ? "All Students"
+                      : selectedStudents.length == 0
+                      ? "Select Students"
+                      : `${selectedStudents.length} Selected`}
+                  </span>
+                </div>
+                <div className="assignee-card-listing-container">
+                  {students.map((student) => {
+                    return (
+                      <div
+                        className="individual-assignee-card flex"
+                        key={student.id}
+                      >
+                        <input
+                          type="checkbox"
+                          onChange={() => handleCheckboxChange(student.id)}
+                          checked={selectedStudents.includes(student.id)}
+                        />
+                        <div className="profile flex">
+                          <div className="profile-letter">
+                            <span>
+                              {student?.first_name[0]}
+                              {student?.last_name[0]}
+                            </span>
+                          </div>
+
+                          <div className="assignee-name">
+                            <p>
+                              {student.first_name} {student.last_name}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </section>
+          )}
+        </>
+      ) : (
+        <>
+          <main className="main-container">
+            {taskAndWeightageDetails.map((taskAndWeightage, index) => {
+            console.log(taskAndWeightage);
+              const assessmentDetails = {
+                task_weightage:
+                  taskAndWeightage.task_weightages[index]["weightage"],
+                  task_user: taskAndWeightage.task_user[index]["user"]["id"],
+                  task_score: Number(score[index])
+               
+              };
+
+              console.log(
+                taskAndWeightage["task_weightages"][index]["weightage_details"]["weightage"]
+              );
+              return (
+                <>
+                  <div class="task-user-list-container flex">
+                    <div class="student-info flex">
+                      <div class="student-name-container">
+                        <p>
+                          {taskAndWeightage["task_user"][index]["user"][
+                            "first_name"
+                          ].slice(0, 1)}
+                          {taskAndWeightage["task_user"][index]["user"][
+                            "last_name"
+                          ].slice(0, 1)}
+                        </p>
+                      </div>
+                      <div class="student-email-container">
+                        <p class="student-name"></p>
+                        <p class="student-email"></p>
+                      </div>
+                    </div>
+                    <div class="student-status">
+                      <p>Status</p>
+                      <span>
+                        {taskAndWeightage["task_user"][index]["task_status"]}
+                      </span>
+                    </div>
+                    <div class="sumbitted-date">
+                      <p>Deadline</p>
+                      <span>
+                        {
+                          taskAndWeightage["task_user"][index]["task"][
+                            "due_date"
+                          ]
+                        }
+                      </span>
+                    </div>
+                    <div class="student-file">
+                      <p>Submission Link</p>
+                      <span>
+                        {
+                          taskAndWeightage["task_user"][index][
+                            "submission_link"
+                          ]
+                        }
+                      </span>
+                    </div>
+                    <div class="student-work">
+                      {taskAndWeightage["task_user"][index]["task_status"] ===
+                        "SUBMITTED" && (
+                        <button
+                          class="secondary-btn-sm"
+                          onClick={() => {
+                            handleAddScore(assessmentDetails),
+                              setIsOpenWeightage(!isOpenWeightage);
+                          }}
+                        >
+                         {isOpenWeightage ? "Submit" :" add mark"}
+                        </button>
+                      )}
+                    </div>
+                  </div>
+
+                  {isOpenWeightage && (
+                    <div class="applied-weightage-list-container flex">
+                      <div class="applied-weightage-card flex">
+                        <div class="applied-weightage-name">
+                          <p>{taskAndWeightage["task_weightages"][index]["weightage_details"]["weightage"]}</p>
+                        </div>
+                        <div class="weightage-checkbox">
+                          <input
+                            type="number"
+                            style={{ border: "1px solid grey" }}
+                            onChange={(e) => {
+                              const newScores = [...score];
+                              newScores[index] = e.target.value;
+                              setScore(newScores);
+                            }}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </>
+              );
+            })}
+          </main>
+        </>
       )}
     </>
   );

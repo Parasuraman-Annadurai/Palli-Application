@@ -27,6 +27,8 @@ const AssessmentModule = ({ type }) => {
   //for check task or assessment new created or old;
   const [isDraft, setIsDraft] = useState(false);
 
+  const [isCardClick,setIsCardClick] = useState(true);
+
   const headers = {
     Authorization: `Bearer ${token.access}`,
     "Content-type": "application/json",
@@ -256,6 +258,10 @@ const AssessmentModule = ({ type }) => {
     setAssessmentList(updatedList);
   };
 
+  const onCardClick = ()=>{
+
+  }
+
   return (
     <>
       {isDeleteModalOpen && (
@@ -291,6 +297,7 @@ const AssessmentModule = ({ type }) => {
         handleDelete={handleDeleteAssessment}
         handleAdd={handleAdd}
         selectedAssessment={editId}
+        setIsCardClick={setIsCardClick}
       />
 
       {assessmentList.map((assessment) => {
@@ -305,6 +312,7 @@ const AssessmentModule = ({ type }) => {
               handleSave={handleSave}
               handleInputChange={handleInputChange}
               weightageShow={type === "task" ? false : true}
+              isCardClick={isCardClick}
             />
           );
         }

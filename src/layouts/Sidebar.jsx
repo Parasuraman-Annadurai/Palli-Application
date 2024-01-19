@@ -148,7 +148,7 @@ const Sidebar = ({ menuList }) => {
                       className="flex"
                     >
                       <img
-                        src="/public/icons/application.svg"
+                        src="/icons/application.svg"
                         alt={menu.label}
                       />
                       <span>{menu.label}</span>
@@ -184,7 +184,7 @@ const Sidebar = ({ menuList }) => {
               <h3>Switch Batch</h3>
               <div className="close-icon">
                 <img
-                  src="/public/icons/Cancel.svg"
+                  src="/icons/Cancel.svg"
                   className="cancel-btn"
                   alt=""
                   onClick={() => setShowSwitchBatch(false)}

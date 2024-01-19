@@ -348,6 +348,11 @@ body .container .side-nav-container .nav-links ul .main-link {
   font: 400 12px/18px "Roboto";
   color: #969d88;
   margin: 20px 0;
+  cursor: pointer;
+}
+body .container .side-nav-container .nav-links ul .main-link :hover {
+  font-weight: 500;
+  color: #12160A;
 }
 body .container .side-nav-container .nav-links ul .main-link a {
   font-family: "Roboto";
@@ -589,6 +594,13 @@ body .container .listing-container .create-container .btn.create-btn span {
   color: #12160a;
   font-family: "Roboto";
 }
+body .container .listing-container .create-container .btn.create-btn span span:hover {
+  color: #fff;
+}
+body .container .listing-container .create-container .btn.create-btn:hover {
+  background-color: #33762F;
+  color: #fff;
+}
 body .container .listing-container .task-list-container {
   height: 460px;
   overflow: scroll;
@@ -724,6 +736,12 @@ body .container .main-container .module-header-section-container .module-header-
 }
 body .container .main-container .module-header-section-container .module-header-section .module-title-section {
   gap: 8px;
+}
+body .container .main-container .module-header-section-container .module-header-section .module-title-section input {
+  font-size: 16px;
+}
+body .container .main-container .module-header-section-container .module-header-section .module-title-section input:hover {
+  background-color: red;
 }
 body .container .main-container .module-header-section-container .module-header-section .module-title-section .task-title {
   font-size: 16px;
@@ -876,6 +894,15 @@ body .container .main-container .task-details-header-container .task-editor-cont
 }
 body .container .main-container .task-details-header-container .submission-folder-link-container {
   padding-bottom: 16px;
+  padding: 10px 0px 10px 12px;
+  width: 100%;
+  font-family: "Roboto";
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 400;
+  color: #12160a;
+  border-radius: 4px;
+  border: 1px solid #eaeaea;
 }
 body .container .main-container .task-details-header-container .submission-folder-link-container .task-submission-link {
   padding: 10px 0px 10px 12px;

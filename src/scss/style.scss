@@ -430,6 +430,12 @@ body {
             font: 400 12px/18px $font-Roboto;
             color: $font-secondary-color;
             margin: 20px 0;
+            cursor: pointer;
+
+            :hover{
+              font-weight: 500;
+              color: #12160A;
+            }
 
             a {
               font-family: $font-Roboto;
@@ -705,6 +711,8 @@ body {
       .create-container {
         margin: 12px 0px 8px;
 
+       
+
         .btn.create-btn {
           width: 100%;
           padding: 8px 0;
@@ -721,13 +729,25 @@ body {
           font-family: $font-Roboto;
           text-transform: capitalize;
 
+         
+
           span {
             font-size: 16px;
             line-height: 20px;
             font-weight: 400;
             color: $font-primary-color;
             font-family: $font-Roboto;
+
+            span:hover{
+              color: #fff;
+            }
           }
+
+          
+        }
+        .btn.create-btn:hover{
+            background-color: #33762F;
+            color: #fff;
         }
       }
 
@@ -888,6 +908,12 @@ body {
 
           .module-title-section {
             gap: 8px;
+            input{
+              font-size: 16px;
+              &:hover{
+                background-color: red;
+              }
+            }
 
             .task-title {
               font-size: 16px;
@@ -1100,6 +1126,15 @@ body {
           }
 
           padding-bottom: 16px;
+          padding: 10px 0px 10px 12px;
+          width: 100%;
+          font-family: $font-Roboto;
+          font-size: 12px;
+          line-height: 16px;
+          font-weight: 400;
+          color: $font-primary-color;
+          border-radius: 4px;
+          border: 1px solid $border-color;
         }
 
         .file-input-container {
@@ -1262,18 +1297,18 @@ body {
           border-bottom: 2px solid $primary-color;
         }
       }
-      .assignee-search-container{
+      // .assignee-search-container{
 
-      }
+      // }
       .assign-listing-container{
         padding-top: 20px;
         .select-all{
           gap: 10px;
           align-items: center;
           padding-bottom: 20px;
-          .global-checkbox{
+          // .global-checkbox{
 
-          }
+          // }
           .span{
             font-size: 12px;
             font-family: $font-Roboto;

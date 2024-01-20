@@ -382,7 +382,7 @@ const Applications = () => {
       <div className="application-inner-container">
         <div className="search-container">
           <img
-            src="/public/icons/searchIcon.svg"
+            src="/icons/searchIcon.svg"
             alt=""
             className="search-icon"
           />

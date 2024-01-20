@@ -432,9 +432,9 @@ body {
             margin: 20px 0;
             cursor: pointer;
 
-            :hover{
+            :hover {
               font-weight: 500;
-              color: #12160A;
+              color: #12160a;
             }
 
             a {
@@ -691,7 +691,9 @@ body {
           border: 1px solid $border-color;
           font-family: $font-Roboto;
         }
-
+        & :focus {
+          border: 1px solid $primary-color;
+        }
         img {
           width: 16px;
           height: 16px;
@@ -711,8 +713,6 @@ body {
       .create-container {
         margin: 12px 0px 8px;
 
-       
-
         .btn.create-btn {
           width: 100%;
           padding: 8px 0;
@@ -729,25 +729,20 @@ body {
           font-family: $font-Roboto;
           text-transform: capitalize;
 
-         
-
           span {
             font-size: 16px;
             line-height: 20px;
             font-weight: 400;
-            color: $font-primary-color;
+            // color: $font-primary-color;
             font-family: $font-Roboto;
-
-            span:hover{
-              color: #fff;
-            }
           }
-
-          
+          // span:hover{
+          //   color: #fff;
+          // }
         }
-        .btn.create-btn:hover{
-            background-color: #33762F;
-            color: #fff;
+        .btn.create-btn:hover {
+          background-color: $side_bar_bg;
+          // color: #fff;
         }
       }
 
@@ -861,15 +856,15 @@ body {
         }
 
         .task-card.active {
-          background-color: $side_bar_bg;
+          background-color: #fff;
+          &:hover {
+            background-color: $side_bar_bg;
+          }
         }
 
-        .task-card.active .task-name-with-icon .edit-icon
-         {
+        .task-card.active .task-name-with-icon .edit-icon {
           visibility: visible;
         }
-
-        
       }
     }
 
@@ -908,9 +903,9 @@ body {
 
           .module-title-section {
             gap: 8px;
-            input{
+            input {
               font-size: 16px;
-              &:hover{
+              &:hover {
                 background-color: red;
               }
             }
@@ -1269,23 +1264,23 @@ body {
             }
           }
         }
-        .task-create-btn-section{
+        .task-create-btn-section {
           justify-content: end;
         }
       }
     }
-    .assignee-and-weightage-container{
+    .assignee-and-weightage-container {
       max-width: 301px;
       width: 100%;
       padding: 24px 20px;
-      .title-section{
+      .title-section {
         max-width: 167px;
         width: 100%;
         margin: 0 auto;
         gap: 24px;
-        .selection{
+        .selection {
           cursor: pointer;
-          h4{
+          h4 {
             font-size: 16px;
             font-weight: 500;
             font-family: $font-Roboto;
@@ -1293,60 +1288,59 @@ body {
             padding-bottom: 5px;
           }
         }
-        .selection.active{
+        .selection.active {
           border-bottom: 2px solid $primary-color;
         }
       }
       // .assignee-search-container{
 
       // }
-      .assign-listing-container{
+      .assign-listing-container {
         padding-top: 20px;
-        .select-all{
+        .select-all {
           gap: 10px;
           align-items: center;
           padding-bottom: 20px;
           // .global-checkbox{
 
           // }
-          .span{
+          .span {
             font-size: 12px;
             font-family: $font-Roboto;
           }
         }
-        .assignee-card-listing-container{
+        .assignee-card-listing-container {
           .individual-assignee-card {
             gap: 10px;
             align-items: center;
             padding-top: 10px;
             padding-bottom: 12px;
-            border-bottom: 1px solid #EAEAEA;
+            border-bottom: 1px solid #eaeaea;
             input[type="checkbox"]:checked {
               color: $primary-color;
             }
-            input:checked:before{
-              background-color:green;
-              }
-            .profile{
+            input:checked:before {
+              background-color: green;
+            }
+            .profile {
               gap: 6px;
               align-items: center;
 
-              .profile-letter{
+              .profile-letter {
                 background-color: $primary-color;
                 height: 24px;
                 width: 24px;
                 border-radius: 50%;
                 text-align: center;
 
-                span{
-                  font-size:10px;
+                span {
+                  font-size: 10px;
                 }
               }
             }
           }
         }
       }
-
     }
   }
 }

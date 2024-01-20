@@ -352,7 +352,7 @@ body .container .side-nav-container .nav-links ul .main-link {
 }
 body .container .side-nav-container .nav-links ul .main-link :hover {
   font-weight: 500;
-  color: #12160A;
+  color: #12160a;
 }
 body .container .side-nav-container .nav-links ul .main-link a {
   font-family: "Roboto";
@@ -556,6 +556,9 @@ body .container .listing-container .search-container input {
   border: 1px solid #eaeaea;
   font-family: "Roboto";
 }
+body .container .listing-container .search-container :focus {
+  border: 1px solid #49a843;
+}
 body .container .listing-container .search-container img {
   width: 16px;
   height: 16px;
@@ -591,15 +594,10 @@ body .container .listing-container .create-container .btn.create-btn span {
   font-size: 16px;
   line-height: 20px;
   font-weight: 400;
-  color: #12160a;
   font-family: "Roboto";
 }
-body .container .listing-container .create-container .btn.create-btn span span:hover {
-  color: #fff;
-}
 body .container .listing-container .create-container .btn.create-btn:hover {
-  background-color: #33762F;
-  color: #fff;
+  background-color: #f8fbf2;
 }
 body .container .listing-container .task-list-container {
   height: 460px;
@@ -700,6 +698,9 @@ body .container .listing-container .task-list-container .task-card:hover .task-n
   visibility: visible;
 }
 body .container .listing-container .task-list-container .task-card.active {
+  background-color: #fff;
+}
+body .container .listing-container .task-list-container .task-card.active:hover {
   background-color: #f8fbf2;
 }
 body .container .listing-container .task-list-container .task-card.active .task-name-with-icon .edit-icon {
@@ -1071,7 +1072,7 @@ body .container .assignee-and-weightage-container .assign-listing-container .ass
   align-items: center;
   padding-top: 10px;
   padding-bottom: 12px;
-  border-bottom: 1px solid #EAEAEA;
+  border-bottom: 1px solid #eaeaea;
 }
 body .container .assignee-and-weightage-container .assign-listing-container .assignee-card-listing-container .individual-assignee-card input[type=checkbox]:checked {
   color: #49a843;

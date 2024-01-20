@@ -2,6 +2,8 @@ import React from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 //Our context here
 import { AuthContextProvider } from "./context/AuthContext.jsx";
+
+import { useAuth } from "./context/AuthContext.jsx";
 //Suppoting Routes Variables
 import {
   LOGIN,
@@ -25,6 +27,8 @@ import ErrorPage from "./pages/errorPage/ErrorPage.jsx";
 import PrivateRoute from "./routes/PrivateRoute";
 
 const App = () => {
+
+
   return (
     <AuthContextProvider>
       <BrowserRouter>
@@ -47,7 +51,7 @@ const App = () => {
           <Route path={TASKMODULE} element={<PrivateRoute />}>
             <Route path={TASKMODULE} element={<AssessmentModule type="task"/>} />
           </Route>
-
+            
           <Route path={ASSESSMENTMODULE} element={<PrivateRoute />}>
             <Route path={ASSESSMENTMODULE} element={<AssessmentModule type="assessment"/>} />
           </Route>

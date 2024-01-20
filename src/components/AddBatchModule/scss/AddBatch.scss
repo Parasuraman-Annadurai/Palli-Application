@@ -223,6 +223,9 @@ li {
   width: 301px;
   z-index: 999;
   padding: 20px;
+  border-right: 1px solid $side_bar_bg;
+  box-shadow: 10px 0 10px -10px rgba(0,0,0, 0.5);
+  
   .popup-content {
     .inner-content {
       align-items: center;

@@ -75,14 +75,14 @@ const AssessmentView = ({
       }
     }
 
-    // if (task_weightages) {
-    //   const weightageObject = task_weightages.map((task_weightages) => ({
-    //     weightage: task_weightages.weightage,
-    //     weightage_percentage: Number(task_weightages.weightage_percentage),
-    //   }));
+    if (task_weightages) {
+      const weightageObject = task_weightages.map((task_weightages) => ({
+        weightage: task_weightages.weightage,
+        weightage_percentage: Number(task_weightages.weightage_percentage),
+      }));
 
-    //   setSeletedWeightage(weightageObject);
-    // }
+      setSeletedWeightage(weightageObject);
+    }
   }, [task_users, task_weightages]);
 
   const validateNotEmpty = (fieldName, value) => {

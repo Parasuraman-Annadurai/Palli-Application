@@ -53,7 +53,6 @@ const WeightageList = ({ taskId, selectedWeightage, setSeletedWeightage,appliedW
     const removeWeightageId = appliedWeightage[deleteIndex]["id"];
     const url = `${API_END_POINT}/api/task/${batchId}/delete/task_weightage/${removeWeightageId}`;
 
-    console.log(url);
 
     axios.delete(url,{headers}).then((res)=>{
      if(res.data.status === 200){

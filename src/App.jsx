@@ -12,6 +12,7 @@ import {
   INDEX,
   TASKMODULE,
   ASSESSMENTMODULE,
+  STUDENTTASKVIEW
 } from "./routes/routes.jsx";
 //Define your routes for APP here
 import Login from "./pages/login/Login.jsx";
@@ -23,6 +24,7 @@ import AssessmentModule from "./pages/assessmentModule/AssessmentModule.jsx";
 import ErrorPage from "./pages/errorPage/ErrorPage.jsx";
 //Private Routes will be wrapped in below component
 import PrivateRoute from "./routes/PrivateRoute";
+import StudentsView from "./pages/studentsView/StudentsView.jsx";
 
 const App = () => {
   return (
@@ -35,15 +37,18 @@ const App = () => {
           <Route path={FORGOTPASSWORD} element={<ForgotPassword />} />
           <Route path={`${CHANGEPASSWORD}/:token_verification`} element={<ChangePassword />} />
 
+          <Route path={STUDENTTASKVIEW} element={<PrivateRoute />}>
+            <Route path={STUDENTTASKVIEW} element={<StudentsView />}  type="task"/>
+          </Route>
+
           <Route path={DASHBOARD} element={<PrivateRoute />}>
             <Route path={DASHBOARD} element={<DashBoard />} />
           </Route>
-          {/* Private Route, can't access without token */}
+
           <Route path={APPLICATIONS} element={<PrivateRoute />}>
             <Route path={APPLICATIONS} element={<Applications />} />
           </Route>
 
-        
           <Route path={TASKMODULE} element={<PrivateRoute />}>
             <Route path={TASKMODULE} element={<AssessmentModule type="task"/>} />
           </Route>

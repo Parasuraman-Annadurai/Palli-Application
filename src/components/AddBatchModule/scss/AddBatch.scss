@@ -224,8 +224,8 @@ li {
   z-index: 999;
   padding: 20px;
   border-right: 1px solid $side_bar_bg;
-  box-shadow: 10px 0 10px -10px rgba(0,0,0, 0.5);
-  
+  box-shadow: 10px 0 10px -10px rgba(0, 0, 0, 0.5);
+
   .popup-content {
     .inner-content {
       align-items: center;
@@ -259,14 +259,13 @@ li {
         background-color: #ffff;
         // background-color: #ffff;
         font-family: $font-Roboto;
-       
+
         span {
           font: 400 12px/16px $font-Roboto;
           color: $font-primary-color;
         }
-  
       }
-      :hover{
+      :hover {
         background-color: $side_bar_bg;
       }
     }
@@ -368,7 +367,7 @@ li {
             transition: filter 0.3s ease;
             &:hover {
               // border: 1px solid red;
-              filter: brightness(5  .5);
+              filter: brightness(5 0.5);
               cursor: pointer;
             }
           }
@@ -377,7 +376,7 @@ li {
     }
   }
 }
-.dark-overlay{
+.dark-overlay {
   background-color: black;
   opacity: 0.4;
 }

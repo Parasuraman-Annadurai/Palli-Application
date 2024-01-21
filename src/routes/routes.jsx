@@ -5,6 +5,8 @@ const FORGOTPASSWORD = "/forgot/password";
 //
 const CHANGEPASSWORD = "/change/password";
 
+const STUDENTTASKVIEW = "/batch/:id/task/students/task/list";
+
 const DASHBOARD = "/dashboard";
 const APPLICATIONS = "/batch/:id/applications";
 const MODULE = "/batch/:id/module";
@@ -34,5 +36,6 @@ export {
   EDITTASK,
   TASKMODULE,
   ASSESSMENTMODULE,
-  APPLICATIONVIEW
+  APPLICATIONVIEW,
+  STUDENTTASKVIEW
 };

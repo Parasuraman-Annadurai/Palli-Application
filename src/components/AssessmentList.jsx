@@ -5,6 +5,7 @@ import { Skeleton } from "antd";
 
 
 import dayjs from "dayjs";
+import { Link } from "react-router-dom";
 
 
 
@@ -21,7 +22,7 @@ const TaskCard = ({
       : text;
   };
   return (
-    <>
+    <Link to={"students/task/list"}>
       <div
         className={`task-card ${
             assessment.id  === selectedAssessment? "active" : ""
@@ -77,7 +78,7 @@ const TaskCard = ({
           </>
         )}
       </div>
-    </>
+    </Link>
   );
 };
 

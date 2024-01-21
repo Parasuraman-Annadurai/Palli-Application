@@ -1015,6 +1015,9 @@ body .container .assignee-and-weightage-container .title-section .selection h4 {
   color: #12160a;
   padding-bottom: 5px;
 }
+body .container .assignee-and-weightage-container .title-section .weightage-title h4 {
+  color: #969d88;
+}
 body .container .assignee-and-weightage-container .title-section .selection.active {
   border-bottom: 2px solid #49a843;
 }

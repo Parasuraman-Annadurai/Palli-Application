@@ -1298,11 +1298,18 @@ body {
             color: $font-primary-color;
             padding-bottom: 5px;
           }
+          
+        }
+        .weightage-title{
+          h4{
+            color: $font-secondary-color;
+          }
         }
         .selection.active {
           border-bottom: 2px solid $primary-color;
         }
       }
+      
       .assignee-search-container {
         input {
           width: 100%;
@@ -1368,5 +1375,6 @@ body {
         }
       }
     }
+    
   }
 }

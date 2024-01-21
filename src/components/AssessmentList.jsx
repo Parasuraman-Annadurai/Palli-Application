@@ -14,6 +14,8 @@ const TaskCard = ({
   selectedAssessment,
   handleEdit,
   handleDelete,
+  setIsCardClick,
+  isCardClick
 }) => {
   const truncateText = (text, maxLength) => {
     return text.length > maxLength
@@ -28,6 +30,7 @@ const TaskCard = ({
         } flex`}
         key={assessment.id}
         id={assessment.id}
+        onClick={()=>setIsCardClick(!isCardClick)}
       >
         {loading ? (
           <Skeleton avatar={{ size: "small" }} active paragraph={{ rows: 1 }} />
@@ -91,6 +94,8 @@ const AssessmentList = ({
   handleDelete,
   handleAdd,
   selectedAssessment,
+  setIsCardClick,
+  isCardClick
 }) => {
 
 
@@ -132,6 +137,8 @@ const AssessmentList = ({
                 handleEdit={handleEdit}
                 handleDelete={handleDelete}
                 selectedAssessment = {selectedAssessment}
+                setIsCardClick={setIsCardClick}
+                isCardClick={isCardClick}
               />
             ))}
         </div>

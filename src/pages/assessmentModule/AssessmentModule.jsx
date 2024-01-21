@@ -26,6 +26,7 @@ const AssessmentModule = ({ type }) => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   //for check task or assessment new created or old;
   const [isDraft, setIsDraft] = useState(false);
+  const [isCardClick,setIsCardClick] = useState(false);
 
   const headers = {
     Authorization: `Bearer ${token.access}`,
@@ -214,10 +215,13 @@ const AssessmentModule = ({ type }) => {
           const errorMessages = error.response.data.errors;
 
           Object.entries(errorMessages).forEach(([key, messages]) => {
-            messages.forEach(message => notification.error({ message: `${key} Error`, description: message }));
+            messages.forEach((message) =>
+              notification.error({
+                message: `${key} Error`,
+                description: message,
+              })
+            );
           });
-
-        
         }
       });
   };
@@ -280,7 +284,6 @@ const AssessmentModule = ({ type }) => {
           }?`}</p>
         </Modal>
       )}
-
       <AssessmentList
         mode={type}
         filterShow={false}
@@ -291,8 +294,10 @@ const AssessmentModule = ({ type }) => {
         handleDelete={handleDeleteAssessment}
         handleAdd={handleAdd}
         selectedAssessment={editId}
+        setIsCardClick={setIsCardClick}
+        isCardClick={isCardClick}
       />
-
+      
       {assessmentList.map((assessment) => {
         if (assessment.id == editId) {
           return (
@@ -305,11 +310,13 @@ const AssessmentModule = ({ type }) => {
               handleSave={handleSave}
               handleInputChange={handleInputChange}
               weightageShow={type === "task" ? false : true}
+              isCardClick={isCardClick}
             />
           );
         }
         return null;
       })}
+      
 
       {editId === null && (
         <div className="select-something-container flex">

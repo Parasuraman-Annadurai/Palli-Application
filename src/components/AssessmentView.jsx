@@ -278,12 +278,20 @@ const AssessmentView = ({
     }
   };
 
-  const taskAndWeightageDetails = [
-    {
-      task_user: [...currentAssessment?.task_users],
-      task_weightages: [...currentAssessment?.task_weightages],
-    },
-  ];
+
+  const taskAndWeightageDetails = weightageShow
+  ? [
+      {
+        task_users: Array.isArray(currentAssessment.task_users)
+          ? [...currentAssessment.task_users]
+          : [], // Use an empty array or handle it differently based on your requirements
+        task_weightages: Array.isArray(currentAssessment.task_weightages)
+          ? [...currentAssessment.task_weightages]
+          : [], // Use an empty array or handle it differently based on your requirements
+      },
+    ]
+  : [];
+
   return (
     <>
       {!isCardClick ? (
@@ -495,7 +503,7 @@ const AssessmentView = ({
               const assessmentDetails = {
                 task_weightage:
                   taskAndWeightage.task_weightages[index]?.["id"],
-                task_user: taskAndWeightage.task_user[index]?.["id"],
+                task_user: taskAndWeightage.task_users[index]?.["id"],
                 task_score: Number(score[index]),
                 
               };
@@ -506,10 +514,10 @@ const AssessmentView = ({
                     <div class="student-info flex">
                       <div class="student-name-container">
                         <p>
-                          {taskAndWeightage["task_user"]?.[index]["user"][
+                          {taskAndWeightage["task_users"]?.[index]["user"][
                             "first_name"
                           ].slice(0, 1)}
-                          {taskAndWeightage["task_user"]?.[index]["user"][
+                          {taskAndWeightage["task_users"]?.[index]["user"][
                             "last_name"
                           ].slice(0, 1)}
                         </p>
@@ -522,14 +530,14 @@ const AssessmentView = ({
                     <div class="student-status">
                       <p>Status</p>
                       <span>
-                        {taskAndWeightage["task_user"]?.[index]["task_status"]}
+                        {taskAndWeightage["task_users"]?.[index]["task_status"]}
                       </span>
                     </div>
                     <div class="sumbitted-date">
                       <p>Deadline</p>
                       <span>
                         {dayjs(
-                          taskAndWeightage["task_user"]?.[index]["task"][
+                          taskAndWeightage["task_users"]?.[index]["task"][
                             "due_date"
                           ]
                         ).format("MMMM, DD YYYY")}
@@ -539,14 +547,14 @@ const AssessmentView = ({
                       <p>Submission Link</p>
                       <span>
                         {
-                          taskAndWeightage["task_user"][index]?.[
+                          taskAndWeightage["task_users"][index]?.[
                             "submission_link"
                           ]
                         }
                       </span>
                     </div>
                     <div class="student-work">
-                      {taskAndWeightage["task_user"][index]?.["task_status"] ===
+                      {taskAndWeightage["task_users"][index]?.["task_status"] ===
                         "SUBMITTED" && (
                         <button
                           class="secondary-btn-sm"

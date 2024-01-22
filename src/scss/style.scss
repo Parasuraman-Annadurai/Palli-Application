@@ -1281,7 +1281,6 @@ body {
       }
     }
     .assignee-and-weightage-container {
-
       max-width: 301px;
       width: 100%;
       padding: 24px 20px;
@@ -1298,10 +1297,9 @@ body {
             color: $font-primary-color;
             padding-bottom: 5px;
           }
-          
         }
-        .weightage-title{
-          h4{
+        .weightage-title {
+          h4 {
             color: $font-secondary-color;
           }
         }
@@ -1309,7 +1307,7 @@ body {
           border-bottom: 2px solid $primary-color;
         }
       }
-      
+
       .assignee-search-container {
         input {
           width: 100%;
@@ -1333,23 +1331,22 @@ body {
           gap: 10px;
           align-items: center;
           padding-bottom: 10px;
-          .global-checkbox{
+          .global-checkbox {
             accent-color: $primary-color;
           }
           .span {
             font-size: 12px;
-            font-family: $font-Roboto;  
+            font-family: $font-Roboto;
           }
         }
         .assignee-card-listing-container {
-          
           .individual-assignee-card {
             gap: 10px;
             align-items: center;
             padding-top: 10px;
             padding-bottom: 12px;
             border-bottom: 1px solid #eaeaea;
-            .student-checkbox{
+            .student-checkbox {
               accent-color: $primary-color;
             }
             .profile {
@@ -1374,7 +1371,38 @@ body {
           }
         }
       }
+      .weightage-container{
+        display: flex;
+        align-items: center;
+        margin-top: 24px;
+
+      }
+      .weightage-list {
+        select {
+          width: 180px;
+          height: 36px;
+          background-color: $side_bar_bg;
+          color: $font-primary-color;
+          font: 400 12px/16px $font-Roboto;
+        }
+      }
+      .weightage-input{
+       input{
+        // padding: 10px 0 10px;
+        height: 36px;
+        width: 36px;
+        // background-color: red;
+        border: 1px solid $border-color;
+        // border-radius: 3px;
+       }
+      }
+      .weightage-delete{
+        border: 1px solid $border-color;
+        width: 36px;
+        height: 36px;
+        margin-left: 5px;
+        border-radius: 3px;
+      }
     }
-    
   }
 }

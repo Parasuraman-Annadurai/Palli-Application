@@ -55,7 +55,7 @@ const AssessmentView = ({
   //default which students assigned the task
   useEffect(() => {
     if (task_users) {
-      const taskAssignedUsers = task_users.map((assigned) =>assigned.user.id)
+      const taskAssignedUsers = task_users.map((assigned) => assigned.user.id);
 
       const updatedSelectedStudents = [...taskAssignedUsers];
 
@@ -125,7 +125,7 @@ const AssessmentView = ({
       let updateTheStudent = [...selectedStudents];
       updateTheStudent = updateTheStudent.filter((id) => id != studentId);
       //remove user API call
-      const url = `${API_END_POINT}/api/task/${batchId}/remove/user/${studentId}/task/${taskId}/`
+      const url = `${API_END_POINT}/api/task/${batchId}/remove/user/${studentId}/task/${taskId}/`;
       axios
         .delete(url, { user: [studentId] }, { headers })
         .then((res) => {
@@ -167,10 +167,7 @@ const AssessmentView = ({
 
     if (isNotAllSelected) {
       //Deselect all students in tasks
-
       //not ready in backend
-
-    
     } else {
       const allStudentIds = [...students].map((student) => student.id);
 
@@ -196,8 +193,6 @@ const AssessmentView = ({
         });
     }
   };
-
-
 
   const handleValidate = (formData) => {
     //if student not assign show the error
@@ -351,7 +346,11 @@ const AssessmentView = ({
               </div>
 
               <div className="link">
-                <input  className="submission-folder-link-container" type="link" placeholder="Paste your link here..." />
+                <input
+                  className="submission-folder-link-container"
+                  type="link"
+                  placeholder="Paste your link here..."
+                />
               </div>
               <div className="task-create-btn-section flex">
                 <button
@@ -377,7 +376,6 @@ const AssessmentView = ({
             </div>
           </div>
           <div className="assignee-search-container">
-            {/* search bar use in future */}
             <input
               type="text"
               placeholder="Search here..."
@@ -426,8 +424,31 @@ const AssessmentView = ({
               })}
             </div>
           </div>
+
+          {/* weightage */}
+
+          {/* <div className="weightage-container">
+            <div className="weightage-list">
+              <select name="weightage" id="weightage">
+                <option value="Code Standard">Code Standard</option>
+                <option value="UI Styling">UI Styling</option>
+              </select>
+            </div>
+            <div className="weightage-input">
+              <input type="text" />
+            </div>
+            <div className="weightage-delete">
+              <img
+                src="/icons/deleteIcon.svg"
+                alt="delete-icon"
+                className="delete-icon"
+              />
+            </div>
+          </div> */}
         </section>
       )}
+
+      {/* weightage */}
     </>
   );
 };

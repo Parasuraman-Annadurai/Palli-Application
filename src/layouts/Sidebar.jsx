@@ -28,10 +28,16 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
   const [currentBatch, setCurrentBatch] = useState(null);
 
   // const [showSwitchBatch, setShowSwitchBatch] = useState(false);
-  const popUp = useRef(null);
-  const addRef = useRef(null);
-  const modelRef = useRef(null);
+  // const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false);
 
+  const showDrawer = () => {
+    setOpen(true);
+  };
+
+  const onClose = () => {
+    setOpen(false);
+  };
 
 
   const headers = {
@@ -62,28 +68,6 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
     }
   }, [batchId]);
 
-  useEffect(() => {
-    const closeonoutsideclick = (e) => {
-      console.log(modelRef.current);
-
-      if (popUp.current) {
-        if (
-          showSwitchBatch &&
-          !addRef.current.contains(e.target) &&
-          !popUp.current.contains(e.target)
-        ) {
-          console.log("he;;p");
-          setShowSwitchBatch(false);
-        }
-      }
-      // console.log(showSwitchBatchRef.current.contains(e.target), "kjhgf");
-    };
-
-    window.addEventListener("click", closeonoutsideclick);
-    return () => {
-      window.removeEventListener("click", closeonoutsideclick);
-    };
-  }, [showSwitchBatch]);
   const handleLogout = () => {
     axios
       .post(`${API_END_POINT}/api/accounts/logout/`, token, { headers })
@@ -118,28 +102,29 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
 
         {!isDashboardPage && (
           <div
-            className="batch-switch-container flex popup"
-            onClick={() => setShowSwitchBatch(!showSwitchBatch)}
-            ref={addRef}
+            className="batch-switch-container flex"
+            onClick={showDrawer}
+            // onClick={() => setShowSwitchBatch(!showSwitchBatch)}
+     
           >
-            <div className="batch-content-container flex popup">
-              <div className="batch-logo popup ">
-                <p className="popup">
+            <div className="batch-content-container flex">
+              <div className="batch-logo">
+                <p>
                   {currentBatch?.batch_name
                     .split(" ")
                     .map((word) => word.slice(0, 1).toUpperCase())
                     .join("")}
                 </p>
               </div>
-              <div className="batch-name popup">
-                <p className="popup">{currentBatch?.batch_name}</p>
-                <span className="popup">
+              <div className="batch-name">
+                <p>{currentBatch?.batch_name}</p>
+                <span>
                   {currentBatch?.start_date?.slice(0, 4)}-
                   {currentBatch?.end_date?.slice(0, 4)}
                 </span>
               </div>
             </div>
-            <div className="switch-icon popup">
+            <div className="switch-icon">
               <img src="/icons/dropdown.svg" alt="" />
             </div>
           </div>
@@ -204,8 +189,13 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
         batchList={listBatchLists}
         setShowSwitchBatch={setShowSwitchBatch}
         setBatchList={setBatchList}
-        popUp={popUp}
-        modelRef={modelRef}
+        open={open}
+        setOpen={setOpen}
+        showDrawer={showDrawer}
+        onClose={onClose}
+        // popUp={popUp}
+        // modelRef={modelRef}
+        // showDrawer={showDrawer}
       />
     </>
   );

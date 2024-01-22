@@ -1,365 +1,499 @@
-import React, { useState, useEffect, useRef } from "react";
-import { useLocation, useParams, useNavigate, NavLink } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Navigate, useNavigate } from "react-router-dom";
 
-import { Button, Modal, Input, DatePicker, Skeleton, notification } from "antd";
-
+import { DatePicker, Modal, notification, Drawer } from "antd";
+// import { LoadingOutlined } from "@ant-design/icons";
+import { CloseOutlined } from '@ant-design/icons';
+import dayjs from "dayjs";
 import axios from "axios";
-import { Dropdown } from "antd";
 
-import { DASHBOARD } from "../routes/routes";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../../context/AuthContext";
 
-import { API_END_POINT } from "../../config";
+import { API_END_POINT } from "../../../config";
 
-const Sidebar = ({ menuList }) => {
+import "./scss/AddBatch.css";
+
+const AddBatch = (props) => {
+
+
+  //   const [open, setOpen] = useState(false);
+
+  // const showDrawer = () => {
+  //   setOpen(true);
+  // };
+
+  // const onClose = () => {
+  //   setOpen(false);
+  // };
+
+  // const customCloseIcon = (
+  //   <div style={{ position: 'absolute', top: 16, right: 16, cursor: 'pointer' }}>
+  //     <CloseOutlined style={{ fontSize: 20, color: '#ff1818' }} />
+  //   </div>
+  // );
+  const {
+    showSwitchBatch,
+    setShowSwitchBatch,
+    batchList,
+    setBatchList,
+
+
+  } = props;
+
+  const { user, token } = useAuth();
   const navigate = useNavigate();
-  const { id: batchId } = useParams();
-  const { token, user } = useAuth();
+  const company = 1;
+  // const [loading, setLoading] = useState(false);
+  const [batch_name, setBatchName] = useState("");
+  const [start_date, setStartDate] = useState("");
+  const [end_date, setEndDate] = useState("");
+  const [startError, setStartError] = useState("");
+  const [endError, setEndError] = useState("");
+  const [batchNameError, setBatchNameError] = useState(null);
+  const [selectedBatch, setSelectedBatch] = useState(null);
+  const [editId, setEditId] = useState(null);
+  const [batchinputs, setBatchInputs] = useState(false);
+  const [batchShow, setBatchshow] = useState(true);
 
-  const currentPath = useLocation().pathname;
-  const isDashboardPage = currentPath.includes(DASHBOARD);
-
-// new state
-  const [showSwitchBatch, setShowSwitchBatch] = useState(false);
-  const [showInputFields, setShowInputFields] = useState(false);
-  const [batchList, setBatchList] = useState([]);
-
-  
-  const showSwitchBatchRef = useRef(null);
-  const showSwitchBatchRefIcon = useRef(null);
-  const headers = {
-    Authorization: `Bearer ${token.access}`,
-    "Content-type": "application/json",
-  };
   useEffect(() => {
-    axios.get(`${API_END_POINT}/api/list/batch/`, { headers }).then((res) => {
-      setBatchList(res.data.data);
-    });
-    const closeonoutsideclick = (e) => {
-      if (
-        showSwitchBatch &&
-        showSwitchBatchRef.current &&
-        !showSwitchBatchRef.current.contains(e.target) &&
-        !showSwitchBatchRefIcon.current.contains(e.target)
-      ) {
-        setShowSwitchBatch(false);
-        // console.log(123);
-      }
-    };
-    window.addEventListener("click", closeonoutsideclick);
-    return () => {
-      window.removeEventListener("click", closeonoutsideclick);
-    };
+    if (!showSwitchBatch) {
+      setBatchInputs(false);
+      setBatchshow(true);
+    }
   }, [showSwitchBatch]);
 
- 
+  const handleSwitch = (batch) => {
+    //   <Modal
+    //   open={true}
+    //   title={`Confirm Switch to ${batch.batch_name}`}
+    //   content= {`Are you sure you want to Switch this Batch?`}
+    //   onOk={() => {
+    //     navigate(`/batch/${batch.id}/applications`);
+    //     window.location.reload();
+    //   }}
 
-  
+    //   onCancel={() => {
+    //     // setIsDeleteModalOpen(false);
+    //     // setIsDraft(false);
 
+    //   }}
+    //   okButtonProps={{
+    //     style: { background: "#49a843", borderColor: "#EAEAEA" },
+    //   }}
+    // >
+    //   <p>{`${
+    //     isDraft
+    //       ? "Are you sure you want to discard the changes"
+    //       : "Are you sure you want to delete"
+    //   } ${type} ${
+    //     assessmentList.find((asses) => asses.id === editId).task_title
+    //   }?`}</p>
+    // </Modal>
 
-
-
-  const handleSwitch = (id, batchName) => {
     Modal.confirm({
-      title: `Confirm Switch to ${batchName}`,
+      title: `Confirm Switch to ${batch.batch_name}`,
       content: "Are you sure you want to Switch this Batch?",
       onOk: () => {
-        navigate(`/batch/${id}/applications`);
+        navigate(`/batch/${batch.id}/applications`);
         window.location.reload();
       },
+      // Attach the ref to the modal
+      ref: modelRef,
     });
   };
 
-  const currentBatch = batchList?.filter((a) => a.id === Number(batchId));
-  const {
-    batch_name: batchName,
-    start_date: startDate,
-    end_date: endDate,
-  } = currentBatch[0] || [];
-
-  const handleLogout = () => {
-    axios
-      .post(`${API_END_POINT}/api/accounts/logout/`, token, { headers })
-      .then((res) => {
-        navigate("/login");
-        console.log(res);
-      });
+  const resetFields = () => {
+    setBatchName("");
+    setStartDate("");
+    setEndDate("");
+    setBatchNameError(null);
+    setStartError(null);
+    setEndError(null);
   };
-  const items = [
-    {
-      label: (
-        <button className="btn primary-medium" onClick={handleLogout}>
-          Logout
-        </button>
-      ),
-      key: "0",
-    },
-  ];
 
-  function getInitials(str) {
-    const words = str.split(" ");
-    if (words.length >= 2) {
-      const initials =
-        words[0].charAt(0).toUpperCase() + words[1].charAt(0).toUpperCase();
-      return initials;
-    } else if (words.length === 1) {
-      return words[0].charAt(0).toUpperCase();
+  const handleDateChange = (dateString, setDate, setError, errorType) => {
+    if (dateString === "") {
+      setError("Date cannot be empty");
     } else {
-      return "";
+      setDate(dateString);
+      setError("");
     }
-  }
-  // const [showInputFields, setShowInputFields] = useState(false);
-  const [batchData, setBatchData] = useState({
-    batchName: "",
-    startYear: "",
-    endYear: "",
-  });
-  const [errors, setErrors] = useState({
-    batchNameError: "",
-    startYearError: "",
-    endYearError: "",
-  });
+  };
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setBatchData({
-      ...batchData,
-      [name]: value,
-    });
+  const handleBatchNameChange = (e) => {
+    const input = e.target.value;
+    const regex = /^[A-Za-z0-9\- ]*$/;
+
+    if (regex.test(input) || input === "") {
+      const formattedBatchName = input
+        .toLowerCase()
+        .split(" ")
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(" ");
+
+      setBatchName(formattedBatchName);
+      setBatchNameError(null);
+    } else {
+      setBatchNameError(
+        "Batch name can only contain text, numbers, '-' symbol, and spaces"
+      );
+    }
   };
 
   const validateForm = () => {
-    let isValid = true;
-    const newErrors = { ...errors };
+    let hasError = false;
 
-    // Your validation logic
-    // For example, checking if fields are not empty
+    if (!batch_name.trim()) {
+      setBatchNameError("Batch name is required");
+      hasError = true;
+    }
 
-    if (batchData.batchName === "") {
-      newErrors.batchNameError = "Batch name cannot be empty";
-      isValid = false;
+    if (!start_date) {
+      setStartError("Start date is required");
+      hasError = true;
+    }
+
+    if (!end_date) {
+      setEndError("End date is required");
+      hasError = true;
+    }
+
+    const startDateObj = new Date(start_date);
+    const endDateObj = new Date(end_date);
+
+    if (startDateObj >= endDateObj) {
+      setStartError("Start date should be earlier than end date");
+      setEndError("End date should be later than start date");
+      hasError = true;
+    }
+
+    const newBatchName = batch_name.trim().toLowerCase();
+
+    if (editId) {
+      const existingBatchNames = batchList
+        .filter((batch) => batch.id !== selectedBatch.id)
+        .map((batch) => batch.batch_name.toLowerCase());
+
+      if (existingBatchNames.includes(newBatchName)) {
+        setBatchNameError("Batch name already exists");
+        hasError = true;
+      }
     } else {
-      newErrors.batchNameError = "";
+      const existingBatchNames = batchList.map((batch) =>
+        batch.batch_name.toLowerCase()
+      );
+
+      if (existingBatchNames.includes(newBatchName)) {
+        setBatchNameError("Batch name already exists");
+        hasError = true;
+      }
     }
 
-    // Similarly, add validation for startYear and endYear
-
-    setErrors(newErrors);
-    return isValid;
+    return hasError;
   };
 
-  const submitBatchData = () => {
-    if (validateForm()) {
-      // Logic to submit batch data when the form is valid
-      // Example: API call, dispatch an action, etc.
-      console.log("Submitting batch data:", batchData);
+  const handleCLick = (e) => {
+    // setLoading(true);
+    e.preventDefault();
+    const hasError = validateForm();
+
+    if (!hasError) {
+      const batchData = {
+        batch_name: batch_name.trim(),
+        company,
+        start_date,
+        end_date,
+      };
+
+      const headers = {
+        Authorization: `Bearer ${token.access}`,
+        "Content-type": "application/json",
+      };
+      axios
+        .post(`${API_END_POINT}/api/create/batch/`, batchData, { headers })
+        .then((res) => {
+          const newBatch = { ...batchData, ...res.data.data };
+          const updatedArray = [...batchList, newBatch];
+          setBatchList(updatedArray);
+          notification.success({
+            message: "Success",
+            description: "Batch Created Successfully",
+            duration: 3,
+          });
+          resetFields();
+          // setLoading(false);
+          setBatchInputs(false);
+          setBatchshow(true);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     }
   };
 
-  const handleAddBatchClick = () => {
-    setShowInputFields(!showInputFields);
-    // Resetting form fields and errors when the "Add New Batch" button is clicked
-    if (!showInputFields) {
-      setBatchData({
-        batchName: "",
-        startYear: "",
-        endYear: "",
-      });
-      setErrors({
-        batchNameError: "",
-        startYearError: "",
-        endYearError: "",
-      });
+  const handleEditClick = (batch) => {
+    setEditId(batch.id);
+    setSelectedBatch(batch);
+
+    setBatchName(batch.batch_name);
+    setStartDate(dayjs(batch.start_date));
+    setEndDate(dayjs(batch.end_date));
+    setBatchNameError(null);
+  };
+
+  const handleUpdate = (e) => {
+    // setLoading(true);
+
+    e.preventDefault();
+    const hasError = validateForm();
+
+    if (!hasError) {
+      const updatedBatch = {
+        batch_name: batch_name.trim(),
+        start_date: dayjs(start_date).format("YYYY-MM-DD"),
+        end_date: dayjs(end_date).format("YYYY-MM-DD"),
+        id: editId,
+      };
+
+      const headers = {
+        Authorization: `Bearer ${token.access}`,
+        "Content-type": "application/json",
+      };
+
+      axios
+        .put(`${API_END_POINT}/api/update/batch/${editId}/`, updatedBatch, {
+          headers,
+        })
+        .then((res) => {
+          const updatedData = batchList.map((item) => {
+            if (item.id === editId) {
+              return {
+                ...item,
+                batch_name: batch_name.trim(),
+                start_date: dayjs(start_date).format("YYYY-MM-DD"),
+                end_date: dayjs(end_date).format("YYYY-MM-DD"),
+                // Add other properties you want to update
+              };
+            }
+            return item;
+          });
+
+          setBatchList(updatedData);
+          resetFields();
+          setBatchInputs(false);
+          setBatchshow(true);
+          setEditId(null);
+
+          notification.success({
+            message: "Success",
+            description: "Batch Updated Successfully",
+            duration: 3,
+          });
+          // setLoading(false);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     }
   };
 
   return (
     <>
-      <nav className="side-nav-container flex">
-        <div className="logo">
-          <img src="/images/dckap_palli_logo_sm.svg" alt="DCKAP Palli logo" />
-        </div>
 
-        {!isDashboardPage && (
-          <div
-            className="batch-switch-container flex "
-            ref={(ref) => (showSwitchBatchRefIcon.current = ref)}
-            onClick={() => setShowSwitchBatch(!showSwitchBatch)}
-          >
-            <div className="batch-content-container flex">
-              <div className="batch-logo">
-                <p>{batchName ? getInitials(batchName) : ""}</p>
-              </div>
-              <div className="batch-name">
-                <p>{batchName ? batchName : ""}</p>
-                <span>
-                  {startDate ? startDate.slice(0, 4) : ""}-
-                  {endDate ? endDate.slice(0, 4) : ""}
-                </span>
-              </div>
-            </div>
-            <div className="switch-icon">
-              <img src="/icons/dropdown.svg" alt="" />
-            </div>
-          </div>
-        )}
-        <div className="nav-links">
-          <ul>
-            {!isDashboardPage && (
-              <li className={`main-link`}>
-                <a href={"/dashboard"} className="flex">
-                  <img src="/icons/backIcon.svg" alt={"Back to Dashboard"} />
-                  <span>{"Back to Dashboard"}</span>
-                </a>
-              </li>
-            )}
-            {menuList &&
-              menuList.map((menu, index) => {
-                return (
-                  <li
-                    key={index}
-                    onClick={() => setActive(menu.id)}
-                    className={`main-link ${
-                      menu.id === active ? "main-active" : ""
-                    }`}
-                  >
-                    <a
-                      href={
-                        isDashboardPage
-                          ? "/dashboard"
-                          : `/batch/${batchId}/${menu.id}`
-                      }
-                      className="flex"
-                    >
-                      <img
-                        src="/public/icons/application.svg"
-                        alt={menu.label}
-                      />
-                      <span>{menu.label}</span>
-                    </a>
-                  </li>
-                );
-              })}
-          </ul>
-        </div>
 
-        <div className="user-profile flex">
-          <div className="profile-img">
-            <img src="/icons/profile.svg" alt="" />
-          </div>
-
-          <Dropdown
-            menu={{
-              items,
-            }}
-          >
-            <div className="user-details">
-              <p>{user.last_name}</p>
-              <span>Admin</span>
-            </div>
-          </Dropdown>
-        </div>
-      </nav>
-      {showSwitchBatch && (
-        <div className="popup-container" ref={showSwitchBatchRef}>
+       {showSwitchBatch && (
+        <div className="popup-container">
           <div className="popup-content">
             <div className="inner-content flex">
-              <h3>{ "Switch Batch"}</h3>
+              <h3>
+                {batchShow
+                  ? "Switch Batch"
+                  : editId
+                  ? "Edit Batch"
+                  : "Add Batch"}
+              </h3>
+
               <div className="close-icon">
                 <img
-                  src="/public/icons/Cancel.svg"
+                  src="/icons/Cancel.svg"
                   className="cancel-btn"
                   alt=""
-                  onClick={() => setShowSwitchBatch(false)}
+                  onClick={() => {
+                    setShowSwitchBatch(false),
+                      setBatchshow(true),
+                      setBatchInputs(false);
+                  }}
                 />
               </div>
             </div>
             <div className="add-batch">
-              <button className="add-batch-btn" onClick={handleAddBatchClick}>
+              <button
+                className="add-batch-btn"
+                onClick={() => {
+                  setBatchInputs(!batchinputs);
+                  setBatchshow(!batchShow);
+                  resetFields();
+                }}
+              >
                 <span>+</span>Add New Batch
               </button>
             </div>
 
-            {showInputFields && (
-              <div className="input-fields">
-                <div className="input-field">
-                  <p>Batch Name</p>
-                  <input
-                  className="batch-inputs"
-                    type="text"
-                    placeholder="Enter the Batch"
-                    name="batchName"
-                    value={batchData.batchName}
-                    onChange={handleInputChange}
-                  />
-                  <div className="error-message">{errors.batchNameError}</div>
-                </div>
-              
-                <div className="input-field">
-                <p>Start Year</p>
-                  <input
-                     className="batch-inputs"
-                    type="date"
-                    placeholder="Start Year"
-                    name="startYear"
-                    value={batchData.startYear}
-                    onChange={handleInputChange}
-                  />
-                  <div className="error-message">{errors.startYearError}</div>
-                </div>
-                <div className="input-field">
-                  <p>End Year</p>
-                  <input
-                     className="batch-inputs"
-                    type="date"
-                    placeholder="End Year"
-                    name="endYear"
-                    value={batchData.endYear}
-                    onChange={handleInputChange}
-                  />
-                  <div className="error-message">{errors.endYearError}</div>
-                </div>
+            {batchinputs && (
+              <form onSubmit={editId ? handleUpdate : handleCLick}>
+                <div className="input-fields">
+                  <div className="input-field">
+                    <p>Batch Name</p>
+                    <input
+                      className={`batch-inputs  ${
+                        batchNameError ? "error-notify" : ""
+                      }`}
+                      type="text"
+                      placeholder="Enter the Batch"
+                      name="batchName"
+                      value={batch_name}
+                      onChange={handleBatchNameChange}
+                      autoComplete="off"
+                    />
+                    <p className="error-message">
+                      {batchNameError && (
+                        <span style={{ color: "red" }}>{batchNameError}</span>
+                      )}
+                    </p>
+                  </div>
 
-                <button onClick={submitBatchData}>Submit</button>
-              </div>
+                  <div className="input-field">
+                    <p>Start Year</p>
+                    <DatePicker
+                      className={`datepicker ${
+                        startError ? "error-notify" : ""
+                      }`}
+                      id="startYearInput"
+                      format="YYYY-MM-DD"
+                      value={start_date ? dayjs(start_date) : null}
+                      onChange={(date, dateString) =>
+                        handleDateChange(
+                          dateString,
+                          setStartDate,
+                          setStartError,
+                          "startError"
+                        )
+                      }
+                      placeholder="Start Year"
+                    />
+                    <p className="error-message">
+                      {startError && (
+                        <span style={{ color: "red" }}>{startError}</span>
+                      )}
+                    </p>
+                  </div>
+                  <div className="input-field">
+                    <p>End Year</p>
+                    <DatePicker
+                      className={`datepicker ${endError ? "error-notify" : ""}`}
+                      id="endYearInput"
+                      format="YYYY-MM-DD"
+                      value={end_date ? dayjs(end_date) : null}
+                      onChange={(date, dateString) =>
+                        handleDateChange(
+                          dateString,
+                          setEndDate,
+                          setEndError,
+                          "endError"
+                        )
+                      }
+                      placeholder="End Year"
+                    />
+                    <p className="error-message">
+                      {endError && (
+                        <span style={{ color: "red" }}>{endError}</span>
+                      )}
+                    </p>
+                  </div>
+
+                  {editId ? (
+                    <button
+                      className="btn primary-medium "
+                      // disabled={loading}
+                    >
+                      {/* {loading ? ( */}
+                      <span>
+                        {/* Updating Batch... */}
+                        {/* <LoadingOutlined className="loader" /> */}
+                      </span>
+                      {/* ) : ( */}
+                      Update Batch
+                      {/* // )} */}
+                    </button>
+                  ) : (
+                    <button
+                      className="btn primary-medium "
+                      // disabled={loading}
+                    >
+                      {/* {loading ? ( */}
+                      <span>
+                        {/* Creating Batch... */}
+                        {/* <LoadingOutlined className="loader" /> */}
+                      </span>
+                      {/* ) : ( */}
+                      Create Batch
+                      {/* )} */}
+                    </button>
+                  )}
+                </div>
+              </form>
             )}
           </div>
           <div className="switch-batch-list-container">
-            {batchList.map((batch, index) => {
-              // console.log(batch);
-              return (
-                <div
-                  className="switch-batch-card flex"
-                  onClick={() => handleSwitch(batch.id, batch.batch_name)}
-                  key={index}
-                >
-                  <div className="batch-left-side flex">
-                    <div className="batch-name-year">
-                      <h4>{batch.batch_name}</h4>
-                      <p>
-                        {batch.start_date.slice(0, 4)} -{" "}
-                        {batch.end_date.slice(0, 4)}{" "}
-                      </p>
+            {batchShow && batchList.length > 0 && (
+              <>
+                {batchList.map((batch, index) => (
+                  <>
+                    <div className="switchbatch-container">
+                      <div
+                        className="switch-batch-card flex"
+                        onClick={() => handleSwitch(batch)}
+                        key={index}
+                      >
+                        <div className="batch-left-side flex">
+                          <div className="batch-name-year">
+                            <h4>{batch.batch_name}</h4>
+                            <p>
+                              {batch.start_date.slice(0, 4)} -{" "}
+                              {batch.end_date.slice(0, 4)}
+                            </p>
+                          </div>
+                          {/* Uncomment the following lines if needed */}
+                          {/* <div className="tag">
+                        <span>Internship</span>
+                      </div> */}
+                        </div>
+                        {/* Uncomment the following lines if needed */}
+                      </div>
+                      <div className="batch-right-side">
+                        <img
+                          className="edit-icon"
+                          src="/icons/edit-pencil.svg"
+                          alt=""
+                          onClick={() => {
+                            handleEditClick(batch);
+                            setBatchshow(false);
+                            setBatchInputs(true);
+                          }}
+                        />
+                      </div>
                     </div>
-                    {/* <div className="tag">
-                      <span>Internship</span>
-                    </div> */}
-                  </div>
-                  {/* <div className="batch-right-side">
-                    <img
-                      src="/public/icons/edit-pencil.svg"
-                      alt=""
-                      // handleEditClick={handleEditClick}
-                    />
-                  </div> */}
-                </div>
-              );
-            })}
+                  </>
+                ))}
+              </>
+            )}
           </div>
         </div>
       )}
+
+    
     </>
   );
 };
 
-export default Sidebar;
+export default AddBatch;

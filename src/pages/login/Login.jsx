@@ -26,8 +26,8 @@ const Login = () => {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      email: "testui@gmail.com",
-      password: "Front-end@123",
+      email: "parasu@gmail.com",
+      password: "Dckap@123",
     },
   });
   const handleLogin = (loginData) => {
@@ -48,7 +48,7 @@ const Login = () => {
             setToken(res.data.data);
             setUser(userData.data.data);
             // navigate("/dashboard");
-            navigate("/batch/140/applications");
+            navigate("/batch/232/applications");
             setLoading(false);
           })
           .catch((err) => {

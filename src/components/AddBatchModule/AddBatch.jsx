@@ -498,7 +498,7 @@ import React, { useState, useEffect } from "react";
 
 import { Navigate, useNavigate } from "react-router-dom";
 
-import { DatePicker, Modal, notification, Drawer } from "antd";
+import { DatePicker, Modal, notification, Drawer, Tooltip } from "antd";
 
 import { CloseOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
@@ -959,7 +959,20 @@ const AddBatch = (props) => {
                         >
                           <div className="batch-left-side flex">
                             <div className="batch-name-year">
-                              <h4>{batch.batch_name}</h4>
+                              {
+                              batch.batch_name.length > 30 ? (
+                                <Tooltip title={batch.batch_name}>
+                                  <h4>
+                                    {batch.batch_name.length > 30
+                                      ? `${batch.batch_name.slice(0, 30)}...`
+                                      : batch.batch_name}
+                                  </h4>
+                                </Tooltip>
+                              ) : (
+                                <h4>{batch.batch_name}</h4>
+                              )
+                              }
+
                               <p>
                                 {batch.start_date.slice(0, 4)} -{" "}
                                 {batch.end_date.slice(0, 4)}

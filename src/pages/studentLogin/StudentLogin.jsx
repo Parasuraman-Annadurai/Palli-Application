@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from "react";
 
-import { useAuth } from "../../context/AuthContext";
 import axios from "axios";
-import { Modal,Select } from "antd";
-import { API_END_POINT } from "../../../config";
-import { useParams } from "react-router-dom";
+import { Modal, Select } from "antd";
+import { LoadingOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
 
-const TaskCard = ({ tasksLists,setSeletedTaskId }) => {
+import { API_END_POINT } from "../../../config";
+
+import { useAuth } from "../../context/AuthContext";
+
+import { useParams } from "react-router-dom";
+
+const TaskCard = ({ tasksLists, setSeletedTaskId }) => {
   const truncateText = (text, maxLength) => {
     return text.length > maxLength
       ? text.substring(0, maxLength) + "..."
@@ -15,7 +19,10 @@ const TaskCard = ({ tasksLists,setSeletedTaskId }) => {
   };
   return (
     <>
-      <div className={`task-card flex`} onClick={()=>setSeletedTaskId(tasksLists.id)} >
+      <div
+        className={`task-card flex`}
+        onClick={() => setSeletedTaskId(tasksLists.id)}
+      >
         <div className="task-icon flex">
           <span>JS</span>
         </div>
@@ -44,24 +51,22 @@ const StudentLogin = ({ type }) => {
   const taskType = type === "assessment" ? 1 : 0;
   const { token, user } = useAuth();
   const { id: batchId } = useParams();
-  const [tasksList, setTaskLists] = useState([]);
+  const [tasksLists, setTaskLists] = useState([]);
   const [selectedTaskId, setSeletedTaskId] = useState(null);
   const [changeStatus, setChangeStatus] = useState("");
   const [submissionLink, setSubmissionLink] = useState("");
-  const [isModalOpen,setIsModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const headers = {
     Authorization: `Bearer ${token.access}`,
     "Content-type": "application/json",
   };
   useEffect(() => {
-    const url = `${API_END_POINT}/api/task/${batchId}/list/user/task/`;
-
     axios
       .get(`${API_END_POINT}/api/task/${batchId}/list/user/task/`, { headers })
       .then((res) => {
         const copyTaskList = [...res.data.data];
-        // console.log(copyTaskList);
         //filter the task or assessment to show the students
         const filteredTasks = copyTaskList.filter(
           (task) => task.task.task_type === taskType
@@ -79,23 +84,37 @@ const StudentLogin = ({ type }) => {
       });
   }, []);
 
-  const handleChange = (value) => {
-    if(value !== "SUBMITTED" && value !== "TODO"){
-        setChangeStatus(value);
-        axios.put(`${API_END_POINT}/api/task/${batchId}/update/task/user/${selectedTaskId}`,{task_status: value},{headers}).then((res)=>{
-            console.log(res);
-        }).catch((error)=>{
-            console.log(error);
+  const handleChange = (status) => {
+    if (status !== "SUBMITTED") {
+      axios
+        .put(
+          `${API_END_POINT}/api/task/${batchId}/update/task/user/${selectedTaskId}`,
+          { task_status: status },
+          { headers }
+        )
+        .then((res) => {
+          let updatedTask = [
+            {
+              ...tasksLists[
+                tasksLists.findIndex((task) => task.id === selectedTaskId)
+              ],
+              task_status: status,
+            },
+          ];
+          setTaskLists(updatedTask);
         })
-    }
-    else{
-        setChangeStatus(value);
-        setIsModalOpen(true);
+        .catch((error) => {
+          console.log(error);
+        });
+    } else {
+      setIsModalOpen(true);
+      setChangeStatus(status);
     }
   };
+
   const handleSubmit = () => {
     const url = `${API_END_POINT}/api/task/${batchId}/update/task/user/${selectedTaskId}`;
-
+    setIsLoading(true);
     axios
       .put(
         url,
@@ -106,8 +125,12 @@ const StudentLogin = ({ type }) => {
         { headers }
       )
       .then((res) => {
-        console.log(res);
-        setIsModalOpen(false)
+        if (res.status === 200) {
+          let updatedTask = [ {...tasksLists[tasksLists.findIndex((task) => task.id === selectedTaskId)], task_status: changeStatus} ]
+          setTaskLists(updatedTask);
+          setIsLoading(false);
+          setIsModalOpen(false);
+        }
       })
       .catch((error) => {
         console.log(error);
@@ -116,7 +139,7 @@ const StudentLogin = ({ type }) => {
   return (
     <>
       <section className="listing-container">
-        <h1> list</h1>
+        <h1>{type} list</h1>
         <div className="search-container">
           <input type="input" placeholder="search..." />{" "}
           <img
@@ -126,33 +149,38 @@ const StudentLogin = ({ type }) => {
           />
         </div>
         <div className="task-list-container">
-          {tasksList &&
-            tasksList.map((tasks) => {
-              return <TaskCard key={tasks.id} tasksLists={tasks} setSeletedTaskId={setSeletedTaskId} />;
+          {tasksLists &&
+            tasksLists.map((tasks) => {
+              return (
+                <TaskCard
+                  key={tasks.id}
+                  tasksLists={tasks}
+                  setSeletedTaskId={setSeletedTaskId}
+                />
+              );
             })}
         </div>
       </section>
 
-      {tasksList.map((tasksList) => {
+      {tasksLists.map((tasksList) => {
         if (tasksList.id == selectedTaskId) {
-         
           return (
-            <main class="main-container" key={tasksList.id}>
-              <div class="module-header-section flex">
-                <div class="module-title-section flex">
+            <main className="main-container" key={tasksList.id}>
+              <div className="module-header-section flex">
+                <div className="module-title-section flex">
                   <h3>{tasksList.task.task_title}</h3>
                 </div>
               </div>
 
-              <div class="task-details-header-container">
-                <div class="background-div">
-                  <div class="task-label-container flex">
+              <div className="task-details-header-container">
+                <div className="background-div">
+                  <div className="task-label-container flex">
                     <h3>Task Details</h3>
-                    <div class="horizon-line"></div>
+                    <div className="horizon-line"></div>
                   </div>
 
-                  <div class="student-task-details-main-container flex">
-                    <div class="student-task-status">
+                  <div className="student-task-details-main-container flex">
+                    <div className="student-task-status">
                       <p>Status</p>
                       <Select
                         name=""
@@ -162,24 +190,27 @@ const StudentLogin = ({ type }) => {
                         disabled={tasksList.task_status === "SUBMITTED"}
                         defaultValue={`${tasksList.task_status}`}
                       >
-                        <Option value="TODO">Todo</Option>
-                        <Option value="INPROGRESS">Inprogress</Option>
-                        <Option value="SUBMITTED">Submitted</Option>
+                        <Select.Option value="TODO">Todo</Select.Option>
+                        <Select.Option value="INPROGRESS">
+                          Inprogress
+                        </Select.Option>
+                        <Select.Option value="SUBMITTED">
+                          Submitted
+                        </Select.Option>
                       </Select>
                     </div>
-                    <div class="student-task-deadline">
+                    <div className="student-task-deadline">
                       <p>Deadline</p>
                       <span>
                         {dayjs(tasksList.task.due_date).format("MMM,DD YYYY")}
                       </span>
                     </div>
-                  
                   </div>
 
-                  <div class="task-editor-container">
+                  <div className="task-editor-container">
                     <p>Description</p>
 
-                    <div class="task-instruction">
+                    <div className="task-instruction">
                       <span>
                         {tasksList.task.task_description.replace(
                           /<[^>]*>/g,
@@ -189,31 +220,62 @@ const StudentLogin = ({ type }) => {
                     </div>
                   </div>
 
-                  <div class="weightage-label-container flex">
+                  <div className="weightage-label-container flex">
                     <h3>Weightage Details</h3>
-                    <div class="horizon-line"></div>
+                    <div className="horizon-line"></div>
                   </div>
 
-                  <div class="student-weightage-list flex">
-                    <div class="student-weightage-card">
-                      <p>UI Styling 25</p>
-                    </div>
-                    <div class="student-weightage-card">
-                      <p>UI Styling 25</p>
-                    </div>
+                  <div className="student-weightage-list flex">
+                    {tasksList.weightage_details &&
+                      tasksList.weightage_details.map((weightageDetails) => (
+                        <div className="student-weightage-card">
+                          <p>
+                            {weightageDetails.weightage_details.weightage}{" "}
+                            {Number(weightageDetails.weightage_percentage)}
+                          </p>
+                        </div>
+                      ))}
                   </div>
                 </div>
               </div>
 
-              {changeStatus === "SUBMITTED" && (
-                <Modal title="Submission Link" open={isModalOpen} onOk={handleSubmit} onCancel={()=>setIsModalOpen(false)}>
-                  <input
-                    type="url"
-                    placeholder="paste submission link"
-                    onChange={(e) => setSubmissionLink(e.target.value)}
-                  />
-                </Modal>
-              )}
+              <Modal
+                title="Submission Link"
+                open={isModalOpen}
+                onOk={handleSubmit}
+                onCancel={() => setIsModalOpen(false)}
+                footer={[
+                  <button
+                    key="cancel"
+                    className="btn primary-default"
+                    onClick={() => setIsModalOpen(false)}
+                  >
+                    Cancel
+                  </button>,
+                  <button
+                    key="submit"
+                    type="primary"
+                    className="btn primary-medium"
+                    onClick={handleSubmit}
+                    loading={isLoading}
+                  >
+                    {isLoading ? (
+                      <span>
+                        Submitting...
+                        <LoadingOutlined className="loader" />
+                      </span>
+                    ) : (
+                      "Submit"
+                    )}
+                  </button>,
+                ]}
+              >
+                <input
+                  type="url"
+                  placeholder="paste submission link"
+                  onChange={(e) => setSubmissionLink(e.target.value)}
+                />
+              </Modal>
             </main>
           );
         }

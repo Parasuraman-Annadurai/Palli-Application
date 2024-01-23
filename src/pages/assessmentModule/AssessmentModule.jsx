@@ -329,7 +329,7 @@ const AssessmentModule = ({ type }) => {
           )}
         </>
       ) : (
-        <StudentLogin type={type}/>
+        <StudentLogin type={type} />
       )}
     </>
   );

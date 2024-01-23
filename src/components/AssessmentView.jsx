@@ -49,21 +49,8 @@ const AssessmentView = ({
     task_description,
     due_date,
     draft,
-    task_users = [],
   } = currentAssessment;
 
-  //default which students assigned the task
-  useEffect(() => {
-    if (task_users) {
-      const taskAssignedUsers = task_users.map((assigned) =>assigned.user.id)
-
-      const updatedSelectedStudents = [...taskAssignedUsers];
-
-      // Check if the state actually needs to be updated
-
-        setSelectedStudents(updatedSelectedStudents);
-       }
-  }, [task_users]);
 
   const validateNotEmpty = (fieldName, value) => {
     const trimmedValue = value ? value.replace(/<[^>]*>/g, "").trim() : null;

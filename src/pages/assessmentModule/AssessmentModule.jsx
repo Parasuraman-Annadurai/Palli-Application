@@ -37,6 +37,8 @@ const AssessmentModule = ({ type }) => {
     const url = `${API_END_POINT}/api/task/${batchId}/list_task/?limit=10&page=1&filter_task_type=${
       type === "task" ? 0 : 1
     }&search=${assessmentSearchWord}`;
+    let assessmentId = editId
+
     axios
       .get(url, { headers })
       .then((res) => {
@@ -51,10 +53,16 @@ const AssessmentModule = ({ type }) => {
           setAssessmentList(assessmentList);
 
           setLoading(false);
-          if (!editId) {
+          if (!assessmentId) {
             // Set the editId to the first task's id in the updated list
-            setEditId(res.data.data.length > 0 ? res.data.data[0].id : null);
+            assessmentId = res.data.data.length > 0 ? res.data.data[0].id : null
           }
+          let currentAssessment = assessmentList.find(assessment=> assessment.id === assessmentId)
+          currentAssessment = currentAssessment.task_users.map((assigned) =>assigned.user.id)
+
+          setSelectedStudents(assignedUsers)
+          setEditId(assessmentId)
+
         }
       })
       .catch((error) => {

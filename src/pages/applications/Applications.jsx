@@ -115,7 +115,7 @@ const Applications = () => {
                 <p className="heading" onClick={() => handleViewMore([])}>
                   Applications list
                 </p>
-                <img src="/public/icons/dropdown.svg" alt="" />
+                <img src="/icons/dropdown.svg" alt="" />
                 <p className="name">
                   {details.first_name} {details.last_name}
                 </p>
@@ -382,7 +382,7 @@ const Applications = () => {
       <div className="application-inner-container">
         <div className="search-container">
           <img
-            src="/public/icons/searchIcon.svg"
+            src="/icons/searchIcon.svg"
             alt=""
             className="search-icon"
           />
@@ -401,7 +401,7 @@ const Applications = () => {
             trigger={["click"]}
           >
             <img
-              src="/public/icons/filterIcon.svg"
+              src="/icons/filterIcon.svg"
               alt=""
               className="filter-icon"
             />
@@ -412,7 +412,7 @@ const Applications = () => {
             <>
               <Tag color="#49a843">Search : {applicationSearch} </Tag>
               <img
-                src="/public/icons/Cancel.svg"
+                src="/icons/Cancel.svg"
                 className="cancel-btn"
                 onClick={() => setApplicationSearch("")}
               />

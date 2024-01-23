@@ -9,7 +9,7 @@ const BatchList = ({ batchesList, handleEditClick }) => {
   return (
     <>
       {batchesList.map((batch, index) => (
-        <div className="main-batches batch-card flex" key={index}>
+        <div className="main-batches batch-card flex"  key={index}>
             <div className="added-batches">
           <Link to={`/batch/${batch.id}/applications`} className="link">
 

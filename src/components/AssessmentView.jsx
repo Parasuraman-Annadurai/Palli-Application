@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import ReactQuill, { Quill } from "react-quill";
 import {
   DatePicker,
-  Checkbox,
+  Popover,
   Menu,
   Dropdown,
   Skeleton,
@@ -12,8 +12,6 @@ import {
 import axios from "axios";
 
 import dayjs from "dayjs";
-
-import WeightageList from "./WeightageList";
 
 import { API_END_POINT } from "../../config";
 
@@ -284,20 +282,45 @@ const AssessmentView = ({
     //     });
     // }
   };
+  const handleMenuClick = (status, userId) => {
+    const url = `${API_END_POINT}/api/task/${batchId}/update/task/user/120`;
+    const payload = { task_status: status };
+  };
 
-  const taskAndWeightageDetails = weightageShow
-    ? [
-        {
-          task_users: Array.isArray(currentAssessment.task_users)
-            ? [...currentAssessment.task_users]
-            : [], // Use an empty array or handle it differently based on your requirements
-          task_weightages: Array.isArray(currentAssessment.task_weightages)
-            ? [...currentAssessment.task_weightages]
-            : [], // Use an empty array or handle it differently based on your requirements
-        },
-      ]
-    : [];
+  const itemRenderer = (studentId) => {
+    return [
+      {
+        label: (
+          <p
+            
+            
+            
+            onClick={()=>console.log(studentId,"REWORK")}
+          >
+            1st menu item
+          </p>
+        ),
+        key: "0",
+      },
+      {
+        label: (
+          <p
+            
+            
+            
+            onClick={()=>console.log(studentId,"REWORK")}
+          >
+            1st menu item
+          </p>
+        ),
+        key: "1",
+      },
+    ];
+  };
 
+
+
+  
   return (
     <>
       {!isCardClick ? (
@@ -505,101 +528,104 @@ const AssessmentView = ({
       ) : (
         <>
           <main className="main-container">
-            {taskAndWeightageDetails &&
-              taskAndWeightageDetails.map((taskAndWeightage, index) => {
-                const assessmentDetails = {
-                  task_weightage:
-                    taskAndWeightage.task_weightages[index]?.["id"],
-                  task_user: taskAndWeightage.task_users[index]?.["id"],
-                  task_score: Number(score[index]),
-                };
-
+            {currentAssessment.task_users &&
+              currentAssessment.task_users.map((students, index) => {
                 return (
                   <>
-                    {taskAndWeightage.task_users &&
-                      taskAndWeightage.task_users.map((students,index) => {
-                        return (
-                          <>
-                            <div class="task-user-list-container flex">
-                              <div class="student-info flex">
-                                <div class="student-name-container">
-                                  <p>
-                                    {students["user_details"][
-                                      "first_name"
-                                    ].slice(0, 1)}
-                                    {students["user_details"][
-                                      "last_name"
-                                    ].slice(0, 1)}
-                                  </p>
+                    <div className="task-user-list-container flex" key={index}>
+                      <div className="student-info flex">
+                        <div className="student-name-container">
+                          <p>
+                            {students["user_details"]["first_name"].slice(0, 1)}
+                            {students["user_details"]["last_name"].slice(0, 1)}
+                          </p>
+                        </div>
+                        <div className="student-email-container">
+                          <p className="student-name"></p>
+                          <p className="student-email"></p>
+                        </div>
+                      </div>
+                      <div className="student-status">
+                        <p>Status</p>
+                        <span>{students["task_status"]}</span>
+                      </div>
+                      <div className="sumbitted-date">
+                        <p>Deadline</p>
+                        <span>
+                          {dayjs(students["task"]["due_date"]).format(
+                            "MMMM, DD YYYY"
+                          )}
+                        </span>
+                      </div>
+                      <div className="student-file">
+                        <p>Submission Link</p>
+                        <span>{students["submission_link"]}</span>
+                      </div>
+                      <div className="student-work">
+                        {weightageShow
+                          ? students["task_status"] === "SUBMITTED" && (
+                              <button
+                                className="secondary-btn-sm"
+                                onClick={() => {
+                                  handleAddScore("assessmentDetails"),
+                                    setActiveWeightageIndex(index);
+                                }}
+                              >
+                                {activeWeightageIndex === index
+                                  ? "Submit"
+                                  : " add mark"}
+                              </button>
+                            )
+                          : students["task_status"] === "SUBMITTED" && (
+                              <Dropdown
+                                menu={{items:itemRenderer(students.id)}}
+                                placement="bottomLeft"
+                                trigger={["click"]}
+                              >
+                                <a
+                                  className="ant-dropdown-link"
+                                  onClick={(e) => {
+                                    e.preventDefault();
+                                  }}
+                                >
+                                  Take action
+                                </a>
+                              </Dropdown>
+                            )}
+                      </div>
+                    </div>
+                    {activeWeightageIndex === index && (
+                      <div className="applied-weightage-list-container flex">
+                        {currentAssessment.task_weightages &&
+                          currentAssessment.task_weightages.map(
+                            (weightage, weightageIndex) => (
+                              <div
+                                key={weightageIndex}
+                                className="applied-weightage-card flex"
+                              >
+                                <div className="applied-weightage-name">
+                                  {weightage.weightage_details.weightage}
                                 </div>
-                                <div class="student-email-container">
-                                  <p class="student-name"></p>
-                                  <p class="student-email"></p>
-                                </div>
-                              </div>
-                              <div class="student-status">
-                                <p>Status</p>
-                                <span>{students["task_status"]}</span>
-                              </div>
-                              <div class="sumbitted-date">
-                                <p>Deadline</p>
-                                <span>
-                                  {dayjs(students["task"]["due_date"]).format(
-                                    "MMMM, DD YYYY"
-                                  )}
-                                </span>
-                              </div>
-                              <div class="student-file">
-                                <p>Submission Link</p>
-                                <span>{students["submission_link"]}</span>
-                              </div>
-                              <div class="student-work">
-                                {students["task_status"] === "SUBMITTED" && (
-                                  <button
-                                    class="secondary-btn-sm"
-                                    onClick={() => {
-                                      handleAddScore(assessmentDetails),
-                                      setActiveWeightageIndex(index);
+                                <div className="weightage-checkbox">
+                                  <input
+                                    type="number"
+                                    style={{
+                                      border: "1px solid grey",
                                     }}
-                                  >
-                                    {activeWeightageIndex === index ? "Submit" : " add mark"}
-                                  </button>
-                                )}
-                              </div>
-                            </div>
-                            {
-                              activeWeightageIndex === index && (
-                                <div className="applied-weightage-list-container flex">
-                                  {taskAndWeightage.task_weightages &&
-                                    taskAndWeightage.task_weightages.map(
-                                      (weightage, weightageIndex) => (
-                                        <div
-                                          key={weightageIndex}
-                                          className="applied-weightage-card flex"
-                                        >
-                                          <div className="applied-weightage-name"></div>
-                                          <div className="weightage-checkbox">
-                                            <input
-                                              type="number"
-                                              style={{
-                                                border: "1px solid grey",
-                                              }}
-                                              onChange={(e) => {
-                                                const newScores = [...score];
-                                                newScores[index] =
-                                                  e.target.value;
-                                                setScore(newScores);
-                                              }}
-                                            />
-                                          </div>
-                                        </div>
-                                      )
-                                    )}
+                                    onChange={(e) => {
+                                      const newScores = [...score];
+                                      newScores[index] = e.target.value;
+                                      setScore(newScores);
+
+                                      //make the array of object make for backend body 
+                                    }}
+                                  />
                                 </div>
-                              )}
-                          </>
-                        );
-                      })}
+                              </div>
+                            )
+                          )}
+                      </div>
+                    )}
                   </>
                 );
               })}

@@ -275,7 +275,7 @@ body .container .application-full-container .application-inner-container .search
   border-radius: 4px;
   border: 1px solid #eaeaea;
 }
-body .container .application-full-container .application-inner-container .search-container input :focus {
+body .container .application-full-container .application-inner-container .search-container input:focus {
   border: 1px solid #49a843;
 }
 body .container .application-full-container .application-inner-container .search-container .search-icon {

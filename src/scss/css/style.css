@@ -88,6 +88,7 @@ li {
   background-color: #49a843;
   color: white;
   cursor: pointer;
+  width: 100%;
 }
 .btn.primary-medium:hover {
   background-color: #33762f;
@@ -218,23 +219,28 @@ li {
 }
 
 .datepicker {
-  max-width: 150px;
+  max-width: 325px;
   height: 36px;
   width: 100%;
   font-size: 12px;
   border-radius: 4px;
   outline: none;
   box-shadow: none !important;
+  border: 1px solid #eaeaea;
+}
+.datepicker::placeholder {
+  color: #969d88;
+  font-size: 12px;
 }
 .datepicker:focus {
-  border: 1px solid green !important;
+  border: 1px solid #49a843 !important;
   box-shadow: none !important;
 }
 .datepicker:hover {
   border: 1px solid #eaeaea;
 }
 .datepicker:active {
-  border-color: green;
+  border-color: #49a843;
 }
 
 .ant-picker-cell-selected .ant-picker-cell-inner {
@@ -300,6 +306,7 @@ body .container .side-nav-container .batch-switch-container {
   padding: 8px 16px;
   align-items: center;
   justify-content: space-between;
+  cursor: pointer;
 }
 body .container .side-nav-container .batch-switch-container .batch-content-container {
   align-items: center;
@@ -347,19 +354,23 @@ body .container .side-nav-container .nav-links ul {
 body .container .side-nav-container .nav-links ul .main-link {
   font: 400 12px/18px "Roboto";
   color: #969d88;
-  margin: 20px 0;
+  margin: 10px 0;
   cursor: pointer;
 }
 body .container .side-nav-container .nav-links ul .main-link :hover {
+  background-color: #f2f9e4;
   font-weight: 500;
   color: #12160a;
 }
 body .container .side-nav-container .nav-links ul .main-link a {
+  padding: 10px 0;
+  padding-left: 5px;
   font-family: "Roboto";
   font-size: 12px;
   line-height: 16px;
   font-weight: 400;
   color: #969d88;
+  width: 100%;
 }
 body .container .side-nav-container .nav-links ul .main-link a img {
   height: 16px;
@@ -438,98 +449,6 @@ body .container .side-nav-container .user-profile .user-details span {
   line-height: 16px;
   font-weight: 400;
   color: #969d88;
-}
-body .container .popup-container {
-  position: absolute;
-  left: 160px;
-  top: 0;
-  background-color: white;
-  height: 100vh;
-  width: 301px;
-  z-index: 999;
-  padding: 20px;
-}
-body .container .popup-container .popup-content .inner-content {
-  align-items: center;
-  justify-content: space-between;
-  padding-bottom: 16px;
-}
-body .container .popup-container .popup-content .inner-content h3 {
-  font-size: 14px;
-  font-family: "Roboto";
-  font-weight: 500;
-  color: #12160a;
-  line-height: 18px;
-  padding-bottom: 4px;
-}
-body .container .popup-container .popup-content .inner-content .cancel-btn {
-  width: 16px;
-  cursor: pointer;
-}
-body .container .popup-container .popup-content .add-batch {
-  padding-bottom: 10px;
-}
-body .container .popup-container .popup-content .add-batch .add-batch-btn {
-  width: 100%;
-  padding: 8px 0;
-  border: 1px solid #eaeaea;
-  border-radius: 4px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 5px;
-  font-size: 12px;
-  line-height: 16px;
-  font-weight: 500;
-  background-color: white;
-  font-family: "Roboto";
-}
-body .container .popup-container .popup-content .add-batch .add-batch-btn span {
-  font-size: 16px;
-  line-height: 20px;
-  font-weight: 400;
-  color: #12160a;
-  font-family: "Roboto";
-}
-body .container .popup-container .switch-batch-list-container {
-  overflow: scroll;
-  height: calc(100vh - 110px);
-  overflow-y: auto;
-}
-body .container .popup-container .switch-batch-list-container::-webkit-scrollbar {
-  width: 0;
-  height: 0;
-}
-body .container .popup-container .switch-batch-list-container .switch-batch-card {
-  padding: 14px 16px;
-  border-radius: 4px;
-  justify-content: space-between;
-  border: 1px solid #eaeaea;
-  width: 100%;
-  margin-bottom: 12px;
-}
-body .container .popup-container .switch-batch-list-container .switch-batch-card .batch-left-side .batch-name-year h4 {
-  font-size: 14px;
-  line-height: 18px;
-  font-family: "Roboto";
-  color: #12160a;
-  font-weight: 500;
-}
-body .container .popup-container .switch-batch-list-container .switch-batch-card .batch-left-side .batch-name-year p {
-  color: #969d88;
-  font-size: 10px;
-  line-height: 14px;
-  font-family: "Roboto";
-  font-weight: 400;
-}
-body .container .popup-container .switch-batch-list-container .switch-batch-card .batch-left-side .tag span {
-  padding: 2px 8px;
-  background-color: #eefdb0;
-  color: #49a843;
-  border-radius: 4px;
-  font-size: 10px;
-  line-height: 14px;
-  font-family: "Roboto";
 }
 body .container .listing-container {
   max-width: 301px;
@@ -743,7 +662,7 @@ body .container .main-container .module-header-section-container .module-header-
 body .container .main-container .module-header-section-container .module-header-section .module-title-section input {
   font-size: 16px;
   padding-left: 10px;
-  width: 100%;
+  width: 70%;
 }
 body .container .main-container .module-header-section-container .module-header-section .module-title-section input:hover {
   background-color: #f8fbf2;

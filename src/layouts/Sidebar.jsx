@@ -4,7 +4,7 @@ import { useLocation, useParams, useNavigate, Link } from "react-router-dom";
 import { Button, Modal, Input, DatePicker, Skeleton, notification } from "antd";
 
 import axios from "axios";
-import { Dropdown } from "antd";
+import { Dropdown, Tooltip } from "antd";
 
 import { DASHBOARD } from "../routes/routes";
 import { useAuth } from "../context/AuthContext";
@@ -38,7 +38,6 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
   const onClose = () => {
     setOpen(false);
   };
-
 
   const headers = {
     Authorization: `Bearer ${token.access}`,
@@ -105,19 +104,37 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
             className="batch-switch-container flex"
             onClick={showDrawer}
             // onClick={() => setShowSwitchBatch(!showSwitchBatch)}
-     
           >
             <div className="batch-content-container flex">
               <div className="batch-logo">
                 <p>
                   {currentBatch?.batch_name
                     .split(" ")
-                    .map((word) => word.slice(0, 1).toUpperCase())
+                    .map((word, index, array) => {
+                      if (array.length === 1) {
+                        return word.slice(0, 2).toUpperCase();
+                      } else if (index < 2) {
+                        return word.slice(0, 1).toUpperCase();
+                      } else {
+                        return "";
+                      }
+                    })
                     .join("")}
                 </p>
               </div>
               <div className="batch-name">
-                <p>{currentBatch?.batch_name}</p>
+                {currentBatch?.batch_name.length > 9 ? (
+                  <Tooltip title={currentBatch?.batch_name}>
+                    <p>
+                      {currentBatch?.batch_name.length > 9
+                        ? `${currentBatch?.batch_name.slice(0, 9)}...`
+                        : currentBatch?.batch_name}
+                    </p>
+                  </Tooltip>
+                ) : (
+                  <p>{currentBatch?.batch_name}</p>
+                )}
+                {/* <p>{currentBatch?.batch_name}</p> */}
                 <span>
                   {currentBatch?.start_date?.slice(0, 4)}-
                   {currentBatch?.end_date?.slice(0, 4)}

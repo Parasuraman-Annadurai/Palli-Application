@@ -125,9 +125,12 @@ const AssessmentView = ({
       let updateTheStudent = [...selectedStudents];
       updateTheStudent = updateTheStudent.filter((id) => id != studentId);
       //remove user API call
-      const url = `${API_END_POINT}/api/task/${batchId}/remove/user/${studentId}/task/${taskId}/`
+      const url = `${API_END_POINT}/api/task/${batchId}/remove/user/${taskId}/`
+
+     
+      const payload= {user:[studentId]};
       axios
-        .delete(url, { user: [studentId] }, { headers })
+        .delete(url, { data: payload, headers })
         .then((res) => {
           if (res.data.status === 200) {
             notification.success({
@@ -167,8 +170,23 @@ const AssessmentView = ({
 
     if (isNotAllSelected) {
       //Deselect all students in tasks
+      const url = `${API_END_POINT}/api/task/${batchId}/remove/user/${taskId}/`
 
-      //not ready in backend
+      const payload = {user : "__all__"};
+      axios.delete(url,{ data: payload, headers }).then((res)=>{
+        if (res.data.status === 200) {
+          notification.success({
+            message: "Success",
+            description: "All Students unAssigned Successfully",
+            duration: 1,
+          });
+          setSelectedStudents([]);
+        }
+        setSelectedStudents([]);
+      }).catch((error)=>{
+        console.log(error);
+      })
+      
 
     
     } else {
@@ -231,6 +249,8 @@ const AssessmentView = ({
     setInitialTitle(getValues("Title"));
     setIsEditing(true);
   };
+
+  
 
   return (
     <>

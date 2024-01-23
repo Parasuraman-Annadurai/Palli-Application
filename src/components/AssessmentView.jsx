@@ -60,13 +60,9 @@ const AssessmentView = ({
       const updatedSelectedStudents = [...taskAssignedUsers];
 
       // Check if the state actually needs to be updated
-      if (
-        JSON.stringify(selectedStudents) !==
-        JSON.stringify(updatedSelectedStudents)
-      ) {
+
         setSelectedStudents(updatedSelectedStudents);
-      }
-    }
+       }
   }, [task_users]);
 
   const validateNotEmpty = (fieldName, value) => {

@@ -1,9 +1,8 @@
 import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-import { Popover,Avatar } from "antd";
+import { Popover, Avatar } from "antd";
 import axios from "axios";
-
 
 import { useAuth } from "../context/AuthContext";
 
@@ -11,16 +10,18 @@ import { API_END_POINT } from "../../config";
 
 const Navbar = () => {
   const navigate = useNavigate();
-  const { user,token } = useAuth();
+  const { user, token } = useAuth();
   const { id: batchId } = useParams();
   const handleLogout = () => {
     const headers = {
-      Authorization : `Bearer ${token.access}`,
-      "Content-type" : "application/json"
-    }
-    axios.post(`${API_END_POINT}/api/accounts/logout/`,token,{headers}).then(res=>{
-      console.log("Logout Successfully");
-    })
+      Authorization: `Bearer ${token.access}`,
+      "Content-type": "application/json",
+    };
+    axios
+      .post(`${API_END_POINT}/api/accounts/logout/`, token, { headers })
+      .then((res) => {
+        console.log("Logout Successfully");
+      });
     localStorage.removeItem("token");
     localStorage.removeItem("user");
     navigate("/login");
@@ -45,8 +46,12 @@ const Navbar = () => {
   return (
     <div className="navbar">
       <div>
-        <Breadcrumbs/>
-        {!batchId && <h1>welcome {user.first_name} {user.last_name}</h1>}
+        <Breadcrumbs />
+        {!batchId && (
+          <h1>
+            welcome {user.first_name} {user.last_name}
+          </h1>
+        )}
       </div>
       <div className="avatar__container">
         <Popover content={content} placement="bottomRight" trigger="click">

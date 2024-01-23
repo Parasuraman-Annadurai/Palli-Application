@@ -8,9 +8,9 @@
   border: none;
   -webkit-user-select: none;
   /* Safari */
-  -ms-user-select: none;
   /* IE 10 and IE 11 */
-  user-select: none;
+  -moz-user-select: none;
+       user-select: none;
   /* Standard syntax */
 }
 
@@ -155,6 +155,4 @@ li {
 }
 .main-batches:hover .edit-icon {
   display: block;
-}
-
-/*# sourceMappingURL=Dashboard.css.map */
+}/*# sourceMappingURL=Dashboard.css.map */

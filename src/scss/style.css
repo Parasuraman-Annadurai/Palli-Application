@@ -7,8 +7,8 @@
   outline: none;
   border: none;
   -webkit-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
+  -moz-user-select: none;
+       user-select: none;
 }
 
 ::-webkit-scrollbar {
@@ -226,6 +226,10 @@ li {
   outline: none;
   box-shadow: none !important;
   border: 1px solid #eaeaea;
+}
+.datepicker::-moz-placeholder {
+  color: #969d88;
+  font-size: 12px;
 }
 .datepicker::placeholder {
   color: #969d88;
@@ -983,6 +987,4 @@ body .container .assignee-and-weightage-container .assign-listing-container .ass
 }
 body .container .assignee-and-weightage-container .assign-listing-container .assignee-card-listing-container .individual-assignee-card .profile .profile-letter span {
   font-size: 10px;
-}
-
-/*# sourceMappingURL=style.css.map */
+}/*# sourceMappingURL=style.css.map */

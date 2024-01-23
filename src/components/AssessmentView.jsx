@@ -1,10 +1,25 @@
 import React, { useEffect, useState } from "react";
-import { DatePicker, Checkbox, Menu, Dropdown, Skeleton } from "antd";
-// import { useForm, Controller } from "react-hook-form";
+
 import ReactQuill, { Quill } from "react-quill";
+import {
+  DatePicker,
+  Checkbox,
+  Menu,
+  Dropdown,
+  Skeleton,
+  notification,
+} from "antd";
+import axios from "axios";
+
 import dayjs from "dayjs";
 
 import WeightageList from "./WeightageList";
+
+import { API_END_POINT } from "../../config";
+
+import { useParams } from "react-router-dom";
+
+import { useAuth } from "../context/AuthContext";
 
 import "quill/dist/quill.snow.css";
 
@@ -15,28 +30,32 @@ const AssessmentView = ({
   setSelectedStudents,
   selectedStudents,
   handleSave,
-  handleInputChange
+  handleInputChange,
 }) => {
-
+  const { id: batchId } = useParams();
+  const { token } = useAuth();
   const [loading, setLoading] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [initialTitle, setInitialTitle] = useState("");
 
-
+  const headers = {
+    Authorization: `Bearer ${token.access}`,
+    "Content-type": "application/json",
+  };
   // Destructure the current task
   const {
+    id: taskId,
     task_title,
     task_description,
     due_date,
     draft,
-    task_users = [],
   } = currentAssessment;
-  
+
+
   const validateNotEmpty = (fieldName, value) => {
     const trimmedValue = value ? value.replace(/<[^>]*>/g, "").trim() : null;
     return trimmedValue ? null : `${fieldName} is required`;
   };
-
 
   const CustomIcons = () => {
     const icons = Quill.import("ui/icons");
@@ -83,53 +102,103 @@ const AssessmentView = ({
   };
 
   const handleCheckboxChange = (studentId) => {
-    const isSelected = selectedStudents.includes(studentId);
+    const isSelected = [...selectedStudents].includes(studentId);
 
     if (isSelected) {
-      setSelectedStudents(selectedStudents.filter((id) => id !== studentId));
+      let updateTheStudent = [...selectedStudents];
+      updateTheStudent = updateTheStudent.filter((id) => id != studentId);
+      //remove user API call
+      const url = `${API_END_POINT}/api/task/${batchId}/remove/user/${taskId}/`
+
+     
+      const payload= {user:[studentId]};
+      axios
+        .delete(url, { data: payload, headers })
+        .then((res) => {
+          if (res.data.status === 200) {
+            notification.success({
+              message: "Success",
+              description: `${res.data.message}`,
+              duration: 1,
+            });
+
+            //update the local state
+            setSelectedStudents(updateTheStudent);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     } else {
-      setSelectedStudents([...selectedStudents, studentId]);
+      const updatedStudents = [...selectedStudents, studentId];
+      //students add in task
+      const url = `${API_END_POINT}/api/task/${batchId}/assign/task/${taskId}`;
+      axios.post(url, { user: [studentId] }, { headers }).then((res) => {
+        if (res.data.status === 200) {
+          notification.success({
+            message: "Success",
+            description: `${res.data.message}`,
+            duration: 1,
+          });
+          setSelectedStudents(updatedStudents);
+        }
+      });
     }
   };
 
   const handleAllCheckboxChange = () => {
-    const allSelected = students.every((student) =>
+    const isNotAllSelected = [...students].every((student) =>
       selectedStudents.includes(student.id)
     );
-    if (allSelected) {
-      setSelectedStudents([]);
+
+    if (isNotAllSelected) {
+      //Deselect all students in tasks
+      const url = `${API_END_POINT}/api/task/${batchId}/remove/user/${taskId}/`
+
+      const payload = {user : "__all__"};
+      axios.delete(url,{ data: payload, headers }).then((res)=>{
+        if (res.data.status === 200) {
+          notification.success({
+            message: "Success",
+            description: "All Students unAssigned Successfully",
+            duration: 1,
+          });
+          setSelectedStudents([]);
+        }
+        setSelectedStudents([]);
+      }).catch((error)=>{
+        console.log(error);
+      })
+      
+
+    
     } else {
-      const allStudentIds = students.map((student) => student.id);
-      setSelectedStudents(allStudentIds);
+      const allStudentIds = [...students].map((student) => student.id);
+
+      // selectAll students in tasks
+      axios
+        .post(
+          `${API_END_POINT}/api/task/${batchId}/assign/task/${taskId}`,
+          { user: allStudentIds },
+          { headers: headers }
+        )
+        .then((res) => {
+          if (res.data.status === 200) {
+            notification.success({
+              message: "Success",
+              description: "All Students Assigned Successfully",
+              duration: 1,
+            });
+            setSelectedStudents(allStudentIds);
+          }
+        })
+        .catch((error) => {
+          console.log(error, "error");
+        });
     }
   };
 
-  const menu = (
-    <Menu>
-      <Menu.Item key="selectAll">
-        <Checkbox
-          id="selectAll"
-          checked={selectedStudents.length === students.length}
-          onChange={handleAllCheckboxChange}
-        >
-          {selectedStudents.length === students.length
-            ? "Clear All"
-            : "Select All"}
-        </Checkbox>
-      </Menu.Item>
-      {students.map((student) => (
-        <Menu.Item key={student.id}>
-          <Checkbox
-            id={`student${student.id}`}
-            checked={selectedStudents.includes(student.id)}
-            onChange={() => handleCheckboxChange(student.id)}
-          >
-            {student.first_name} {student.last_name}
-          </Checkbox>
-        </Menu.Item>
-      ))}
-    </Menu>
-  );
+
 
   const handleValidate = (formData) => {
     //if student not assign show the error
@@ -164,20 +233,20 @@ const AssessmentView = ({
     setIsEditing(true);
   };
 
+  
 
   return (
     <>
-      <main className="main-container">
+      <section className="main-container">
         {loading ? (
           <Skeleton active paragraph={4} />
         ) : (
-          <div>
+          <>
             <div className="module-header-section-container">
               <div className="module-header-section flex">
                 <div className="module-title-section flex">
                   <input
                     value={task_title ? task_title : ""}
-
                     name="task_title"
                     type="text"
                     onChange={(e) =>
@@ -187,9 +256,7 @@ const AssessmentView = ({
                     placeholder={"Untitled"}
                     // className={` ${errors.Title ? "error-notify" : ""} `}
                     // readOnly={!isEditing}
-
-                   autoFocus={true}
-
+                    autoFocus={true}
                   />
 
                   {/* {isEditing && (
@@ -211,20 +278,8 @@ const AssessmentView = ({
                     </div>
                   )} */}
                 </div>
-
-                <div className="task-create">
-                  <button
-                    type="submit"
-                    className="btn primary-medium"
-                    onClick={() => handleSave(currentAssessment)}
-                  >
-                    {draft ? "Create" : "Update"}
-                  </button>
-                </div>
               </div>
-              <p className="error-message">
-                {/* {errors.Title ? errors.Title.message : ""} */}
-              </p>
+              <p className="error-message"></p>
             </div>
 
             <div className="task-details-header-container">
@@ -245,36 +300,12 @@ const AssessmentView = ({
                     onChange={(date, dateString) =>
                       handleInputChange("due_date", dateString)
                     }
-                    // className={`datepicker ${
-                    //   errors.Deadline
-                    //     ? "error-notify"
-                    //     : "task-deadline-selector"
-                    // }`}
                     suffixIcon={<img src={`/icons/calendorIcon.svg`} />}
-                    disabledDate={current => current && current < dayjs().startOf('day')}
+                    disabledDate={(current) =>
+                      current && current < dayjs().startOf("day")
+                    }
                   />
-                  <p className="error-message">
-                    {/* {errors.Deadline ? errors.Deadline.message : ""} */}
-                  </p>
-                </div>
-
-                <div className="task-assigner-container">
-                  <p className="task-assigner-label">Assignee</p>
-                  <Dropdown overlay={menu} trigger={["click"]}>
-                    <span className={`task-assigner-selector`} onClick={(e)=>e.preventDefault()}>
-                      {selectedStudents.length === students.length
-                        ? `All Students`
-                        : `${
-                            selectedStudents.length === 0
-                              ? "Select Students"
-                              : `${selectedStudents.length} Student`
-                          }`}
-                      <img src="/icons/dropdown.svg" alt="" />
-                    </span>
-                  </Dropdown>
-                  <p className="error-message">
-                    {/* {errors.assignee ? errors.assignee.message : ""} */}
-                  </p>
+                  <p className="error-message"></p>
                 </div>
               </div>
 
@@ -317,42 +348,88 @@ const AssessmentView = ({
                         handleInputChange("task_description", value)
                       }
                     />
-                    {/* <p className="error-message">
-                          {errors.Description ? errors.Description.message : ""}
-                        </p> */}
+                    <p className="error-message"></p>
                   </>
                 </div>
               </div>
 
               <div className="submission-folder-link-container">
-                <>
-                  <input type="link" placeholder="Paste your link here..." />
-                </>
+                <input type="link" placeholder="Paste your link here..." />
               </div>
-              {/* file upload used in future */}
-              {/* <div>
-                <div className="file-input-container">
-                  <div className="upload-icon-container flex">
-                    <img src="/icons/upload.svg" className="upload-icon" />
-                    <p>
-                      Drag your file or
-                      <span className="highlight">click to upload</span>
-                    </p>
-                  </div>
-                  <>
-                    <input
-                      type="file"
-                      className="file-input"
-                      onChange={(e) => setValue("fileInput", e.target.value)}
-                    />
-                  </>
-                </div>
-                {weightageShow && <WeightageList />}
-              </div> */}
+              <div className="task-create-btn-section flex">
+                <button
+                  type="submit"
+                  className="btn primary-medium"
+                  onClick={() => handleSave(currentAssessment)}
+                >
+                  {draft ? "Create" : "Update"}
+                </button>
+              </div>
+            </div>
+          </>
+        )}
+      </section>
+      {!draft && (
+        <section className="assignee-and-weightage-container">
+          <div className="title-section flex">
+            <div className="assignee-title selection active">
+              <h4>Assignee</h4>
+            </div>
+            <div className="weightage-title selection ">
+              <h4>Weightage</h4>
             </div>
           </div>
-        )}
-      </main>
+          <div className="assignee-search-container">
+            {/* search bar use in future */}
+            <input
+              type="text"
+              style={{ border: "1px solid grey" }}
+              placeholder="Search here..."
+            />
+          </div>
+          <div className="assign-listing-container">
+            <div className="select-all flex">
+              <input
+                className="global-checkbox"
+                type="checkbox"
+                onChange={handleAllCheckboxChange}
+                checked={selectedStudents.length == students.length}
+              />
+              <span>{selectedStudents.length === students.length ? "All Students" : selectedStudents.length == 0  ? "Select Students" : `${selectedStudents.length} Selected`}</span>
+            </div>
+            <div className="assignee-card-listing-container">
+              {students.map((student) => {
+                return (
+                  <div
+                    className="individual-assignee-card flex"
+                    key={student.id}
+                  >
+                    <input
+                      type="checkbox"
+                      onChange={() => handleCheckboxChange(student.id)}
+                      checked={selectedStudents.includes(student.id)}
+                    />
+                    <div className="profile flex">
+                      <div className="profile-letter">
+                        <span>
+                          {student?.first_name[0]}
+                          {student?.last_name[0]}
+                        </span>
+                      </div>
+
+                      <div className="assignee-name">
+                        <p>
+                          {student.first_name} {student.last_name}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+      )}
     </>
   );
 };

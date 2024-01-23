@@ -11,7 +11,7 @@ import { useAuth } from "../../context/AuthContext";
 
 import { useParams } from "react-router-dom";
 
-const TaskCard = ({ tasksLists, setSeletedTaskId }) => {
+const TaskCard = ({ tasksLists, setSeletedTaskId,selectedTaskId }) => {
   const truncateText = (text, maxLength) => {
     return text.length > maxLength
       ? text.substring(0, maxLength) + "..."
@@ -20,7 +20,7 @@ const TaskCard = ({ tasksLists, setSeletedTaskId }) => {
   return (
     <>
       <div
-        className={`task-card flex`}
+        className={`task-card  flex ${tasksLists.id === selectedTaskId ? "active":""}`}
         onClick={() => setSeletedTaskId(tasksLists.id)}
       >
         <div className="task-icon flex">
@@ -156,6 +156,7 @@ const StudentLogin = ({ type }) => {
                   key={tasks.id}
                   tasksLists={tasks}
                   setSeletedTaskId={setSeletedTaskId}
+                  selectedTaskId={selectedTaskId}
                 />
               );
             })}

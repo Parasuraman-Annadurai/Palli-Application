@@ -353,6 +353,7 @@ const AssessmentView = ({
                 />
               </div>
               <div className="task-create-btn-section flex">
+                <div className="main-create-btn">
                 <button
                   type="submit"
                   className="btn primary-medium"
@@ -360,6 +361,7 @@ const AssessmentView = ({
                 >
                   {draft ? "Create" : "Update"}
                 </button>
+                </div>
               </div>
             </div>
           </>

@@ -189,18 +189,22 @@ li {
   border-radius: 4px;
 }
 
-.filter-container {
+.filter-main-container {
+  overflow: auto;
+  height: 500px;
+}
+.filter-main-container .filter-container {
   position: relative;
   padding: 10px;
 }
-.filter-container .filter-label {
+.filter-main-container .filter-container .filter-label {
   margin-bottom: 8px;
   font-size: 12px;
   font-family: 400;
   font-family: "Roboto";
   color: #12160a;
 }
-.filter-container input {
+.filter-main-container .filter-container input {
   display: block;
   border: 1px solid #eaeaea;
   font-size: 12px;
@@ -210,7 +214,7 @@ li {
   width: 100%;
   font-family: "Roboto";
 }
-.filter-container select {
+.filter-main-container .filter-container select {
   width: 100%;
   padding: 10px;
   border: 1px solid #eaeaea;

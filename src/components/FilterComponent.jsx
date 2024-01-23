@@ -18,7 +18,8 @@ const FilterComponent = ({ filter, applyFilter,setPopoverVisible }) => {
     setPopoverVisible(false)
   };
   return (
-    <div className="filter-container">
+  <div className="filter-main-container">
+      <div className="filter-container">
       <div>
         {filter.map((filterItem) => {
           switch (filterItem.filter_type) {
@@ -111,6 +112,7 @@ const FilterComponent = ({ filter, applyFilter,setPopoverVisible }) => {
         Clear
       </button>
     </div>
+  </div>
   );
 };
 

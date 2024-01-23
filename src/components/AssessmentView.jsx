@@ -247,10 +247,11 @@ const AssessmentView = ({
 
   const [score, setScore] = useState([]);
 
+
+  console.log(score);
   const handleAddScore = (scoreDetails) => {
     const { task_weightage, task_user, task_score } = scoreDetails;
 
-    console.log(scoreDetails);
     const requestBody = {
       task_weightage,
       task_user,
@@ -282,35 +283,31 @@ const AssessmentView = ({
     //     });
     // }
   };
-  const handleMenuClick = (status, userId) => {
-    const url = `${API_END_POINT}/api/task/${batchId}/update/task/user/120`;
+  const handleStatusChange = (studentId, status) => {
+    const url = `${API_END_POINT}/api/task/${batchId}/update/task/user/${studentId}`;
     const payload = { task_status: status };
+    axios
+      .put(url, { data: payload, headers })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   const itemRenderer = (studentId) => {
     return [
       {
         label: (
-          <p
-            
-            
-            
-            onClick={()=>console.log(studentId,"REWORK")}
-          >
-            1st menu item
-          </p>
+          <p onClick={() => handleStatusChange(studentId, "REWORK")}>Rework</p>
         ),
         key: "0",
       },
       {
         label: (
-          <p
-            
-            
-            
-            onClick={()=>console.log(studentId,"REWORK")}
-          >
-            1st menu item
+          <p onClick={() => handleStatusChange(studentId, "COMPLETED")}>
+            Completed
           </p>
         ),
         key: "1",
@@ -319,8 +316,8 @@ const AssessmentView = ({
   };
 
 
+  console.log(score);
 
-  
   return (
     <>
       {!isCardClick ? (
@@ -578,7 +575,7 @@ const AssessmentView = ({
                             )
                           : students["task_status"] === "SUBMITTED" && (
                               <Dropdown
-                                menu={{items:itemRenderer(students.id)}}
+                                menu={{ items: itemRenderer(students.id) }}
                                 placement="bottomLeft"
                                 trigger={["click"]}
                               >
@@ -613,11 +610,13 @@ const AssessmentView = ({
                                       border: "1px solid grey",
                                     }}
                                     onChange={(e) => {
-                                      const newScores = [...score];
-                                      newScores[index] = e.target.value;
-                                      setScore(newScores);
+                                      const payload = {task_user:students.id,task_weightage:weightage.id,task_score:e.target.value}
+                                      setScore([...score,payload])
+                                      // const newScores = [...score];
+                                      // newScores[index] = e.target.value;
+                                      // setScore(newScores);
 
-                                      //make the array of object make for backend body 
+                                      //make the array of object make for backend body
                                     }}
                                   />
                                 </div>

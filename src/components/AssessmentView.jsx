@@ -37,6 +37,7 @@ const AssessmentView = ({
   const [isEditing, setIsEditing] = useState(false);
   const [initialTitle, setInitialTitle] = useState("");
   const [activeWeightageIndex, setActiveWeightageIndex] = useState(null);
+  const [studentScore, setStudentScore] = useState([]);
 
   const headers = {
     Authorization: `Bearer ${token.access}`,
@@ -212,6 +213,7 @@ const AssessmentView = ({
     }
   };
 
+  //handle this four functions later
   const handleValidate = (formData) => {
     //if student not assign show the error
     if (selectedStudents.length === 0) {
@@ -245,49 +247,43 @@ const AssessmentView = ({
     setIsEditing(true);
   };
 
-  const [score, setScore] = useState([]);
+  //end
 
+  const handleAddScore = () => {
+    //weightage open and score added only submit the score
+    if (activeWeightageIndex) {
+      const url = `${API_END_POINT}/api/task/${batchId}/create/task_score/`;
+      console.log(studentScore);
+      // axios
+      //   .post(url, requestBody, { headers })
+      //   .then((res) => {
+      //     console.log(res);
 
-  console.log(score);
-  const handleAddScore = (scoreDetails) => {
-    const { task_weightage, task_user, task_score } = scoreDetails;
-
-    const requestBody = {
-      task_weightage,
-      task_user,
-      task_score,
-    };
-    // if (activeWeightageIndex) {
-    //   const url = `${API_END_POINT}/api/task/${batchId}/create/task_score/`;
-
-    //   axios
-    //     .post(url, requestBody, { headers })
-    //     .then((res) => {
-    //       console.log(res);
-
-    //       axios
-    //         .post(
-    //           `${API_END_POINT}/api/task/${batchId}/update/task/user/${task_user}`,
-    //           { user_status: "COMPLETED" },
-    //           { headers }
-    //         )
-    //         .then((res) => {
-    //           console.log(res, "update");
-    //         })
-    //         .catch((error) => {
-    //           console.log(error);
-    //         });
-    //     })
-    //     .catch((error) => {
-    //       console.log(error);
-    //     });
-    // }
+      //     axios
+      //       .post(
+      //         `${API_END_POINT}/api/task/${batchId}/update/task/user/${task_user}`,
+      //         { user_status: "COMPLETED" },
+      //         { headers }
+      //       )
+      //       .then((res) => {
+      //         console.log(res, "update");
+      //       })
+      //       .catch((error) => {
+      //         console.log(error);
+      //       });
+      //   })
+      //   .catch((error) => {
+      //     console.log(error);
+      //   });
+    }
   };
   const handleStatusChange = (studentId, status) => {
     const url = `${API_END_POINT}/api/task/${batchId}/update/task/user/${studentId}`;
     const payload = { task_status: status };
+
+    //students status changed to Admin
     axios
-      .put(url, { data: payload, headers })
+      .put(url, payload, { headers })
       .then((res) => {
         console.log(res);
       })
@@ -315,9 +311,34 @@ const AssessmentView = ({
     ];
   };
 
+  // // Function to remove duplicates based on the 'task_weightage' property
+  // const removeDuplicates = (arr) => {
+  //   const seenWeightages = new Set();
+  //   const uniqueArray = arr.filter(obj => {
+  //     if (!seenWeightages.has(obj.task_weightage)) {
+  //       seenWeightages.add(obj.task_weightage);
+  //       return true;
+  //     }
+  //     return false;
+  //   });
 
-  console.log(score);
+  //   return uniqueArray;
+  // };
 
+  const handleChange = (e, students, weightage) => {
+    const payload = {
+      task_user: students.id,
+      task_weightage: weightage.id,
+      task_score: Number(e.target.value),
+    };
+
+    const scoreForStudent = {task_user:students.id,task_details:[{task_weightage:weightage.id,task_score:Number(e.target.value)}]}
+
+    setStudentScore([...studentScore,scoreForStudent]);
+
+  };
+
+console.log(studentScore);
   return (
     <>
       {!isCardClick ? (
@@ -564,7 +585,7 @@ const AssessmentView = ({
                               <button
                                 className="secondary-btn-sm"
                                 onClick={() => {
-                                  handleAddScore("assessmentDetails"),
+                                  handleAddScore(),
                                     setActiveWeightageIndex(index);
                                 }}
                               >
@@ -591,6 +612,7 @@ const AssessmentView = ({
                             )}
                       </div>
                     </div>
+
                     {activeWeightageIndex === index && (
                       <div className="applied-weightage-list-container flex">
                         {currentAssessment.task_weightages &&
@@ -609,17 +631,18 @@ const AssessmentView = ({
                                     style={{
                                       border: "1px solid grey",
                                     }}
-                                    onChange={(e) => {
-                                      const payload = {task_user:students.id,task_weightage:weightage.id,task_score:e.target.value}
-                                      setScore([...score,payload])
-                                      // const newScores = [...score];
-                                      // newScores[index] = e.target.value;
-                                      // setScore(newScores);
+                                    onChange={(e) =>
+                                      {
+                                        handleChange(e, students, weightage)
 
-                                      //make the array of object make for backend body
-                                    }}
+                                        
+                                      }
+
+                                    
+                                    }
                                   />
                                 </div>
+                                
                               </div>
                             )
                           )}

@@ -48,7 +48,6 @@ const TaskCard = ({ tasksLists, setSeletedTaskId,selectedTaskId }) => {
 };
 
 const StudentLogin = ({ type }) => {
-  const taskType = type === "assessment" ? 1 : 0;
   const { token, user } = useAuth();
   const { id: batchId } = useParams();
   const [tasksLists, setTaskLists] = useState([]);
@@ -64,14 +63,13 @@ const StudentLogin = ({ type }) => {
   };
   useEffect(() => {
     axios
-      .get(`${API_END_POINT}/api/task/${batchId}/list/user/task/`, { headers })
+      .get(`${API_END_POINT}/api/task/${batchId}/list/user/task/?filter_task_type=${type === "assessment" ? 1 : 0 }`, { headers })
       .then((res) => {
         const copyTaskList = [...res.data.data];
+
         //filter the task or assessment to show the students
-        const filteredTasks = copyTaskList.filter(
-          (task) => task.task.task_type === taskType
-        );
-        setTaskLists(filteredTasks);
+        
+        setTaskLists(copyTaskList)
 
         if (!selectedTaskId) {
           const getFirstTask =
@@ -83,6 +81,7 @@ const StudentLogin = ({ type }) => {
         console.log(error);
       });
   }, [type]);
+
 
   const handleChange = (status) => {
     if (status !== "SUBMITTED") {

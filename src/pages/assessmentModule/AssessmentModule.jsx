@@ -35,59 +35,63 @@ const AssessmentModule = ({ type }) => {
 
   useEffect(() => {
     //this useEffect used to fetch task list and will re-run whenever filter or search is updated
-    const url = `${API_END_POINT}/api/task/${batchId}/list_task/?limit=10&page=1&filter_task_type=${
-      type === "task" ? 0 : 1
-    }&search=${assessmentSearchWord}`;
-    let assessmentId = editId;
+    if (user.role !== "Student") {
+      const url = `${API_END_POINT}/api/task/${batchId}/list_task/?limit=10&page=1&filter_task_type=${
+        type === "task" ? 0 : 1
+      }&search=${assessmentSearchWord}`;
+      let assessmentId = editId;
 
-    axios
-      .get(url, { headers })
-      .then((res) => {
-        if (res.status === 200 && res.data.message === "Success") {
-          //manipulate the assessment list task type assessment put the 1 otherwise 0 and remove duplicate
-          let assessmentList = [...res.data.data];
-          assessmentList = assessmentList.map((assessment) => ({
-            ...assessment,
-            task_type: assessment.task_type === "ASSESSMENT" ? 1 : 0,
-          }));
+      axios
+        .get(url, { headers })
+        .then((res) => {
+          if (res.status === 200 && res.data.message === "Success") {
+            //manipulate the assessment list task type assessment put the 1 otherwise 0 and remove duplicate
+            let assessmentList = [...res.data.data];
+            assessmentList = assessmentList.map((assessment) => ({
+              ...assessment,
+              task_type: assessment.task_type === "ASSESSMENT" ? 1 : 0,
+            }));
 
-          setAssessmentList(assessmentList);
+            setAssessmentList(assessmentList);
 
-          setLoading(false);
-          if (!assessmentId) {
-            // Set the editId to the first task's id in the updated list
-            assessmentId =
-              res.data.data.length > 0 ? res.data.data[0].id : null;
+            setLoading(false);
+            if (!assessmentId) {
+              // Set the editId to the first task's id in the updated list
+              assessmentId =
+                res.data.data.length > 0 ? res.data.data[0].id : null;
+            }
+
+            const currentAssessment = assessmentList.find(
+              (assessment) => assessment.id === assessmentId
+            );
+            const assignedUsers = currentAssessment.task_users.map(
+              (assigned) => assigned.user.id
+            );
+
+            setSelectedStudents(assignedUsers);
+            setEditId(assessmentId);
           }
-         
+        })
+        .catch((error) => {
+          console.log(error);
+        });
 
-          const currentAssessment = assessmentList.find(assessment=> assessment.id === assessmentId)
-          const assignedUsers = currentAssessment.task_users.map((assigned) =>assigned.user.id)
- 
-
-          setSelectedStudents(assignedUsers);
-          setEditId(assessmentId);
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-
-    axios
-      .get(`${API_END_POINT}/api/applicant/${batchId}/list/students/`, {
-        headers,
-      })
-      .then((res) => {
-        if (res.status === 200 && res.data.message === "Success") {
-          setStudents(res.data.data);
-          setLoading(false);
-          // setSelectedStudents(res.data.data.map((student) => student.id));
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, [assessmentSearchWord,type]);
+      axios
+        .get(`${API_END_POINT}/api/applicant/${batchId}/list/students/`, {
+          headers,
+        })
+        .then((res) => {
+          if (res.status === 200 && res.data.message === "Success") {
+            setStudents(res.data.data);
+            setLoading(false);
+            // setSelectedStudents(res.data.data.map((student) => student.id));
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }, [assessmentSearchWord, type]);
 
   const handleDeleteAssessment = (deleteId) => {
     setEditId(deleteId);

@@ -9,13 +9,14 @@ import dayjs from "dayjs";
 
 import AssessmentList from "../../components/AssessmentList";
 import AssessmentView from "../../components/AssessmentView";
+import StudentLogin from "../studentLogin/StudentLogin";
 
 import { useAuth } from "../../context/AuthContext";
 
 import { API_END_POINT } from "../../../config";
 
 const AssessmentModule = ({ type }) => {
-  const { token } = useAuth();
+  const { token, user } = useAuth();
   const { id: batchId } = useParams();
   const [editId, setEditId] = useState(null);
   const [assessmentList, setAssessmentList] = useState([]);
@@ -34,56 +35,63 @@ const AssessmentModule = ({ type }) => {
 
   useEffect(() => {
     //this useEffect used to fetch task list and will re-run whenever filter or search is updated
-    const url = `${API_END_POINT}/api/task/${batchId}/list_task/?limit=10&page=1&filter_task_type=${
-      type === "task" ? 0 : 1
-    }&search=${assessmentSearchWord}`;
-    let assessmentId = editId
+    if (user.role !== "Student") {
+      const url = `${API_END_POINT}/api/task/${batchId}/list_task/?limit=10&page=1&filter_task_type=${
+        type === "task" ? 0 : 1
+      }&search=${assessmentSearchWord}`;
+      let assessmentId = editId;
 
-    axios
-      .get(url, { headers })
-      .then((res) => {
-        if (res.status === 200 && res.data.message === "Success") {
-          //manipulate the assessment list task type assessment put the 1 otherwise 0 and remove duplicate
-          let assessmentList = [...res.data.data];
-          assessmentList = assessmentList.map((assessment) => ({
-            ...assessment,
-            task_type: assessment.task_type === "ASSESSMENT" ? 1 : 0,
-          }));
+      axios
+        .get(url, { headers })
+        .then((res) => {
+          if (res.status === 200 && res.data.message === "Success") {
+            //manipulate the assessment list task type assessment put the 1 otherwise 0 and remove duplicate
+            let assessmentList = [...res.data.data];
+            assessmentList = assessmentList.map((assessment) => ({
+              ...assessment,
+              task_type: assessment.task_type === "ASSESSMENT" ? 1 : 0,
+            }));
 
-          setAssessmentList(assessmentList);
+            setAssessmentList(assessmentList);
 
-          setLoading(false);
-          if (!assessmentId) {
-            // Set the editId to the first task's id in the updated list
-            assessmentId = res.data.data.length > 0 ? res.data.data[0].id : null
+            setLoading(false);
+            if (!assessmentId) {
+              // Set the editId to the first task's id in the updated list
+              assessmentId =
+                res.data.data.length > 0 ? res.data.data[0].id : null;
+            }
+
+            const currentAssessment = assessmentList.find(
+              (assessment) => assessment.id === assessmentId
+            );
+            const assignedUsers = currentAssessment.task_users.map(
+              (assigned) => assigned.user.id
+            );
+
+            setSelectedStudents(assignedUsers);
+            setEditId(assessmentId);
           }
-          let currentAssessment = assessmentList.find(assessment=> assessment.id === assessmentId)
-          currentAssessment = currentAssessment.task_users.map((assigned) =>assigned.user.id)
+        })
+        .catch((error) => {
+          console.log(error);
+        });
 
-          setSelectedStudents(assignedUsers)
-          setEditId(assessmentId)
-
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-
-    axios
-      .get(`${API_END_POINT}/api/applicant/${batchId}/list/students/`, {
-        headers,
-      })
-      .then((res) => {
-        if (res.status === 200 && res.data.message === "Success") {
-          setStudents(res.data.data);
-          setLoading(false);
-          // setSelectedStudents(res.data.data.map((student) => student.id));
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, [assessmentSearchWord]);
+      axios
+        .get(`${API_END_POINT}/api/applicant/${batchId}/list/students/`, {
+          headers,
+        })
+        .then((res) => {
+          if (res.status === 200 && res.data.message === "Success") {
+            setStudents(res.data.data);
+            setLoading(false);
+            // setSelectedStudents(res.data.data.map((student) => student.id));
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }, [assessmentSearchWord, type]);
 
   const handleDeleteAssessment = (deleteId) => {
     setEditId(deleteId);
@@ -222,10 +230,13 @@ const AssessmentModule = ({ type }) => {
           const errorMessages = error.response.data.errors;
 
           Object.entries(errorMessages).forEach(([key, messages]) => {
-            messages.forEach(message => notification.error({ message: `${key} Error`, description: message }));
+            messages.forEach((message) =>
+              notification.error({
+                message: `${key} Error`,
+                description: message,
+              })
+            );
           });
-
-        
         }
       });
   };
@@ -264,70 +275,76 @@ const AssessmentModule = ({ type }) => {
     setAssessmentList(updatedList);
   };
 
+  console.log(user);
+
   return (
     <>
-      {isDeleteModalOpen && (
-        <Modal
-          open={true}
-          title={`${isDraft ? "Discard" : "Delete"} Confirmation`}
-          onOk={handleConfirmDelete}
-          onCancel={() => {
-            setIsDeleteModalOpen(false);
-            setIsDraft(false);
-          }}
-          okButtonProps={{
-            style: { background: "#49a843", borderColor: "#EAEAEA" },
-          }}
-        >
-          <p>{`${
-            isDraft
-              ? "Are you sure you want to discard the changes"
-              : "Are you sure you want to delete"
-          } ${type} ${
-            assessmentList.find((asses) => asses.id === editId).task_title
-          }?`}</p>
-        </Modal>
-      )}
+      {user.role !== "Student" ? (
+        <>
+          {isDeleteModalOpen && (
+            <Modal
+              open={true}
+              title={`${isDraft ? "Discard" : "Delete"} Confirmation`}
+              onOk={handleConfirmDelete}
+              onCancel={() => {
+                setIsDeleteModalOpen(false);
+                setIsDraft(false);
+              }}
+              okButtonProps={{
+                style: { background: "#49a843", borderColor: "#EAEAEA" },
+              }}
+            >
+              <p>{`${
+                isDraft
+                  ? "Are you sure you want to discard the changes"
+                  : "Are you sure you want to delete"
+              } ${type} ${
+                assessmentList.find((asses) => asses.id === editId).task_title
+              }?`}</p>
+            </Modal>
+          )}
+          <AssessmentList
+            mode={type}
+            filterShow={false}
+            handleEdit={(editId) => setEditId(editId)}
+            assessmentList={assessmentList}
+            setAssessmentSearchWord={setAssessmentSearchWord}
+            loading={loading}
+            handleDelete={handleDeleteAssessment}
+            handleAdd={handleAdd}
+            selectedAssessment={editId}
+          />
+          {assessmentList.map((assessment) => {
+            if (assessment.id == editId) {
+              return (
+                <AssessmentView
+                  key={assessment.id}
+                  currentAssessment={assessment}
+                  students={students}
+                  selectedStudents={selectedStudents}
+                  setSelectedStudents={setSelectedStudents}
+                  handleSave={handleSave}
+                  handleInputChange={handleInputChange}
+                  weightageShow={type === "task" ? false : true}
+                />
+              );
+            }
+            return null;
+          })}
 
-      <AssessmentList
-        mode={type}
-        filterShow={false}
-        handleEdit={(editId) => setEditId(editId)}
-        assessmentList={assessmentList}
-        setAssessmentSearchWord={setAssessmentSearchWord}
-        loading={loading}
-        handleDelete={handleDeleteAssessment}
-        handleAdd={handleAdd}
-        selectedAssessment={editId}
-      />
-
-      {assessmentList.map((assessment) => {
-        if (assessment.id == editId) {
-          return (
-            <AssessmentView
-              key={assessment.id}
-              currentAssessment={assessment}
-              students={students}
-              selectedStudents={selectedStudents}
-              setSelectedStudents={setSelectedStudents}
-              handleSave={handleSave}
-              handleInputChange={handleInputChange}
-              weightageShow={type === "task" ? false : true}
-            />
-          );
-        }
-        return null;
-      })}
-
-      {editId === null && (
-        <div className="select-something-container flex">
-          <div className="image-container ">
-            <img src="/icons/select-something.svg" alt="" />
-            <p className="select-something-heading">
-              Please Select any of the Available Tasks or Create New Task
-            </p>
-          </div>
-        </div>
+          {editId === null && (
+            <div className="select-something-container flex">
+              <div className="image-container ">
+                <img src="/icons/select-something.svg" alt="" />
+                <p className="select-something-heading">
+                  Please Select any of the Available Tasks or Create New Task
+                </p>
+              </div>
+            </div>
+          )}
+        </>
+      ) : (
+        <StudentLogin type={type} />
       )}
     </>
   );

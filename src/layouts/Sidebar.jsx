@@ -1,36 +1,52 @@
-import React, { useState, useEffect } from "react";
-import {Modal} from "antd";
-import { useLocation, useParams, useNavigate,Link } from "react-router-dom";
+import React, { useState, useEffect, useRef } from "react";
+import { useLocation, useParams, useNavigate, Link } from "react-router-dom";
 
-import { Dropdown } from "antd";
+import { Button, Modal, Input, DatePicker, Skeleton, notification } from "antd";
+
 import axios from "axios";
+import { Dropdown, Tooltip } from "antd";
 
 import { DASHBOARD } from "../routes/routes";
 import { useAuth } from "../context/AuthContext";
 
+import AddBatch from "../components/AddBatchModule/AddBatch";
+
 import { API_END_POINT } from "../../config";
 
-const Sidebar = ({ menuList }) => {
+const Sidebar = ({ menuList, activeMenuItem }) => {
   const navigate = useNavigate();
   const { id: batchId } = useParams();
+
   const { token, user } = useAuth();
 
   const currentPath = useLocation().pathname;
   const isDashboardPage = currentPath.includes(DASHBOARD);
 
-  const [active, setActive] = useState(null);
+  const [active, setActive] = useState(activeMenuItem);
   const [showSwitchBatch, setShowSwitchBatch] = useState(false);
   const [batchList, setBatchList] = useState([]);
   const [currentBatch, setCurrentBatch] = useState(null);
+
+  // const [showSwitchBatch, setShowSwitchBatch] = useState(false);
+  // const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false);
+
+  const showDrawer = () => {
+    setOpen(true);
+  };
+
+  const onClose = () => {
+    setOpen(false);
+  };
 
   const headers = {
     Authorization: `Bearer ${token.access}`,
     "Content-type": "application/json",
   };
+
   useEffect(() => {
     if (batchId) {
       // On Batch, setting Applications as default page
-
       const activeMenuItem = menuList.find((menu) =>
         currentPath.includes(menu.id)
       );
@@ -39,9 +55,13 @@ const Sidebar = ({ menuList }) => {
       axios
         .get(`${API_END_POINT}/api/list/batch/`, { headers })
         .then((res) => {
-          const batchListData = res.data.data
-          setBatchList(batchListData.filter((batch)=>batch.id !== Number(batchId)));
-          setCurrentBatch(batchListData.find((batch) => batch.id === Number(batchId)));
+          const batchListData = res.data.data;
+          setBatchList(
+            batchListData.filter((batch) => batch.id !== Number(batchId))
+          );
+          setCurrentBatch(
+            batchListData.find((batch) => batch.id === Number(batchId))
+          );
         })
         .catch((err) => console.log(err));
     }
@@ -65,48 +85,56 @@ const Sidebar = ({ menuList }) => {
       key: "0",
     },
   ];
-  const listBatchLists =  batchList.filter((batch)=>batch.id !== currentBatch?.id);
 
-
-  const handleSwitch = (id, batchName) => {
-    Modal.confirm({
-      width: 400,
-      title: `Confirm Switch to ${batchName}`,
-      content: "Are you sure you want to Switch this Batch?",
-      okText: "Switch",
-      onOk: () => {
-        navigate(`/batch/${id}/applications`);
-        window.location.reload();
-      },
-      closable: true,
-      cancelButtonProps: { style: { display: "none" } },
-    });
-  };
+  const listBatchLists = batchList.filter(
+    (batch) => batch.id !== currentBatch?.id
+  );
 
   return (
     <>
       <nav className="side-nav-container flex">
-        <Link to="/dashboard">
-          <div className="logo" style={{ cursor: "pointer" }}>
+        <div className="logo" style={{ cursor: "pointer" }}>
+          <Link to="/dashboard">
             <img src="/images/dckap_palli_logo_sm.svg" alt="DCKAP Palli logo" />
-          </div>
-        </Link>
+          </Link>
+        </div>
+
         {!isDashboardPage && (
           <div
             className="batch-switch-container flex"
-            onClick={() => setShowSwitchBatch(!showSwitchBatch)}
+            onClick={showDrawer}
+            // onClick={() => setShowSwitchBatch(!showSwitchBatch)}
           >
             <div className="batch-content-container flex">
               <div className="batch-logo">
                 <p>
                   {currentBatch?.batch_name
                     .split(" ")
-                    .map((word) => word.slice(0, 1).toUpperCase())
+                    .map((word, index, array) => {
+                      if (array.length === 1) {
+                        return word.slice(0, 2).toUpperCase();
+                      } else if (index < 2) {
+                        return word.slice(0, 1).toUpperCase();
+                      } else {
+                        return "";
+                      }
+                    })
                     .join("")}
                 </p>
               </div>
               <div className="batch-name">
-                <p>{currentBatch?.batch_name}</p>
+                {currentBatch?.batch_name.length > 9 ? (
+                  <Tooltip title={currentBatch?.batch_name}>
+                    <p>
+                      {currentBatch?.batch_name.length > 9
+                        ? `${currentBatch?.batch_name.slice(0, 9)}...`
+                        : currentBatch?.batch_name}
+                    </p>
+                  </Tooltip>
+                ) : (
+                  <p>{currentBatch?.batch_name}</p>
+                )}
+                {/* <p>{currentBatch?.batch_name}</p> */}
                 <span>
                   {currentBatch?.start_date?.slice(0, 4)}-
                   {currentBatch?.end_date?.slice(0, 4)}
@@ -118,12 +146,11 @@ const Sidebar = ({ menuList }) => {
             </div>
           </div>
         )}
-
         <div className="nav-links">
           <ul>
             {!isDashboardPage && (
               <li className={`main-link`}>
-                <a href={"/dashboard"} className="flex">
+                <a href={"/dashboard"} className="navigation flex">
                   <img src="/icons/backIcon.svg" alt={"Back to Dashboard"} />
                   <span>{"Back to Dashboard"}</span>
                 </a>
@@ -139,20 +166,17 @@ const Sidebar = ({ menuList }) => {
                       menu.id === active ? "main-active" : ""
                     }`}
                   >
-                    <a
-                      href={
+                    <Link
+                      to={
                         isDashboardPage
                           ? "/dashboard"
                           : `/batch/${batchId}/${menu.id}`
                       }
                       className="flex"
                     >
-                      <img
-                        src="/public/icons/application.svg"
-                        alt={menu.label}
-                      />
+                      <img src="/icons/application.svg" alt={menu.label} />
                       <span>{menu.label}</span>
-                    </a>
+                    </Link>
                   </li>
                 );
               })}
@@ -177,53 +201,19 @@ const Sidebar = ({ menuList }) => {
         </div>
       </nav>
 
-      {showSwitchBatch && (
-        <div className="popup-container">
-          <div className="popup-content">
-            <div className="inner-content flex">
-              <h3>Switch Batch</h3>
-              <div className="close-icon">
-                <img
-                  src="/public/icons/Cancel.svg"
-                  className="cancel-btn"
-                  alt=""
-                  onClick={() => setShowSwitchBatch(false)}
-                />
-              </div>
-            </div>
-            <div className="add-batch">
-              {/* <button className="add-batch-btn">
-                <span>+</span> Add New Batch
-              </button> */}
-            </div>
-          </div>
-          <div className="switch-batch-list-container">
-            {batchList.map((batch, index) => {
-              return (
-                <div className="switch-batch-card flex" 
-                onClick={() => handleSwitch(batch.id, batch.batch_name)}
-                key={index}>
-                  <div className="batch-left-side flex">
-                    <div className="batch-name-year">
-                      <h4>{batch.batch_name}</h4>
-                      <p>
-                        {batch.start_date.slice(0, 4)} -{" "}
-                        {batch.end_date.slice(0, 4)}{" "}
-                      </p>
-                    </div>
-                    <div className="tag">
-                      <span>Internship</span>
-                    </div>
-                  </div>
-                  {/* <div className="batch-right-side">
-                    <img src="/public/icons/edit-pencil.svg" alt="" />
-                  </div> */}
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      )}
+      <AddBatch
+        showSwitchBatch={showSwitchBatch}
+        batchList={listBatchLists}
+        setShowSwitchBatch={setShowSwitchBatch}
+        setBatchList={setBatchList}
+        open={open}
+        setOpen={setOpen}
+        showDrawer={showDrawer}
+        onClose={onClose}
+        // popUp={popUp}
+        // modelRef={modelRef}
+        // showDrawer={showDrawer}
+      />
     </>
   );
 };

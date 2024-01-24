@@ -31,17 +31,17 @@ const AssessmentView = ({
   selectedStudents,
   handleSave,
   handleInputChange,
+  handleSaveWeightage,
+  handleAddWeightage,
+  handleWeightageChange
 }) => {
   const { id: batchId } = useParams();
   const { token } = useAuth();
   const [loading, setLoading] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [initialTitle, setInitialTitle] = useState("");
-  const [toggleAssigneeWeightage, setToggleAssigneeWeightage] =
-    useState("weightage");
-  const [selectedWeightage, setSeletedWeightage] = useState([
-    { weightage: null, weightage_percentage: null },
-  ]);
+  const [toggleAssigneeWeightage, setToggleAssigneeWeightage] = useState(0);
+ 
 
   const headers = {
     Authorization: `Bearer ${token.access}`,
@@ -54,36 +54,9 @@ const AssessmentView = ({
     task_description,
     due_date,
     draft,
-    task_users = [],
     task_weightages = [],
   } = currentAssessment;
 
-  // console.log(simplifiedArray);
-  //default which students assigned the task
-  useEffect(() => {
-    if (task_users) {
-      const taskAssignedUsers = task_users.map((assigned) =>assigned.user.id)
-
-      const updatedSelectedStudents = [...taskAssignedUsers];
-
-      // Check if the state actually needs to be updated
-      if (
-        JSON.stringify(selectedStudents) !==
-        JSON.stringify(updatedSelectedStudents)
-      ) {
-        setSelectedStudents(updatedSelectedStudents);
-      }
-    }
-
-    if (task_weightages) {
-      const weightageObject = task_weightages.map((task_weightages) => ({
-        weightage: task_weightages.weightage,
-        weightage_percentage: Number(task_weightages.weightage_percentage),
-      }));
-
-      setSeletedWeightage(weightageObject);
-    }
-  }, [task_users, task_weightages]);
 
   const validateNotEmpty = (fieldName, value) => {
     const trimmedValue = value ? value.replace(/<[^>]*>/g, "").trim() : null;
@@ -141,9 +114,11 @@ const AssessmentView = ({
       let updateTheStudent = [...selectedStudents];
       updateTheStudent = updateTheStudent.filter((id) => id != studentId);
       //remove user API call
-      const url = `${API_END_POINT}/api/task/${batchId}/remove/user/${studentId}/task/${taskId}/`
+      const url = `${API_END_POINT}/api/task/${batchId}/remove/user/${taskId}/`;
+
+      const payload = { user: [studentId] };
       axios
-        .delete(url, { user: [studentId] }, { headers })
+        .delete(url, { data: payload, headers })
         .then((res) => {
           if (res.data.status === 200) {
             notification.success({
@@ -183,10 +158,25 @@ const AssessmentView = ({
 
     if (isNotAllSelected) {
       //Deselect all students in tasks
+      const url = `${API_END_POINT}/api/task/${batchId}/remove/user/${taskId}/`;
 
-      //not ready in backend
-
-    
+      const payload = { user: "__all__" };
+      axios
+        .delete(url, { data: payload, headers })
+        .then((res) => {
+          if (res.data.status === 200) {
+            notification.success({
+              message: "Success",
+              description: "All Students unAssigned Successfully",
+              duration: 1,
+            });
+            setSelectedStudents([]);
+          }
+          setSelectedStudents([]);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     } else {
       const allStudentIds = [...students].map((student) => student.id);
 
@@ -246,6 +236,7 @@ const AssessmentView = ({
     setIsEditing(true);
   };
 
+
   return (
     <>
       <section className="main-container">
@@ -255,7 +246,7 @@ const AssessmentView = ({
           <>
             <div className="module-header-section-container">
               <div className="module-header-section flex">
-                <div className="module-title-section flex">
+                <div className="module-title-section grid">
                   <input
                     value={task_title ? task_title : ""}
                     name="task_title"
@@ -364,17 +355,23 @@ const AssessmentView = ({
                 </div>
               </div>
 
-              <div className="submission-folder-link-container">
-                <input type="link" placeholder="Paste your link here..." />
+              <div className="link">
+                <input
+                  className="submission-folder-link-container"
+                  type="link"
+                  placeholder="Paste your link here..."
+                />
               </div>
               <div className="task-create-btn-section flex">
-                <button
-                  type="submit"
-                  className="btn primary-medium"
-                  onClick={() => handleSave(currentAssessment)}
-                >
-                  {draft ? "Create" : "Update"}
-                </button>
+                <div className="main-create-btn">
+                  <button
+                    type="submit"
+                    className="btn primary-medium"
+                    onClick={() => handleSave(currentAssessment)}
+                  >
+                    {draft ? "Create" : "Update"}
+                  </button>
+                </div>
               </div>
             </div>
           </>
@@ -382,13 +379,21 @@ const AssessmentView = ({
       </section>
       {!draft && (
         <section className="assignee-and-weightage-container">
-          <div className="title-section flex">
-            <div className="assignee-title selection active">
+          <div className={`title-section flex`}>
+            <div
+              className={`assignee-title selection ${
+                toggleAssigneeWeightage === 0 ? "active" : ""
+              }`}
+            >
               <h4 onClick={() => setToggleAssigneeWeightage("assignee")}>
                 Assignee
               </h4>
             </div>
-            <div className="weightage-title selection ">
+            <div
+              className={`weightage-title selection ${
+                toggleAssigneeWeightage === 1 ? "active" : ""
+              }`}
+            >
               {weightageShow && (
                 <h4 onClick={() => setToggleAssigneeWeightage("weightage")}>
                   Weightage
@@ -396,7 +401,7 @@ const AssessmentView = ({
               )}
             </div>
           </div>
-          {toggleAssigneeWeightage === "assignee" ? (
+          {toggleAssigneeWeightage === 0 ? (
             <>
               <div className="assignee-search-container">
                 {/* search bar use in future */}
@@ -458,14 +463,17 @@ const AssessmentView = ({
             weightageShow && (
               <WeightageList
                 taskId={taskId}
-                selectedWeightage={selectedWeightage}
-                appliedWeightage={task_weightages}
-                setSeletedWeightage={setSeletedWeightage}
+                taskWeightages={task_weightages}
+                handleSaveWeightage={handleSaveWeightage}
+                handleAddWeightage={handleAddWeightage}
+                handleWeightageChange={handleWeightageChange}
               />
             )
           )}
         </section>
       )}
+
+      {/* weightage */}
     </>
   );
 };

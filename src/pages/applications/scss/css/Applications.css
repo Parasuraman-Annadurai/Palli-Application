@@ -83,19 +83,6 @@ li {
   font-family: "Roboto";
 }
 
-.btn.primary-medium {
-  background-color: #49a843;
-  color: white;
-  cursor: pointer;
-}
-.btn.primary-medium:hover {
-  background-color: #33762f;
-}
-.btn.primary-medium:active {
-  background-color: #33762f;
-  opacity: 30%;
-}
-
 .btn.primary-medium-default {
   cursor: not-allowed;
   background-color: #e6e6e6;
@@ -189,18 +176,22 @@ li {
   border-radius: 4px;
 }
 
-.filter-container {
+.filter-main-container {
+  overflow: auto;
+  height: 500px;
+}
+.filter-main-container .filter-container {
   position: relative;
   padding: 10px;
 }
-.filter-container .filter-label {
+.filter-main-container .filter-container .filter-label {
   margin-bottom: 8px;
   font-size: 12px;
   font-family: 400;
   font-family: "Roboto";
   color: #12160a;
 }
-.filter-container input {
+.filter-main-container .filter-container input {
   display: block;
   border: 1px solid #eaeaea;
   font-size: 12px;
@@ -210,7 +201,7 @@ li {
   width: 100%;
   font-family: "Roboto";
 }
-.filter-container select {
+.filter-main-container .filter-container select {
   width: 100%;
   padding: 10px;
   border: 1px solid #eaeaea;
@@ -218,6 +209,22 @@ li {
   box-sizing: border-box;
   outline: none;
   background-color: white;
+}
+.filter-main-container .filter-container .apply-btn {
+  margin-top: 10px;
+  gap: 10px;
+}
+.filter-main-container .filter-container .apply-btn .btn.primary-medium {
+  background-color: #49a843;
+  color: white;
+  cursor: pointer;
+}
+.filter-main-container .filter-container .apply-btn .btn.primary-medium:hover {
+  background-color: #33762f;
+}
+.filter-main-container .filter-container .apply-btn .btn.primary-medium:active {
+  background-color: #33762f;
+  opacity: 30%;
 }
 
 body .container .application-full-container {
@@ -274,6 +281,9 @@ body .container .application-full-container .application-inner-container .search
   padding: 10px 18px 10px 33px;
   border-radius: 4px;
   border: 1px solid #eaeaea;
+}
+body .container .application-full-container .application-inner-container .search-container input:focus {
+  border: 1px solid #49a843;
 }
 body .container .application-full-container .application-inner-container .search-container .search-icon {
   position: absolute;

@@ -26,8 +26,8 @@ const Login = () => {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      email: "testui@gmail.com",
-      password: "Front-end@123",
+      email: "parasu@gmail.com",
+      password: "Dckap@123",
     },
   });
   const handleLogin = (loginData) => {
@@ -47,7 +47,8 @@ const Login = () => {
             localStorage.setItem("user", JSON.stringify(userData.data.data));
             setToken(res.data.data);
             setUser(userData.data.data);
-            navigate("/dashboard");
+            // navigate("/dashboard");
+            navigate("/batch/232/applications");
             setLoading(false);
           })
           .catch((err) => {
@@ -61,6 +62,7 @@ const Login = () => {
           duration: 3,
         });
         navigate("/login");
+       
       });
   };
   const handleEyeIconLongPress = (field) => {

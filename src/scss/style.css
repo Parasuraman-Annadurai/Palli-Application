@@ -7,8 +7,8 @@
   outline: none;
   border: none;
   -webkit-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
+  -moz-user-select: none;
+       user-select: none;
 }
 
 ::-webkit-scrollbar {
@@ -88,7 +88,6 @@ li {
   background-color: #49a843;
   color: white;
   cursor: pointer;
-  width: 100%;
 }
 .btn.primary-medium:hover {
   background-color: #33762f;
@@ -228,6 +227,10 @@ li {
   box-shadow: none !important;
   border: 1px solid #eaeaea;
 }
+.datepicker::-moz-placeholder {
+  color: #969d88;
+  font-size: 12px;
+}
 .datepicker::placeholder {
   color: #969d88;
   font-size: 12px;
@@ -354,23 +357,14 @@ body .container .side-nav-container .nav-links ul {
 body .container .side-nav-container .nav-links ul .main-link {
   font: 400 12px/18px "Roboto";
   color: #969d88;
-  margin: 10px 0;
-  cursor: pointer;
-}
-body .container .side-nav-container .nav-links ul .main-link :hover {
-  background-color: #f2f9e4;
-  font-weight: 500;
-  color: #12160a;
+  margin: 20px 0;
 }
 body .container .side-nav-container .nav-links ul .main-link a {
-  padding: 10px 0;
-  padding-left: 5px;
   font-family: "Roboto";
   font-size: 12px;
   line-height: 16px;
   font-weight: 400;
   color: #969d88;
-  width: 100%;
 }
 body .container .side-nav-container .nav-links ul .main-link a img {
   height: 16px;
@@ -419,7 +413,6 @@ body .container .side-nav-container .user-profile {
   gap: 7px;
   align-items: center;
   padding: 16px;
-  cursor: pointer;
 }
 body .container .side-nav-container .user-profile .profile-img {
   width: 40px;
@@ -450,6 +443,10 @@ body .container .side-nav-container .user-profile .user-details span {
   font-weight: 400;
   color: #969d88;
 }
+body .container .dark-overlay {
+  background-color: black;
+  opacity: 0.4;
+}
 body .container .listing-container {
   max-width: 301px;
   width: 100%;
@@ -469,15 +466,12 @@ body .container .listing-container .search-container {
 }
 body .container .listing-container .search-container input {
   width: 100%;
-  padding: 9.5px 0;
+  height: 36px;
   padding-left: 33px;
   border-radius: 4px;
   color: #12160a;
   border: 1px solid #eaeaea;
   font-family: "Roboto";
-}
-body .container .listing-container .search-container :focus {
-  border: 1px solid #49a843;
 }
 body .container .listing-container .search-container img {
   width: 16px;
@@ -514,10 +508,8 @@ body .container .listing-container .create-container .btn.create-btn span {
   font-size: 16px;
   line-height: 20px;
   font-weight: 400;
+  color: #12160a;
   font-family: "Roboto";
-}
-body .container .listing-container .create-container .btn.create-btn:hover {
-  background-color: #f8fbf2;
 }
 body .container .listing-container .task-list-container {
   height: 460px;
@@ -618,9 +610,6 @@ body .container .listing-container .task-list-container .task-card:hover .task-n
   visibility: visible;
 }
 body .container .listing-container .task-list-container .task-card.active {
-  background-color: #fff;
-}
-body .container .listing-container .task-list-container .task-card.active:hover {
   background-color: #f8fbf2;
 }
 body .container .listing-container .task-list-container .task-card.active .task-name-with-icon .edit-icon {
@@ -656,16 +645,39 @@ body .container .main-container .module-header-section-container .module-header-
   align-items: center;
 }
 body .container .main-container .module-header-section-container .module-header-section .module-title-section {
-  width: 100%;
   gap: 8px;
 }
-body .container .main-container .module-header-section-container .module-header-section .module-title-section input {
+body .container .main-container .module-header-section-container .module-header-section .module-title-section .task-title {
   font-size: 16px;
+  line-height: 24px;
+  font-weight: 500;
+  font-family: "Roboto";
+  color: #12160a;
+  outline: #12160a;
   padding-left: 10px;
-  width: 70%;
 }
-body .container .main-container .module-header-section-container .module-header-section .module-title-section input:hover {
-  background-color: #f8fbf2;
+body .container .main-container .module-header-section-container .module-header-section .module-title-section img {
+  width: 20px;
+  height: 20px;
+}
+body .container .main-container .module-header-section-container .module-header-section .module-title-section .yes-btn {
+  padding: 5px;
+  background-color: #eaeaea;
+  border: 1px solid #eaeaea;
+  border-radius: 4px;
+  font-size: 10px;
+  font-family: "Roboto";
+  cursor: pointer;
+}
+body .container .main-container .module-header-section-container .module-header-section .module-title-section .no-btn {
+  padding: 5px;
+  background-color: #eaeaea;
+  border: 1px solid #eaeaea;
+  border-radius: 4px;
+  font-size: 10px;
+  font-family: "Roboto";
+  margin-left: 5px;
+  cursor: pointer;
 }
 body .container .main-container .task-details-header-container {
   height: calc(100vh - 110px);
@@ -786,6 +798,8 @@ body .container .main-container .task-details-header-container .task-editor-cont
 }
 body .container .main-container .task-details-header-container .submission-folder-link-container {
   padding-bottom: 16px;
+}
+body .container .main-container .task-details-header-container .submission-folder-link-container .task-submission-link {
   padding: 10px 0px 10px 12px;
   width: 100%;
   font-family: "Roboto";
@@ -795,10 +809,6 @@ body .container .main-container .task-details-header-container .submission-folde
   color: #12160a;
   border-radius: 4px;
   border: 1px solid #eaeaea;
-  margin-bottom: 32px;
-}
-body .container .main-container .task-details-header-container .submission-folder-link-container:focus {
-  border: 1px solid #49a843;
 }
 body .container .main-container .task-details-header-container .file-input-container {
   position: relative;
@@ -856,10 +866,6 @@ body .container .main-container .task-details-header-container .weightage-label-
 body .container .main-container .task-details-header-container .weightage-label-container .horizon-line {
   flex: 1;
   border: 1px solid #eaeaea;
-}
-body .container .main-container .task-details-header-container .weightage-adding-container .weight-inputs {
-  display: flex;
-  gap: 20px;
 }
 body .container .main-container .task-details-header-container .weightage-adding-container .weight-inputs p {
   font-size: 12px;
@@ -920,7 +926,7 @@ body .container .main-container .task-details-header-container .task-create-btn-
   justify-content: end;
 }
 body .container .assignee-and-weightage-container {
-  max-width: 600px;
+  max-width: 301px;
   width: 100%;
   padding: 24px 20px;
 }
@@ -934,41 +940,22 @@ body .container .assignee-and-weightage-container .title-section .selection {
   cursor: pointer;
 }
 body .container .assignee-and-weightage-container .title-section .selection h4 {
-  font: 500 16px/20px "Roboto";
-  color: #12160a;
+  font-size: 16px;
+  font-weight: 500;
+  font-family: "Roboto";
+  line-height: 20px;
   padding-bottom: 5px;
-}
-body .container .assignee-and-weightage-container .title-section .weightage-title h4 {
-  color: #969d88;
 }
 body .container .assignee-and-weightage-container .title-section .selection.active {
   border-bottom: 2px solid #49a843;
 }
-body .container .assignee-and-weightage-container .assignee-search-container input {
-  width: 100%;
-  padding: 9.5px 0;
-  padding-left: 20px;
-  border-radius: 4px;
-  color: #12160a;
-  border: 1px solid #eaeaea;
-  font-family: "Roboto";
-  margin-top: 20px;
-  margin-bottom: 10px;
-}
-body .container .assignee-and-weightage-container .assignee-search-container :focus {
-  border: 1px solid #49a843;
-}
 body .container .assignee-and-weightage-container .assign-listing-container {
-  padding-top: 10px;
-  font: 400 12px/16px "Roboto";
+  padding-top: 20px;
 }
 body .container .assignee-and-weightage-container .assign-listing-container .select-all {
   gap: 10px;
   align-items: center;
-  padding-bottom: 10px;
-}
-body .container .assignee-and-weightage-container .assign-listing-container .select-all .global-checkbox {
-  accent-color: #49a843;
+  padding-bottom: 20px;
 }
 body .container .assignee-and-weightage-container .assign-listing-container .select-all .span {
   font-size: 12px;
@@ -979,50 +966,25 @@ body .container .assignee-and-weightage-container .assign-listing-container .ass
   align-items: center;
   padding-top: 10px;
   padding-bottom: 12px;
-  border-bottom: 1px solid #eaeaea;
+  border-bottom: 1px solid #EAEAEA;
 }
-body .container .assignee-and-weightage-container .assign-listing-container .assignee-card-listing-container .individual-assignee-card .student-checkbox {
-  accent-color: #49a843;
+body .container .assignee-and-weightage-container .assign-listing-container .assignee-card-listing-container .individual-assignee-card input[type=checkbox]:checked {
+  color: #49a843;
+}
+body .container .assignee-and-weightage-container .assign-listing-container .assignee-card-listing-container .individual-assignee-card input:checked:before {
+  background-color: green;
 }
 body .container .assignee-and-weightage-container .assign-listing-container .assignee-card-listing-container .individual-assignee-card .profile {
   gap: 6px;
   align-items: center;
 }
 body .container .assignee-and-weightage-container .assign-listing-container .assignee-card-listing-container .individual-assignee-card .profile .profile-letter {
-  background-color: #73805a;
+  background-color: #49a843;
   height: 24px;
   width: 24px;
   border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  text-align: center;
 }
 body .container .assignee-and-weightage-container .assign-listing-container .assignee-card-listing-container .individual-assignee-card .profile .profile-letter span {
   font-size: 10px;
-}
-body .container .assignee-and-weightage-container .weightage-container {
-  display: flex;
-  align-items: center;
-  margin-top: 24px;
-}
-body .container .assignee-and-weightage-container .weightage-list select {
-  width: 180px;
-  height: 36px;
-  background-color: #f8fbf2;
-  color: #12160a;
-  font: 400 12px/16px "Roboto";
-}
-body .container .assignee-and-weightage-container .weightage-input input {
-  height: 36px;
-  width: 36px;
-  border: 1px solid #eaeaea;
-}
-body .container .assignee-and-weightage-container .weightage-delete {
-  border: 1px solid #eaeaea;
-  width: 36px;
-  height: 36px;
-  margin-left: 5px;
-  border-radius: 3px;
-}
-
-/*# sourceMappingURL=style.css.map */
+}/*# sourceMappingURL=style.css.map */

@@ -30,6 +30,10 @@ const AssessmentView = ({
   handleSave,
   handleInputChange,
   isCardClick,
+  
+  //score section
+  handleStatusChange,
+  handleAddScore
 }) => {
   const { id: batchId } = useParams();
   const { token } = useAuth();
@@ -247,51 +251,11 @@ const AssessmentView = ({
     setIsEditing(true);
   };
 
-  //end
+ 
 
-  const handleAddScore = () => {
-    //weightage open and score added only submit the score
-    if (activeWeightageIndex) {
-      const url = `${API_END_POINT}/api/task/${batchId}/create/task_score/`;
-      console.log(studentScore);
-      // axios
-      //   .post(url, requestBody, { headers })
-      //   .then((res) => {
-      //     console.log(res);
 
-      //     axios
-      //       .post(
-      //         `${API_END_POINT}/api/task/${batchId}/update/task/user/${task_user}`,
-      //         { user_status: "COMPLETED" },
-      //         { headers }
-      //       )
-      //       .then((res) => {
-      //         console.log(res, "update");
-      //       })
-      //       .catch((error) => {
-      //         console.log(error);
-      //       });
-      //   })
-      //   .catch((error) => {
-      //     console.log(error);
-      //   });
-    }
-  };
-  const handleStatusChange = (studentId, status) => {
-    const url = `${API_END_POINT}/api/task/${batchId}/update/task/user/${studentId}`;
-    const payload = { task_status: status };
 
-    //students status changed to Admin
-    axios
-      .put(url, payload, { headers })
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
-
+  //student id send to handleStatus change student rework or completed
   const itemRenderer = (studentId) => {
     return [
       {
@@ -312,33 +276,35 @@ const AssessmentView = ({
   };
 
   // // Function to remove duplicates based on the 'task_weightage' property
-  // const removeDuplicates = (arr) => {
-  //   const seenWeightages = new Set();
-  //   const uniqueArray = arr.filter(obj => {
-  //     if (!seenWeightages.has(obj.task_weightage)) {
-  //       seenWeightages.add(obj.task_weightage);
-  //       return true;
-  //     }
-  //     return false;
-  //   });
-
-  //   return uniqueArray;
-  // };
-
-  const handleChange = (e, students, weightage) => {
-    const payload = {
+ 
+  const handleScoreOnchange = (e, students, weightage) => {
+    const updatedScore = {
       task_user: students.id,
       task_weightage: weightage.id,
       task_score: Number(e.target.value),
     };
-
-    const scoreForStudent = {task_user:students.id,task_details:[{task_weightage:weightage.id,task_score:Number(e.target.value)}]}
-
-    setStudentScore([...studentScore,scoreForStudent]);
-
+  
+    // Check if the score for the same student and weightage ID already exists
+    const existingScoreIndex = studentScore.findIndex(
+      (score) =>
+        score.task_user === updatedScore.task_user &&
+        score.task_weightage === updatedScore.task_weightage
+    );
+  
+    if (existingScoreIndex !== -1) {
+      // If the score exists, update it
+      const updatedStudentScores = [...studentScore];
+      updatedStudentScores[existingScoreIndex].task_score = updatedScore.task_score;
+      setStudentScore(updatedStudentScores);
+    } else {
+      // If the score doesn't exist, add it to the state
+      setStudentScore([...studentScore, updatedScore]);
+    }
+  
   };
 
-console.log(studentScore);
+
+
   return (
     <>
       {!isCardClick ? (
@@ -584,10 +550,12 @@ console.log(studentScore);
                           ? students["task_status"] === "SUBMITTED" && (
                               <button
                                 className="secondary-btn-sm"
-                                onClick={() => {
-                                  handleAddScore(),
-                                    setActiveWeightageIndex(index);
-                                }}
+                                // onClick={() => {
+                                //   handleAddScore(activeWeightageIndex ? studentScore : []),
+                                //     setActiveWeightageIndex(index);
+                                // }}
+
+                                onClick={()=>{setActiveWeightageIndex(index),handleAddScore(studentScore)}}
                               >
                                 {activeWeightageIndex === index
                                   ? "Submit"
@@ -633,7 +601,9 @@ console.log(studentScore);
                                     }}
                                     onChange={(e) =>
                                       {
-                                        handleChange(e, students, weightage)
+                                        handleScoreOnchange(e, students, weightage)
+                                        
+                                    
 
                                         
                                       }

@@ -260,6 +260,76 @@ const AssessmentModule = ({ type }) => {
     setAssessmentList(updatedList);
   };
 
+
+  //score section -------
+
+  const handleStatusChange = (studentId, status) => {
+    const url = `${API_END_POINT}/api/task/${batchId}/update/task/user/${studentId}`;
+    const payload = { task_status: status };
+
+    let taskStatusChangeStudents = [...assessmentList];
+    //student task status changes 
+    taskStatusChangeStudents.forEach((assessment) => {
+      assessment.task_users.forEach((user) => {
+        if (user.id === studentId) {
+          user.task_status = status;
+        }
+      });
+    });
+
+//students status changed to Admin
+    axios
+      .put(url, payload, { headers })
+      .then((res) => {
+        console.log(res);
+        setAssessmentList(taskStatusChangeStudents)
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const handleAddScore = (studentScores) => {
+
+    let statusChangeAfterScore = [...assessmentList];
+
+    statusChangeAfterScore = statusChangeAfterScore.map((assessment) => {
+      assessment.task_users = assessment.task_users.map((student) => {
+        studentScores.forEach((scores) => {
+          if (student.id === scores.task_user) {
+            student.task_status = "COMPLETED";
+          }
+        });
+        return student;
+      });
+      return assessment;
+    });
+    
+    //weightage open and score added only submit the score
+    studentScores.map((scores)=>{
+      const url = `${API_END_POINT}/api/task/${batchId}/create/task_score/`;
+      axios
+      .post(url, scores, { headers })
+      .then((res) => {
+        axios
+          .put(
+            `${API_END_POINT}/api/task/${batchId}/update/task/user/${scores.task_user}`,
+           { task_status:"COMPLETED"},
+            { headers }
+          )
+          .then((res) => {
+           setAssessmentList(statusChangeAfterScore);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    })
+  };
+
   return (
     <>
       {isDeleteModalOpen && (
@@ -311,6 +381,10 @@ const AssessmentModule = ({ type }) => {
               handleInputChange={handleInputChange}
               weightageShow={type === "task" ? false : true}
               isCardClick={isCardClick}
+
+              //score section
+              handleStatusChange={handleStatusChange}
+              handleAddScore={handleAddScore}
             />
           );
         }

@@ -857,6 +857,10 @@ body .container .main-container .task-details-header-container .weightage-label-
   flex: 1;
   border: 1px solid #eaeaea;
 }
+body .container .main-container .task-details-header-container .weightage-adding-container .weight-inputs {
+  display: flex;
+  gap: 20px;
+}
 body .container .main-container .task-details-header-container .weightage-adding-container .weight-inputs p {
   font-size: 12px;
   line-height: 16px;
@@ -916,7 +920,7 @@ body .container .main-container .task-details-header-container .task-create-btn-
   justify-content: end;
 }
 body .container .assignee-and-weightage-container {
-  max-width: 301px;
+  max-width: 600px;
   width: 100%;
   padding: 24px 20px;
 }

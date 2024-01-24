@@ -1121,6 +1121,8 @@ body {
 
         .weightage-adding-container {
           .weight-inputs {
+            display: flex;
+            gap: 20px;
             p {
               font-size: 12px;
               line-height: 16px;
@@ -1192,7 +1194,7 @@ body {
       }
     }
     .assignee-and-weightage-container {
-      max-width: 301px;
+      max-width: 600px;
       width: 100%;
       padding: 24px 20px;
       .title-section {

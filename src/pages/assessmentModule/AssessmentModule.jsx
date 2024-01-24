@@ -61,14 +61,6 @@ const AssessmentModule = ({ type }) => {
                 res.data.data.length > 0 ? res.data.data[0].id : null;
             }
 
-            const currentAssessment = assessmentList.find(
-              (assessment) => assessment.id === assessmentId
-            );
-            const assignedUsers = currentAssessment.task_users.map(
-              (assigned) => assigned.user.id
-            );
-
-            setSelectedStudents(assignedUsers);
             setEditId(assessmentId);
           }
         })
@@ -92,6 +84,52 @@ const AssessmentModule = ({ type }) => {
         });
     }
   }, [assessmentSearchWord, type]);
+
+  useEffect(() => {
+    if (editId && assessmentList.length > 0) {
+      const currentAssessment = assessmentList.find(
+        (assessment) => assessment.id === editId
+      );
+
+      let assignedUsers = [];
+
+      if ("task_users" in currentAssessment) {
+        assignedUsers = currentAssessment?.task_users?.map(
+          (assigned) => assigned.user.id
+        );
+      }
+
+      let cloneAssessmentList = [...assessmentList];
+
+      cloneAssessmentList = cloneAssessmentList?.map((assessment) => {
+        if(assessment?.task_weightages?.length>0){
+          assessment["task_weightages"] = assessment.task_weightages?.map(
+            (weightage) => {
+              const weightObject = {
+                weightage_percentage: weightage.weightage_percentage,
+                weightage: weightage.weightage,
+              };
+
+              if ("id" in weightObject) {
+                weightage["id"] = weightage.id;
+              }
+              return weightObject;
+            }
+          );
+        }
+        else{
+          assessment["task_weightages"] = [{
+            weightage_percentage:null,
+            weightage: null,
+          }]
+        }
+
+        return assessment;
+      });
+
+      setSelectedStudents(assignedUsers);
+    }
+  }, [editId]);
 
   const handleDeleteAssessment = (deleteId) => {
     setEditId(deleteId);
@@ -162,11 +200,6 @@ const AssessmentModule = ({ type }) => {
       : `${API_END_POINT}/api/task/${batchId}/update_task/${editId}`;
     const method = isNew ? "POST" : "PUT";
 
-    const assignAssessment = {
-      user: selectedStudents,
-      task_status: 0,
-      // submission_link: SubmissionLink,
-    };
 
     axios({
       method: method,
@@ -211,16 +244,6 @@ const AssessmentModule = ({ type }) => {
         setEditId(
           cloneAssessmentList.length > 0 ? cloneAssessmentList[0].id : null
         );
-
-        // axios({
-        //   method: "POST",
-        //   url: `${API_END_POINT}/api/task/${batchId}/assign/task/${res.data.data.id}`,
-        //   headers: {
-        //     Authorization: `Bearer ${token.access}`,
-        //     "Content-Type": "application/json",
-        //   },
-        //   data: assignAssessment,
-        // }).then((res) => {});
       })
       .catch((error) => {
         if (
@@ -275,8 +298,116 @@ const AssessmentModule = ({ type }) => {
     setAssessmentList(updatedList);
   };
 
-  console.log(user);
+  const makePostRequest = async (url, data,method) => {
+    const response = await axios(url, {
+      method:method,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token.access}`,
+      },
+      data: data,
+    });
+    return response;
+  };
 
+  const handleSaveWeightage = () => {
+    let cloneAssessmentList = [...assessmentList];
+
+    let currentAssessment = cloneAssessmentList.find(
+      (assessment) => assessment.id == editId
+    );
+
+
+    let createPromise = [];
+    let updatePromise = [];
+    if (batchId && editId) {
+      currentAssessment.task_weightages.map((weightage) => {
+        if ("id" in weightage) {
+          const url = `${API_END_POINT}/api/task/${batchId}/update/weightage/${weightage.id}`;
+          //its for update
+          const  {id,...postPayload} = weightage;
+          updatePromise.push(makePostRequest(url, postPayload,"PUT"));
+        } else {
+          const url = `${API_END_POINT}/api/task/${batchId}/assign/task_weightage/${editId}`;
+          createPromise.push(makePostRequest(url, weightage,"POST"));
+        }
+      });
+
+      if (createPromise.length > 0) {
+        Promise.all(createPromise)
+          .then((results) => {
+            notification.success({
+              message: "Sucess",
+              description: "Weightage Linked Successfully",
+            });
+
+            //need to rework, check with BE
+            cloneAssessmentList = cloneAssessmentList.map((assessment) => {
+              if (assessment.id == editId) {
+                assessment["task_weightages"] = assessment.task_weightages.map(
+                  (weightage, index) => {
+                    const id = results[index].data.data.id;
+                    weightage["id"] = id;
+                    return weightage;
+                  }
+                );
+              }
+              return assessment
+            });
+
+            setAssessmentList(cloneAssessmentList);
+          })
+          .catch((error) => {
+            console.error("One or more requests failed:", error);
+          });
+      }
+
+      if (updatePromise.length > 0) {
+        Promise.all(updatePromise)
+          .then((results) => {
+            console.log(results);
+            notification.success({
+              message: "Sucess",
+              description: "Weightage Linked Successfully",
+            });
+
+          })
+          .catch((error) => {
+            console.error("One or more requests failed:", error);
+          });
+      }
+    }
+  };
+
+  const handleAddWeightage = () => {
+    const newWeightage = { weightage: null, weightage_percentage: null };
+
+    let copyAssessment = [...assessmentList];
+
+    //  setAssessmentList();
+    copyAssessment = copyAssessment.map((assessment) => {
+      if (assessment.id === editId) {
+       assessment["task_weightages"] =
+         assessment.task_weightages.concat(newWeightage);
+      }
+      return assessment;
+    });
+
+    setAssessmentList(copyAssessment);
+  };
+
+  const handleWeightageChange = (value, index, key) => {
+    let copyAssessment = [...assessmentList];
+
+    copyAssessment = copyAssessment.map((assessment) => {
+      if (assessment.id === editId) {
+        assessment.task_weightages[index][key] = value;
+      }
+      return assessment;
+    });
+
+    setAssessmentList(copyAssessment);
+  };
   return (
     <>
       {user.role !== "Student" ? (
@@ -326,6 +457,9 @@ const AssessmentModule = ({ type }) => {
                   handleSave={handleSave}
                   handleInputChange={handleInputChange}
                   weightageShow={type === "task" ? false : true}
+                  handleSaveWeightage={handleSaveWeightage}
+                  handleAddWeightage={handleAddWeightage}
+                  handleWeightageChange={handleWeightageChange}
                 />
               );
             }

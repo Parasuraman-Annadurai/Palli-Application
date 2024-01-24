@@ -102,20 +102,6 @@ li {
 }
 
 //primary button section
-.btn.primary-medium {
-  background-color: $primary-color;
-  color: #ffff;
-  cursor: pointer;
-
-  &:hover {
-    background-color: $btn-hover-color;
-  }
-
-  &:active {
-    background-color: $btn-hover-color;
-    opacity: 30%;
-  }
-}
 
 .btn.primary-medium-default {
   cursor: not-allowed;
@@ -265,6 +251,26 @@ li {
       box-sizing: border-box;
       outline: none;
       background-color: #ffff;
+    }
+    .apply-btn{
+      margin-top: 10px;
+      gap: 10px;
+      // width: 200px;
+      .btn.primary-medium {
+        background-color: $primary-color;
+        color: #ffff;
+        cursor: pointer;
+      
+        &:hover {
+          background-color: $btn-hover-color;
+        }
+      
+        &:active {
+          background-color: $btn-hover-color;
+          opacity: 30%;
+        }
+      }
+      
     }
   }
 }

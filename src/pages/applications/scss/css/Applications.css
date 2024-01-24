@@ -83,19 +83,6 @@ li {
   font-family: "Roboto";
 }
 
-.btn.primary-medium {
-  background-color: #49a843;
-  color: white;
-  cursor: pointer;
-}
-.btn.primary-medium:hover {
-  background-color: #33762f;
-}
-.btn.primary-medium:active {
-  background-color: #33762f;
-  opacity: 30%;
-}
-
 .btn.primary-medium-default {
   cursor: not-allowed;
   background-color: #e6e6e6;
@@ -222,6 +209,22 @@ li {
   box-sizing: border-box;
   outline: none;
   background-color: white;
+}
+.filter-main-container .filter-container .apply-btn {
+  margin-top: 10px;
+  gap: 10px;
+}
+.filter-main-container .filter-container .apply-btn .btn.primary-medium {
+  background-color: #49a843;
+  color: white;
+  cursor: pointer;
+}
+.filter-main-container .filter-container .apply-btn .btn.primary-medium:hover {
+  background-color: #33762f;
+}
+.filter-main-container .filter-container .apply-btn .btn.primary-medium:active {
+  background-color: #33762f;
+  opacity: 30%;
 }
 
 body .container .application-full-container {

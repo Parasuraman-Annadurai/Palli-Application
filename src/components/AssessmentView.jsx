@@ -49,25 +49,8 @@ const AssessmentView = ({
     task_description,
     due_date,
     draft,
-    task_users = [],
   } = currentAssessment;
 
-  //default which students assigned the task
-  useEffect(() => {
-    if (task_users) {
-      const taskAssignedUsers = task_users.map((assigned) => assigned.user.id);
-
-      const updatedSelectedStudents = [...taskAssignedUsers];
-
-      // Check if the state actually needs to be updated
-      if (
-        JSON.stringify(selectedStudents) !==
-        JSON.stringify(updatedSelectedStudents)
-      ) {
-        setSelectedStudents(updatedSelectedStudents);
-      }
-    }
-  }, [task_users]);
 
   const validateNotEmpty = (fieldName, value) => {
     const trimmedValue = value ? value.replace(/<[^>]*>/g, "").trim() : null;
@@ -125,9 +108,12 @@ const AssessmentView = ({
       let updateTheStudent = [...selectedStudents];
       updateTheStudent = updateTheStudent.filter((id) => id != studentId);
       //remove user API call
-      const url = `${API_END_POINT}/api/task/${batchId}/remove/user/${studentId}/task/${taskId}/`;
+      const url = `${API_END_POINT}/api/task/${batchId}/remove/user/${taskId}/`
+
+     
+      const payload= {user:[studentId]};
       axios
-        .delete(url, { user: [studentId] }, { headers })
+        .delete(url, { data: payload, headers })
         .then((res) => {
           if (res.data.status === 200) {
             notification.success({
@@ -167,7 +153,25 @@ const AssessmentView = ({
 
     if (isNotAllSelected) {
       //Deselect all students in tasks
-      //not ready in backend
+      const url = `${API_END_POINT}/api/task/${batchId}/remove/user/${taskId}/`
+
+      const payload = {user : "__all__"};
+      axios.delete(url,{ data: payload, headers }).then((res)=>{
+        if (res.data.status === 200) {
+          notification.success({
+            message: "Success",
+            description: "All Students unAssigned Successfully",
+            duration: 1,
+          });
+          setSelectedStudents([]);
+        }
+        setSelectedStudents([]);
+      }).catch((error)=>{
+        console.log(error);
+      })
+      
+
+    
     } else {
       const allStudentIds = [...students].map((student) => student.id);
 
@@ -226,6 +230,8 @@ const AssessmentView = ({
     setInitialTitle(getValues("Title"));
     setIsEditing(true);
   };
+
+  
 
   return (
     <>

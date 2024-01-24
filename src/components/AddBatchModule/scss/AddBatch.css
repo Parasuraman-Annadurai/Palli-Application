@@ -7,8 +7,8 @@
   outline: none;
   border: none;
   -webkit-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
+  -moz-user-select: none;
+       user-select: none;
 }
 
 ::-webkit-scrollbar {
@@ -231,6 +231,9 @@ li {
   background-color: white;
   color: #12160a;
 }
+.popup-container .popup-content .input-fields .input-field .batch-inputs::-moz-placeholder {
+  color: #969d88;
+}
 .popup-container .popup-content .input-fields .input-field .batch-inputs::placeholder {
   color: #969d88;
 }
@@ -309,6 +312,4 @@ li {
 .dark-overlay {
   background-color: black;
   opacity: 0.4;
-}
-
-/*# sourceMappingURL=AddBatch.css.map */
+}/*# sourceMappingURL=AddBatch.css.map */

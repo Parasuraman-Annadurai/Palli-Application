@@ -11,6 +11,8 @@ import { useAuth } from "../../context/AuthContext";
 
 import { useParams } from "react-router-dom";
 
+import "../studentLogin/scss/StudentLogin.css"
+
 const TaskCard = ({ tasksLists, setSeletedTaskId,selectedTaskId }) => {
   const truncateText = (text, maxLength) => {
     return text.length > maxLength

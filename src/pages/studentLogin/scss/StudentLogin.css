@@ -72,7 +72,7 @@ input:focus {
 
 a {
   text-decoration: none;
-  color: var(--font-secondary-color);
+  color: #969d88;
   font-family: "Roboto";
 }
 
@@ -150,9 +150,9 @@ li {
 }
 
 .btn.secondary-medium-default {
-  color: var(--font-secondary-color);
+  color: #969d88;
   background-color: white;
-  border: 1px solid var(--border-color);
+  border: 1px solid #eaeaea;
   border-radius: 4px;
   cursor: not-allowed;
 }
@@ -191,7 +191,6 @@ li {
 .main-container .module-header-section {
   justify-content: space-between;
   align-items: center;
-  padding-bottom: 20px;
   font-size: 16px;
   font-weight: 500;
   font-family: "Roboto";
@@ -231,7 +230,7 @@ li {
 }
 .main-container .task-details-header-container .task-label-container .horizon-line {
   flex: 1;
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: 1px solid #eaeaea;
 }
 .main-container .task-details-header-container .student-task-details-main-container {
   justify-content: space-between;
@@ -240,7 +239,7 @@ li {
 .main-container .task-details-header-container .student-task-details-main-container p {
   font-size: 12px;
   font-family: "Roboto";
-  color: var(--font-secondary-color);
+  color: #969d88;
   padding-bottom: 6px;
 }
 .main-container .task-details-header-container .student-task-details-main-container span {
@@ -273,7 +272,7 @@ li {
   font-size: 12px;
   font-family: "Roboto";
   line-height: 12px;
-  color: var(--font-secondary-color);
+  color: #969d88;
 }
 .main-container .task-details-header-container .task-editor-container .task-editor {
   padding-bottom: 16px;
@@ -302,7 +301,7 @@ li {
 }
 .main-container .task-details-header-container .student-weightage-list .student-weightage-card {
   padding: 6px 10px;
-  background-color: var(--border-color);
+  background-color: #eaeaea;
   border-radius: 4px;
 }
 .main-container .task-details-header-container .student-weightage-list .student-weightage-card p {
@@ -329,7 +328,11 @@ li {
 }
 .main-container .task-details-header-container .student-task-label-container .horizon-line {
   flex: 1;
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: 1px solid #eaeaea;
+}
+.main-container .task-details-header-container .modal .all-btn .submit-btn {
+  max-width: 140px;
+  width: 100%;
 }
 .main-container .task-details-header-container .student-task-file-container {
   align-items: center;
@@ -352,7 +355,7 @@ li {
 .main-container .task-details-header-container .student-task-file-container .file-content-container .file-details span {
   font-size: 10px;
   line-height: 14px;
-  color: var(--font-secondary-color);
+  color: #969d88;
 }
 .main-container .task-details-header-container .student-task-file-container .file-download p {
   font-size: 12px;
@@ -414,12 +417,12 @@ li {
 }
 .main-container .task-details-header-container .weightage-label-container .horizon-line {
   flex: 1;
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: 1px solid #eaeaea;
 }
 .main-container .task-details-header-container .weightage-adding-container .weight-input p {
   font-size: 12px;
   font-family: "Roboto";
-  color: var(--font-secondary-color);
+  color: #969d88;
   padding-bottom: 6px;
 }
 .main-container .task-details-header-container .weightage-adding-container .weight-input select,

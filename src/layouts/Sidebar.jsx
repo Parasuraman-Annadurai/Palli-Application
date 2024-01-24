@@ -14,6 +14,7 @@ import AddBatch from "../components/AddBatchModule/AddBatch";
 import { API_END_POINT } from "../../config";
 
 const Sidebar = ({ menuList, activeMenuItem }) => {
+  console.log(menuList);
   const navigate = useNavigate();
   const { id: batchId } = useParams();
 
@@ -44,8 +45,8 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
     "Content-type": "application/json",
   };
 
-  if (user.role !== "Students") {
-    useEffect(() => {
+  useEffect(() => {
+    if (user.role !== "Students") {
       if (batchId) {
         // On Batch, setting Applications as default page
         const activeMenuItem = menuList.find((menu) =>
@@ -66,8 +67,8 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
           })
           .catch((err) => console.log(err));
       }
-    }, [batchId]);
-  }
+    }
+  }, [batchId]);
 
   const handleLogout = () => {
     axios
@@ -105,6 +106,7 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
           <div
             className="batch-switch-container flex"
             onClick={user.role !== "Student" && showDrawer}
+            style={{ cursor: user.role === "Student" ? "default" : "pointer" }}
           >
             <div className="batch-content-container flex">
               <div className="batch-logo">
@@ -200,7 +202,14 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
           >
             <div className="user-details">
               <p>{user.last_name}</p>
-              {user.role === "Student" ? "Student" : user.role === "Admin" ? "Admin" : user.role}
+              <span>
+                {" "}
+                {user.role === "Student"
+                  ? "Student"
+                  : user.role === "Admin"
+                  ? "Admin"
+                  : user.role}
+              </span>
             </div>
           </Dropdown>
         </div>
@@ -215,9 +224,6 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
         setOpen={setOpen}
         showDrawer={showDrawer}
         onClose={onClose}
-        // popUp={popUp}
-        // modelRef={modelRef}
-        // showDrawer={showDrawer}
       />
     </>
   );

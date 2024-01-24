@@ -93,7 +93,7 @@ input:focus {
 
 a {
   text-decoration: none;
-  color: var(--font-secondary-color);
+  color: $font-secondary-color;
   font-family: $font-Roboto;
 }
 
@@ -180,9 +180,9 @@ li {
 }
 
 .btn.secondary-medium-default {
-  color: var(--font-secondary-color);
+  color: $font-secondary-color;
   background-color: #ffff;
-  border: 1px solid var(--border-color);
+  border: 1px solid $border-color;
   border-radius: 4px;
   cursor: not-allowed;
 }
@@ -241,7 +241,7 @@ li {
   .module-header-section {
     justify-content: space-between;
     align-items: center;
-    padding-bottom: 20px;
+    // padding-bottom: 20px;
     font-size: 16px;
     font-weight: 500;
     font-family: $font-Roboto;
@@ -292,7 +292,7 @@ li {
 
       .horizon-line {
         flex: 1;
-        border-bottom: 1px solid var(--border-color);
+        border-bottom: 1px solid $border-color;
       }
     }
 
@@ -304,7 +304,7 @@ li {
       p {
         font-size: 12px;
         font-family: $font-Roboto;
-        color: var(--font-secondary-color);
+        color: $font-secondary-color;
         padding-bottom: 6px;
       }
 
@@ -345,7 +345,7 @@ li {
         font-size: 12px;
         font-family: $font-Roboto;
         line-height: 12px;
-        color: var(--font-secondary-color);
+        color: $font-secondary-color;
       }
 
       .task-editor {
@@ -382,7 +382,7 @@ li {
       gap: 12px;
       .student-weightage-card {
         padding: 6px 10px;
-        background-color: var(--border-color);
+        background-color: $border-color;
         border-radius: 4px;
 
         p {
@@ -412,8 +412,17 @@ li {
 
       .horizon-line {
         flex: 1;
-        border-bottom: 1px solid var(--border-color);
+        border-bottom: 1px solid $border-color;
       }
+    }
+    .modal {
+      .all-btn{
+        .submit-btn {
+          max-width: 140px;
+          width: 100%;
+        }
+      }
+     
     }
 
     .student-task-file-container {
@@ -436,7 +445,7 @@ li {
           span {
             font-size: 10px;
             line-height: 14px;
-            color: var(--font-secondary-color);
+            color: $font-secondary-color;
           }
         }
       }
@@ -511,7 +520,7 @@ li {
 
       .horizon-line {
         flex: 1;
-        border-bottom: 1px solid var(--border-color);
+        border-bottom: 1px solid $border-color;
       }
     }
 
@@ -520,7 +529,7 @@ li {
         p {
           font-size: 12px;
           font-family: $font-Roboto;
-          color: var(--font-secondary-color);
+          color: $font-secondary-color;
           padding-bottom: 6px;
         }
 

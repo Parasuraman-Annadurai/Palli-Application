@@ -59,12 +59,11 @@ const AssessmentModule = ({ type }) => {
             assessmentId =
               res.data.data.length > 0 ? res.data.data[0].id : null;
           }
-          let currentAssessment = assessmentList.find(
-            (assessment) => assessment.id === assessmentId
-          );
-          currentAssessment = currentAssessment.task_users.map(
-            (assigned) => assigned.user.id
-          );
+         
+
+          const currentAssessment = assessmentList.find(assessment=> assessment.id === assessmentId)
+          const assignedUsers = currentAssessment.task_users.map((assigned) =>assigned.user.id)
+ 
 
           setSelectedStudents(assignedUsers);
           setEditId(assessmentId);
@@ -88,7 +87,7 @@ const AssessmentModule = ({ type }) => {
       .catch((error) => {
         console.log(error);
       });
-  }, [assessmentSearchWord]);
+  }, [assessmentSearchWord,type]);
 
   const handleDeleteAssessment = (deleteId) => {
     setEditId(deleteId);
@@ -341,10 +340,8 @@ const AssessmentModule = ({ type }) => {
           )}
         </>
       ) : (
-        <StudentLogin type={type}/>
+        <StudentLogin type={type} />
       )}
-
-     
     </>
   );
 };

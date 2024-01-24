@@ -150,7 +150,7 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
           <ul>
             {!isDashboardPage && (
               <li className={`main-link`}>
-                <a href={"/dashboard"} className="flex">
+                <a href={"/dashboard"} className="navigation flex">
                   <img src="/icons/backIcon.svg" alt={"Back to Dashboard"} />
                   <span>{"Back to Dashboard"}</span>
                 </a>

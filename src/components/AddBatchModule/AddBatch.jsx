@@ -33,8 +33,6 @@ const AddBatch = (props) => {
   const [batchinputs, setBatchInputs] = useState(false);
   const [batchShow, setBatchshow] = useState(true);
 
-
-  
   // const [buttonText, setButtonText] = useState("Add New Batch");
 
   useEffect(() => {
@@ -386,8 +384,6 @@ const AddBatch = (props) => {
                           )
                         }
                         placeholder="Start Year"
-
-                    
                       />
                       <p className="error-message">
                         {startError && (
@@ -437,7 +433,7 @@ const AddBatch = (props) => {
                       </button>
                     ) : (
                       <button
-                        className="btn primary-medium "
+                        className="btn primary-medium"
                         // disabled={loading}
                       >
                         {/* {loading ? ( */}
@@ -467,8 +463,7 @@ const AddBatch = (props) => {
                         >
                           <div className="batch-left-side flex">
                             <div className="batch-name-year">
-                              {
-                              batch.batch_name.length > 30 ? (
+                              {batch.batch_name.length > 30 ? (
                                 <Tooltip title={batch.batch_name}>
                                   <h4>
                                     {batch.batch_name.length > 30
@@ -478,8 +473,7 @@ const AddBatch = (props) => {
                                 </Tooltip>
                               ) : (
                                 <h4>{batch.batch_name}</h4>
-                              )
-                              }
+                              )}
 
                               <p>
                                 {batch.start_date.slice(0, 4)} -{" "}

@@ -42,6 +42,17 @@ const TaskCard = ({
                 <h2>{truncateText(assessment.task_title, 15)}</h2>
 
                   <>
+
+                  <img
+                    src="/icons/edit-pencil.svg"
+                    className="edit-icon"
+                    alt="edit-icon"
+                    onClick={() => {
+                      handleEdit(assessment.id);
+                    }}
+                  />
+
+                  
                   <img
                     src="/icons/deleteIcon.svg"
                     alt="delete-icon"
@@ -53,14 +64,7 @@ const TaskCard = ({
                     }}
                   />
 
-                  <img
-                    src="/icons/edit-pencil.svg"
-                    className="edit-icon"
-                    alt="edit-icon"
-                    onClick={() => {
-                      handleEdit(assessment.id);
-                    }}
-                  />
+               
                 </>
               </div>
               <p className="task-description">

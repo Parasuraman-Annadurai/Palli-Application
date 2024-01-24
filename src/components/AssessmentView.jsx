@@ -198,8 +198,6 @@ const AssessmentView = ({
     }
   };
 
-
-
   const handleValidate = (formData) => {
     //if student not assign show the error
     if (selectedStudents.length === 0) {
@@ -244,7 +242,7 @@ const AssessmentView = ({
           <>
             <div className="module-header-section-container">
               <div className="module-header-section flex">
-                <div className="module-title-section flex">
+                <div className="module-title-section grid">
                   <input
                     value={task_title ? task_title : ""}
                     name="task_title"
@@ -353,10 +351,15 @@ const AssessmentView = ({
                 </div>
               </div>
 
-              <div className="submission-folder-link-container">
-                <input type="link" placeholder="Paste your link here..." />
+              <div className="link">
+                <input
+                  className="submission-folder-link-container"
+                  type="link"
+                  placeholder="Paste your link here..."
+                />
               </div>
               <div className="task-create-btn-section flex">
+                <div className="main-create-btn">
                 <button
                   type="submit"
                   className="btn primary-medium"
@@ -364,6 +367,7 @@ const AssessmentView = ({
                 >
                   {draft ? "Create" : "Update"}
                 </button>
+                </div>
               </div>
             </div>
           </>
@@ -380,10 +384,8 @@ const AssessmentView = ({
             </div>
           </div>
           <div className="assignee-search-container">
-            {/* search bar use in future */}
             <input
               type="text"
-              style={{ border: "1px solid grey" }}
               placeholder="Search here..."
             />
           </div>
@@ -392,6 +394,7 @@ const AssessmentView = ({
               <input
                 className="global-checkbox"
                 type="checkbox"
+                
                 onChange={handleAllCheckboxChange}
                 checked={selectedStudents.length == students.length}
               />
@@ -405,6 +408,7 @@ const AssessmentView = ({
                     key={student.id}
                   >
                     <input
+                      className="student-checkbox"
                       type="checkbox"
                       onChange={() => handleCheckboxChange(student.id)}
                       checked={selectedStudents.includes(student.id)}
@@ -428,8 +432,31 @@ const AssessmentView = ({
               })}
             </div>
           </div>
+
+          {/* weightage */}
+
+          {/* <div className="weightage-container">
+            <div className="weightage-list">
+              <select name="weightage" id="weightage">
+                <option value="Code Standard">Code Standard</option>
+                <option value="UI Styling">UI Styling</option>
+              </select>
+            </div>
+            <div className="weightage-input">
+              <input type="text" />
+            </div>
+            <div className="weightage-delete">
+              <img
+                src="/icons/deleteIcon.svg"
+                alt="delete-icon"
+                className="delete-icon"
+              />
+            </div>
+          </div> */}
         </section>
       )}
+
+      {/* weightage */}
     </>
   );
 };

@@ -102,20 +102,6 @@ li {
 }
 
 //primary button section
-.btn.primary-medium {
-  background-color: $primary-color;
-  color: #ffff;
-  cursor: pointer;
-
-  &:hover {
-    background-color: $btn-hover-color;
-  }
-
-  &:active {
-    background-color: $btn-hover-color;
-    opacity: 30%;
-  }
-}
 
 .btn.primary-medium-default {
   cursor: not-allowed;
@@ -234,37 +220,61 @@ li {
 }
 
 //filter fields
-
-.filter-container {
-  position: relative;
-  padding: 10px;
-  .filter-label {
-    margin-bottom: 8px;
-    font-size: 12px;
-    font-family: 400;
-    font-family: $font-Roboto;
-    color: $font-primary-color;
-  }
-  input {
-    display: block;
-    border: 1px solid $border-color;
-    font-size: 12px;
-    line-height: 16px;
-    font-weight: 400;
+.filter-main-container{
+  overflow: auto;
+  height: 500px;
+  .filter-container {
+    position: relative;
     padding: 10px;
-    width: 100%;
-    font-family: $font-Roboto;
-  }
-  select {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid $border-color;
-    border-radius: 4px;
-    box-sizing: border-box;
-    outline: none;
-    background-color: #ffff;
+    .filter-label {
+      margin-bottom: 8px;
+      font-size: 12px;
+      font-family: 400;
+      font-family: $font-Roboto;
+      color: $font-primary-color;
+    }
+    input {
+      display: block;
+      border: 1px solid $border-color;
+      font-size: 12px;
+      line-height: 16px;
+      font-weight: 400;
+      padding: 10px;
+      width: 100%;
+      font-family: $font-Roboto;
+    }
+    select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid $border-color;
+      border-radius: 4px;
+      box-sizing: border-box;
+      outline: none;
+      background-color: #ffff;
+    }
+    .apply-btn{
+      margin-top: 10px;
+      gap: 10px;
+      // width: 200px;
+      .btn.primary-medium {
+        background-color: $primary-color;
+        color: #ffff;
+        cursor: pointer;
+      
+        &:hover {
+          background-color: $btn-hover-color;
+        }
+      
+        &:active {
+          background-color: $btn-hover-color;
+          opacity: 30%;
+        }
+      }
+      
+    }
   }
 }
+
 
 body {
   .container {

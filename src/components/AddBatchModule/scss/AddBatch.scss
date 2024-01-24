@@ -111,7 +111,7 @@ li {
   background-color: $primary-color;
   color: #ffff;
   cursor: pointer;
-  width: 100%;
+  // width: 100%;
 
   &:hover {
     background-color: $btn-hover-color;
@@ -210,10 +210,8 @@ li {
     opacity: 30%;
   }
 }
-// .dark-overlay {
-//   background-color: black;
-//   opacity: 0.4;
-// }
+
+
 .popup-container {
   // position: absolute;
   // left: 160px;
@@ -231,7 +229,7 @@ li {
       align-items: center;
       justify-content: space-between;
       padding-bottom: 16px;
-      h3 {  
+      h3 {
         font: 500 14px/18px $font-Roboto;
         color: $font-primary-color;
         padding-bottom: 4px;

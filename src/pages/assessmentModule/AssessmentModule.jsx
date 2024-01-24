@@ -9,13 +9,14 @@ import dayjs from "dayjs";
 
 import AssessmentList from "../../components/AssessmentList";
 import AssessmentView from "../../components/AssessmentView";
+import StudentLogin from "../studentLogin/StudentLogin";
 
 import { useAuth } from "../../context/AuthContext";
 
 import { API_END_POINT } from "../../../config";
 
 const AssessmentModule = ({ type }) => {
-  const { token } = useAuth();
+  const { token, user } = useAuth();
   const { id: batchId } = useParams();
   const [editId, setEditId] = useState(null);
   const [assessmentList, setAssessmentList] = useState([]);
@@ -37,7 +38,7 @@ const AssessmentModule = ({ type }) => {
     const url = `${API_END_POINT}/api/task/${batchId}/list_task/?limit=10&page=1&filter_task_type=${
       type === "task" ? 0 : 1
     }&search=${assessmentSearchWord}`;
-    let assessmentId = editId
+    let assessmentId = editId;
 
     axios
       .get(url, { headers })
@@ -55,14 +56,18 @@ const AssessmentModule = ({ type }) => {
           setLoading(false);
           if (!assessmentId) {
             // Set the editId to the first task's id in the updated list
-            assessmentId = res.data.data.length > 0 ? res.data.data[0].id : null
+            assessmentId =
+              res.data.data.length > 0 ? res.data.data[0].id : null;
           }
-          let currentAssessment = assessmentList.find(assessment=> assessment.id === assessmentId)
-          currentAssessment = currentAssessment.task_users.map((assigned) =>assigned.user.id)
+          let currentAssessment = assessmentList.find(
+            (assessment) => assessment.id === assessmentId
+          );
+          currentAssessment = currentAssessment.task_users.map(
+            (assigned) => assigned.user.id
+          );
 
-          setSelectedStudents(assignedUsers)
-          setEditId(assessmentId)
-
+          setSelectedStudents(assignedUsers);
+          setEditId(assessmentId);
         }
       })
       .catch((error) => {
@@ -222,10 +227,13 @@ const AssessmentModule = ({ type }) => {
           const errorMessages = error.response.data.errors;
 
           Object.entries(errorMessages).forEach(([key, messages]) => {
-            messages.forEach(message => notification.error({ message: `${key} Error`, description: message }));
+            messages.forEach((message) =>
+              notification.error({
+                message: `${key} Error`,
+                description: message,
+              })
+            );
           });
-
-        
         }
       });
   };
@@ -264,71 +272,79 @@ const AssessmentModule = ({ type }) => {
     setAssessmentList(updatedList);
   };
 
+  console.log(user);
+
   return (
     <>
-      {isDeleteModalOpen && (
-        <Modal
-          open={true}
-          title={`${isDraft ? "Discard" : "Delete"} Confirmation`}
-          onOk={handleConfirmDelete}
-          onCancel={() => {
-            setIsDeleteModalOpen(false);
-            setIsDraft(false);
-          }}
-          okButtonProps={{
-            style: { background: "#49a843", borderColor: "#EAEAEA" },
-          }}
-        >
-          <p>{`${
-            isDraft
-              ? "Are you sure you want to discard the changes"
-              : "Are you sure you want to delete"
-          } ${type} ${
-            assessmentList.find((asses) => asses.id === editId).task_title
-          }?`}</p>
-        </Modal>
+      {user.role !== "Student" ? (
+        <>
+          {isDeleteModalOpen && (
+            <Modal
+              open={true}
+              title={`${isDraft ? "Discard" : "Delete"} Confirmation`}
+              onOk={handleConfirmDelete}
+              onCancel={() => {
+                setIsDeleteModalOpen(false);
+                setIsDraft(false);
+              }}
+              okButtonProps={{
+                style: { background: "#49a843", borderColor: "#EAEAEA" },
+              }}
+            >
+              <p>{`${
+                isDraft
+                  ? "Are you sure you want to discard the changes"
+                  : "Are you sure you want to delete"
+              } ${type} ${
+                assessmentList.find((asses) => asses.id === editId).task_title
+              }?`}</p>
+            </Modal>
+          )}
+          <AssessmentList
+            mode={type}
+            filterShow={false}
+            handleEdit={(editId) => setEditId(editId)}
+            assessmentList={assessmentList}
+            setAssessmentSearchWord={setAssessmentSearchWord}
+            loading={loading}
+            handleDelete={handleDeleteAssessment}
+            handleAdd={handleAdd}
+            selectedAssessment={editId}
+          />
+          {assessmentList.map((assessment) => {
+            if (assessment.id == editId) {
+              return (
+                <AssessmentView
+                  key={assessment.id}
+                  currentAssessment={assessment}
+                  students={students}
+                  selectedStudents={selectedStudents}
+                  setSelectedStudents={setSelectedStudents}
+                  handleSave={handleSave}
+                  handleInputChange={handleInputChange}
+                  weightageShow={type === "task" ? false : true}
+                />
+              );
+            }
+            return null;
+          })}
+
+          {editId === null && (
+            <div className="select-something-container flex">
+              <div className="image-container ">
+                <img src="/icons/select-something.svg" alt="" />
+                <p className="select-something-heading">
+                  Please Select any of the Available Tasks or Create New Task
+                </p>
+              </div>
+            </div>
+          )}
+        </>
+      ) : (
+        <StudentLogin type={type}/>
       )}
 
-      <AssessmentList
-        mode={type}
-        filterShow={false}
-        handleEdit={(editId) => setEditId(editId)}
-        assessmentList={assessmentList}
-        setAssessmentSearchWord={setAssessmentSearchWord}
-        loading={loading}
-        handleDelete={handleDeleteAssessment}
-        handleAdd={handleAdd}
-        selectedAssessment={editId}
-      />
-
-      {assessmentList.map((assessment) => {
-        if (assessment.id == editId) {
-          return (
-            <AssessmentView
-              key={assessment.id}
-              currentAssessment={assessment}
-              students={students}
-              selectedStudents={selectedStudents}
-              setSelectedStudents={setSelectedStudents}
-              handleSave={handleSave}
-              handleInputChange={handleInputChange}
-              weightageShow={type === "task" ? false : true}
-            />
-          );
-        }
-        return null;
-      })}
-
-      {editId === null && (
-        <div className="select-something-container flex">
-          <div className="image-container ">
-            <img src="/icons/select-something.svg" alt="" />
-            <p className="select-something-heading">
-              Please Select any of the Available Tasks or Create New Task
-            </p>
-          </div>
-        </div>
-      )}
+     
     </>
   );
 };

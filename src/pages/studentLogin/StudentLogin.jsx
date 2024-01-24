@@ -11,9 +11,9 @@ import { useAuth } from "../../context/AuthContext";
 
 import { useParams } from "react-router-dom";
 
-import "../studentLogin/scss/StudentLogin.css"
+import "../studentLogin/scss/StudentLogin.css";
 
-const TaskCard = ({ tasksLists, setSeletedTaskId,selectedTaskId }) => {
+const TaskCard = ({ tasksLists, setSeletedTaskId, selectedTaskId }) => {
   const truncateText = (text, maxLength) => {
     return text.length > maxLength
       ? text.substring(0, maxLength) + "..."
@@ -22,7 +22,10 @@ const TaskCard = ({ tasksLists, setSeletedTaskId,selectedTaskId }) => {
   return (
     <>
       <div
-        className={`task-card  flex ${tasksLists.id === selectedTaskId ? "active":""}`}
+        style={{ marginTop: "12px" }}
+        className={`task-card  flex ${
+          tasksLists.id === selectedTaskId ? "active" : ""
+        }`}
         onClick={() => setSeletedTaskId(tasksLists.id)}
       >
         <div className="task-icon flex">
@@ -128,7 +131,14 @@ const StudentLogin = ({ type }) => {
       )
       .then((res) => {
         if (res.status === 200) {
-          let updatedTask = [ {...tasksLists[tasksLists.findIndex((task) => task.id === selectedTaskId)], task_status: changeStatus} ]
+          let updatedTask = [
+            {
+              ...tasksLists[
+                tasksLists.findIndex((task) => task.id === selectedTaskId)
+              ],
+              task_status: changeStatus,
+            },
+          ];
           setTaskLists(updatedTask);
           setIsLoading(false);
           setIsModalOpen(false);
@@ -184,6 +194,10 @@ const StudentLogin = ({ type }) => {
 
                   <div className="student-task-details-main-container flex">
                     <div className="student-task-status">
+                      <p>Trainer Name</p>
+                      <span>Avinash</span>
+                    </div>
+                    <div className="student-task-status">
                       <p>Status</p>
                       <Select
                         name=""
@@ -192,8 +206,9 @@ const StudentLogin = ({ type }) => {
                         onChange={handleChange}
                         disabled={tasksList.task_status === "SUBMITTED"}
                         defaultValue={`${tasksList.task_status}`}
+                       
                       >
-                        <Select.Option value="TODO">Todo</Select.Option>
+                        <Select.Option value="TODO" >Todo</Select.Option>
                         <Select.Option value="INPROGRESS">
                           Inprogress
                         </Select.Option>
@@ -231,14 +246,34 @@ const StudentLogin = ({ type }) => {
                   <div className="student-weightage-list flex">
                     {tasksList.weightage_details &&
                       tasksList.weightage_details.map((weightageDetails) => (
-                        <div className="student-weightage-card">
+                        <div className="student-weightage-card flex">
                           <p>
                             {weightageDetails.weightage_details.weightage}{" "}
-                            {Number(weightageDetails.weightage_percentage)}
+
                           </p>
+                          <span>
+                            {Number(weightageDetails.weightage_percentage)}
+                            </span>
                         </div>
                       ))}
                   </div>
+                </div>
+                <div className="student-task-label-container flex">
+                  <h3>Task File</h3>
+                  <div className="horizon-line"></div>
+                </div>
+                <div className="file-input-container">
+                  <div className="upload-icon-container flex">
+                    <img src="/icons/upload.svg" className="upload-icon" />
+                    <label for="file-input">
+                      Drag your file or
+                      <span className="highlight">
+                        {" "}
+                        click to upload your task
+                      </span>
+                    </label>
+                  </div>
+                  <input type="file" className="file-input" />
                 </div>
               </div>
 

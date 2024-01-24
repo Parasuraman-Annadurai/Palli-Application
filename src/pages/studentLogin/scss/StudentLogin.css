@@ -209,8 +209,8 @@ li {
   width: 20px;
   height: 20px;
 }
-.main-container .task-details-header-container {
-  padding: 16px;
+.main-container .task-list-container .task-card {
+  margin-top: 12px;
 }
 .main-container .task-details-header-container .background-div {
   padding: 16px;
@@ -227,7 +227,7 @@ li {
   font-size: 12px;
   line-height: 16px;
   font-family: "Roboto";
-  font-weight: 500;
+  font-weight: 400;
 }
 .main-container .task-details-header-container .task-label-container .horizon-line {
   flex: 1;
@@ -262,6 +262,11 @@ li {
 .main-container .task-details-header-container .student-task-details-main-container .sudent-task-supporting-doc img {
   width: 16px;
   height: 16px;
+}
+.main-container .task-details-header-container .student-task-details-main-container .student-task-status {
+  border-right: 2px solid #eaeaea;
+  max-width: 213px;
+  width: 100%;
 }
 .main-container .task-details-header-container .task-editor-container p {
   padding-bottom: 6px;
@@ -305,6 +310,12 @@ li {
   font-size: 12px;
   line-height: 16px;
 }
+.main-container .task-details-header-container .student-weightage-list .student-weightage-card span {
+  font-family: "Roboto";
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 500;
+}
 .main-container .task-details-header-container .student-task-label-container {
   align-items: center;
   gap: 11px;
@@ -314,6 +325,7 @@ li {
   font-size: 12px;
   line-height: 16px;
   font-family: "Roboto";
+  font-weight: 400;
 }
 .main-container .task-details-header-container .student-task-label-container .horizon-line {
   flex: 1;

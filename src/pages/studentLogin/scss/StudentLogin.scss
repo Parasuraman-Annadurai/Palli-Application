@@ -54,7 +54,6 @@ $completed-bg: #dbeafe;
 }
 
 :root {
-
   --side_bar_bg: #f8fbf2;
   --font-primary-color: #12160a;
   --font-secondary-color: #969d88;
@@ -264,8 +263,14 @@ li {
     }
   }
 
+  .task-list-container {
+    .task-card {
+      margin-top: 12px;
+    }
+  }
+
   .task-details-header-container {
-    padding: 16px;
+    // padding: 16px;
 
     .background-div {
       padding: 16px;
@@ -282,7 +287,7 @@ li {
         font-size: 12px;
         line-height: 16px;
         font-family: $font-Roboto;
-   font-weight: 500;
+        font-weight: 400;
       }
 
       .horizon-line {
@@ -326,6 +331,11 @@ li {
           width: 16px;
           height: 16px;
         }
+      }
+      .student-task-status {
+        border-right: 2px solid #eaeaea;
+        max-width: 213px;
+        width: 100%;
       }
     }
 
@@ -380,6 +390,12 @@ li {
           font-size: 12px;
           line-height: 16px;
         }
+        span {
+          font-family: $font-Roboto;
+          font-size: 12px;
+          line-height: 16px;
+          font-weight: 500;
+        }
       }
     }
 
@@ -391,6 +407,7 @@ li {
         font-size: 12px;
         line-height: 16px;
         font-family: $font-Roboto;
+        font-weight: 400;
       }
 
       .horizon-line {

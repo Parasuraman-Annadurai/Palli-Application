@@ -60,19 +60,23 @@ const WeightageList = ({
 
 
   return (
-    <>
-      <div className="weightage-adding-container flex" >
-        <div className="weight-inputs" >
+    <div style={{ display: "flex", flexDirection: "column",gap:10,marginTop:20 }}>
+      <div className="weightage-adding-container flex">
+        <div className="weight-inputs">
           {taskWeightages.map((taskWeightage, index) => {
             console.log(taskWeightage);
             return (
-              <>
+              <div
+                style={{ display: "flex", gap: 10 }}
+              >
                 <div className="weightage-select">
                   <Select
                     style={{ width: "100px" }}
                     placeholder={"Select Weightage"}
                     value={taskWeightage.weightage}
-                    onChange={(value) => handleWeightageChange(value, index,"weightage")}
+                    onChange={(value) =>
+                      handleWeightageChange(value, index, "weightage")
+                    }
                   >
                     {weightages.map((weightageList) => (
                       <Select.Option
@@ -88,7 +92,13 @@ const WeightageList = ({
                   <input
                     type="text"
                     value={taskWeightage.weightage_percentage}
-                    onChange={(e) => handleWeightageChange(e.target.value, index,"weightage_percentage")}
+                    onChange={(e) =>
+                      handleWeightageChange(
+                        e.target.value,
+                        index,
+                        "weightage_percentage"
+                      )
+                    }
                     className="task-weight-value-selector"
                     style={{ border: "1px solid grey" }}
                   />
@@ -101,24 +111,31 @@ const WeightageList = ({
                     </span>
                   </div>
                 </div>
-              </>
+              </div>
             );
           })}
         </div>
-        <div className="add-weightage-button">
+      </div>
+      <div className="add-weightage-button">
+        <button
+           style={{ padding: 15, color: "green", cursor: "pointer" }}
+          // className="btn secondary-medium-icon"
+          onClick={handleAddWeightage}
+        >
+         + Add Weightage
+        </button>
+      </div>
+      <div>
+        <div className="apply-weightage">
           <button
-            className="btn secondary-medium-icon"
-            onClick={handleAddWeightage}
+            style={{ padding: 15, color: "green", cursor: "pointer" }}
+            onClick={() => handleSaveWeightage()}
           >
-            Add Weightage
+            Save
           </button>
         </div>
-
-        <div className="apply-weightage">
-          <button onClick={()=>handleSaveWeightage()}>Save</button>
-        </div>
       </div>
-    </>
+    </div>
   );
 };
 

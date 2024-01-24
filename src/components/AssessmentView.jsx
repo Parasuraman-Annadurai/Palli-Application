@@ -385,7 +385,7 @@ const AssessmentView = ({
                 toggleAssigneeWeightage === 0 ? "active" : ""
               }`}
             >
-              <h4 onClick={() => setToggleAssigneeWeightage("assignee")}>
+              <h4 onClick={() => setToggleAssigneeWeightage(0)}>
                 Assignee
               </h4>
             </div>
@@ -395,7 +395,7 @@ const AssessmentView = ({
               }`}
             >
               {weightageShow && (
-                <h4 onClick={() => setToggleAssigneeWeightage("weightage")}>
+                <h4 onClick={() => setToggleAssigneeWeightage(1)}>
                   Weightage
                 </h4>
               )}

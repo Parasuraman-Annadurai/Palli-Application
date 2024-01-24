@@ -102,15 +102,27 @@ const AssessmentModule = ({ type }) => {
       let cloneAssessmentList = [...assessmentList];
 
       cloneAssessmentList = cloneAssessmentList?.map((assessment) => {
-        assessment["task_weightages"] = assessment.task_weightages?.map(
-          (weightage) => {
-            return {
-              id: weightage.id,
-              weightage_percentage: weightage.weightage_percentage,
-              weightage: weightage.weightage,
-            };
-          }
-        );
+        if(assessment?.task_weightages?.length>0){
+          assessment["task_weightages"] = assessment.task_weightages?.map(
+            (weightage) => {
+              const weightObject = {
+                weightage_percentage: weightage.weightage_percentage,
+                weightage: weightage.weightage,
+              };
+
+              if ("id" in weightObject) {
+                weightage["id"] = weightage.id;
+              }
+              return weightObject;
+            }
+          );
+        }
+        else{
+          assessment["task_weightages"] = [{
+            weightage_percentage:null,
+            weightage: null,
+          }]
+        }
 
         return assessment;
       });
@@ -188,11 +200,6 @@ const AssessmentModule = ({ type }) => {
       : `${API_END_POINT}/api/task/${batchId}/update_task/${editId}`;
     const method = isNew ? "POST" : "PUT";
 
-    const assignAssessment = {
-      user: selectedStudents,
-      task_status: 0,
-      // submission_link: SubmissionLink,
-    };
 
     axios({
       method: method,
@@ -237,16 +244,6 @@ const AssessmentModule = ({ type }) => {
         setEditId(
           cloneAssessmentList.length > 0 ? cloneAssessmentList[0].id : null
         );
-
-        // axios({
-        //   method: "POST",
-        //   url: `${API_END_POINT}/api/task/${batchId}/assign/task/${res.data.data.id}`,
-        //   headers: {
-        //     Authorization: `Bearer ${token.access}`,
-        //     "Content-Type": "application/json",
-        //   },
-        //   data: assignAssessment,
-        // }).then((res) => {});
       })
       .catch((error) => {
         if (
@@ -339,18 +336,23 @@ const AssessmentModule = ({ type }) => {
       if (createPromise.length > 0) {
         Promise.all(createPromise)
           .then((results) => {
-         
+            notification.success({
+              message: "Sucess",
+              description: "Weightage Linked Successfully",
+            });
 
+            //need to rework, check with BE
             cloneAssessmentList = cloneAssessmentList.map((assessment) => {
               if (assessment.id == editId) {
-                const weightageList = assessment.task_weightages;
-                weightageList.map((weightage,index) => {
-                  const id = results[index].data.data.id;
-                  weightage["id"] = id;
-                  return weightage;
-                });
-                return weightageList;
+                assessment["task_weightages"] = assessment.task_weightages.map(
+                  (weightage, index) => {
+                    const id = results[index].data.data.id;
+                    weightage["id"] = id;
+                    return weightage;
+                  }
+                );
               }
+              return assessment
             });
 
             setAssessmentList(cloneAssessmentList);
@@ -364,6 +366,11 @@ const AssessmentModule = ({ type }) => {
         Promise.all(updatePromise)
           .then((results) => {
             console.log(results);
+            notification.success({
+              message: "Sucess",
+              description: "Weightage Linked Successfully",
+            });
+
           })
           .catch((error) => {
             console.error("One or more requests failed:", error);
@@ -380,7 +387,8 @@ const AssessmentModule = ({ type }) => {
     //  setAssessmentList();
     copyAssessment = copyAssessment.map((assessment) => {
       if (assessment.id === editId) {
-        assessment.task_weightages.push(newWeightage);
+       assessment["task_weightages"] =
+         assessment.task_weightages.concat(newWeightage);
       }
       return assessment;
     });
@@ -393,7 +401,7 @@ const AssessmentModule = ({ type }) => {
 
     copyAssessment = copyAssessment.map((assessment) => {
       if (assessment.id === editId) {
-        assessment.task_weightages[index][key] = Number(value);
+        assessment.task_weightages[index][key] = value;
       }
       return assessment;
     });

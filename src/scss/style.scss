@@ -806,7 +806,7 @@ body {
       border-right: 1px solid $border-color;
 
       .module-header-section-container {
-        padding-bottom: 14px;
+        padding-bottom: 5px;
 
         .module-header-section {
           justify-content: space-between;
@@ -817,7 +817,7 @@ body {
             gap: 8px;
             input {
               font-size: 16px;
-              padding-left: 10px;
+              // padding-left: 10px;
               width: 70%;
               &:hover {
                 background-color: $side_bar_bg;
@@ -984,7 +984,7 @@ body {
         }
 
         .task-editor-container {
-          padding-bottom: 16px;
+          // padding-bottom: 16px;
 
           .task-description-label {
             padding-bottom: 6px;

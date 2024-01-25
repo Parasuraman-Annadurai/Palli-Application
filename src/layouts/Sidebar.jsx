@@ -162,10 +162,9 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
 
             {menuList &&
               menuList.map((menu, index) => {
-                const isCheck = user.role !== "Student";
-                const Render = isCheck || menu.label !== "Applications";
+               
 
-                return Render ? (
+                return (
                   <li
                     key={index}
                     onClick={() => setActive(menu.id)}
@@ -185,7 +184,7 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
                       <span>{menu.label}</span>
                     </Link>
                   </li>
-                ) : null;
+                ) 
               })}
           </ul>
         </div>

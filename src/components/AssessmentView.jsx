@@ -29,18 +29,19 @@ const AssessmentView = ({
   selectedStudents,
   handleSave,
   handleInputChange,
-  isCardClick,
+  isStudentScoreOpen,
   
   //score section
   handleStatusChange,
-  handleAddScore
+  handleAddScore,
+  activeWeightageIndex,
+  setActiveWeightageIndex
 }) => {
   const { id: batchId } = useParams();
   const { token } = useAuth();
   const [loading, setLoading] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [initialTitle, setInitialTitle] = useState("");
-  const [activeWeightageIndex, setActiveWeightageIndex] = useState(null);
   const [studentScore, setStudentScore] = useState([]);
 
   const headers = {
@@ -307,7 +308,7 @@ const AssessmentView = ({
 
   return (
     <>
-      {!isCardClick ? (
+      {!isStudentScoreOpen ? (
         <>
           <section className="main-container">
             {loading ? (
@@ -550,16 +551,11 @@ const AssessmentView = ({
                           ? students["task_status"] === "SUBMITTED" && (
                               <button
                                 className="secondary-btn-sm"
-                                // onClick={() => {
-                                //   handleAddScore(activeWeightageIndex ? studentScore : []),
-                                //     setActiveWeightageIndex(index);
-                                // }}
-
                                 onClick={()=>{setActiveWeightageIndex(index),handleAddScore(studentScore)}}
                               >
                                 {activeWeightageIndex === index
                                   ? "Submit"
-                                  : " add mark"}
+                                  : " Add mark"}
                               </button>
                             )
                           : students["task_status"] === "SUBMITTED" && (
@@ -599,17 +595,7 @@ const AssessmentView = ({
                                     style={{
                                       border: "1px solid grey",
                                     }}
-                                    onChange={(e) =>
-                                      {
-                                        handleScoreOnchange(e, students, weightage)
-                                        
-                                    
-
-                                        
-                                      }
-
-                                    
-                                    }
+                                    onChange={(e) =>{ handleScoreOnchange(e, students, weightage)}}
                                   />
                                 </div>
                                 

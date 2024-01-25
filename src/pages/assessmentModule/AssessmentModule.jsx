@@ -26,13 +26,14 @@ const AssessmentModule = ({ type }) => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   //for check task or assessment new created or old;
   const [isDraft, setIsDraft] = useState(false);
-  const [isCardClick,setIsCardClick] = useState(false);
-
+  const [isStudentScoreOpen,setIsStudentScoreOpen] = useState(false);
+  const [activeWeightageIndex, setActiveWeightageIndex] = useState(null);
   const headers = {
     Authorization: `Bearer ${token.access}`,
     "Content-type": "application/json",
   };
 
+  
   useEffect(() => {
     //this useEffect used to fetch task list and will re-run whenever filter or search is updated
     const url = `${API_END_POINT}/api/task/${batchId}/list_task/?limit=10&page=1&filter_task_type=${
@@ -319,6 +320,7 @@ const AssessmentModule = ({ type }) => {
           )
           .then((res) => {
            setAssessmentList(statusChangeAfterScore);
+           setActiveWeightageIndex(null);
           })
           .catch((error) => {
             console.log(error);
@@ -364,8 +366,8 @@ const AssessmentModule = ({ type }) => {
         handleDelete={handleDeleteAssessment}
         handleAdd={handleAdd}
         selectedAssessment={editId}
-        setIsCardClick={setIsCardClick}
-        isCardClick={isCardClick}
+        setIsStudentScoreOpen={setIsStudentScoreOpen}
+        isStudentScoreOpen={isStudentScoreOpen}
       />
       
       {assessmentList.map((assessment) => {
@@ -380,18 +382,18 @@ const AssessmentModule = ({ type }) => {
               handleSave={handleSave}
               handleInputChange={handleInputChange}
               weightageShow={type === "task" ? false : true}
-              isCardClick={isCardClick}
+              isStudentScoreOpen={isStudentScoreOpen}
 
               //score section
               handleStatusChange={handleStatusChange}
               handleAddScore={handleAddScore}
+              activeWeightageIndex={activeWeightageIndex}
+              setActiveWeightageIndex={setActiveWeightageIndex}
             />
           );
         }
         return null;
       })}
-      
-
       {editId === null && (
         <div className="select-something-container flex">
           <div className="image-container ">

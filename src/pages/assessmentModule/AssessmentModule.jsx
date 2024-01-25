@@ -27,12 +27,15 @@ const AssessmentModule = ({ type }) => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   //for check task or assessment new created or old;
   const [isDraft, setIsDraft] = useState(false);
+  const [isStudentScoreOpen,setIsStudentScoreOpen] = useState(false);
+  const [activeWeightageIndex, setActiveWeightageIndex] = useState(null);
 
   const headers = {
     Authorization: `Bearer ${token.access}`,
     "Content-type": "application/json",
   };
 
+  
   useEffect(() => {
     //this useEffect used to fetch task list and will re-run whenever filter or search is updated
     if (user.role !== "Student") {
@@ -111,7 +114,7 @@ const AssessmentModule = ({ type }) => {
               };
 
               if ("id" in weightObject) {
-                weightage["id"] = weightage.id;
+                weightObject["id"] = weightage.id;
               }
               return weightObject;
             }
@@ -408,6 +411,78 @@ const AssessmentModule = ({ type }) => {
 
     setAssessmentList(copyAssessment);
   };
+
+  const handleStatusChange = (studentId, status) => {
+    const url = `${API_END_POINT}/api/task/${batchId}/update/task/user/${studentId}`;
+    const payload = { task_status: status };
+
+
+
+    //student task status changes
+
+
+//students status changed to Admin
+    axios
+      .put(url, payload, { headers })
+      .then((res) => {
+        console.log(res);
+        let copiedTaskStatusChangeStudents = assessmentList.map((assessment) => {
+          assessment["task_users"] = assessment.task_users.map((user) => {
+            if (user.id === studentId) {
+              user.task_status = status;
+            }
+            return user;
+          });
+          return assessment
+        });
+            
+        setAssessmentList(copiedTaskStatusChangeStudents)
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const handleAddScore = (studentScores) => {
+    let statusChangeAfterScore = [...assessmentList];
+    statusChangeAfterScore = statusChangeAfterScore.map((assessment) => {
+      assessment.task_users = assessment.task_users.map((student) => {
+        studentScores.forEach((scores) => {
+          if (student.id === scores.task_user) {
+            student.task_status = "COMPLETED";
+          }
+        });
+        return student;
+      });
+      return assessment;
+    });
+    //weightage open and score added only submit the score
+    studentScores.map((scores)=>{
+      const url = `${API_END_POINT}/api/task/${batchId}/create/task_score/`;
+      axios
+      .post(url, scores, { headers })
+      .then((res) => {
+        axios
+          .put(
+            `${API_END_POINT}/api/task/${batchId}/update/task/user/${scores.task_user}`,
+           { task_status:"COMPLETED"},
+            { headers }
+          )
+          .then((res) => {
+           setAssessmentList(statusChangeAfterScore);
+           setActiveWeightageIndex(null);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    })
+  };
+
+
   return (
     <>
       {user.role !== "Student" ? (
@@ -444,6 +519,8 @@ const AssessmentModule = ({ type }) => {
             handleDelete={handleDeleteAssessment}
             handleAdd={handleAdd}
             selectedAssessment={editId}
+            setIsStudentScoreOpen={setIsStudentScoreOpen}
+            isStudentScoreOpen={isStudentScoreOpen}
           />
           {assessmentList.map((assessment) => {
             if (assessment.id == editId) {
@@ -460,6 +537,11 @@ const AssessmentModule = ({ type }) => {
                   handleSaveWeightage={handleSaveWeightage}
                   handleAddWeightage={handleAddWeightage}
                   handleWeightageChange={handleWeightageChange}
+                  isStudentScoreOpen={isStudentScoreOpen}
+                  handleStatusChange={handleStatusChange}
+                  handleAddScore={handleAddScore}
+                  setActiveWeightageIndex={setActiveWeightageIndex}
+                  activeWeightageIndex={activeWeightageIndex}
                 />
               );
             }

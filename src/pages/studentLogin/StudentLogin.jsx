@@ -77,12 +77,8 @@ const StudentLogin = ({ type }) => {
         { headers }
       )
       .then((res) => {
-        const copyTaskList = [...res.data.data];
-        //filter the task or assessment to show the students
-        const filteredTasks = copyTaskList.filter(
-          (task) => task.task.task_type === taskType
-        );
-        setTaskLists(filteredTasks);
+        const copyTaskList = [...res.data.data];        
+        setTaskLists(copyTaskList);
 
         if (!selectedTaskId) {
           const getFirstTask =
@@ -93,7 +89,7 @@ const StudentLogin = ({ type }) => {
       .catch((error) => {
         console.log(error);
       });
-  }, []);
+  }, [type]);
 
   const handleChange = (status) => {
     if (status !== "SUBMITTED") {
@@ -104,15 +100,15 @@ const StudentLogin = ({ type }) => {
           { headers }
         )
         .then((res) => {
-          let updatedTask = [
-            {
-              ...tasksLists[
-                tasksLists.findIndex((task) => task.id === selectedTaskId)
-              ],
-              task_status: status,
-            },
-          ];
-          setTaskLists(updatedTask);
+
+          let copiedTaskList = tasksLists.map((task)=>{
+            if(task.id === selectedTaskId){
+              task["task_status"] = status
+            }
+            return task
+          })
+        
+          setTaskLists(copiedTaskList);
         })
         .catch((error) => {
           console.log(error);
@@ -132,6 +128,7 @@ const StudentLogin = ({ type }) => {
         {
           task_status: changeStatus,
           submission_link: submissionLink,
+          reviewer: 62 
         },
         { headers }
       )
@@ -207,7 +204,7 @@ const StudentLogin = ({ type }) => {
                       <p>Status</p>
                       <Select
                         onChange={handleChange}
-                        // disabled={tasksList.task_status === "SUBMITTED"}
+                        disabled={tasksList.task_status === "SUBMITTED"}
                         defaultValue={tasksList.task_status}
                         style={{ width: "60%" }}
                       >
@@ -250,6 +247,7 @@ const StudentLogin = ({ type }) => {
                     {tasksList.weightage_details &&
                       tasksList.weightage_details.map((weightageDetails) => (
                         <div className="student-weightage-card flex">
+                          
                           <p>{weightageDetails.weightage_details.weightage} </p>
                           <span>
                             {Number(weightageDetails.weightage_percentage)}

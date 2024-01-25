@@ -9,13 +9,14 @@ import dayjs from "dayjs";
 
 import AssessmentList from "../../components/AssessmentList";
 import AssessmentView from "../../components/AssessmentView";
+import StudentLogin from "../studentLogin/StudentLogin";
 
 import { useAuth } from "../../context/AuthContext";
 
 import { API_END_POINT } from "../../../config";
 
 const AssessmentModule = ({ type }) => {
-  const { token } = useAuth();
+  const { token, user } = useAuth();
   const { id: batchId } = useParams();
   const [editId, setEditId] = useState(null);
   const [assessmentList, setAssessmentList] = useState([]);
@@ -28,6 +29,7 @@ const AssessmentModule = ({ type }) => {
   const [isDraft, setIsDraft] = useState(false);
   const [isStudentScoreOpen,setIsStudentScoreOpen] = useState(false);
   const [activeWeightageIndex, setActiveWeightageIndex] = useState(null);
+
   const headers = {
     Authorization: `Bearer ${token.access}`,
     "Content-type": "application/json",
@@ -36,48 +38,101 @@ const AssessmentModule = ({ type }) => {
   
   useEffect(() => {
     //this useEffect used to fetch task list and will re-run whenever filter or search is updated
-    const url = `${API_END_POINT}/api/task/${batchId}/list_task/?limit=10&page=1&filter_task_type=${
-      type === "task" ? 0 : 1
-    }&search=${assessmentSearchWord}`;
-    axios
-      .get(url, { headers })
-      .then((res) => {
-        if (res.status === 200 && res.data.message === "Success") {
-          //manipulate the assessment list task type assessment put the 1 otherwise 0 and remove duplicate
-          let assessmentList = [...res.data.data];
-          assessmentList = assessmentList.map((assessment) => ({
-            ...assessment,
-            task_type: assessment.task_type === "ASSESSMENT" ? 1 : 0,
-          }));
+    if (user.role !== "Student") {
+      const url = `${API_END_POINT}/api/task/${batchId}/list_task/?limit=10&page=1&filter_task_type=${
+        type === "task" ? 0 : 1
+      }&search=${assessmentSearchWord}`;
+      let assessmentId = editId;
 
-          setAssessmentList(assessmentList);
+      axios
+        .get(url, { headers })
+        .then((res) => {
+          if (res.status === 200 && res.data.message === "Success") {
+            //manipulate the assessment list task type assessment put the 1 otherwise 0 and remove duplicate
+            let assessmentList = [...res.data.data];
+            assessmentList = assessmentList.map((assessment) => ({
+              ...assessment,
+              task_type: assessment.task_type === "ASSESSMENT" ? 1 : 0,
+            }));
 
-          setLoading(false);
-          if (!editId) {
-            // Set the editId to the first task's id in the updated list
-            setEditId(res.data.data.length > 0 ? res.data.data[0].id : null);
+            setAssessmentList(assessmentList);
+
+            setLoading(false);
+            if (!assessmentId) {
+              // Set the editId to the first task's id in the updated list
+              assessmentId =
+                res.data.data.length > 0 ? res.data.data[0].id : null;
+            }
+
+            setEditId(assessmentId);
           }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+
+      axios
+        .get(`${API_END_POINT}/api/applicant/${batchId}/list/students/`, {
+          headers,
+        })
+        .then((res) => {
+          if (res.status === 200 && res.data.message === "Success") {
+            setStudents(res.data.data);
+            setLoading(false);
+            // setSelectedStudents(res.data.data.map((student) => student.id));
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }, [assessmentSearchWord, type]);
+
+  useEffect(() => {
+    if (editId && assessmentList.length > 0) {
+      const currentAssessment = assessmentList.find(
+        (assessment) => assessment.id === editId
+      );
+
+      let assignedUsers = [];
+
+      if ("task_users" in currentAssessment) {
+        assignedUsers = currentAssessment?.task_users?.map(
+          (assigned) => assigned.user.id
+        );
+      }
+
+      let cloneAssessmentList = [...assessmentList];
+
+      cloneAssessmentList = cloneAssessmentList?.map((assessment) => {
+        if(assessment?.task_weightages?.length>0){
+          assessment["task_weightages"] = assessment.task_weightages?.map(
+            (weightage) => {
+              const weightObject = {
+                weightage_percentage: weightage.weightage_percentage,
+                weightage: weightage.weightage,
+              };
+
+              if ("id" in weightObject) {
+                weightObject["id"] = weightage.id;
+              }
+              return weightObject;
+            }
+          );
         }
-      })
-      .catch((error) => {
-        console.log(error);
+        else{
+          assessment["task_weightages"] = [{
+            weightage_percentage:null,
+            weightage: null,
+          }]
+        }
+
+        return assessment;
       });
 
-    axios
-      .get(`${API_END_POINT}/api/applicant/${batchId}/list/students/`, {
-        headers,
-      })
-      .then((res) => {
-        if (res.status === 200 && res.data.message === "Success") {
-          setStudents(res.data.data);
-          setLoading(false);
-          // setSelectedStudents(res.data.data.map((student) => student.id));
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, [assessmentSearchWord]);
+      setSelectedStudents(assignedUsers);
+    }
+  }, [editId]);
 
   const handleDeleteAssessment = (deleteId) => {
     setEditId(deleteId);
@@ -148,11 +203,6 @@ const AssessmentModule = ({ type }) => {
       : `${API_END_POINT}/api/task/${batchId}/update_task/${editId}`;
     const method = isNew ? "POST" : "PUT";
 
-    const assignAssessment = {
-      user: selectedStudents,
-      task_status: 0,
-      // submission_link: SubmissionLink,
-    };
 
     axios({
       method: method,
@@ -197,16 +247,6 @@ const AssessmentModule = ({ type }) => {
         setEditId(
           cloneAssessmentList.length > 0 ? cloneAssessmentList[0].id : null
         );
-
-        // axios({
-        //   method: "POST",
-        //   url: `${API_END_POINT}/api/task/${batchId}/assign/task/${res.data.data.id}`,
-        //   headers: {
-        //     Authorization: `Bearer ${token.access}`,
-        //     "Content-Type": "application/json",
-        //   },
-        //   data: assignAssessment,
-        // }).then((res) => {});
       })
       .catch((error) => {
         if (
@@ -261,29 +301,142 @@ const AssessmentModule = ({ type }) => {
     setAssessmentList(updatedList);
   };
 
+  const makePostRequest = async (url, data,method) => {
+    const response = await axios(url, {
+      method:method,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token.access}`,
+      },
+      data: data,
+    });
+    return response;
+  };
 
-  //score section -------
+  const handleSaveWeightage = () => {
+    let cloneAssessmentList = [...assessmentList];
+
+    let currentAssessment = cloneAssessmentList.find(
+      (assessment) => assessment.id == editId
+    );
+
+
+    let createPromise = [];
+    let updatePromise = [];
+    if (batchId && editId) {
+      currentAssessment.task_weightages.map((weightage) => {
+        if ("id" in weightage) {
+          const url = `${API_END_POINT}/api/task/${batchId}/update/weightage/${weightage.id}`;
+          //its for update
+          const  {id,...postPayload} = weightage;
+          updatePromise.push(makePostRequest(url, postPayload,"PUT"));
+        } else {
+          const url = `${API_END_POINT}/api/task/${batchId}/assign/task_weightage/${editId}`;
+          createPromise.push(makePostRequest(url, weightage,"POST"));
+        }
+      });
+
+      if (createPromise.length > 0) {
+        Promise.all(createPromise)
+          .then((results) => {
+            notification.success({
+              message: "Sucess",
+              description: "Weightage Linked Successfully",
+            });
+
+            //need to rework, check with BE
+            cloneAssessmentList = cloneAssessmentList.map((assessment) => {
+              if (assessment.id == editId) {
+                assessment["task_weightages"] = assessment.task_weightages.map(
+                  (weightage, index) => {
+                    const id = results[index].data.data.id;
+                    weightage["id"] = id;
+                    return weightage;
+                  }
+                );
+              }
+              return assessment
+            });
+
+            setAssessmentList(cloneAssessmentList);
+          })
+          .catch((error) => {
+            console.error("One or more requests failed:", error);
+          });
+      }
+
+      if (updatePromise.length > 0) {
+        Promise.all(updatePromise)
+          .then((results) => {
+            console.log(results);
+            notification.success({
+              message: "Sucess",
+              description: "Weightage Linked Successfully",
+            });
+
+          })
+          .catch((error) => {
+            console.error("One or more requests failed:", error);
+          });
+      }
+    }
+  };
+
+  const handleAddWeightage = () => {
+    const newWeightage = { weightage: null, weightage_percentage: null };
+
+    let copyAssessment = [...assessmentList];
+
+    //  setAssessmentList();
+    copyAssessment = copyAssessment.map((assessment) => {
+      if (assessment.id === editId) {
+       assessment["task_weightages"] =
+         assessment.task_weightages.concat(newWeightage);
+      }
+      return assessment;
+    });
+
+    setAssessmentList(copyAssessment);
+  };
+
+  const handleWeightageChange = (value, index, key) => {
+    let copyAssessment = [...assessmentList];
+
+    copyAssessment = copyAssessment.map((assessment) => {
+      if (assessment.id === editId) {
+        assessment.task_weightages[index][key] = value;
+      }
+      return assessment;
+    });
+
+    setAssessmentList(copyAssessment);
+  };
 
   const handleStatusChange = (studentId, status) => {
     const url = `${API_END_POINT}/api/task/${batchId}/update/task/user/${studentId}`;
     const payload = { task_status: status };
 
-    let taskStatusChangeStudents = [...assessmentList];
-    //student task status changes 
-    taskStatusChangeStudents.forEach((assessment) => {
-      assessment.task_users.forEach((user) => {
-        if (user.id === studentId) {
-          user.task_status = status;
-        }
-      });
-    });
+
+
+    //student task status changes
+
 
 //students status changed to Admin
     axios
       .put(url, payload, { headers })
       .then((res) => {
         console.log(res);
-        setAssessmentList(taskStatusChangeStudents)
+        let copiedTaskStatusChangeStudents = assessmentList.map((assessment) => {
+          assessment["task_users"] = assessment.task_users.map((user) => {
+            if (user.id === studentId) {
+              user.task_status = status;
+            }
+            return user;
+          });
+          return assessment
+        });
+            
+        setAssessmentList(copiedTaskStatusChangeStudents)
       })
       .catch((error) => {
         console.log(error);
@@ -291,9 +444,7 @@ const AssessmentModule = ({ type }) => {
   };
 
   const handleAddScore = (studentScores) => {
-
     let statusChangeAfterScore = [...assessmentList];
-
     statusChangeAfterScore = statusChangeAfterScore.map((assessment) => {
       assessment.task_users = assessment.task_users.map((student) => {
         studentScores.forEach((scores) => {
@@ -305,7 +456,6 @@ const AssessmentModule = ({ type }) => {
       });
       return assessment;
     });
-    
     //weightage open and score added only submit the score
     studentScores.map((scores)=>{
       const url = `${API_END_POINT}/api/task/${batchId}/create/task_score/`;
@@ -332,77 +482,85 @@ const AssessmentModule = ({ type }) => {
     })
   };
 
+
   return (
     <>
-      {isDeleteModalOpen && (
-        <Modal
-          open={true}
-          title={`${isDraft ? "Discard" : "Delete"} Confirmation`}
-          onOk={handleConfirmDelete}
-          onCancel={() => {
-            setIsDeleteModalOpen(false);
-            setIsDraft(false);
-          }}
-          okButtonProps={{
-            style: { background: "#49a843", borderColor: "#EAEAEA" },
-          }}
-        >
-          <p>{`${
-            isDraft
-              ? "Are you sure you want to discard the changes"
-              : "Are you sure you want to delete"
-          } ${type} ${
-            assessmentList.find((asses) => asses.id === editId).task_title
-          }?`}</p>
-        </Modal>
-      )}
-      <AssessmentList
-        mode={type}
-        filterShow={false}
-        handleEdit={(editId) => setEditId(editId)}
-        assessmentList={assessmentList}
-        setAssessmentSearchWord={setAssessmentSearchWord}
-        loading={loading}
-        handleDelete={handleDeleteAssessment}
-        handleAdd={handleAdd}
-        selectedAssessment={editId}
-        setIsStudentScoreOpen={setIsStudentScoreOpen}
-        isStudentScoreOpen={isStudentScoreOpen}
-      />
-      
-      {assessmentList.map((assessment) => {
-        if (assessment.id == editId) {
-          return (
-            <AssessmentView
-              key={assessment.id}
-              currentAssessment={assessment}
-              students={students}
-              selectedStudents={selectedStudents}
-              setSelectedStudents={setSelectedStudents}
-              handleSave={handleSave}
-              handleInputChange={handleInputChange}
-              weightageShow={type === "task" ? false : true}
-              isStudentScoreOpen={isStudentScoreOpen}
+      {user.role !== "Student" ? (
+        <>
+          {isDeleteModalOpen && (
+            <Modal
+              open={true}
+              title={`${isDraft ? "Discard" : "Delete"} Confirmation`}
+              onOk={handleConfirmDelete}
+              onCancel={() => {
+                setIsDeleteModalOpen(false);
+                setIsDraft(false);
+              }}
+              okButtonProps={{
+                style: { background: "#49a843", borderColor: "#EAEAEA" },
+              }}
+            >
+              <p>{`${
+                isDraft
+                  ? "Are you sure you want to discard the changes"
+                  : "Are you sure you want to delete"
+              } ${type} ${
+                assessmentList.find((asses) => asses.id === editId).task_title
+              }?`}</p>
+            </Modal>
+          )}
+          <AssessmentList
+            mode={type}
+            filterShow={false}
+            handleEdit={(editId) => setEditId(editId)}
+            assessmentList={assessmentList}
+            setAssessmentSearchWord={setAssessmentSearchWord}
+            loading={loading}
+            handleDelete={handleDeleteAssessment}
+            handleAdd={handleAdd}
+            selectedAssessment={editId}
+            setIsStudentScoreOpen={setIsStudentScoreOpen}
+            isStudentScoreOpen={isStudentScoreOpen}
+          />
+          {assessmentList.map((assessment) => {
+            if (assessment.id == editId) {
+              return (
+                <AssessmentView
+                  key={assessment.id}
+                  currentAssessment={assessment}
+                  students={students}
+                  selectedStudents={selectedStudents}
+                  setSelectedStudents={setSelectedStudents}
+                  handleSave={handleSave}
+                  handleInputChange={handleInputChange}
+                  weightageShow={type === "task" ? false : true}
+                  handleSaveWeightage={handleSaveWeightage}
+                  handleAddWeightage={handleAddWeightage}
+                  handleWeightageChange={handleWeightageChange}
+                  isStudentScoreOpen={isStudentScoreOpen}
+                  handleStatusChange={handleStatusChange}
+                  handleAddScore={handleAddScore}
+                  setActiveWeightageIndex={setActiveWeightageIndex}
+                  activeWeightageIndex={activeWeightageIndex}
+                />
+              );
+            }
+            return null;
+          })}
 
-              //score section
-              handleStatusChange={handleStatusChange}
-              handleAddScore={handleAddScore}
-              activeWeightageIndex={activeWeightageIndex}
-              setActiveWeightageIndex={setActiveWeightageIndex}
-            />
-          );
-        }
-        return null;
-      })}
-      {editId === null && (
-        <div className="select-something-container flex">
-          <div className="image-container ">
-            <img src="/icons/select-something.svg" alt="" />
-            <p className="select-something-heading">
-              Please Select any of the Available Tasks or Create New Task
-            </p>
-          </div>
-        </div>
+          {editId === null && (
+            <div className="select-something-container flex">
+              <div className="image-container ">
+                <img src="/icons/select-something.svg" alt="" />
+                <p className="select-something-heading">
+                  Please Select any of the Available Tasks or Create New Task
+                </p>
+              </div>
+            </div>
+          )}
+        </>
+      ) : (
+        <StudentLogin type={type} />
       )}
     </>
   );

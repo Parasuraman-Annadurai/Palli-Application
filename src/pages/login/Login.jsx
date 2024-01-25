@@ -47,7 +47,16 @@ const Login = () => {
             localStorage.setItem("user", JSON.stringify(userData.data.data));
             setToken(res.data.data);
             setUser(userData.data.data);
-            navigate("/dashboard");
+            // navigate("/dashboard");
+
+              // navigate("/batch/232/task")
+
+            {
+              userData.data.data.role == "Student"
+                ? navigate("/batch/232/task")
+                : navigate("/batch/232/applications");
+            }
+
             setLoading(false);
           })
           .catch((err) => {
@@ -125,25 +134,17 @@ const Login = () => {
                         validate: isPasswordValid,
                       })}
                     />
-                   <span  
-                    id="eye--on"
-                    className="material-symbols-outlined eye-icon"
-                    onTouchStart={() =>
-                      handleEyeIconLongPress("password")
-                    }
-                    onTouchEnd={() => handleEyeIconEndPress("password")}
-                    onMouseDown={() =>
-                      handleEyeIconLongPress("password")
-                    }
-                    onMouseUp={() => handleEyeIconEndPress("password")}
-                    onMouseLeave={() =>
-                      handleEyeIconEndPress("password")
-                    }
-                  >
-                    {showPassword.password
-                      ? "visibility"
-                      : "visibility_off"}
-                  </span>
+                    <span
+                      id="eye--on"
+                      className="material-symbols-outlined eye-icon"
+                      onTouchStart={() => handleEyeIconLongPress("password")}
+                      onTouchEnd={() => handleEyeIconEndPress("password")}
+                      onMouseDown={() => handleEyeIconLongPress("password")}
+                      onMouseUp={() => handleEyeIconEndPress("password")}
+                      onMouseLeave={() => handleEyeIconEndPress("password")}
+                    >
+                      {showPassword.password ? "visibility" : "visibility_off"}
+                    </span>
                   </div>
                   <p className="error-message">
                     {errors.password ? errors.password.message : ""}

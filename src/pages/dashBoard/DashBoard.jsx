@@ -11,7 +11,6 @@ import { useAuth } from "../../context/AuthContext";
 
 import { API_END_POINT } from "../../../config";
 
-
 import "./scss/Dashboard.css";
 
 const DashBoard = () => {
@@ -214,7 +213,7 @@ const DashBoard = () => {
     setEndDate(dayjs(batch.end_date));
     setBatchNameError(null);
   };
-  
+
   const handleUpdate = () => {
     const hasError = validateForm();
 
@@ -280,7 +279,10 @@ const DashBoard = () => {
           </p>
         </div>
         <div className="header-img">
-          <img src="/images/dashboard_header_image.svg" alt="DashboardHeaderImage" />
+          <img
+            src="/images/dashboard_header_image.svg"
+            alt="DashboardHeaderImage"
+          />
         </div>
       </div>
 
@@ -296,8 +298,9 @@ const DashBoard = () => {
                   type="primary"
                   onClick={showModal}
                 >
-                  <h3>
-                    <span style={{fontSize:18}}>+</span> ADD BATCH
+                  <h3 style={{ width: "215px" }}>
+                    <span style={{ fontSize: 18, marginRight: 5 }}>+</span>
+                    ADD BATCH
                   </h3>
                 </Button>
               </div>
@@ -374,6 +377,7 @@ const DashBoard = () => {
                     <label htmlFor="startYearInput">Start Year</label>
                   </div>
                   <DatePicker
+                    className="batch-inputs"
                     id="startYearInput"
                     format="YYYY-MM-DD"
                     value={start_date ? dayjs(start_date) : null}
@@ -397,6 +401,7 @@ const DashBoard = () => {
                     <label htmlFor="endYearInput">End Year</label>
                   </div>
                   <DatePicker
+                    className="batch-inputs"
                     id="endYearInput"
                     format="YYYY-MM-DD"
                     value={end_date ? dayjs(end_date) : null}

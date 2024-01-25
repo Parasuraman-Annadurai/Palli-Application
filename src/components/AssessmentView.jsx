@@ -18,6 +18,7 @@ import { API_END_POINT } from "../../config";
 import { useParams } from "react-router-dom";
 
 import { useAuth } from "../context/AuthContext";
+import WeightageList from "./WeightageList";
 
 import "quill/dist/quill.snow.css";
 
@@ -30,12 +31,13 @@ const AssessmentView = ({
   handleSave,
   handleInputChange,
   isStudentScoreOpen,
-  
-  //score section
   handleStatusChange,
   handleAddScore,
   activeWeightageIndex,
-  setActiveWeightageIndex
+  setActiveWeightageIndex,
+  handleSaveWeightage,
+  handleAddWeightage,
+  handleWeightageChange,
 }) => {
   const { id: batchId } = useParams();
   const { token } = useAuth();
@@ -43,6 +45,7 @@ const AssessmentView = ({
   const [isEditing, setIsEditing] = useState(false);
   const [initialTitle, setInitialTitle] = useState("");
   const [studentScore, setStudentScore] = useState([]);
+  const [toggleAssigneeWeightage, setToggleAssigneeWeightage] = useState(0);
 
   const headers = {
     Authorization: `Bearer ${token.access}`,
@@ -55,29 +58,8 @@ const AssessmentView = ({
     task_description,
     due_date,
     draft,
-    task_users = [],
+    task_weightages = [],
   } = currentAssessment;
-
-  //default which students assigned the task
-  useEffect(() => {
-    if (task_users) {
-      const taskAssignedUsers = task_users.map((assigned) => assigned.user);
-      const updatedSelectedStudents = taskAssignedUsers;
-
-      // Check if the state actually needs to be updated
-      if (
-        JSON.stringify(selectedStudents) !==
-        JSON.stringify(updatedSelectedStudents)
-      ) {
-        setSelectedStudents(updatedSelectedStudents);
-      }
-    }
-  }, [task_users]);
-
-  const validateNotEmpty = (fieldName, value) => {
-    const trimmedValue = value ? value.replace(/<[^>]*>/g, "").trim() : null;
-    return trimmedValue ? null : `${fieldName} is required`;
-  };
 
   const CustomIcons = () => {
     const icons = Quill.import("ui/icons");
@@ -131,8 +113,10 @@ const AssessmentView = ({
       updateTheStudent = updateTheStudent.filter((id) => id != studentId);
       //remove user API call
       const url = `${API_END_POINT}/api/task/${batchId}/remove/user/${taskId}/`;
+
+      const payload = { user: [studentId] };
       axios
-        .delete(url, { user: [studentId] }, { headers })
+        .delete(url, { data: payload, headers })
         .then((res) => {
           if (res.data.status === 200) {
             notification.success({
@@ -173,20 +157,19 @@ const AssessmentView = ({
 
     if (isNotAllSelected) {
       //Deselect all students in tasks
+      const url = `${API_END_POINT}/api/task/${batchId}/remove/user/${taskId}/`;
 
+      const payload = { user: "__all__" };
       axios
-        .delete(`${API_END_POINT}/api/task/${batchId}/remove/user/${taskId}/`, {
-          data: { user: "__all__" },
-          headers: headers,
-        })
+        .delete(url, { data: payload, headers })
         .then((res) => {
           if (res.data.status === 200) {
-            setSelectedStudents([]);
             notification.success({
               message: "Success",
-              description: "All Students Removed Successfully",
+              description: "All Students unAssigned Successfully",
               duration: 1,
             });
+            setSelectedStudents([]);
           }
         })
         .catch((error) => {
@@ -218,41 +201,6 @@ const AssessmentView = ({
     }
   };
 
-  //handle this four functions later
-  const handleValidate = (formData) => {
-    //if student not assign show the error
-    if (selectedStudents.length === 0) {
-      setError("assignee", {
-        type: "manual",
-        message: "Assignee is required",
-      });
-      return;
-    }
-
-    handleSave(formData, draft);
-
-    reset({
-      Title: "",
-      Description: "",
-      Deadline: null,
-      SubmissionLink: "",
-    });
-  };
-
-  const handleTick = () => {
-    setIsEditing(false);
-  };
-  const handleCancelClick = () => {
-    setValue("Title", initialTitle);
-    setIsEditing(false);
-  };
-
-  const onDoubleClick = () => {
-    setInitialTitle(getValues("Title"));
-    setIsEditing(true);
-  };
-
- 
 
 
 
@@ -284,7 +232,7 @@ const AssessmentView = ({
       task_weightage: weightage.id,
       task_score: Number(e.target.value),
     };
-  
+  console.log(weightage);
     // Check if the score for the same student and weightage ID already exists
     const existingScoreIndex = studentScore.findIndex(
       (score) =>
@@ -305,7 +253,6 @@ const AssessmentView = ({
   };
 
 
-
   return (
     <>
       {!isStudentScoreOpen ? (
@@ -317,7 +264,7 @@ const AssessmentView = ({
               <>
                 <div className="module-header-section-container">
                   <div className="module-header-section flex">
-                    <div className="module-title-section flex">
+                    <div className="module-title-section grid">
                       <input
                         value={task_title ? task_title : ""}
                         name="task_title"
@@ -331,40 +278,36 @@ const AssessmentView = ({
                         // readOnly={!isEditing}
                         autoFocus={true}
                       />
-
                       {/* {isEditing && (
-                    <div>
-                      <span className="yes-btn">
-                        <img
-                          src="/public/icons/tick.svg"
-                          alt=""
-                          onClick={handleTick}
-                        />
-                      </span>
-                      <span className="no-btn">
-                        <img
-                          src="/public/icons/remove.svg"
-                          alt=""
-                          onClick={handleCancelClick}
-                        />
-                      </span>
-                    </div>
-                  )} */}
+                      <div>
+                        <span className="yes-btn">
+                          <img
+                            src="/public/icons/tick.svg"
+                            alt=""
+                            onClick={handleTick}
+                          />
+                        </span>
+                        <span className="no-btn">
+                          <img
+                            src="/public/icons/remove.svg"
+                            alt=""
+                            onClick={handleCancelClick}
+                          />
+                        </span>
+                      </div>
+                    )} */}
                     </div>
                   </div>
                   <p className="error-message"></p>
                 </div>
-
                 <div className="task-details-header-container">
                   <div className="task-label-container flex">
                     <h4>Task Details</h4>
                     <div className="horizon-line"></div>
                   </div>
-
                   <div className="task-details-main-container flex">
                     <div className="task-deadline-container common-property">
                       <p className="task-deadline-label">Deadline</p>
-
                       <DatePicker
                         value={due_date ? dayjs(due_date) : null}
                         showTime={{ format: "HH:mm" }}
@@ -381,7 +324,6 @@ const AssessmentView = ({
                       <p className="error-message"></p>
                     </div>
                   </div>
-
                   <div className="task-editor-container">
                     <p className="task-description-label">Description</p>
                     <div className="task-editor">
@@ -425,18 +367,23 @@ const AssessmentView = ({
                       </>
                     </div>
                   </div>
-
-                  <div className="submission-folder-link-container">
-                    <input type="link" placeholder="Paste your link here..." />
+                  <div className="link">
+                    <input
+                      className="submission-folder-link-container"
+                      type="link"
+                      placeholder="Paste your link here..."
+                    />
                   </div>
                   <div className="task-create-btn-section flex">
-                    <button
-                      type="submit"
-                      className="btn primary-medium"
-                      onClick={() => handleSave(currentAssessment)}
-                    >
-                      {draft ? "Create" : "Update"}
-                    </button>
+                    <div className="main-create-btn">
+                      <button
+                        type="submit"
+                        className="btn primary-medium"
+                        onClick={() => handleSave(currentAssessment)}
+                      >
+                        {draft ? "Create" : "Update"}
+                      </button>
+                    </div>
                   </div>
                 </div>
               </>
@@ -444,174 +391,213 @@ const AssessmentView = ({
           </section>
           {!draft && (
             <section className="assignee-and-weightage-container">
-              <div className="title-section flex">
-                <div className="assignee-title selection active">
-                  <h4>Assignee</h4>
+              <div className={`title-section flex`}>
+                <div
+                  className={`assignee-title selection ${
+                    toggleAssigneeWeightage === 0 ? "active" : ""
+                  }`}
+                >
+                  <h4
+                    onClick={() => setToggleAssigneeWeightage(0)}
+                    className={toggleAssigneeWeightage === 0 ? "active" : ""}
+                  >
+                    Assignee
+                  </h4>
                 </div>
-                <div className="weightage-title selection ">
-                  <h4>Weightage</h4>
+                <div
+                  className={`weightage-title selection ${
+                    toggleAssigneeWeightage === 1 ? "active" : ""
+                  }`}
+                >
+                  {weightageShow && (
+                    <h4
+                      onClick={() => setToggleAssigneeWeightage(1)}
+                      className={toggleAssigneeWeightage === 1 ? "active" : ""}
+                    >
+                      Weightage
+                    </h4>
+                  )}
                 </div>
               </div>
-              <div className="assignee-search-container">
-                {/* search bar use in future */}
-                <input
-                  type="text"
-                  style={{ border: "1px solid grey" }}
-                  placeholder="Search here..."
-                />
-              </div>
-              <div className="assign-listing-container">
-                <div className="select-all flex">
+              {toggleAssigneeWeightage === 0 ? (
+                <>
+                  {/* <div className="assignee-search-container">
                   <input
-                    className="global-checkbox"
-                    type="checkbox"
-                    onChange={handleAllCheckboxChange}
-                    checked={selectedStudents.length == students.length}
+                    type="text"
+                    style={{ border: "1px solid grey" }}
+                    placeholder="Search here..."
                   />
-                  <span>
-                    {selectedStudents.length === students.length
-                      ? "All Students"
-                      : selectedStudents.length == 0
-                      ? "Select Students"
-                      : `${selectedStudents.length} Selected`}
-                  </span>
-                </div>
-                <div className="assignee-card-listing-container">
-                  {students.map((student) => {
-                    return (
-                      <div
-                        className="individual-assignee-card flex"
-                        key={student.id}
-                      >
-                        <input
-                          type="checkbox"
-                          onChange={() => handleCheckboxChange(student.id)}
-                          checked={selectedStudents.includes(student.id)}
-                        />
-                        <div className="profile flex">
-                          <div className="profile-letter">
-                            <span>
-                              {student?.first_name[0]}
-                              {student?.last_name[0]}
-                            </span>
+                </div> */}
+                  <div className="assign-listing-container">
+                    <div className="select-all flex">
+                      <input
+                        className="global-checkbox"
+                        type="checkbox"
+                        onChange={handleAllCheckboxChange}
+                        checked={selectedStudents.length == students.length}
+                      />
+                      <span>
+                        {selectedStudents.length === students.length
+                          ? "All Students"
+                          : selectedStudents.length == 0
+                          ? "Select Students"
+                          : `${selectedStudents.length} Selected`}
+                      </span>
+                    </div>
+                    <div className="assignee-card-listing-container">
+                      {students.map((student) => {
+                        return (
+                          <div
+                            className="individual-assignee-card flex"
+                            key={student.id}
+                          >
+                            <input
+                              className="student-checkbox "
+                              type="checkbox"
+                              onChange={() => handleCheckboxChange(student.id)}
+                              checked={selectedStudents.includes(student.id)}
+                            />
+                            <div className="profile flex">
+                              <div className="profile-letter">
+                                <span>
+                                  {student?.first_name[0]}
+                                  {student?.last_name[0]}
+                                </span>
+                              </div>
+                              <div className="assignee-name">
+                                <p>
+                                  {student.first_name} {student.last_name}
+                                </p>
+                              </div>
+                            </div>
                           </div>
-
-                          <div className="assignee-name">
-                            <p>
-                              {student.first_name} {student.last_name}
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </>
+              ) : (
+                weightageShow && (
+                  <WeightageList
+                    taskId={taskId}
+                    taskWeightages={task_weightages}
+                    handleSaveWeightage={handleSaveWeightage}
+                    handleAddWeightage={handleAddWeightage}
+                    handleWeightageChange={handleWeightageChange}
+                  />
+                )
+              )}
             </section>
           )}
         </>
       ) : (
-        <>
-          <main className="main-container">
-            {currentAssessment.task_users &&
-              currentAssessment.task_users.map((students, index) => {
-                return (
-                  <>
-                    <div className="task-user-list-container flex" key={index}>
-                      <div className="student-info flex">
-                        <div className="student-name-container">
-                          <p>
-                            {students["user_details"]["first_name"].slice(0, 1)}
-                            {students["user_details"]["last_name"].slice(0, 1)}
-                          </p>
-                        </div>
-                        <div className="student-email-container">
-                          <p className="student-name"></p>
-                          <p className="student-email"></p>
-                        </div>
+        <main className="main-container">
+          {currentAssessment.task_users &&
+            currentAssessment.task_users.map((students, index) => {
+              return (
+                <>
+                  <div className="task-user-list-container flex" key={index}>
+                    <div className="student-info flex">
+                      <div className="student-name-container">
+                        <p>
+                          {students["user_details"]["first_name"]}
+                          {students["user_details"]["last_name"]}
+                        </p>
                       </div>
-                      <div className="student-status">
-                        <p>Status</p>
-                        <span>{students["task_status"]}</span>
-                      </div>
-                      <div className="sumbitted-date">
-                        <p>Deadline</p>
-                        <span>
-                          {dayjs(students["task"]["due_date"]).format(
-                            "MMMM, DD YYYY"
-                          )}
-                        </span>
-                      </div>
-                      <div className="student-file">
-                        <p>Submission Link</p>
-                        <span>{students["submission_link"]}</span>
-                      </div>
-                      <div className="student-work">
-                        {weightageShow
-                          ? students["task_status"] === "SUBMITTED" && (
-                              <button
-                                className="secondary-btn-sm"
-                                onClick={()=>{setActiveWeightageIndex(index),handleAddScore(studentScore)}}
-                              >
-                                {activeWeightageIndex === index
-                                  ? "Submit"
-                                  : " Add mark"}
-                              </button>
-                            )
-                          : students["task_status"] === "SUBMITTED" && (
-                              <Dropdown
-                                menu={{ items: itemRenderer(students.id) }}
-                                placement="bottomLeft"
-                                trigger={["click"]}
-                              >
-                                <a
-                                  className="ant-dropdown-link"
-                                  onClick={(e) => {
-                                    e.preventDefault();
-                                  }}
-                                >
-                                  Take action
-                                </a>
-                              </Dropdown>
-                            )}
+                      <div className="student-email-container">
+                        <p className="student-name">
+                          {students.user_details.first_name}{" "}
+                          {students.user_details.last_name}
+                        </p>
+                        <p className="student-email">
+                          {students.user_details.email}
+                        </p>{" "}
                       </div>
                     </div>
-
-                    {activeWeightageIndex === index && (
-                      <div className="applied-weightage-list-container flex">
-                        {currentAssessment.task_weightages &&
-                          currentAssessment.task_weightages.map(
-                            (weightage, weightageIndex) => (
-                              <div
-                                key={weightageIndex}
-                                className="applied-weightage-card flex"
+                    <div className="student-status">
+                      <p>Status</p>
+                      <span>{students["task_status"]}</span>
+                    </div>
+                    <div className="sumbitted-date">
+                      <p>Deadline</p>
+                      <span>
+                        {dayjs(students["task"]["due_date"]).format(
+                          "MMMM, DD YYYY"
+                        )}
+                      </span>
+                    </div>
+                    <div className="student-file">
+                      <p>Submission Link</p>
+                      <span>{students["submission_link"]}</span>
+                    </div>
+                    <div className="student-work">
+                      {weightageShow
+                        ? students["task_status"] === "SUBMITTED" && (
+                            <button
+                              className="secondary-btn-sm"
+                              onClick={() => {
+                                setActiveWeightageIndex(index),
+                                  handleAddScore(studentScore);
+                              }}
+                            >
+                              {activeWeightageIndex === index
+                                ? "Submit"
+                                : " Add mark"}
+                            </button>
+                          )
+                        : students["task_status"] === "SUBMITTED" && (
+                            <Dropdown
+                              menu={{ items: itemRenderer(students.id) }}
+                              placement="bottomLeft"
+                              trigger={["click"]}
+                            >
+                              <a
+                                className="ant-dropdown-link"
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                }}
                               >
-                                <div className="applied-weightage-name">
-                                  {weightage.weightage_details.weightage}
-                                </div>
-                                <div className="weightage-checkbox">
-                                  <input
-                                    type="number"
-                                    style={{
-                                      border: "1px solid grey",
-                                    }}
-                                    onChange={(e) =>{ handleScoreOnchange(e, students, weightage)}}
-                                  />
-                                </div>
-                                
-                              </div>
-                            )
+                                Take action
+                              </a>
+                            </Dropdown>
                           )}
-                      </div>
-                    )}
-                  </>
-                );
-              })}
-          </main>
-        </>
+                    </div>
+                  </div>
+                  {activeWeightageIndex === index && (
+                    <div className="applied-weightage-list-container flex">
+                      
+                      {currentAssessment.task_weightages &&
+                        currentAssessment.task_weightages.map(
+                          (weightage, weightageIndex) => (
+                            <div
+                              key={weightageIndex}
+                              className="applied-weightage-card flex"
+                            >
+                              <div className="applied-weightage-name">
+                                {weightage.weightage_details?.weightage}
+                              </div>
+                              <div className="weightage-checkbox">
+                                <input
+                                  type="number"
+                                  style={{
+                                    border: "1px solid grey",
+                                  }}
+                                  onChange={(e) => {
+                                    handleScoreOnchange(e, students, weightage);
+                                  }}
+                                />
+                              </div>
+                            </div>
+                          )
+                        )}
+                    </div>
+                  )}
+                </>
+              );
+            })}
+        </main>
       )}
     </>
   );
-};
-
+}
 export default AssessmentView;

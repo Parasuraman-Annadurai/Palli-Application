@@ -1227,6 +1227,8 @@ body {
           }
         }
         .assignee-card-listing-container {
+          height: 520px;
+          overflow-y: scroll;
           .individual-assignee-card {
             gap: 10px;
             align-items: center;

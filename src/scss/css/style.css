@@ -660,6 +660,8 @@ body .container .main-container .module-header-section-container .module-header-
 }
 body .container .main-container .module-header-section-container .module-header-section .module-title-section input {
   font-size: 16px;
+  padding: 5px;
+  padding-left: 0px;
   width: 70%;
 }
 body .container .main-container .module-header-section-container .module-header-section .module-title-section input:hover {
@@ -840,6 +842,7 @@ body .container .main-container .task-details-header-container .weightage-label-
   align-items: center;
   gap: 11px;
   padding-bottom: 16px;
+  padding-top: 16px;
 }
 body .container .main-container .task-details-header-container .weightage-label-container h3 {
   font-size: 12px;
@@ -1006,6 +1009,18 @@ body .container .assignee-and-weightage-container .weightage-delete {
 }
 body .container .weightage-action {
   cursor: pointer;
+}
+
+.ant-picker-focused {
+  border: 1px solid #49a843 !important;
+}
+
+.ant-picker:hover {
+  border: 1px solid #49a843 !important;
+}
+
+.ant-select-selector:hover {
+  border: 1px solid #49a843 !important;
 }
 
 /*# sourceMappingURL=style.css.map */

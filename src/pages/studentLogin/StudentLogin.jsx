@@ -93,7 +93,7 @@ const StudentLogin = ({ type }) => {
       .catch((error) => {
         console.log(error);
       });
-  }, []);
+  }, [type]);
 
   const handleChange = (status) => {
     if (status !== "SUBMITTED") {
@@ -258,10 +258,10 @@ const StudentLogin = ({ type }) => {
                       ))}
                   </div>
                 </div>
-                <div className="student-task-label-container flex">
+                {/* <div className="student-task-label-container flex">
                   <h3>Task File</h3>
                   <div className="horizon-line"></div>
-                </div>
+                </div> */}
                 {/* <div className="file-input-container">
                   <div className="upload-icon-container flex">
                     <img src="/icons/upload.svg" className="upload-icon" />

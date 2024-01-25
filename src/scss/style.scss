@@ -817,10 +817,12 @@ body {
             gap: 8px;
             input {
               font-size: 16px;
-              // padding-left: 10px;
+              padding: 5px;
+              padding-left: 0px;
               width: 70%;
               &:hover {
                 background-color: $side_bar_bg;
+                // padding: 3px;
                 // width: 100%;
                 // border: 1px solid $primary-color;
               }
@@ -1103,7 +1105,7 @@ body {
           align-items: center;
           gap: 11px;
           padding-bottom: 16px;
-
+          padding-top: 16px;
           h3 {
             font-size: 12px;
             line-height: 16px;
@@ -1318,4 +1320,14 @@ body {
       // }
     }
   }
+}
+
+.ant-picker-focused{
+  border: 1px solid $primary-color !important;
+}
+.ant-picker:hover{
+border: 1px solid $primary-color !important;
+}
+.ant-select-selector:hover{
+  border: 1px solid $primary-color !important;
 }

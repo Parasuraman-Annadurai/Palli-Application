@@ -35,16 +35,18 @@ const ChangePassword = () => {
     const searchParams = new URLSearchParams(location.search);
     const token = searchParams.get("token");
 
+
    if(token){
     axios.get(`${API_END_POINT}/api/accounts/password/token_verification/?token=${token}`).then((res)=>{
-      if(res.data.message){
+      if(res.data.data.is_valid){
         setVerificationToken(token);
       }
     }).catch((error)=>{
       if(error.response && error.response.data.status === 400){
+        console.log();
         notification.error({
           message: "Error",
-          description: `${error.response.data.errors}`,
+          description: `${error.response.data.message}`,
         })
         navigate("/login")
       }
@@ -88,6 +90,7 @@ const ChangePassword = () => {
       };
       if(verificationToken){
         axios.post(`${API_END_POINT}/api/accounts/change/password?token=${verificationToken}`,{password:confirmPassword},{headers}).then((res)=>{
+          console.log(res);
           notification.success({
             message : "Success",
             description : `${res.data.message}`,

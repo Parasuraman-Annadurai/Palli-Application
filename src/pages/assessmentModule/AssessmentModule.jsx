@@ -102,12 +102,13 @@ const AssessmentModule = ({ type }) => {
       let cloneAssessmentList = [...assessmentList];
 
       cloneAssessmentList = cloneAssessmentList?.map((assessment) => {
-        if(assessment?.task_weightages?.length>0){
+        if (assessment?.task_weightages?.length > 0) {
           assessment["task_weightages"] = assessment.task_weightages?.map(
             (weightage) => {
               const weightObject = {
                 weightage_percentage: weightage.weightage_percentage,
                 weightage: weightage.weightage,
+                id: weightage.id,
               };
 
               if ("id" in weightObject) {
@@ -116,12 +117,13 @@ const AssessmentModule = ({ type }) => {
               return weightObject;
             }
           );
-        }
-        else{
-          assessment["task_weightages"] = [{
-            weightage_percentage:null,
-            weightage: null,
-          }]
+        } else {
+          assessment["task_weightages"] = [
+            {
+              weightage_percentage: null,
+              weightage: null,
+            },
+          ];
         }
 
         return assessment;
@@ -199,7 +201,6 @@ const AssessmentModule = ({ type }) => {
       ? `${API_END_POINT}/api/task/${batchId}/create_task/`
       : `${API_END_POINT}/api/task/${batchId}/update_task/${editId}`;
     const method = isNew ? "POST" : "PUT";
-
 
     axios({
       method: method,
@@ -298,9 +299,9 @@ const AssessmentModule = ({ type }) => {
     setAssessmentList(updatedList);
   };
 
-  const makePostRequest = async (url, data,method) => {
+  const makePostRequest = async (url, data, method) => {
     const response = await axios(url, {
-      method:method,
+      method: method,
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token.access}`,
@@ -317,7 +318,6 @@ const AssessmentModule = ({ type }) => {
       (assessment) => assessment.id == editId
     );
 
-
     let createPromise = [];
     let updatePromise = [];
     if (batchId && editId) {
@@ -325,11 +325,12 @@ const AssessmentModule = ({ type }) => {
         if ("id" in weightage) {
           const url = `${API_END_POINT}/api/task/${batchId}/update/weightage/${weightage.id}`;
           //its for update
-          const  {id,...postPayload} = weightage;
-          updatePromise.push(makePostRequest(url, postPayload,"PUT"));
+          const { id, ...postPayload } = weightage;
+
+          updatePromise.push(makePostRequest(url, postPayload, "PUT"));
         } else {
           const url = `${API_END_POINT}/api/task/${batchId}/assign/task_weightage/${editId}`;
-          createPromise.push(makePostRequest(url, weightage,"POST"));
+          createPromise.push(makePostRequest(url, weightage, "POST"));
         }
       });
 
@@ -352,7 +353,7 @@ const AssessmentModule = ({ type }) => {
                   }
                 );
               }
-              return assessment
+              return assessment;
             });
 
             setAssessmentList(cloneAssessmentList);
@@ -370,7 +371,6 @@ const AssessmentModule = ({ type }) => {
               message: "Sucess",
               description: "Weightage Linked Successfully",
             });
-
           })
           .catch((error) => {
             console.error("One or more requests failed:", error);
@@ -387,8 +387,8 @@ const AssessmentModule = ({ type }) => {
     //  setAssessmentList();
     copyAssessment = copyAssessment.map((assessment) => {
       if (assessment.id === editId) {
-       assessment["task_weightages"] =
-         assessment.task_weightages.concat(newWeightage);
+        assessment["task_weightages"] =
+          assessment.task_weightages.concat(newWeightage);
       }
       return assessment;
     });
@@ -407,6 +407,42 @@ const AssessmentModule = ({ type }) => {
     });
 
     setAssessmentList(copyAssessment);
+  };
+
+  //task delete weightage here
+  const handleDeleteWeightage = (deleteWeightageId) => {
+    const url = `${API_END_POINT}/api/task/${batchId}/delete/task_weightage/${deleteWeightageId}`;
+
+    let deleteWeightage = [...assessmentList];
+
+    deleteWeightage = deleteWeightage.map((assessment) => {
+      if (assessment.id === editId) {
+        // Use map to create a new array of task_weightages without the specified deleteWeightageId
+        const updatedTaskWeightages = assessment.task_weightages.filter(
+          (weightage) => weightage.id !== deleteWeightageId
+        );
+        return {
+          ...assessment,
+          task_weightages: updatedTaskWeightages,
+        };
+      }
+      return assessment;
+    });
+
+    axios
+      .delete(url, { headers })
+      .then((res) => {
+        if (res.data.status === 200) {
+          notification.success({
+            message: "Success",
+            description: `${res.data.message}`,
+          });
+          setAssessmentList(deleteWeightage);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
   return (
     <>
@@ -460,6 +496,7 @@ const AssessmentModule = ({ type }) => {
                   handleSaveWeightage={handleSaveWeightage}
                   handleAddWeightage={handleAddWeightage}
                   handleWeightageChange={handleWeightageChange}
+                  handleDeleteWeightage={handleDeleteWeightage}
                 />
               );
             }

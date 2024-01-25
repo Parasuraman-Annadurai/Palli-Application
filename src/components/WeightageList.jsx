@@ -13,7 +13,8 @@ const WeightageList = ({
   taskWeightages,
   handleSaveWeightage,
   handleAddWeightage,
-  handleWeightageChange
+  handleWeightageChange,
+  handleDeleteWeightage
 }) => {
   const { id: batchId } = useParams();
   const { token } = useAuth();
@@ -35,28 +36,6 @@ const WeightageList = ({
 
 
 
-  const handleDeleteWeightage = (deleteIndex) => {
-    const copyWeightage = [...taskWeightages];
-    copyWeightage.splice(deleteIndex, 1);
-
-    const removeWeightageId = appliedWeightage[deleteIndex]["id"];
-    const url = `${API_END_POINT}/api/task/${batchId}/delete/task_weightage/${removeWeightageId}`;
-
-    axios
-      .delete(url, { headers })
-      .then((res) => {
-        if (res.data.status === 200) {
-          notification.success({
-            message: "Success",
-            description: `${res.data.message}`,
-          });
-          setSeletedWeightage(copyWeightage);
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
 
 
   return (
@@ -64,7 +43,6 @@ const WeightageList = ({
       <div className="weightage-adding-container flex">
         <div className="weight-inputs">
           {taskWeightages.map((taskWeightage, index) => {
-            console.log(taskWeightage);
             return (
               <div
                 style={{ display: "flex", gap: 10 }}
@@ -106,7 +84,7 @@ const WeightageList = ({
                 <div className="weightage-unit-container flex">
                   <div className="weightage-action">
                     {/* Show the delete icon only if weightage is greater than 0 */}
-                    <span onClick={() => handleDeleteWeightage(index)}>
+                    <span onClick={() => handleDeleteWeightage(taskWeightage.id)}>
                       Delete
                     </span>
                   </div>

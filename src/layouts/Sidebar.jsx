@@ -97,9 +97,9 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
     <>
       <nav className="side-nav-container flex">
         <div className="logo" style={{ cursor: "pointer" }}>
-          <Link to="/dashboard">
+          {/* <Link to="/dashboard"> */}
             <img src="/images/dckap_palli_logo_sm.svg" alt="DCKAP Palli logo" />
-          </Link>
+          {/* </Link> */}
         </div>
 
         {!isDashboardPage && (

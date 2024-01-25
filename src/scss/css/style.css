@@ -647,9 +647,6 @@ body .container .main-container {
   width: 100%;
   border-right: 1px solid #eaeaea;
 }
-body .container .main-container .module-header-section-container {
-  padding-bottom: 14px;
-}
 body .container .main-container .module-header-section-container .module-header-section {
   justify-content: space-between;
   align-items: center;
@@ -660,7 +657,6 @@ body .container .main-container .module-header-section-container .module-header-
 }
 body .container .main-container .module-header-section-container .module-header-section .module-title-section input {
   font-size: 16px;
-  padding-left: 10px;
   width: 70%;
 }
 body .container .main-container .module-header-section-container .module-header-section .module-title-section input:hover {
@@ -954,6 +950,10 @@ body .container .assignee-and-weightage-container .assign-listing-container .sel
   font-size: 12px;
   font-family: "Roboto";
 }
+body .container .assignee-and-weightage-container .assign-listing-container .assignee-card-listing-container {
+  height: 520px;
+  overflow-y: scroll;
+}
 body .container .assignee-and-weightage-container .assign-listing-container .assignee-card-listing-container .individual-assignee-card {
   gap: 10px;
   align-items: center;
@@ -1004,7 +1004,7 @@ body .container .assignee-and-weightage-container .weightage-delete {
   margin-left: 5px;
   border-radius: 3px;
 }
-body .container .weightage-action {
+body .container .weightage-unit-container .weightage-action {
   cursor: pointer;
 }
 

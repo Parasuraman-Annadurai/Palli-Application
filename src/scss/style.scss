@@ -806,7 +806,7 @@ body {
       border-right: 1px solid $border-color;
 
       .module-header-section-container {
-        padding-bottom: 14px;
+        // padding-bottom: 14px;
 
         .module-header-section {
           justify-content: space-between;
@@ -817,7 +817,7 @@ body {
             gap: 8px;
             input {
               font-size: 16px;
-              padding-left: 10px;
+              // padding-left: 10px;
               width: 70%;
               &:hover {
                 background-color: $side_bar_bg;
@@ -1227,6 +1227,8 @@ body {
           }
         }
         .assignee-card-listing-container {
+          height: 520px;
+          overflow-y: scroll;
           .individual-assignee-card {
             gap: 10px;
             align-items: center;
@@ -1290,30 +1292,33 @@ body {
         border-radius: 3px;
       }
     }
-    .weightage-action {
-      cursor: pointer;
-      // .btn.increment-btn {
-      //   background-color: #ffff;
-      //   cursor: pointer;
-      //   color: $font-primary-color;
-      //   border: 1px solid $border-color;
-      //   padding: 10px;
-      //   font-family: $font-Roboto;
-      //   border-right: none;
-      //   border-radius: 4px 0px 0px 4px;
-      //   font-family: $font-Roboto;
-      // }
 
-      // .btn.decrement-btn {
-      //   background-color: #ffff;
-      //   cursor: pointer;
-      //   color: $font-primary-color;
-      //   border: 1px solid $border-color;
-      //   padding: 10px;
-      //   font-family: $font-Roboto;
-      //   border-radius: 0px 4px 4px 0px;
-      //   font-family: $font-Roboto;
-      // }
+    .weightage-unit-container {
+      .weightage-action {
+        cursor: pointer;
+        // .btn.increment-btn {
+        //   background-color: #ffff;
+        //   cursor: pointer;
+        //   color: $font-primary-color;
+        //   border: 1px solid $border-color;
+        //   padding: 10px;
+        //   font-family: $font-Roboto;
+        //   border-right: none;
+        //   border-radius: 4px 0px 0px 4px;
+        //   font-family: $font-Roboto;
+        // }
+
+        // .btn.decrement-btn {
+        //   background-color: #ffff;
+        //   cursor: pointer;
+        //   color: $font-primary-color;
+        //   border: 1px solid $border-color;
+        //   padding: 10px;
+        //   font-family: $font-Roboto;
+        //   border-radius: 0px 4px 4px 0px;
+        //   font-family: $font-Roboto;
+        // }
+      }
     }
   }
 }

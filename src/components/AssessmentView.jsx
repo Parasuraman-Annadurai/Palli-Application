@@ -33,7 +33,7 @@ const AssessmentView = ({
   handleInputChange,
   handleSaveWeightage,
   handleAddWeightage,
-  handleWeightageChange
+  handleWeightageChange,
 }) => {
   const { id: batchId } = useParams();
   const { token } = useAuth();
@@ -41,7 +41,6 @@ const AssessmentView = ({
   const [isEditing, setIsEditing] = useState(false);
   const [initialTitle, setInitialTitle] = useState("");
   const [toggleAssigneeWeightage, setToggleAssigneeWeightage] = useState(0);
- 
 
   const headers = {
     Authorization: `Bearer ${token.access}`,
@@ -56,7 +55,6 @@ const AssessmentView = ({
     draft,
     task_weightages = [],
   } = currentAssessment;
-
 
   const validateNotEmpty = (fieldName, value) => {
     const trimmedValue = value ? value.replace(/<[^>]*>/g, "").trim() : null;
@@ -236,7 +234,6 @@ const AssessmentView = ({
     setIsEditing(true);
   };
 
-
   return (
     <>
       <section className="main-container">
@@ -385,7 +382,10 @@ const AssessmentView = ({
                 toggleAssigneeWeightage === 0 ? "active" : ""
               }`}
             >
-              <h4 onClick={() => setToggleAssigneeWeightage(0)}>
+              <h4
+                onClick={() => setToggleAssigneeWeightage(0)}
+                className={toggleAssigneeWeightage === 0 ? "active" : ""}
+              >
                 Assignee
               </h4>
             </div>
@@ -395,7 +395,10 @@ const AssessmentView = ({
               }`}
             >
               {weightageShow && (
-                <h4 onClick={() => setToggleAssigneeWeightage(1)}>
+                <h4
+                  onClick={() => setToggleAssigneeWeightage(1)}
+                  className={toggleAssigneeWeightage === 1 ? "active" : ""}
+                >
                   Weightage
                 </h4>
               )}
@@ -403,14 +406,13 @@ const AssessmentView = ({
           </div>
           {toggleAssigneeWeightage === 0 ? (
             <>
-              <div className="assignee-search-container">
-                {/* search bar use in future */}
+              {/* <div className="assignee-search-container">
                 <input
                   type="text"
                   style={{ border: "1px solid grey" }}
                   placeholder="Search here..."
                 />
-              </div>
+              </div> */}
               <div className="assign-listing-container">
                 <div className="select-all flex">
                   <input
@@ -435,6 +437,7 @@ const AssessmentView = ({
                         key={student.id}
                       >
                         <input
+                          className="student-checkbox "
                           type="checkbox"
                           onChange={() => handleCheckboxChange(student.id)}
                           checked={selectedStudents.includes(student.id)}

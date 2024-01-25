@@ -6,7 +6,7 @@ import { useAuth } from "../context/AuthContext";
 import Sidebar from "../layouts/Sidebar";
 
 const PrivateRoute = () => {
-  const { token } = useAuth();
+  const { token,user } = useAuth();
   const {pathname} = useLocation()
 
   const auth = token["access"] ? true : false;
@@ -20,9 +20,15 @@ const PrivateRoute = () => {
   ];
 
 
+  // Filter for student login remove the application
+  const filteredMenuList = menuList.filter(
+    (menuItem) => !(user.role === "Student" && menuItem.id === "applications")
+  );
+    
+
   return auth ? (
     <div className="container">
-      <Sidebar menuList={pathname.includes("dashboard") ? [] : menuList} />
+      <Sidebar menuList={pathname.includes("dashboard") ? [] : filteredMenuList} />
       <Outlet />
     </div>
   ) : (

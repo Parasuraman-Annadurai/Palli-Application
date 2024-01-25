@@ -48,7 +48,15 @@ const Login = () => {
             setToken(res.data.data);
             setUser(userData.data.data);
             // navigate("/dashboard");
-            navigate("/batch/232/applications");
+
+              // navigate("/batch/232/task")
+
+            {
+              userData.data.data.role == "Student"
+                ? navigate("/batch/232/task")
+                : navigate("/batch/232/applications");
+            }
+
             setLoading(false);
           })
           .catch((err) => {
@@ -62,7 +70,6 @@ const Login = () => {
           duration: 3,
         });
         navigate("/login");
-       
       });
   };
   const handleEyeIconLongPress = (field) => {
@@ -127,25 +134,17 @@ const Login = () => {
                         validate: isPasswordValid,
                       })}
                     />
-                   <span  
-                    id="eye--on"
-                    className="material-symbols-outlined eye-icon"
-                    onTouchStart={() =>
-                      handleEyeIconLongPress("password")
-                    }
-                    onTouchEnd={() => handleEyeIconEndPress("password")}
-                    onMouseDown={() =>
-                      handleEyeIconLongPress("password")
-                    }
-                    onMouseUp={() => handleEyeIconEndPress("password")}
-                    onMouseLeave={() =>
-                      handleEyeIconEndPress("password")
-                    }
-                  >
-                    {showPassword.password
-                      ? "visibility"
-                      : "visibility_off"}
-                  </span>
+                    <span
+                      id="eye--on"
+                      className="material-symbols-outlined eye-icon"
+                      onTouchStart={() => handleEyeIconLongPress("password")}
+                      onTouchEnd={() => handleEyeIconEndPress("password")}
+                      onMouseDown={() => handleEyeIconLongPress("password")}
+                      onMouseUp={() => handleEyeIconEndPress("password")}
+                      onMouseLeave={() => handleEyeIconEndPress("password")}
+                    >
+                      {showPassword.password ? "visibility" : "visibility_off"}
+                    </span>
                   </div>
                   <p className="error-message">
                     {errors.password ? errors.password.message : ""}

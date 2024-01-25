@@ -13,7 +13,7 @@ const WeightageList = ({
   taskWeightages,
   handleSaveWeightage,
   handleAddWeightage,
-  handleWeightageChange
+  handleWeightageChange,
 }) => {
   const { id: batchId } = useParams();
   const { token } = useAuth();
@@ -32,8 +32,6 @@ const WeightageList = ({
         }
       });
   }, []);
-
-
 
   const handleDeleteWeightage = (deleteIndex) => {
     const copyWeightage = [...taskWeightages];
@@ -58,20 +56,31 @@ const WeightageList = ({
       });
   };
 
-
   return (
-    <div style={{ display: "flex", flexDirection: "column",gap:10,marginTop:20 }}>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        gap: 10,
+        marginTop: 20,
+      }}
+    >
       <div className="weightage-adding-container flex">
         <div className="weight-inputs">
           {taskWeightages.map((taskWeightage, index) => {
             console.log(taskWeightage);
             return (
               <div
-                style={{ display: "flex", gap: 10 }}
+                style={{
+                  display: "flex",
+                  gap: 10,
+                  alignItems: "center",
+                  marginBottom: 10,
+                }}
               >
                 <div className="weightage-select">
                   <Select
-                    style={{ width: "100px" }}
+                    style={{ width: "170px" }}
                     placeholder={"Select Weightage"}
                     value={taskWeightage.weightage}
                     onChange={(value) =>
@@ -88,7 +97,10 @@ const WeightageList = ({
                     ))}
                   </Select>
                 </div>
-                <div className="percentage">
+                <div
+                  className="percentage"
+                  style={{ maxWidth: 45, width: "100%" }}
+                >
                   <input
                     type="text"
                     value={taskWeightage.weightage_percentage}
@@ -100,14 +112,26 @@ const WeightageList = ({
                       )
                     }
                     className="task-weight-value-selector"
-                    style={{ border: "1px solid grey" }}
+                    style={{
+                      border: "1px solid #eaeaea",
+                      borderRadius: 4,
+                      width: "100%",
+                      paddingTop: 7.5,
+                      paddingBottom: 7.5,
+                      paddingLeft: 5,
+                      paddingRight: 5,
+                    }}
                   />
                 </div>
                 <div className="weightage-unit-container flex">
                   <div className="weightage-action">
                     {/* Show the delete icon only if weightage is greater than 0 */}
                     <span onClick={() => handleDeleteWeightage(index)}>
-                      Delete
+                      <img
+                        src="/icons/deleteIcon.svg"
+                        alt="delete-icon"
+                        className="delete-icon"
+                      />
                     </span>
                   </div>
                 </div>
@@ -118,17 +142,19 @@ const WeightageList = ({
       </div>
       <div className="add-weightage-button">
         <button
-           style={{ padding: 15, color: "green", cursor: "pointer" }}
+          className="btn create-btn"
+          style={{ padding: 15, cursor: "pointer" }}
           // className="btn secondary-medium-icon"
           onClick={handleAddWeightage}
         >
-         + Add Weightage
+          + Add Weightage
         </button>
       </div>
       <div>
         <div className="apply-weightage">
           <button
-            style={{ padding: 15, color: "green", cursor: "pointer" }}
+            className="btn primary-medium"
+            // style={{ padding: 15, color: "green", cursor: "pointer" }}
             onClick={() => handleSaveWeightage()}
           >
             Save
@@ -140,3 +166,10 @@ const WeightageList = ({
 };
 
 export default WeightageList;
+
+
+
+
+
+
+

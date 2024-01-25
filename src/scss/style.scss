@@ -454,7 +454,7 @@ body {
               line-height: 16px;
               font-weight: 400;
               color: $font-secondary-color;
-              width: 100% ;
+              width: 100%;
               img {
                 height: 16px;
                 width: 16px;
@@ -560,7 +560,6 @@ body {
             line-height: 16px;
             font-weight: 500;
             color: $font-primary-color;
-            font-weight: bolder;
           }
 
           span {
@@ -1159,42 +1158,16 @@ body {
                 border: 1px solid $border-color;
                 border-radius: 4px;
               }
-
-              .weightage-action {
-                .btn.increment-btn {
-                  background-color: #ffff;
-                  cursor: pointer;
-                  color: $font-primary-color;
-                  border: 1px solid $border-color;
-                  padding: 10px;
-                  font-family: $font-Roboto;
-                  border-right: none;
-                  border-radius: 4px 0px 0px 4px;
-                  font-family: $font-Roboto;
-                }
-
-                .btn.decrement-btn {
-                  background-color: #ffff;
-                  cursor: pointer;
-                  color: $font-primary-color;
-                  border: 1px solid $border-color;
-                  padding: 10px;
-                  font-family: $font-Roboto;
-                  border-radius: 0px 4px 4px 0px;
-                  font-family: $font-Roboto;
-                }
-              }
             }
           }
         }
         .task-create-btn-section {
           justify-content: end;
         }
-     
       }
     }
     .assignee-and-weightage-container {
-      max-width: 600px;
+      max-width: 301px;
       width: 100%;
       padding: 24px 20px;
       .title-section {
@@ -1207,15 +1180,16 @@ body {
           cursor: pointer;
           h4 {
             font: 500 16px/20px $font-Roboto;
+            color: $font-secondary-color;
+            padding-bottom: 5px;
+          }
+          h4.active {
+            font: 500 16px/20px $font-Roboto;
             color: $font-primary-color;
             padding-bottom: 5px;
           }
         }
-        .weightage-title {
-          h4 {
-            color: $font-secondary-color;
-          }
-        }
+
         .selection.active {
           border-bottom: 2px solid $primary-color;
         }
@@ -1267,7 +1241,7 @@ body {
               align-items: center;
 
               .profile-letter {
-                background-color: #73805a;
+                background-color: #eaf1db;
 
                 height: 24px;
                 width: 24px;
@@ -1284,11 +1258,10 @@ body {
           }
         }
       }
-      .weightage-container{
+      .weightage-container {
         display: flex;
         align-items: center;
         margin-top: 24px;
-
       }
       .weightage-list {
         select {
@@ -1299,23 +1272,48 @@ body {
           font: 400 12px/16px $font-Roboto;
         }
       }
-      .weightage-input{
-       input{
-        // padding: 10px 0 10px;
-        height: 36px;
-        width: 36px;
-        // background-color: red;
-        border: 1px solid $border-color;
-        // border-radius: 3px;
-       }
+      .weightage-input {
+        input {
+          // padding: 10px 0 10px;
+          height: 36px;
+          width: 36px;
+          // background-color: red;
+          border: 1px solid $border-color;
+          // border-radius: 3px;
+        }
       }
-      .weightage-delete{
+      .weightage-delete {
         border: 1px solid $border-color;
         width: 36px;
         height: 36px;
         margin-left: 5px;
         border-radius: 3px;
       }
+    }
+    .weightage-action {
+      cursor: pointer;
+      // .btn.increment-btn {
+      //   background-color: #ffff;
+      //   cursor: pointer;
+      //   color: $font-primary-color;
+      //   border: 1px solid $border-color;
+      //   padding: 10px;
+      //   font-family: $font-Roboto;
+      //   border-right: none;
+      //   border-radius: 4px 0px 0px 4px;
+      //   font-family: $font-Roboto;
+      // }
+
+      // .btn.decrement-btn {
+      //   background-color: #ffff;
+      //   cursor: pointer;
+      //   color: $font-primary-color;
+      //   border: 1px solid $border-color;
+      //   padding: 10px;
+      //   font-family: $font-Roboto;
+      //   border-radius: 0px 4px 4px 0px;
+      //   font-family: $font-Roboto;
+      // }
     }
   }
 }

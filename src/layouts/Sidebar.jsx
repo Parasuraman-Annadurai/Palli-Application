@@ -14,6 +14,7 @@ import AddBatch from "../components/AddBatchModule/AddBatch";
 import { API_END_POINT } from "../../config";
 
 const Sidebar = ({ menuList, activeMenuItem }) => {
+  console.log(menuList);
   const navigate = useNavigate();
   const { id: batchId } = useParams();
 
@@ -45,25 +46,27 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
   };
 
   useEffect(() => {
-    if (batchId) {
-      // On Batch, setting Applications as default page
-      const activeMenuItem = menuList.find((menu) =>
-        currentPath.includes(menu.id)
-      );
-      setActive(activeMenuItem.id);
+    if (user.role !== "Students") {
+      if (batchId) {
+        // On Batch, setting Applications as default page
+        const activeMenuItem = menuList.find((menu) =>
+          currentPath.includes(menu.id)
+        );
+        setActive(activeMenuItem.id);
 
-      axios
-        .get(`${API_END_POINT}/api/list/batch/`, { headers })
-        .then((res) => {
-          const batchListData = res.data.data;
-          setBatchList(
-            batchListData.filter((batch) => batch.id !== Number(batchId))
-          );
-          setCurrentBatch(
-            batchListData.find((batch) => batch.id === Number(batchId))
-          );
-        })
-        .catch((err) => console.log(err));
+        axios
+          .get(`${API_END_POINT}/api/list/batch/`, { headers })
+          .then((res) => {
+            const batchListData = res.data.data;
+            setBatchList(
+              batchListData.filter((batch) => batch.id !== Number(batchId))
+            );
+            setCurrentBatch(
+              batchListData.find((batch) => batch.id === Number(batchId))
+            );
+          })
+          .catch((err) => console.log(err));
+      }
     }
   }, [batchId]);
 
@@ -102,8 +105,8 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
         {!isDashboardPage && (
           <div
             className="batch-switch-container flex"
-            onClick={showDrawer}
-            // onClick={() => setShowSwitchBatch(!showSwitchBatch)}
+            onClick={user.role !== "Student" && showDrawer}
+            style={{ cursor: user.role === "Student" ? "default" : "pointer" }}
           >
             <div className="batch-content-container flex">
               <div className="batch-logo">
@@ -148,16 +151,19 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
         )}
         <div className="nav-links">
           <ul>
-            {!isDashboardPage && (
+            {/* {!isDashboardPage && (
               <li className={`main-link`}>
                 <a href={"/dashboard"} className="navigation flex">
                   <img src="/icons/backIcon.svg" alt={"Back to Dashboard"} />
                   <span>{"Back to Dashboard"}</span>
                 </a>
               </li>
-            )}
+            )} */}
+
             {menuList &&
               menuList.map((menu, index) => {
+               
+
                 return (
                   <li
                     key={index}
@@ -178,7 +184,7 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
                       <span>{menu.label}</span>
                     </Link>
                   </li>
-                );
+                ) 
               })}
           </ul>
         </div>
@@ -195,7 +201,14 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
           >
             <div className="user-details">
               <p>{user.last_name}</p>
-              <span>Admin</span>
+              <span>
+                {" "}
+                {user.role === "Student"
+                  ? "Student"
+                  : user.role === "Admin"
+                  ? "Admin"
+                  : user.role}
+              </span>
             </div>
           </Dropdown>
         </div>
@@ -210,9 +223,6 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
         setOpen={setOpen}
         showDrawer={showDrawer}
         onClose={onClose}
-        // popUp={popUp}
-        // modelRef={modelRef}
-        // showDrawer={showDrawer}
       />
     </>
   );

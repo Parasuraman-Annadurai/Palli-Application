@@ -8,7 +8,7 @@
     "build": "vite build",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "sass:compile": "sass --watch src/components/AddBatchModule/scss/AddBatch.scss src/components/AddBatchModule/scss/AddBatch.css",
+    "sass:compile": "sass --watch src/scss/style.scss src/scss/css/style.css",
     "sass:watch": ""
   },
   "dependencies": {

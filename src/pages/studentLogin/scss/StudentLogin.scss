@@ -128,6 +128,8 @@ li {
   }
 }
 
+
+
 .btn.primary-medium-default {
   cursor: not-allowed;
   background-color: var(--btn-default);
@@ -217,6 +219,38 @@ li {
   }
 }
 
+
+.btn.create-btn {
+  width: 100%;
+  padding: 8px 0;
+  border: 1px solid $border-color;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 500;
+  background-color: #ffff;
+  font-family: $font-Roboto;
+  text-transform: capitalize;
+
+  span {
+    font-size: 16px;
+    line-height: 20px;
+    font-weight: 400;
+    // color: $font-primary-color;
+    font-family: $font-Roboto;
+  }
+  // span:hover{
+  //   color: #fff;
+  // }
+}
+.btn.create-btn:hover {
+  background-color: $side_bar_bg;
+  // color: #fff;
+}
 //sec small
 
 @mixin secondary-btn-sm {
@@ -309,7 +343,7 @@ li {
       }
 
       span {
-        color: var(--font-primary-color);
+        color: $font-primary-color;
         font-size: 12px;
         line-height: 16px;
         font-family: $font-Roboto;
@@ -361,7 +395,7 @@ li {
         span {
           font-size: 12px;
           line-height: 16px;
-          color: var(--font-primary-color);
+          color: $font-primary-color;
         }
 
         ul {
@@ -416,13 +450,12 @@ li {
       }
     }
     .modal {
-      .all-btn{
+      .all-btn {
         .submit-btn {
           max-width: 140px;
           width: 100%;
         }
       }
-     
     }
 
     .student-task-file-container {
@@ -440,7 +473,7 @@ li {
           p {
             font-size: 12px;
             line-height: 16px;
-            color: var(--font-primary-color);
+            color: $font-primary-color;
           }
           span {
             font-size: 10px;
@@ -453,7 +486,7 @@ li {
         p {
           font-size: 12px;
           line-height: 16px;
-          font-family: var(--font-primary-color);
+          font-family: $font-primary-color;
         }
         img {
           width: 16px;
@@ -526,6 +559,11 @@ li {
 
     .weightage-adding-container {
       .weight-input {
+        .weightage-select {
+          display: flex;
+          gap: 10px;
+          align-items: center;
+        }
         p {
           font-size: 12px;
           font-family: $font-Roboto;
@@ -539,7 +577,7 @@ li {
           max-width: 200px;
           width: 100%;
           margin-right: 10px;
-          border: 1px solid var(--font-primary-color);
+          border: 1px solid $font-primary-color;
           border-radius: 4px;
           outline: none;
           border: 1px solid #eaeaea;

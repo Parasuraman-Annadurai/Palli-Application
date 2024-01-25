@@ -1120,6 +1120,8 @@ body {
 
         .weightage-adding-container {
           .weight-inputs {
+            display: flex;
+            gap: 20px;
             p {
               font-size: 12px;
               line-height: 16px;
@@ -1156,31 +1158,6 @@ body {
                 border: 1px solid $border-color;
                 border-radius: 4px;
               }
-
-              .weightage-action {
-                .btn.increment-btn {
-                  background-color: #ffff;
-                  cursor: pointer;
-                  color: $font-primary-color;
-                  border: 1px solid $border-color;
-                  padding: 10px;
-                  font-family: $font-Roboto;
-                  border-right: none;
-                  border-radius: 4px 0px 0px 4px;
-                  font-family: $font-Roboto;
-                }
-
-                .btn.decrement-btn {
-                  background-color: #ffff;
-                  cursor: pointer;
-                  color: $font-primary-color;
-                  border: 1px solid $border-color;
-                  padding: 10px;
-                  font-family: $font-Roboto;
-                  border-radius: 0px 4px 4px 0px;
-                  font-family: $font-Roboto;
-                }
-              }
             }
           }
         }
@@ -1203,15 +1180,16 @@ body {
           cursor: pointer;
           h4 {
             font: 500 16px/20px $font-Roboto;
+            color: $font-secondary-color;
+            padding-bottom: 5px;
+          }
+          h4.active {
+            font: 500 16px/20px $font-Roboto;
             color: $font-primary-color;
             padding-bottom: 5px;
           }
         }
-        .weightage-title {
-          h4 {
-            color: $font-secondary-color;
-          }
-        }
+
         .selection.active {
           border-bottom: 2px solid $primary-color;
         }
@@ -1263,7 +1241,7 @@ body {
               align-items: center;
 
               .profile-letter {
-                background-color: #73805a;
+                background-color: #eaf1db;
 
                 height: 24px;
                 width: 24px;
@@ -1311,6 +1289,31 @@ body {
         margin-left: 5px;
         border-radius: 3px;
       }
+    }
+    .weightage-action {
+      cursor: pointer;
+      // .btn.increment-btn {
+      //   background-color: #ffff;
+      //   cursor: pointer;
+      //   color: $font-primary-color;
+      //   border: 1px solid $border-color;
+      //   padding: 10px;
+      //   font-family: $font-Roboto;
+      //   border-right: none;
+      //   border-radius: 4px 0px 0px 4px;
+      //   font-family: $font-Roboto;
+      // }
+
+      // .btn.decrement-btn {
+      //   background-color: #ffff;
+      //   cursor: pointer;
+      //   color: $font-primary-color;
+      //   border: 1px solid $border-color;
+      //   padding: 10px;
+      //   font-family: $font-Roboto;
+      //   border-radius: 0px 4px 4px 0px;
+      //   font-family: $font-Roboto;
+      // }
     }
   }
 }

@@ -31,12 +31,16 @@ const AssessmentView = ({
   selectedStudents,
   handleSave,
   handleInputChange,
+  handleSaveWeightage,
+  handleAddWeightage,
+  handleWeightageChange,
 }) => {
   const { id: batchId } = useParams();
   const { token } = useAuth();
   const [loading, setLoading] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [initialTitle, setInitialTitle] = useState("");
+  const [toggleAssigneeWeightage, setToggleAssigneeWeightage] = useState(0);
 
   const headers = {
     Authorization: `Bearer ${token.access}`,
@@ -49,8 +53,8 @@ const AssessmentView = ({
     task_description,
     due_date,
     draft,
+    task_weightages = [],
   } = currentAssessment;
-
 
   const validateNotEmpty = (fieldName, value) => {
     const trimmedValue = value ? value.replace(/<[^>]*>/g, "").trim() : null;
@@ -108,10 +112,9 @@ const AssessmentView = ({
       let updateTheStudent = [...selectedStudents];
       updateTheStudent = updateTheStudent.filter((id) => id != studentId);
       //remove user API call
-      const url = `${API_END_POINT}/api/task/${batchId}/remove/user/${taskId}/`
+      const url = `${API_END_POINT}/api/task/${batchId}/remove/user/${taskId}/`;
 
-     
-      const payload= {user:[studentId]};
+      const payload = { user: [studentId] };
       axios
         .delete(url, { data: payload, headers })
         .then((res) => {
@@ -153,25 +156,25 @@ const AssessmentView = ({
 
     if (isNotAllSelected) {
       //Deselect all students in tasks
-      const url = `${API_END_POINT}/api/task/${batchId}/remove/user/${taskId}/`
+      const url = `${API_END_POINT}/api/task/${batchId}/remove/user/${taskId}/`;
 
-      const payload = {user : "__all__"};
-      axios.delete(url,{ data: payload, headers }).then((res)=>{
-        if (res.data.status === 200) {
-          notification.success({
-            message: "Success",
-            description: "All Students unAssigned Successfully",
-            duration: 1,
-          });
+      const payload = { user: "__all__" };
+      axios
+        .delete(url, { data: payload, headers })
+        .then((res) => {
+          if (res.data.status === 200) {
+            notification.success({
+              message: "Success",
+              description: "All Students unAssigned Successfully",
+              duration: 1,
+            });
+            setSelectedStudents([]);
+          }
           setSelectedStudents([]);
-        }
-        setSelectedStudents([]);
-      }).catch((error)=>{
-        console.log(error);
-      })
-      
-
-    
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     } else {
       const allStudentIds = [...students].map((student) => student.id);
 
@@ -230,8 +233,6 @@ const AssessmentView = ({
     setInitialTitle(getValues("Title"));
     setIsEditing(true);
   };
-
-  
 
   return (
     <>
@@ -360,13 +361,13 @@ const AssessmentView = ({
               </div>
               <div className="task-create-btn-section flex">
                 <div className="main-create-btn">
-                <button
-                  type="submit"
-                  className="btn primary-medium"
-                  onClick={() => handleSave(currentAssessment)}
-                >
-                  {draft ? "Create" : "Update"}
-                </button>
+                  <button
+                    type="submit"
+                    className="btn primary-medium"
+                    onClick={() => handleSave(currentAssessment)}
+                  >
+                    {draft ? "Create" : "Update"}
+                  </button>
                 </div>
               </div>
             </div>
@@ -375,84 +376,103 @@ const AssessmentView = ({
       </section>
       {!draft && (
         <section className="assignee-and-weightage-container">
-          <div className="title-section flex">
-            <div className="assignee-title selection active">
-              <h4>Assignee</h4>
+          <div className={`title-section flex`}>
+            <div
+              className={`assignee-title selection ${
+                toggleAssigneeWeightage === 0 ? "active" : ""
+              }`}
+            >
+              <h4
+                onClick={() => setToggleAssigneeWeightage(0)}
+                className={toggleAssigneeWeightage === 0 ? "active" : ""}
+              >
+                Assignee
+              </h4>
             </div>
-            <div className="weightage-title selection ">
-              <h4>Weightage</h4>
+            <div
+              className={`weightage-title selection ${
+                toggleAssigneeWeightage === 1 ? "active" : ""
+              }`}
+            >
+              {weightageShow && (
+                <h4
+                  onClick={() => setToggleAssigneeWeightage(1)}
+                  className={toggleAssigneeWeightage === 1 ? "active" : ""}
+                >
+                  Weightage
+                </h4>
+              )}
             </div>
           </div>
-          <div className="assignee-search-container">
-            <input
-              type="text"
-              placeholder="Search here..."
-            />
-          </div>
-          <div className="assign-listing-container">
-            <div className="select-all flex">
-              <input
-                className="global-checkbox"
-                type="checkbox"
-                
-                onChange={handleAllCheckboxChange}
-                checked={selectedStudents.length == students.length}
-              />
-              <span>{selectedStudents.length === students.length ? "All Students" : selectedStudents.length == 0  ? "Select Students" : `${selectedStudents.length} Selected`}</span>
-            </div>
-            <div className="assignee-card-listing-container">
-              {students.map((student) => {
-                return (
-                  <div
-                    className="individual-assignee-card flex"
-                    key={student.id}
-                  >
-                    <input
-                      className="student-checkbox"
-                      type="checkbox"
-                      onChange={() => handleCheckboxChange(student.id)}
-                      checked={selectedStudents.includes(student.id)}
-                    />
-                    <div className="profile flex">
-                      <div className="profile-letter">
-                        <span>
-                          {student?.first_name[0]}
-                          {student?.last_name[0]}
-                        </span>
+          {toggleAssigneeWeightage === 0 ? (
+            <>
+              {/* <div className="assignee-search-container">
+                <input
+                  type="text"
+                  style={{ border: "1px solid grey" }}
+                  placeholder="Search here..."
+                />
+              </div> */}
+              <div className="assign-listing-container">
+                <div className="select-all flex">
+                  <input
+                    className="global-checkbox"
+                    type="checkbox"
+                    onChange={handleAllCheckboxChange}
+                    checked={selectedStudents.length == students.length}
+                  />
+                  <span>
+                    {selectedStudents.length === students.length
+                      ? "All Students"
+                      : selectedStudents.length == 0
+                      ? "Select Students"
+                      : `${selectedStudents.length} Selected`}
+                  </span>
+                </div>
+                <div className="assignee-card-listing-container">
+                  {students.map((student) => {
+                    return (
+                      <div
+                        className="individual-assignee-card flex"
+                        key={student.id}
+                      >
+                        <input
+                          className="student-checkbox "
+                          type="checkbox"
+                          onChange={() => handleCheckboxChange(student.id)}
+                          checked={selectedStudents.includes(student.id)}
+                        />
+                        <div className="profile flex">
+                          <div className="profile-letter">
+                            <span>
+                              {student?.first_name[0]}
+                              {student?.last_name[0]}
+                            </span>
+                          </div>
+
+                          <div className="assignee-name">
+                            <p>
+                              {student.first_name} {student.last_name}
+                            </p>
+                          </div>
+                        </div>
                       </div>
-
-                      <div className="assignee-name">
-                        <p>
-                          {student.first_name} {student.last_name}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* weightage */}
-
-          {/* <div className="weightage-container">
-            <div className="weightage-list">
-              <select name="weightage" id="weightage">
-                <option value="Code Standard">Code Standard</option>
-                <option value="UI Styling">UI Styling</option>
-              </select>
-            </div>
-            <div className="weightage-input">
-              <input type="text" />
-            </div>
-            <div className="weightage-delete">
-              <img
-                src="/icons/deleteIcon.svg"
-                alt="delete-icon"
-                className="delete-icon"
+                    );
+                  })}
+                </div>
+              </div>
+            </>
+          ) : (
+            weightageShow && (
+              <WeightageList
+                taskId={taskId}
+                taskWeightages={task_weightages}
+                handleSaveWeightage={handleSaveWeightage}
+                handleAddWeightage={handleAddWeightage}
+                handleWeightageChange={handleWeightageChange}
               />
-            </div>
-          </div> */}
+            )
+          )}
         </section>
       )}
 

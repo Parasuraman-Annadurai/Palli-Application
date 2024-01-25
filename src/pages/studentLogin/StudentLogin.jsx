@@ -284,7 +284,7 @@ const StudentLogin = ({ type }) => {
                 onOk={handleSubmit}
                 onCancel={() => setIsModalOpen(false)}
                 footer={[
-                  <div style={{display:"flex", justifyContent:"end"}}>
+                  <div style={{ display: "flex", justifyContent: "end" }}>
                     <div
                       className="all-btn flex"
                       style={{ width: 250, justifyContent: "space-between" }}

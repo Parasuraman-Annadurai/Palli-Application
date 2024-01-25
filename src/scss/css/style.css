@@ -856,6 +856,10 @@ body .container .main-container .task-details-header-container .weightage-label-
   flex: 1;
   border: 1px solid #eaeaea;
 }
+body .container .main-container .task-details-header-container .weightage-adding-container .weight-inputs {
+  display: flex;
+  gap: 20px;
+}
 body .container .main-container .task-details-header-container .weightage-adding-container .weight-inputs p {
   font-size: 12px;
   line-height: 16px;
@@ -890,27 +894,6 @@ body .container .main-container .task-details-header-container .weightage-adding
   border: 1px solid #eaeaea;
   border-radius: 4px;
 }
-body .container .main-container .task-details-header-container .weightage-adding-container .weight-inputs .weightage-unit-container .weightage-action .btn.increment-btn {
-  background-color: white;
-  cursor: pointer;
-  color: #12160a;
-  border: 1px solid #eaeaea;
-  padding: 10px;
-  font-family: "Roboto";
-  border-right: none;
-  border-radius: 4px 0px 0px 4px;
-  font-family: "Roboto";
-}
-body .container .main-container .task-details-header-container .weightage-adding-container .weight-inputs .weightage-unit-container .weightage-action .btn.decrement-btn {
-  background-color: white;
-  cursor: pointer;
-  color: #12160a;
-  border: 1px solid #eaeaea;
-  padding: 10px;
-  font-family: "Roboto";
-  border-radius: 0px 4px 4px 0px;
-  font-family: "Roboto";
-}
 body .container .main-container .task-details-header-container .task-create-btn-section {
   justify-content: end;
 }
@@ -930,11 +913,13 @@ body .container .assignee-and-weightage-container .title-section .selection {
 }
 body .container .assignee-and-weightage-container .title-section .selection h4 {
   font: 500 16px/20px "Roboto";
-  color: #12160a;
+  color: #969d88;
   padding-bottom: 5px;
 }
-body .container .assignee-and-weightage-container .title-section .weightage-title h4 {
-  color: #969d88;
+body .container .assignee-and-weightage-container .title-section .selection h4.active {
+  font: 500 16px/20px "Roboto";
+  color: #12160a;
+  padding-bottom: 5px;
 }
 body .container .assignee-and-weightage-container .title-section .selection.active {
   border-bottom: 2px solid #49a843;
@@ -984,7 +969,7 @@ body .container .assignee-and-weightage-container .assign-listing-container .ass
   align-items: center;
 }
 body .container .assignee-and-weightage-container .assign-listing-container .assignee-card-listing-container .individual-assignee-card .profile .profile-letter {
-  background-color: #73805a;
+  background-color: #eaf1db;
   height: 24px;
   width: 24px;
   border-radius: 50%;
@@ -1018,6 +1003,9 @@ body .container .assignee-and-weightage-container .weightage-delete {
   height: 36px;
   margin-left: 5px;
   border-radius: 3px;
+}
+body .container .weightage-action {
+  cursor: pointer;
 }
 
 /*# sourceMappingURL=style.css.map */

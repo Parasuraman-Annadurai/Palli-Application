@@ -22,6 +22,7 @@ const TaskCard = ({
       ? text.substring(0, maxLength) + "..."
       : text;
   };
+
   return (
     <>
       <div
@@ -30,7 +31,7 @@ const TaskCard = ({
         } flex`}
         key={assessment.id}
         id={assessment.id}
-        onClick={()=>setIsStudentScoreOpen(!isStudentScoreOpen)}
+        onClick={()=>{assessment.task_users.length >0 && setIsStudentScoreOpen(!isStudentScoreOpen)}}
       >
         {loading ? (
           <Skeleton avatar={{ size: "small" }} active paragraph={{ rows: 1 }} />
@@ -76,7 +77,7 @@ const TaskCard = ({
                   50
                 )}
               </p>
-              <span className="btn btn-inprogress">Inprogress</span>
+              {/* <span className="btn btn-inprogress">Inprogress</span> */}
               <span className="btn btn-deadline">
                 {dayjs(assessment.due_date).format("MMM,DD YYYY")}
               </span>

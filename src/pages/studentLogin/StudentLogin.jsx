@@ -77,7 +77,7 @@ const StudentLogin = ({ type }) => {
         { headers }
       )
       .then((res) => {
-        const copyTaskList = [...res.data.data];        
+        const copyTaskList = [...res.data.data];
         setTaskLists(copyTaskList);
 
         if (!selectedTaskId) {
@@ -100,14 +100,13 @@ const StudentLogin = ({ type }) => {
           { headers }
         )
         .then((res) => {
-
-          let copiedTaskList = tasksLists.map((task)=>{
-            if(task.id === selectedTaskId){
-              task["task_status"] = status
+          let copiedTaskList = tasksLists.map((task) => {
+            if (task.id === selectedTaskId) {
+              task["task_status"] = status;
             }
-            return task
-          })
-        
+            return task;
+          });
+
           setTaskLists(copiedTaskList);
         })
         .catch((error) => {
@@ -128,7 +127,7 @@ const StudentLogin = ({ type }) => {
         {
           task_status: changeStatus,
           submission_link: submissionLink,
-          reviewer: 62 
+          reviewer: 62,
         },
         { headers }
       )
@@ -180,6 +179,7 @@ const StudentLogin = ({ type }) => {
 
       {tasksLists.map((tasksList) => {
         if (tasksList.id == selectedTaskId) {
+          console.log(tasksList);
           return (
             <main className="main-container" key={tasksList.id}>
               <div className="module-header-section flex">
@@ -204,7 +204,10 @@ const StudentLogin = ({ type }) => {
                       <p>Status</p>
                       <Select
                         onChange={handleChange}
-                        disabled={tasksList.task_status === "SUBMITTED"}
+                        disabled={
+                          tasksList.task_status === "SUBMITTED" ||
+                          tasksList.task_status === "COMPLETED"
+                        }
                         defaultValue={tasksList.task_status}
                         style={{ width: "60%" }}
                       >
@@ -227,52 +230,55 @@ const StudentLogin = ({ type }) => {
 
                   <div className="task-editor-container">
                     <p>Description</p>
-
                     <div className="task-instruction">
-                      <span>
-                        {tasksList.task.task_description.replace(
-                          /<[^>]*>/g,
-                          ""
-                        )}
-                      </span>
+                      <span
+                        dangerouslySetInnerHTML={{
+                          __html: tasksList.task.task_description,
+                        }}
+                        style={{ color: "black" }}
+                      ></span>
                     </div>
                   </div>
 
-                  <div className="weightage-label-container flex">
-                    <h3>Weightage Details</h3>
-                    <div className="horizon-line"></div>
-                  </div>
+                  {type !== "task" && (
+                    <>
+                      <div className="weightage-label-container flex">
+                        <h3>Weightage Details</h3>
+                        <div className="horizon-line"></div>
+                      </div>
 
-                  <div className="student-weightage-list flex">
-                    {tasksList.weightage_details &&
-                      tasksList.weightage_details.map((weightageDetails) => (
-                        <div className="student-weightage-card flex">
-                          
-                          <p>{weightageDetails.weightage_details.weightage} </p>
-                          <span>
-                            {Number(weightageDetails.weightage_percentage)}
-                          </span>
-                        </div>
-                      ))}
+                      <div className="student-weightage-list flex">
+                        {tasksList.weightage_details &&
+                          tasksList.weightage_details.map(
+                            (weightageDetails) => (
+                              <div className="student-weightage-card flex">
+                                <p>
+                                  {weightageDetails.weightage_details.weightage}{" "}
+                                </p>
+                                <span>
+                                  {Number(
+                                    weightageDetails.weightage_percentage
+                                  )}
+                                </span>
+                              </div>
+                            )
+                          )}
+                      </div>
+                    </>
+                  )}
+
+                  <div className="submission-link-container">
+                    <p style={{fontSize:"12px",lineHeight: "16px",fontFamily:"Roboto",color:"#12160a",fontWeight:400}}>Submitted Link</p>
+                    <a
+                      href={`https://${tasksList.submission_link}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{fontSize:"12px"}}
+                    >
+                      {tasksList.submission_link}
+                    </a>
                   </div>
                 </div>
-                <div className="student-task-label-container flex">
-                  <h3>Task File</h3>
-                  <div className="horizon-line"></div>
-                </div>
-                {/* <div className="file-input-container">
-                  <div className="upload-icon-container flex">
-                    <img src="/icons/upload.svg" className="upload-icon" />
-                    <label for="file-input">
-                      Drag your file or
-                      <span className="highlight">
-                        {" "}
-                        click to upload your task
-                      </span>
-                    </label>
-                  </div>
-                  <input type="file" className="file-input" />
-                </div> */}
               </div>
 
               <Modal

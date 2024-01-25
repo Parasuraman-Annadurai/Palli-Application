@@ -68,7 +68,8 @@ const WeightageList = ({
       <div className="weightage-adding-container flex">
         <div className="weight-inputs">
           {taskWeightages.map((taskWeightage, index) => {
-            console.log(taskWeightage);
+          
+            
             return (
               <div
                 style={{

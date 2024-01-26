@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 
 import { useParams } from "react-router-dom";
 
-import { Modal, notification } from "antd";
+import { Modal, Skeleton, notification } from "antd";
 import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
 import dayjs from "dayjs";
@@ -21,13 +21,13 @@ const AssessmentModule = ({ type }) => {
   const [editId, setEditId] = useState(null);
   const [assessmentList, setAssessmentList] = useState([]);
   const [assessmentSearchWord, setAssessmentSearchWord] = useState("");
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [students, setStudents] = useState([]);
   const [selectedStudents, setSelectedStudents] = useState([]);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   //for check task or assessment new created or old;
   const [isDraft, setIsDraft] = useState(false);
-  const [isStudentScoreOpen,setIsStudentScoreOpen] = useState(false);
+  const [isStudentScoreOpen, setIsStudentScoreOpen] = useState(false);
   const [activeWeightageIndex, setActiveWeightageIndex] = useState(null);
 
   const headers = {
@@ -35,8 +35,8 @@ const AssessmentModule = ({ type }) => {
     "Content-type": "application/json",
   };
 
-  
   useEffect(() => {
+    setLoading(true);
     //this useEffect used to fetch task list and will re-run whenever filter or search is updated
     if (user.role !== "Student") {
       const url = `${API_END_POINT}/api/task/${batchId}/list_task/?limit=10&page=1&filter_task_type=${
@@ -58,11 +58,8 @@ const AssessmentModule = ({ type }) => {
             setAssessmentList(assessmentList);
 
             setLoading(false);
-            if (!assessmentId) {
-              // Set the editId to the first task's id in the updated list
-              assessmentId =
-                res.data.data.length > 0 ? res.data.data[0].id : null;
-            }
+            assessmentId =
+              res.data.data.length > 0 ? res.data.data[0].id : null;
 
             setEditId(assessmentId);
           }
@@ -106,7 +103,7 @@ const AssessmentModule = ({ type }) => {
 
       //formatting task_weightage object as per frontend need
       cloneAssessmentList = cloneAssessmentList?.map((assessment) => {
-        if(assessment?.task_weightages?.length>0){
+        if (assessment?.task_weightages?.length > 0) {
           assessment["task_weightages"] = assessment.task_weightages?.map(
             (weightage) => {
               const weightObject = {
@@ -120,12 +117,13 @@ const AssessmentModule = ({ type }) => {
               return weightObject;
             }
           );
-        }
-        else{
-          assessment["task_weightages"] = [{
-            weightage_percentage:null,
-            weightage: null,
-          }]
+        } else {
+          assessment["task_weightages"] = [
+            {
+              weightage_percentage: null,
+              weightage: null,
+            },
+          ];
         }
 
         return assessment;
@@ -203,7 +201,6 @@ const AssessmentModule = ({ type }) => {
       ? `${API_END_POINT}/api/task/${batchId}/create_task/`
       : `${API_END_POINT}/api/task/${batchId}/update_task/${editId}`;
     const method = isNew ? "POST" : "PUT";
-
 
     axios({
       method: method,
@@ -302,9 +299,9 @@ const AssessmentModule = ({ type }) => {
     setAssessmentList(updatedList);
   };
 
-  const makePostRequest = async (url, data,method) => {
+  const makePostRequest = async (url, data, method) => {
     const response = await axios(url, {
-      method:method,
+      method: method,
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token.access}`,
@@ -321,7 +318,6 @@ const AssessmentModule = ({ type }) => {
       (assessment) => assessment.id == editId
     );
 
-
     let createPromise = [];
     let updatePromise = [];
 
@@ -330,11 +326,11 @@ const AssessmentModule = ({ type }) => {
         if ("id" in weightage) {
           const url = `${API_END_POINT}/api/task/${batchId}/update/task_weightage/${weightage.id}`;
           //its for update
-          const  {id,...postPayload} = weightage;
-          updatePromise.push(makePostRequest(url, postPayload,"PUT"));
+          const { id, ...postPayload } = weightage;
+          updatePromise.push(makePostRequest(url, postPayload, "PUT"));
         } else {
           const url = `${API_END_POINT}/api/task/${batchId}/assign/task_weightage/${editId}`;
-          createPromise.push(makePostRequest(url, weightage,"POST"));
+          createPromise.push(makePostRequest(url, weightage, "POST"));
         }
       });
 
@@ -351,16 +347,16 @@ const AssessmentModule = ({ type }) => {
               if (assessment.id == editId) {
                 assessment["task_weightages"] = assessment.task_weightages.map(
                   (weightage, index) => {
-                    for(const res of results){
-                      if(res.data.data.task === editId){
-                        weightage["id"] = res.data.data.id
+                    for (const res of results) {
+                      if (res.data.data.task === editId) {
+                        weightage["id"] = res.data.data.id;
                       }
-                      return weightage
+                      return weightage;
                     }
                   }
                 );
               }
-              return assessment
+              return assessment;
             });
 
             setAssessmentList(cloneAssessmentList);
@@ -378,7 +374,6 @@ const AssessmentModule = ({ type }) => {
               message: "Sucess",
               description: "Weightage Linked Successfully",
             });
-
           })
           .catch((error) => {
             console.error("One or more requests failed:", error);
@@ -395,8 +390,8 @@ const AssessmentModule = ({ type }) => {
     //  setAssessmentList();
     copyAssessment = copyAssessment.map((assessment) => {
       if (assessment.id === editId) {
-       assessment["task_weightages"] =
-         assessment.task_weightages.concat(newWeightage);
+        assessment["task_weightages"] =
+          assessment.task_weightages.concat(newWeightage);
       }
       return assessment;
     });
@@ -421,27 +416,26 @@ const AssessmentModule = ({ type }) => {
     const url = `${API_END_POINT}/api/task/${batchId}/update/task/user/${studentId}`;
     const payload = { task_status: status };
 
-
-
     //student task status changes
 
-
-//students status changed to Admin
+    //students status changed to Admin
     axios
       .put(url, payload, { headers })
       .then((res) => {
         console.log(res);
-        let copiedTaskStatusChangeStudents = assessmentList.map((assessment) => {
-          assessment["task_users"] = assessment.task_users.map((user) => {
-            if (user.id === studentId) {
-              user.task_status = status;
-            }
-            return user;
-          });
-          return assessment
-        });
-            
-        setAssessmentList(copiedTaskStatusChangeStudents)
+        let copiedTaskStatusChangeStudents = assessmentList.map(
+          (assessment) => {
+            assessment["task_users"] = assessment.task_users.map((user) => {
+              if (user.id === studentId) {
+                user.task_status = status;
+              }
+              return user;
+            });
+            return assessment;
+          }
+        );
+
+        setAssessmentList(copiedTaskStatusChangeStudents);
       })
       .catch((error) => {
         console.log(error);
@@ -462,31 +456,30 @@ const AssessmentModule = ({ type }) => {
       return assessment;
     });
     //weightage open and score added only submit the score
-    studentScores.map((scores)=>{
+    studentScores.map((scores) => {
       const url = `${API_END_POINT}/api/task/${batchId}/create/task_score/`;
       axios
-      .post(url, scores, { headers })
-      .then((res) => {
-        axios
-          .put(
-            `${API_END_POINT}/api/task/${batchId}/update/task/user/${scores.task_user}`,
-           { task_status:"COMPLETED"},
-            { headers }
-          )
-          .then((res) => {
-           setAssessmentList(statusChangeAfterScore);
-           setActiveWeightageIndex(null);
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-    })
+        .post(url, scores, { headers })
+        .then((res) => {
+          axios
+            .put(
+              `${API_END_POINT}/api/task/${batchId}/update/task/user/${scores.task_user}`,
+              { task_status: "COMPLETED" },
+              { headers }
+            )
+            .then((res) => {
+              setAssessmentList(statusChangeAfterScore);
+              setActiveWeightageIndex(null);
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    });
   };
-
 
   return (
     <>
@@ -527,42 +520,49 @@ const AssessmentModule = ({ type }) => {
             setIsStudentScoreOpen={setIsStudentScoreOpen}
             isStudentScoreOpen={isStudentScoreOpen}
           />
-          {assessmentList.map((assessment) => {
-            if (assessment.id == editId) {
-              return (
-                <AssessmentView
-                  key={assessment.id}
-                  currentAssessment={assessment}
-                  students={students}
-                  selectedStudents={selectedStudents}
-                  setSelectedStudents={setSelectedStudents}
-                  handleSave={handleSave}
-                  handleInputChange={handleInputChange}
-                  weightageShow={type === "task" ? false : true}
-                  handleSaveWeightage={handleSaveWeightage}
-                  handleAddWeightage={handleAddWeightage}
-                  handleWeightageChange={handleWeightageChange}
-                  isStudentScoreOpen={isStudentScoreOpen}
-                  handleStatusChange={handleStatusChange}
-                  handleAddScore={handleAddScore}
-                  setActiveWeightageIndex={setActiveWeightageIndex}
-                  activeWeightageIndex={activeWeightageIndex}
-                  type={type}
-                />
-              );
-            }
-            return null;
-          })}
 
-          {editId === null && (
-            <div className="select-something-container flex">
-              <div className="image-container ">
-                <img src="/icons/select-something.svg" alt="" />
-                <p className="select-something-heading">
-                  Please Select any of the Available Tasks or Create New Task
-                </p>
-              </div>
-            </div>
+          {loading ? (
+            <Skeleton active={true} />
+          ) : (
+            <>
+              {assessmentList.map((assessment) => {
+                if (assessment.id === editId) {
+                  return (
+                    <AssessmentView
+                      key={assessment.id}
+                      currentAssessment={assessment}
+                      students={students}
+                      selectedStudents={selectedStudents}
+                      setSelectedStudents={setSelectedStudents}
+                      handleSave={handleSave}
+                      handleInputChange={handleInputChange}
+                      weightageShow={type === "task" ? false : true}
+                      handleSaveWeightage={handleSaveWeightage}
+                      handleAddWeightage={handleAddWeightage}
+                      handleWeightageChange={handleWeightageChange}
+                      isStudentScoreOpen={isStudentScoreOpen}
+                      handleStatusChange={handleStatusChange}
+                      handleAddScore={handleAddScore}
+                      setActiveWeightageIndex={setActiveWeightageIndex}
+                      activeWeightageIndex={activeWeightageIndex}
+                      type={type}
+                    />
+                  );
+                }
+                return null;
+              })}
+              {editId === null && (
+                <div className="select-something-container flex">
+                  <div className="image-container ">
+                    <img src="/icons/select-something.svg" alt="" />
+                    <p className="select-something-heading">
+                      Please Select any of the Available Tasks or Create New
+                      Task
+                    </p>
+                  </div>
+                </div>
+              )}
+            </>
           )}
         </>
       ) : (

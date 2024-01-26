@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 import axios from "axios";
-import { Flex, Modal, Select } from "antd";
+import { Flex, Modal, Select, notification } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
 
@@ -133,14 +133,19 @@ const StudentLogin = ({ type }) => {
       )
       .then((res) => {
         if (res.status === 200) {
-          let updatedTask = [
-            {
-              ...tasksLists[
-                tasksLists.findIndex((task) => task.id === selectedTaskId)
-              ],
-              task_status: changeStatus,
-            },
-          ];
+          let updatedTask = tasksLists.map((task) => {
+            if (task.id === selectedTaskId) {
+              return {
+                ...task,
+                task_status: changeStatus,
+              };
+            }
+            return task;
+          });
+          notification.success({
+            message:"Success",
+            description : `${type} Submitted`
+          })          
           setTaskLists(updatedTask);
           setIsLoading(false);
           setIsModalOpen(false);

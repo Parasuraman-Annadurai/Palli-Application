@@ -179,7 +179,6 @@ const StudentLogin = ({ type }) => {
 
       {tasksLists.map((tasksList) => {
         if (tasksList.id == selectedTaskId) {
-          console.log(tasksList);
           return (
             <main className="main-container" key={tasksList.id}>
               <div className="module-header-section flex">
@@ -250,16 +249,19 @@ const StudentLogin = ({ type }) => {
                       <div className="student-weightage-list flex">
                         {tasksList.weightage_details &&
                           tasksList.weightage_details.map(
-                            (weightageDetails) => (
+                            (weightageDetails,index) => (
+
+                            
                               <div className="student-weightage-card flex">
+              
                                 <p>
-                                  {weightageDetails.weightage_details.weightage}{" "}
-                                </p>
-                                <span>
+                                  {weightageDetails.weightage_details.weightage} {" "}  {weightageDetails.task_score.map((a)=>Number(a.task_score))}/
                                   {Number(
                                     weightageDetails.weightage_percentage
                                   )}
-                                </span>
+                                </p>
+                                {" "}
+                              
                               </div>
                             )
                           )}

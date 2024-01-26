@@ -341,6 +341,7 @@ const AssessmentModule = ({ type }) => {
       if (createPromise.length > 0) {
         Promise.all(createPromise)
           .then((results) => {
+
             notification.success({
               message: "Sucess",
               description: "Weightage Linked Successfully",
@@ -366,7 +367,21 @@ const AssessmentModule = ({ type }) => {
             setAssessmentList(cloneAssessmentList);
           })
           .catch((error) => {
-            console.error("One or more requests failed:", error);
+            if (
+              error.response.data.status === 400 ||
+              "errors" in error.response.data
+            ) {
+              const errorMessages = error.response.data.errors;
+    
+              Object.entries(errorMessages).forEach(([key, messages]) => {
+                messages.forEach((message) =>
+                  notification.error({
+                    message: `${key} Error`,
+                    description: message,
+                  })
+                );
+              });
+            }
           });
       }
 
@@ -381,7 +396,21 @@ const AssessmentModule = ({ type }) => {
 
           })
           .catch((error) => {
-            console.error("One or more requests failed:", error);
+            if (
+              error.response.data.status === 400 ||
+              "errors" in error.response.data
+            ) {
+              const errorMessages = error.response.data.errors;
+    
+              Object.entries(errorMessages).forEach(([key, messages]) => {
+                messages.forEach((message) =>
+                  notification.error({
+                    message: `${key} Error`,
+                    description: message,
+                  })
+                );
+              });
+            }
           });
       }
     }

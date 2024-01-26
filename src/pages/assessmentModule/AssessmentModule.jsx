@@ -27,7 +27,7 @@ const AssessmentModule = ({ type }) => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   //for check task or assessment new created or old;
   const [isDraft, setIsDraft] = useState(false);
-  const [isStudentScoreOpen,setIsStudentScoreOpen] = useState(false);
+  const [isStudentScoreOpen, setIsStudentScoreOpen] = useState(false);
   const [activeWeightageIndex, setActiveWeightageIndex] = useState(null);
 
   const headers = {
@@ -35,7 +35,6 @@ const AssessmentModule = ({ type }) => {
     "Content-type": "application/json",
   };
 
-  
   useEffect(() => {
     //this useEffect used to fetch task list and will re-run whenever filter or search is updated
     if (user.role !== "Student") {
@@ -106,7 +105,7 @@ const AssessmentModule = ({ type }) => {
 
       //formatting task_weightage object as per frontend need
       cloneAssessmentList = cloneAssessmentList?.map((assessment) => {
-        if(assessment?.task_weightages?.length>0){
+        if (assessment?.task_weightages?.length > 0) {
           assessment["task_weightages"] = assessment.task_weightages?.map(
             (weightage) => {
               const weightObject = {
@@ -120,12 +119,13 @@ const AssessmentModule = ({ type }) => {
               return weightObject;
             }
           );
-        }
-        else{
-          assessment["task_weightages"] = [{
-            weightage_percentage:null,
-            weightage: null,
-          }]
+        } else {
+          assessment["task_weightages"] = [
+            {
+              weightage_percentage: null,
+              weightage: null,
+            },
+          ];
         }
 
         return assessment;
@@ -203,7 +203,6 @@ const AssessmentModule = ({ type }) => {
       ? `${API_END_POINT}/api/task/${batchId}/create_task/`
       : `${API_END_POINT}/api/task/${batchId}/update_task/${editId}`;
     const method = isNew ? "POST" : "PUT";
-
 
     axios({
       method: method,
@@ -302,9 +301,9 @@ const AssessmentModule = ({ type }) => {
     setAssessmentList(updatedList);
   };
 
-  const makePostRequest = async (url, data,method) => {
+  const makePostRequest = async (url, data, method) => {
     const response = await axios(url, {
-      method:method,
+      method: method,
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token.access}`,
@@ -321,7 +320,6 @@ const AssessmentModule = ({ type }) => {
       (assessment) => assessment.id == editId
     );
 
-
     let createPromise = [];
     let updatePromise = [];
 
@@ -330,18 +328,17 @@ const AssessmentModule = ({ type }) => {
         if ("id" in weightage) {
           const url = `${API_END_POINT}/api/task/${batchId}/update/task_weightage/${weightage.id}`;
           //its for update
-          const  {id,...postPayload} = weightage;
-          updatePromise.push(makePostRequest(url, postPayload,"PUT"));
+          const { id, ...postPayload } = weightage;
+          updatePromise.push(makePostRequest(url, postPayload, "PUT"));
         } else {
           const url = `${API_END_POINT}/api/task/${batchId}/assign/task_weightage/${editId}`;
-          createPromise.push(makePostRequest(url, weightage,"POST"));
+          createPromise.push(makePostRequest(url, weightage, "POST"));
         }
       });
 
       if (createPromise.length > 0) {
         Promise.all(createPromise)
           .then((results) => {
-
             notification.success({
               message: "Sucess",
               description: "Weightage Linked Successfully",
@@ -352,16 +349,16 @@ const AssessmentModule = ({ type }) => {
               if (assessment.id == editId) {
                 assessment["task_weightages"] = assessment.task_weightages.map(
                   (weightage, index) => {
-                    for(const res of results){
-                      if(res.data.data.task === editId){
-                        weightage["id"] = res.data.data.id
+                    for (const res of results) {
+                      if (res.data.data.task === editId) {
+                        weightage["id"] = res.data.data.id;
                       }
-                      return weightage
+                      return weightage;
                     }
                   }
                 );
               }
-              return assessment
+              return assessment;
             });
 
             setAssessmentList(cloneAssessmentList);
@@ -372,15 +369,21 @@ const AssessmentModule = ({ type }) => {
               "errors" in error.response.data
             ) {
               const errorMessages = error.response.data.errors;
-    
-              Object.entries(errorMessages).forEach(([key, messages]) => {
-                messages.forEach((message) =>
-                  notification.error({
-                    message: `${key} Error`,
-                    description: message,
-                  })
-                );
-              });
+              if (Array.isArray(errorMessages)) {
+                notification.error({
+                  message: `Error`,
+                  description: errorMessages,
+                });
+              } else {
+                Object.entries(errorMessages).forEach(([key, messages]) => {
+                  messages.forEach((message) =>
+                    notification.error({
+                      message: `${key} Error`,
+                      description: message,
+                    })
+                  );
+                });
+              }
             }
           });
       }
@@ -393,7 +396,6 @@ const AssessmentModule = ({ type }) => {
               message: "Sucess",
               description: "Weightage Linked Successfully",
             });
-
           })
           .catch((error) => {
             if (
@@ -401,15 +403,21 @@ const AssessmentModule = ({ type }) => {
               "errors" in error.response.data
             ) {
               const errorMessages = error.response.data.errors;
-    
-              Object.entries(errorMessages).forEach(([key, messages]) => {
-                messages.forEach((message) =>
-                  notification.error({
-                    message: `${key} Error`,
-                    description: message,
-                  })
-                );
-              });
+              if (Array.isArray(errorMessages)) {
+                notification.error({
+                  message: `Error`,
+                  description: errorMessages,
+                });
+              } else {
+                Object.entries(errorMessages).forEach(([key, messages]) => {
+                  messages.forEach((message) =>
+                    notification.error({
+                      message: `${key} Error`,
+                      description: message,
+                    })
+                  );
+                });
+              }
             }
           });
       }
@@ -424,8 +432,8 @@ const AssessmentModule = ({ type }) => {
     //  setAssessmentList();
     copyAssessment = copyAssessment.map((assessment) => {
       if (assessment.id === editId) {
-       assessment["task_weightages"] =
-         assessment.task_weightages.concat(newWeightage);
+        assessment["task_weightages"] =
+          assessment.task_weightages.concat(newWeightage);
       }
       return assessment;
     });
@@ -450,27 +458,26 @@ const AssessmentModule = ({ type }) => {
     const url = `${API_END_POINT}/api/task/${batchId}/update/task/user/${studentId}`;
     const payload = { task_status: status };
 
-
-
     //student task status changes
 
-
-//students status changed to Admin
+    //students status changed to Admin
     axios
       .put(url, payload, { headers })
       .then((res) => {
         console.log(res);
-        let copiedTaskStatusChangeStudents = assessmentList.map((assessment) => {
-          assessment["task_users"] = assessment.task_users.map((user) => {
-            if (user.id === studentId) {
-              user.task_status = status;
-            }
-            return user;
-          });
-          return assessment
-        });
-            
-        setAssessmentList(copiedTaskStatusChangeStudents)
+        let copiedTaskStatusChangeStudents = assessmentList.map(
+          (assessment) => {
+            assessment["task_users"] = assessment.task_users.map((user) => {
+              if (user.id === studentId) {
+                user.task_status = status;
+              }
+              return user;
+            });
+            return assessment;
+          }
+        );
+
+        setAssessmentList(copiedTaskStatusChangeStudents);
       })
       .catch((error) => {
         console.log(error);
@@ -491,34 +498,34 @@ const AssessmentModule = ({ type }) => {
       return assessment;
     });
     //weightage open and score added only submit the score
-    studentScores.map((scores)=>{
+    studentScores.map((scores) => {
       const url = `${API_END_POINT}/api/task/${batchId}/create/task_score/`;
       axios
-      .post(url, scores, { headers })
-      .then((res) => {
-        axios
-          .put(
-            `${API_END_POINT}/api/task/${batchId}/update/task/user/${scores.task_user}`,
-           { task_status:"COMPLETED"},
-            { headers }
-          )
-          .then((res) => {
-           setAssessmentList(statusChangeAfterScore);
-           setActiveWeightageIndex(null);
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-    })
+        .post(url, scores, { headers })
+        .then((res) => {
+          axios
+            .put(
+              `${API_END_POINT}/api/task/${batchId}/update/task/user/${scores.task_user}`,
+              { task_status: "COMPLETED" },
+              { headers }
+            )
+            .then((res) => {
+              setAssessmentList(statusChangeAfterScore);
+              setActiveWeightageIndex(null);
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    });
   };
 
   const handleDeleteWeightage = (deleteWeightageId, index) => {
     let updatedAssessmentList = [...assessmentList];
-  
+
     if (deleteWeightageId) {
       updatedAssessmentList = updatedAssessmentList.map((assessment) => {
         if (assessment.id === editId) {
@@ -533,9 +540,9 @@ const AssessmentModule = ({ type }) => {
         }
         return assessment;
       });
-  
+
       const url = `${API_END_POINT}/api/task/${batchId}/delete/task_weightage/${deleteWeightageId}`;
-  
+
       axios
         .delete(url, { headers })
         .then((res) => {
@@ -556,7 +563,7 @@ const AssessmentModule = ({ type }) => {
           // Use map to create a new array of task_weightages without the specified index
           const updatedTaskWeightages = [...assessment.task_weightages];
           updatedTaskWeightages.splice(index, 1);
-  
+
           return {
             ...assessment,
             task_weightages: updatedTaskWeightages,
@@ -564,11 +571,10 @@ const AssessmentModule = ({ type }) => {
         }
         return assessment;
       });
-  
+
       setAssessmentList(updatedAssessmentList);
     }
   };
-  
 
   return (
     <>

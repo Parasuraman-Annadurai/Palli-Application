@@ -589,7 +589,7 @@ const AssessmentView = ({
                                 trigger={["click"]}
                               >
                                 <a
-                                  className="ant-dropdown-link"
+                                  className="ant-dropdown-link secondary-btn-sm"
                                   onClick={(e) => {
                                     e.preventDefault();
                                   }}
@@ -600,7 +600,7 @@ const AssessmentView = ({
                             )}
                       </div>
                     </div>
-                    <hr />
+                    {/* <hr /> */}
 
                     {activeWeightageIndex === index && (
                       <div className="applied-weightage-list-container flex">

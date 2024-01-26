@@ -73,7 +73,7 @@ const TaskCard = ({
               <p className="task-description">
                 {truncateText(
                   assessment.task_description.replace(/<[^>]*>/g, ""),
-                  50
+                  70
                 )}
               </p>
               <span className="btn btn-inprogress">Inprogress</span>

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 
 import { useParams } from "react-router-dom";
 
-import { Modal, notification, Empty } from "antd";
+import { Modal, notification } from "antd";
 import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
 import dayjs from "dayjs";
@@ -104,6 +104,7 @@ const AssessmentModule = ({ type }) => {
 
       let cloneAssessmentList = [...assessmentList];
 
+      //formatting task_weightage object as per frontend need
       cloneAssessmentList = cloneAssessmentList?.map((assessment) => {
         if(assessment?.task_weightages?.length>0){
           assessment["task_weightages"] = assessment.task_weightages?.map(
@@ -113,7 +114,7 @@ const AssessmentModule = ({ type }) => {
                 weightage: weightage.weightage,
               };
 
-              if ("id" in weightObject) {
+              if ("id" in weightage) {
                 weightObject["id"] = weightage.id;
               }
               return weightObject;
@@ -323,10 +324,11 @@ const AssessmentModule = ({ type }) => {
 
     let createPromise = [];
     let updatePromise = [];
+
     if (batchId && editId) {
       currentAssessment.task_weightages.map((weightage) => {
         if ("id" in weightage) {
-          const url = `${API_END_POINT}/api/task/${batchId}/update/weightage/${weightage.id}`;
+          const url = `${API_END_POINT}/api/task/${batchId}/update/task_weightage/${weightage.id}`;
           //its for update
           const  {id,...postPayload} = weightage;
           updatePromise.push(makePostRequest(url, postPayload,"PUT"));
@@ -349,9 +351,12 @@ const AssessmentModule = ({ type }) => {
               if (assessment.id == editId) {
                 assessment["task_weightages"] = assessment.task_weightages.map(
                   (weightage, index) => {
-                    const id = results[index].data.data.id;
-                    weightage["id"] = id;
-                    return weightage;
+                    for(const res of results){
+                      if(res.data.data.task === editId){
+                        weightage["id"] = res.data.data.id
+                      }
+                      return weightage
+                    }
                   }
                 );
               }

@@ -38,6 +38,8 @@ const AssessmentView = ({
   handleSaveWeightage,
   handleAddWeightage,
   handleWeightageChange,
+  handleDeleteWeightage,
+  type,
 }) => {
   const { id: batchId } = useParams();
   const { token } = useAuth();
@@ -201,9 +203,6 @@ const AssessmentView = ({
     }
   };
 
-
-
-
   //student id send to handleStatus change student rework or completed
   const itemRenderer = (studentId) => {
     return [
@@ -225,33 +224,32 @@ const AssessmentView = ({
   };
 
   // // Function to remove duplicates based on the 'task_weightage' property
- 
+
   const handleScoreOnchange = (e, students, weightage) => {
     const updatedScore = {
       task_user: students.id,
       task_weightage: weightage.id,
       task_score: Number(e.target.value),
     };
-  console.log(weightage);
+    console.log(weightage);
     // Check if the score for the same student and weightage ID already exists
     const existingScoreIndex = studentScore.findIndex(
       (score) =>
         score.task_user === updatedScore.task_user &&
         score.task_weightage === updatedScore.task_weightage
     );
-  
+
     if (existingScoreIndex !== -1) {
       // If the score exists, update it
       const updatedStudentScores = [...studentScore];
-      updatedStudentScores[existingScoreIndex].task_score = updatedScore.task_score;
+      updatedStudentScores[existingScoreIndex].task_score =
+        updatedScore.task_score;
       setStudentScore(updatedStudentScores);
     } else {
       // If the score doesn't exist, add it to the state
       setStudentScore([...studentScore, updatedScore]);
     }
-  
   };
-
 
   return (
     <>
@@ -484,6 +482,7 @@ const AssessmentView = ({
                     handleSaveWeightage={handleSaveWeightage}
                     handleAddWeightage={handleAddWeightage}
                     handleWeightageChange={handleWeightageChange}
+                    handleDeleteWeightage={handleDeleteWeightage}
                   />
                 )
               )}
@@ -492,7 +491,7 @@ const AssessmentView = ({
         </>
       ) : (
         <main className="main-container">
-          {currentAssessment.task_users &&
+          {currentAssessment.task_users.length > 0 ? (
             currentAssessment.task_users.map((students, index) => {
               return (
                 <>
@@ -565,7 +564,6 @@ const AssessmentView = ({
                   </div>
                   {activeWeightageIndex === index && (
                     <div className="applied-weightage-list-container flex">
-                      
                       {currentAssessment.task_weightages &&
                         currentAssessment.task_weightages.map(
                           (weightage, weightageIndex) => (
@@ -594,10 +592,20 @@ const AssessmentView = ({
                   )}
                 </>
               );
-            })}
+            })
+          ) : (
+            <div className="select-something-container flex">
+              <div className="image-container ">
+                <img src="/public/icons/select-something.svg" alt="" />
+                <p className="select-something-heading">
+                  No Assignee has been assigned to this {type}
+                </p>
+              </div>
+            </div>
+          )}
         </main>
       )}
     </>
   );
-}
+};
 export default AssessmentView;

@@ -156,12 +156,14 @@ const AssessmentView = ({
     const isNotAllSelected = [...students].every((student) =>
       selectedStudents.includes(student.id)
     );
+    const allStudentIds = [...students].map((student) => student.id);
+
 
     if (isNotAllSelected) {
       //Deselect all students in tasks
       const url = `${API_END_POINT}/api/task/${batchId}/remove/user/${taskId}/`;
 
-      const payload = { user: "__all__" };
+      const payload = { user: allStudentIds };
       axios
         .delete(url, { data: payload, headers })
         .then((res) => {
@@ -178,7 +180,6 @@ const AssessmentView = ({
           console.log(error);
         });
     } else {
-      const allStudentIds = [...students].map((student) => student.id);
 
       //selectAll students in tasks
       axios

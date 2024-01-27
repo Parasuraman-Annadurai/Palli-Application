@@ -518,6 +518,24 @@ const AssessmentView = ({
         </>
       ) : (
         <main className="main-container">
+              <div className="task-heading">
+            <p>{task_title}</p>
+
+            {/* <div className="search-container">
+              <input type="input" placeholder="search..." />
+              <img
+                src="/icons/searchIcon.svg"
+                alt="search-icon"
+                className="search-icon"
+              />
+
+              <img
+                src="/icons/filterIcon.svg"
+                alt="filter-icon"
+                className="filter-icon"
+              />
+            </div> */}
+          </div>
           {currentAssessment?.task_users?.length > 0 ? (
             currentAssessment.task_users.map((students, index) => {
               return (

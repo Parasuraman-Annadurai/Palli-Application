@@ -1053,7 +1053,7 @@ body .container .main-container .task-user-list-container {
   border-radius: 4px;
 }
 body .container .main-container .task-user-list-container .student-info {
-  max-width: 200px;
+  max-width: 210px;
   width: 100%;
   align-items: center;
   gap: 6px;
@@ -1078,7 +1078,7 @@ body .container .main-container .task-user-list-container .student-info .student
   font-family: "Roboto";
 }
 body .container .main-container .task-user-list-container .student-status {
-  max-width: 80px;
+  max-width: 90px;
   width: 100%;
 }
 body .container .main-container .task-user-list-container .student-status p {
@@ -1094,7 +1094,7 @@ body .container .main-container .task-user-list-container .student-status span {
   border-radius: 2px;
 }
 body .container .main-container .task-user-list-container .sumbitted-date {
-  max-width: 100px;
+  max-width: 110px;
   width: 100%;
 }
 body .container .main-container .task-user-list-container .sumbitted-date p {
@@ -1109,7 +1109,7 @@ body .container .main-container .task-user-list-container .sumbitted-date span {
   line-height: 16px;
 }
 body .container .main-container .task-user-list-container .student-file {
-  max-width: 160px;
+  max-width: 170px;
   width: 100%;
 }
 body .container .main-container .task-user-list-container .student-file p {

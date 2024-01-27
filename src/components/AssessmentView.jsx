@@ -8,6 +8,7 @@ import {
   Dropdown,
   Skeleton,
   notification,
+
 } from "antd";
 import axios from "axios";
 
@@ -384,7 +385,7 @@ const AssessmentView = ({
                     <div className="main-create-btn">
                       <button
                         type="submit"
-                        className="btn primary-medium"
+                       className={`${assigneeloader ? "btn primary-medium-default" : "btn primary-medium"}`}
                         onClick={() => handleSave(currentAssessment)}
                       >
                         {draft ? "Create" : "Update"}
@@ -452,9 +453,9 @@ const AssessmentView = ({
                           />
                           <span>
                             {selectedStudents.length === students.length
-                              ? "All Students"
+                              ? "All Students Selected"
                               : selectedStudents.length == 0
-                              ? "Select Students"
+                              ? "Select All Students"
                               : `${selectedStudents.length} Selected`}
                           </span>
                         </div>
@@ -550,7 +551,7 @@ const AssessmentView = ({
                       </div>
                       <div className="student-file">
                         <p>Submission Link</p>
-                        <p>{students["submission_link"]}</p>
+                        <a href={`${students["submission_link"]}`} target="_blank">{students["submission_link"]}</a>
                       </div>
                       <div className="student-work">
                         {weightageShow
@@ -575,7 +576,7 @@ const AssessmentView = ({
                                 trigger={["click"]}
                               >
                                 <a
-                                  className="ant-dropdown-link"
+                                  className="ant-dropdown-link secondary-btn-sm"
                                   onClick={(e) => {
                                     e.preventDefault();
                                   }}
@@ -586,7 +587,7 @@ const AssessmentView = ({
                             )}
                       </div>
                     </div>
-                    <hr />
+                    {/* <hr /> */}
 
                     {activeWeightageIndex === index && (
                       <div className="applied-weightage-list-container flex">

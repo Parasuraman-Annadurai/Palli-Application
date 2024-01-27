@@ -301,13 +301,7 @@ const StudentLogin = ({ type }) => {
 
                       <div className="submission-link-container">
                         <p
-                          // style={{
-                          //   fontSize: "12px",
-                          //   lineHeight: "16px",
-                          //   fontFamily: "Roboto",
-                          //   color: "#12160A",
-                          //   fontWeight: 400,
-                          // }}
+                       
                         >
                           Submitted Link
                         </p>

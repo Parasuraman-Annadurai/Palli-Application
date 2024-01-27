@@ -39,6 +39,7 @@ const AssessmentView = ({
   handleSaveWeightage,
   handleAddWeightage,
   handleWeightageChange,
+  handleDeleteWeightage,
   type,
 }) => {
   const { id: batchId } = useParams();
@@ -160,12 +161,15 @@ const AssessmentView = ({
     const isNotAllSelected = [...students].every((student) =>
       selectedStudents.includes(student.id)
     );
+    const allStudentIds = [...students].map((student) => student.id);
+
+
     setAssigneeloader(true);
     if (isNotAllSelected) {
       //Deselect all students in tasks
       const url = `${API_END_POINT}/api/task/${batchId}/remove/user/${taskId}/`;
 
-      const payload = { user: "__all__" };
+      const payload = { user: allStudentIds };
       axios
         .delete(url, { data: payload, headers })
         .then((res) => {
@@ -183,7 +187,6 @@ const AssessmentView = ({
           console.log(error);
         });
     } else {
-      const allStudentIds = [...students].map((student) => student.id);
 
       //selectAll students in tasks
       axios
@@ -237,7 +240,6 @@ const AssessmentView = ({
       task_weightage: weightage.id,
       task_score: Number(e.target.value),
     };
-    console.log(weightage);
     // Check if the score for the same student and weightage ID already exists
     const existingScoreIndex = studentScore.findIndex(
       (score) =>
@@ -500,6 +502,7 @@ const AssessmentView = ({
                         handleSaveWeightage={handleSaveWeightage}
                         handleAddWeightage={handleAddWeightage}
                         handleWeightageChange={handleWeightageChange}
+                        handleDeleteWeightage={handleDeleteWeightage}
                       />
                     )
                   )}
@@ -510,25 +513,7 @@ const AssessmentView = ({
         </>
       ) : (
         <main className="main-container">
-          <div className="task-heading">
-            <p>{task_title}</p>
-
-            {/* <div className="search-container">
-              <input type="input" placeholder="search..." />
-              <img
-                src="/icons/searchIcon.svg"
-                alt="search-icon"
-                className="search-icon"
-              />
-
-              <img
-                src="/icons/filterIcon.svg"
-                alt="filter-icon"
-                className="filter-icon"
-              />
-            </div> */}
-          </div>
-          {currentAssessment.task_users &&
+          {currentAssessment?.task_users?.length > 0 ? (
             currentAssessment.task_users.map((students, index) => {
               return (
                 <>
@@ -621,9 +606,7 @@ const AssessmentView = ({
                                 <div className="weightage-checkbox">
                                   <input
                                     type="number"
-                                    // style={{
-                                    //   border: "1px solid grey",
-                                    // }}
+                                   
                                     onChange={(e) => {
                                       handleScoreOnchange(
                                         e,
@@ -639,9 +622,20 @@ const AssessmentView = ({
                       </div>
                     )}
                   </div>
+               
                 </>
               );
-            })}
+            })
+          ) : (
+            <div className="select-something-container flex">
+              <div className="image-container ">
+                <img src="/public/icons/select-something.svg" alt="" />
+                <p className="select-something-heading">
+                  No Assignee has been assigned to this {type}
+                </p>
+              </div>
+            </div>
+          )}
         </main>
       )}
     </>

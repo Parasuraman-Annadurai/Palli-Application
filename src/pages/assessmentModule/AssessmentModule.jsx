@@ -362,7 +362,27 @@ const AssessmentModule = ({ type }) => {
             setAssessmentList(cloneAssessmentList);
           })
           .catch((error) => {
-            console.error("One or more requests failed:", error);
+            if (
+              error.response.data.status === 400 ||
+              "errors" in error.response.data
+            ) {
+              const errorMessages = error.response.data.errors;
+              if (Array.isArray(errorMessages)) {
+                notification.error({
+                  message: `Error`,
+                  description: errorMessages,
+                });
+              } else {
+                Object.entries(errorMessages).forEach(([key, messages]) => {
+                  messages.forEach((message) =>
+                    notification.error({
+                      message: `${key} Error`,
+                      description: message,
+                    })
+                  );
+                });
+              }
+            }
           });
       }
 
@@ -372,11 +392,31 @@ const AssessmentModule = ({ type }) => {
             console.log(results);
             notification.success({
               message: "Sucess",
-              description: "Weightage Linked Successfully",
+              description: "Weightage Update Successfully",
             });
           })
           .catch((error) => {
-            console.error("One or more requests failed:", error);
+            if (
+              error.response.data.status === 400 ||
+              "errors" in error.response.data
+            ) {
+              const errorMessages = error.response.data.errors;
+              if (Array.isArray(errorMessages)) {
+                notification.error({
+                  message: `Error`,
+                  description: errorMessages,
+                });
+              } else {
+                Object.entries(errorMessages).forEach(([key, messages]) => {
+                  messages.forEach((message) =>
+                    notification.error({
+                      message: `${key} Error`,
+                      description: message,
+                    })
+                  );
+                });
+              }
+            }
           });
       }
     }
@@ -385,18 +425,34 @@ const AssessmentModule = ({ type }) => {
   const handleAddWeightage = () => {
     const newWeightage = { weightage: null, weightage_percentage: null };
 
-    let copyAssessment = [...assessmentList];
-
-    //  setAssessmentList();
-    copyAssessment = copyAssessment.map((assessment) => {
+    const updatedAssessmentList = assessmentList.map((assessment) => {
       if (assessment.id === editId) {
-        assessment["task_weightages"] =
-          assessment.task_weightages.concat(newWeightage);
+        const totalWeightagePercentage = assessment.task_weightages
+          .map((task) => Number(task.weightage_percentage) || 0)
+          .reduce((sum, percentage) => sum + percentage, 0);
+
+
+        // Allow adding new weightage only if the total is less than 100%
+        if (totalWeightagePercentage < 100) {
+          console.log("Adding new weightage");
+          assessment.task_weightages = [
+            ...assessment.task_weightages,
+            newWeightage,
+          ];
+        } else {
+          notification.error({
+            message: "Error",
+            description: "Weightage percentage has already reached 100%",
+            duration: 1,
+          });
+        }
       }
+
       return assessment;
     });
 
-    setAssessmentList(copyAssessment);
+    console.log("Updated Assessment List:", updatedAssessmentList);
+    setAssessmentList(updatedAssessmentList);
   };
 
   const handleWeightageChange = (value, index, key) => {
@@ -404,7 +460,7 @@ const AssessmentModule = ({ type }) => {
 
     copyAssessment = copyAssessment.map((assessment) => {
       if (assessment.id === editId) {
-        assessment.task_weightages[index][key] = value;
+        assessment.task_weightages[index][key] = Number(value);
       }
       return assessment;
     });
@@ -485,6 +541,59 @@ const AssessmentModule = ({ type }) => {
     });
   };
 
+  const handleDeleteWeightage = (deleteWeightageId, index) => {
+    let updatedAssessmentList = [...assessmentList];
+
+    if (deleteWeightageId) {
+      updatedAssessmentList = updatedAssessmentList.map((assessment) => {
+        if (assessment.id === editId) {
+          // Use map to create a new array of task_weightages without the specified deleteWeightageId
+          const updatedTaskWeightages = assessment.task_weightages.filter(
+            (weightage) => weightage.id !== deleteWeightageId
+          );
+          return {
+            ...assessment,
+            task_weightages: updatedTaskWeightages,
+          };
+        }
+        return assessment;
+      });
+
+      const url = `${API_END_POINT}/api/task/${batchId}/delete/task_weightage/${deleteWeightageId}`;
+
+      axios
+        .delete(url, { headers })
+        .then((res) => {
+          if (res.data.status === 200) {
+            notification.success({
+              message: "Success",
+              description: `${res.data.message}`,
+            });
+            setAssessmentList(updatedAssessmentList);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } else {
+      updatedAssessmentList = updatedAssessmentList.map((assessment) => {
+        if (assessment.id === editId) {
+          // Use map to create a new array of task_weightages without the specified index
+          const updatedTaskWeightages = [...assessment.task_weightages];
+          updatedTaskWeightages.splice(index, 1);
+
+          return {
+            ...assessment,
+            task_weightages: updatedTaskWeightages,
+          };
+        }
+        return assessment;
+      });
+
+      setAssessmentList(updatedAssessmentList);
+    }
+  };
+
   return (
     <>
       {user.role !== "Student" ? (
@@ -549,6 +658,7 @@ const AssessmentModule = ({ type }) => {
                       handleAddScore={handleAddScore}
                       setActiveWeightageIndex={setActiveWeightageIndex}
                       activeWeightageIndex={activeWeightageIndex}
+                      handleDeleteWeightage={handleDeleteWeightage}
                       type={type}
                     />
                   );

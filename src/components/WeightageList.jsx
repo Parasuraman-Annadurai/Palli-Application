@@ -14,11 +14,13 @@ const WeightageList = ({
   handleSaveWeightage,
   handleAddWeightage,
   handleWeightageChange,
-  handleDeleteWeightage
+  handleDeleteWeightage,
+  weightages,
+  setWeighatages
 }) => {
   const { id: batchId } = useParams();
   const { token } = useAuth();
-  const [weightages, setWeighatages] = useState([]);
+ 
 
   const headers = {
     Authorization: `Bearer ${token.access}`,

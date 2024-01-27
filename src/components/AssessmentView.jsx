@@ -582,7 +582,7 @@ const AssessmentView = ({
                                 className="secondary-btn-sm"
                                 onClick={() => {
                                   setActiveWeightageIndex(index);
-                                  if (activeWeightageIndex) {
+                                  if(activeWeightageIndex === index){
                                     handleAddScore(studentScore);
                                   }
                                 }}

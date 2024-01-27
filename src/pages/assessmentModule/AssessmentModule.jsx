@@ -638,6 +638,7 @@ const AssessmentModule = ({ type }) => {
                       handleAddScore={handleAddScore}
                       setActiveWeightageIndex={setActiveWeightageIndex}
                       activeWeightageIndex={activeWeightageIndex}
+                      handleDeleteWeightage={handleDeleteWeightage}
                       type={type}
                     />
                   );

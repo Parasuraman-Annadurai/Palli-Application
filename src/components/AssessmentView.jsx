@@ -513,7 +513,7 @@ const AssessmentView = ({
         </>
       ) : (
         <main className="main-container">
-          {currentAssessment.task_users.length > 0 ? (
+          {currentAssessment?.task_users?.length > 0 ? (
             currentAssessment.task_users.map((students, index) => {
               return (
                 <>

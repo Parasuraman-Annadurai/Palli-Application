@@ -1,12 +1,8 @@
 import React from "react";
 
-
 import { Skeleton } from "antd";
 
-
 import dayjs from "dayjs";
-
-
 
 const TaskCard = ({
   loading,
@@ -15,7 +11,7 @@ const TaskCard = ({
   handleEdit,
   handleDelete,
   setIsStudentScoreOpen,
-  isStudentScoreOpen
+  isStudentScoreOpen,
 }) => {
   const truncateText = (text, maxLength) => {
     return text.length > maxLength
@@ -27,11 +23,11 @@ const TaskCard = ({
     <>
       <div
         className={`task-card ${
-            assessment.id  === selectedAssessment? "active" : ""
+          assessment.id === selectedAssessment ? "active" : ""
         } flex`}
         key={assessment.id}
         id={assessment.id}
-        onClick={()=>{assessment.task_users.length >0 && setIsStudentScoreOpen(!isStudentScoreOpen)}}
+        onClick={()=>{setIsStudentScoreOpen(true), handleEdit(assessment.id)}}
       >
         {loading ? (
           <Skeleton avatar={{ size: "small" }} active paragraph={{ rows: 1 }} />
@@ -45,8 +41,7 @@ const TaskCard = ({
               <div className="task-name-with-icon flex">
                 <h2>{truncateText(assessment.task_title, 15)}</h2>
 
-                  <>
-
+                <>
                   <img
                     src="/icons/edit-pencil.svg"
                     className="edit-icon"
@@ -56,28 +51,24 @@ const TaskCard = ({
                     }}
                   />
 
-                  
                   <img
                     src="/icons/deleteIcon.svg"
                     alt="delete-icon"
                     className="delete-icon"
                     id={assessment.id}
                     onClick={(e) => {
-                      handleDelete(assessment.id)
+                      handleDelete(assessment.id);
                       e.stopPropagation();
                     }}
                   />
-
-               
                 </>
               </div>
               <p className="task-description">
                 {truncateText(
                   assessment.task_description.replace(/<[^>]*>/g, ""),
-                  50
+                  70
                 )}
               </p>
-              {/* <span className="btn btn-inprogress">Inprogress</span> */}
               <span className="btn btn-deadline">
                 {dayjs(assessment.due_date).format("MMM,DD YYYY")}
               </span>
@@ -100,10 +91,8 @@ const AssessmentList = ({
   handleAdd,
   selectedAssessment,
   isStudentScoreOpen,
-  setIsStudentScoreOpen
+  setIsStudentScoreOpen,
 }) => {
-
-
   return (
     <>
       <section className="listing-container">
@@ -137,11 +126,11 @@ const AssessmentList = ({
             assessmentList.map((assessment) => (
               <TaskCard
                 key={assessment.id}
-                loading = {loading}
+                loading={loading}
                 assessment={assessment}
                 handleEdit={handleEdit}
                 handleDelete={handleDelete}
-                selectedAssessment = {selectedAssessment}
+                selectedAssessment={selectedAssessment}
                 setIsStudentScoreOpen={setIsStudentScoreOpen}
                 isStudentScoreOpen={isStudentScoreOpen}
               />

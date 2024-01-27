@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 
 import { useParams } from "react-router-dom";
 
-import { Modal, notification } from "antd";
+import { Modal, Skeleton, notification } from "antd";
 import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
 import dayjs from "dayjs";
@@ -21,7 +21,7 @@ const AssessmentModule = ({ type }) => {
   const [editId, setEditId] = useState(null);
   const [assessmentList, setAssessmentList] = useState([]);
   const [assessmentSearchWord, setAssessmentSearchWord] = useState("");
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [students, setStudents] = useState([]);
   const [selectedStudents, setSelectedStudents] = useState([]);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -36,6 +36,7 @@ const AssessmentModule = ({ type }) => {
   };
 
   useEffect(() => {
+    setLoading(true);
     //this useEffect used to fetch task list and will re-run whenever filter or search is updated
     if (user.role !== "Student") {
       const url = `${API_END_POINT}/api/task/${batchId}/list_task/?limit=10&page=1&filter_task_type=${
@@ -57,11 +58,8 @@ const AssessmentModule = ({ type }) => {
             setAssessmentList(assessmentList);
 
             setLoading(false);
-            if (!assessmentId) {
-              // Set the editId to the first task's id in the updated list
-              assessmentId =
-                res.data.data.length > 0 ? res.data.data[0].id : null;
-            }
+            assessmentId =
+              res.data.data.length > 0 ? res.data.data[0].id : null;
 
             setEditId(assessmentId);
           }
@@ -659,15 +657,48 @@ const AssessmentModule = ({ type }) => {
             return null;
           })}
 
-          {editId === null && (
-            <div className="select-something-container flex">
-              <div className="image-container ">
-                <img src="/icons/select-something.svg" alt="" />
-                <p className="select-something-heading">
-                  Please Select any of the Available Tasks or Create New Task
-                </p>
-              </div>
-            </div>
+          {loading ? (
+            <Skeleton active={true} />
+          ) : (
+            <>
+              {assessmentList.map((assessment) => {
+                if (assessment.id === editId) {
+                  return (
+                    <AssessmentView
+                      key={assessment.id}
+                      currentAssessment={assessment}
+                      students={students}
+                      selectedStudents={selectedStudents}
+                      setSelectedStudents={setSelectedStudents}
+                      handleSave={handleSave}
+                      handleInputChange={handleInputChange}
+                      weightageShow={type === "task" ? false : true}
+                      handleSaveWeightage={handleSaveWeightage}
+                      handleAddWeightage={handleAddWeightage}
+                      handleWeightageChange={handleWeightageChange}
+                      isStudentScoreOpen={isStudentScoreOpen}
+                      handleStatusChange={handleStatusChange}
+                      handleAddScore={handleAddScore}
+                      setActiveWeightageIndex={setActiveWeightageIndex}
+                      activeWeightageIndex={activeWeightageIndex}
+                      type={type}
+                    />
+                  );
+                }
+                return null;
+              })}
+              {editId === null && (
+                <div className="select-something-container flex">
+                  <div className="image-container ">
+                    <img src="/icons/select-something.svg" alt="" />
+                    <p className="select-something-heading">
+                      Please Select any of the Available Tasks or Create New
+                      Task
+                    </p>
+                  </div>
+                </div>
+              )}
+            </>
           )}
         </>
       ) : (

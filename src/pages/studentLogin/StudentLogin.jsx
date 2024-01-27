@@ -80,11 +80,9 @@ const StudentLogin = ({ type }) => {
         const copyTaskList = [...res.data.data];
         setTaskLists(copyTaskList);
 
-        if (!selectedTaskId) {
-          const getFirstTask =
+        const getFirstTask =
             [...res.data.data].length > 0 ? [...res.data.data][0]["id"] : null;
           setSeletedTaskId(getFirstTask);
-        }
       })
       .catch((error) => {
         console.log(error);
@@ -260,7 +258,7 @@ const StudentLogin = ({ type }) => {
                               <div className="student-weightage-card flex">
               
                                 <p>
-                                  {weightageDetails.weightage_details.weightage} {" "}  {weightageDetails.task_score.map((a)=>Number(a.task_score))}/
+                                  {weightageDetails.weightage_details.weightage} {" "}  {weightageDetails.task_score && weightageDetails.task_score.map((a)=>Number(a.task_score))}/
                                   {Number(
                                     weightageDetails.weightage_percentage
                                   )}
@@ -277,7 +275,7 @@ const StudentLogin = ({ type }) => {
                   <div className="submission-link-container">
                     <p style={{fontSize:"12px",lineHeight: "16px",fontFamily:"Roboto",color:"#12160a",fontWeight:400}}>Submitted Link</p>
                     <a
-                      href={`https://${tasksList.submission_link}`}
+                      href={`${tasksList.submission_link}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       style={{fontSize:"12px"}}
@@ -286,6 +284,23 @@ const StudentLogin = ({ type }) => {
                     </a>
                   </div>
                 </div>
+                {/* <div className="student-task-label-container flex">
+                  <h3>Task File</h3>
+                  <div className="horizon-line"></div>
+                </div> */}
+                {/* <div className="file-input-container">
+                  <div className="upload-icon-container flex">
+                    <img src="/icons/upload.svg" className="upload-icon" />
+                    <label for="file-input">
+                      Drag your file or
+                      <span className="highlight">
+                        {" "}
+                        click to upload your task
+                      </span>
+                    </label>
+                  </div>
+                  <input type="file" className="file-input" />
+                </div> */}
               </div>
 
               <Modal
@@ -357,7 +372,7 @@ const StudentLogin = ({ type }) => {
           <div className="image-container ">
             <img src="/icons/select-something.svg" alt="" />
             <p className="select-something-heading">
-              Please Select any of the Available Tasks
+              Please Select any of the Available {type}
             </p>
           </div>
         </div>

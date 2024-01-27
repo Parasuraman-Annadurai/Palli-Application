@@ -349,11 +349,11 @@ const AssessmentModule = ({ type }) => {
               if (assessment.id == editId) {
                 assessment["task_weightages"] = assessment.task_weightages.map(
                   (weightage, index) => {
-                    for(const res of results){
-                      if(res.data.data.task === editId){
-                        weightage["id"] = res.data.data.id
+                    for (const res of results) {
+                      if (res.data.data.task === editId) {
+                        weightage["id"] = res.data.data.id;
                       }
-                      return weightage
+                      return weightage;
                     }
                   }
                 );
@@ -369,15 +369,21 @@ const AssessmentModule = ({ type }) => {
               "errors" in error.response.data
             ) {
               const errorMessages = error.response.data.errors;
-
-              Object.entries(errorMessages).forEach(([key, messages]) => {
-                messages.forEach((message) =>
-                  notification.error({
-                    message: `${key} Error`,
-                    description: message,
-                  })
-                );
-              });
+              if (Array.isArray(errorMessages)) {
+                notification.error({
+                  message: `Error`,
+                  description: errorMessages,
+                });
+              } else {
+                Object.entries(errorMessages).forEach(([key, messages]) => {
+                  messages.forEach((message) =>
+                    notification.error({
+                      message: `${key} Error`,
+                      description: message,
+                    })
+                  );
+                });
+              }
             }
           });
       }
@@ -397,15 +403,21 @@ const AssessmentModule = ({ type }) => {
               "errors" in error.response.data
             ) {
               const errorMessages = error.response.data.errors;
-
-              Object.entries(errorMessages).forEach(([key, messages]) => {
-                messages.forEach((message) =>
-                  notification.error({
-                    message: `${key} Error`,
-                    description: message,
-                  })
-                );
-              });
+              if (Array.isArray(errorMessages)) {
+                notification.error({
+                  message: `Error`,
+                  description: errorMessages,
+                });
+              } else {
+                Object.entries(errorMessages).forEach(([key, messages]) => {
+                  messages.forEach((message) =>
+                    notification.error({
+                      message: `${key} Error`,
+                      description: message,
+                    })
+                  );
+                });
+              }
             }
           });
       }
@@ -527,6 +539,59 @@ const AssessmentModule = ({ type }) => {
     });
   };
 
+  const handleDeleteWeightage = (deleteWeightageId, index) => {
+    let updatedAssessmentList = [...assessmentList];
+
+    if (deleteWeightageId) {
+      updatedAssessmentList = updatedAssessmentList.map((assessment) => {
+        if (assessment.id === editId) {
+          // Use map to create a new array of task_weightages without the specified deleteWeightageId
+          const updatedTaskWeightages = assessment.task_weightages.filter(
+            (weightage) => weightage.id !== deleteWeightageId
+          );
+          return {
+            ...assessment,
+            task_weightages: updatedTaskWeightages,
+          };
+        }
+        return assessment;
+      });
+
+      const url = `${API_END_POINT}/api/task/${batchId}/delete/task_weightage/${deleteWeightageId}`;
+
+      axios
+        .delete(url, { headers })
+        .then((res) => {
+          if (res.data.status === 200) {
+            notification.success({
+              message: "Success",
+              description: `${res.data.message}`,
+            });
+            setAssessmentList(updatedAssessmentList);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } else {
+      updatedAssessmentList = updatedAssessmentList.map((assessment) => {
+        if (assessment.id === editId) {
+          // Use map to create a new array of task_weightages without the specified index
+          const updatedTaskWeightages = [...assessment.task_weightages];
+          updatedTaskWeightages.splice(index, 1);
+
+          return {
+            ...assessment,
+            task_weightages: updatedTaskWeightages,
+          };
+        }
+        return assessment;
+      });
+
+      setAssessmentList(updatedAssessmentList);
+    }
+  };
+
   return (
     <>
       {user.role !== "Student" ? (
@@ -586,6 +651,8 @@ const AssessmentModule = ({ type }) => {
                   handleAddScore={handleAddScore}
                   setActiveWeightageIndex={setActiveWeightageIndex}
                   activeWeightageIndex={activeWeightageIndex}
+                  handleDeleteWeightage={handleDeleteWeightage}
+                  type={type}
                 />
               );
             }

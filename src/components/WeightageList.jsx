@@ -14,6 +14,7 @@ const WeightageList = ({
   handleSaveWeightage,
   handleAddWeightage,
   handleWeightageChange,
+  handleDeleteWeightage
 }) => {
   const { id: batchId } = useParams();
   const { token } = useAuth();
@@ -33,133 +34,112 @@ const WeightageList = ({
       });
   }, []);
 
-  const handleDeleteWeightage = (deleteIndex) => {
-    const copyWeightage = [...taskWeightages];
-    copyWeightage.splice(deleteIndex, 1);
-
-    const removeWeightageId = appliedWeightage[deleteIndex]["id"];
-    const url = `${API_END_POINT}/api/task/${batchId}/delete/task_weightage/${removeWeightageId}`;
-
-    axios
-      .delete(url, { headers })
-      .then((res) => {
-        if (res.data.status === 200) {
-          notification.success({
-            message: "Success",
-            description: `${res.data.message}`,
-          });
-          setSeletedWeightage(copyWeightage);
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
-
-  return (
+   return (
     <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        gap: 10,
-        marginTop: 20,
-      }}
+      className="weightage-main-container"
+      style={{ height: 550, overflowY: "scroll" }}
     >
-      <div className="weightage-adding-container flex">
-        <div className="weight-inputs">
-          {taskWeightages.map((taskWeightage, index) => {
-          
-            
-            return (
-              <div
-                style={{
-                  display: "flex",
-                  gap: 10,
-                  alignItems: "center",
-                  marginBottom: 10,
-                }}
-              >
-                <div className="weightage-select">
-                  <Select
-                    style={{ width: "170px" }}
-                    placeholder={"Select Weightage"}
-                    value={taskWeightage.weightage}
-                    onChange={(value) =>
-                      handleWeightageChange(value, index, "weightage")
-                    }
-                  >
-                    {weightages.map((weightageList) => (
-                      <Select.Option
-                        key={weightageList.id}
-                        value={weightageList.id}
-                      >
-                        {weightageList.weightage}
-                      </Select.Option>
-                    ))}
-                  </Select>
-                </div>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          gap: 10,
+          marginTop: 20,
+        }}
+      >
+        <div className="weightage-adding-container flex">
+          <div className="weight-inputs">
+            {taskWeightages.map((taskWeightage, index) => {
+              console.log(taskWeightage);
+              return (
                 <div
-                  className="percentage"
-                  style={{ maxWidth: 45, width: "100%" }}
+                  style={{
+                    display: "flex",
+                    gap: 10,
+                    alignItems: "center",
+                    marginBottom: 10,
+                  }}
                 >
-                  <input
-                    type="text"
-                    value={taskWeightage.weightage_percentage}
-                    onChange={(e) =>
-                      handleWeightageChange(
-                        e.target.value,
-                        index,
-                        "weightage_percentage"
-                      )
-                    }
-                    className="task-weight-value-selector"
-                    style={{
-                      border: "1px solid #eaeaea",
-                      borderRadius: 4,
-                      width: "100%",
-                      paddingTop: 7.5,
-                      paddingBottom: 7.5,
-                      paddingLeft: 5,
-                      paddingRight: 5,
-                    }}
-                  />
-                </div>
-                <div className="weightage-unit-container flex">
-                  <div className="weightage-action">
-                    {/* Show the delete icon only if weightage is greater than 0 */}
-                    <span onClick={() => handleDeleteWeightage(index)}>
-                      <img
-                        src="/icons/deleteIcon.svg"
-                        alt="delete-icon"
-                        className="delete-icon"
-                      />
-                    </span>
+                  <div className="weightage-select">
+                    <Select
+                      style={{ width: "170px" }}
+                      placeholder={"Select Weightage"}
+                      value={taskWeightage.weightage}
+                      onChange={(value) =>
+                        handleWeightageChange(value, index, "weightage")
+                      }
+                    >
+                      {weightages.map((weightageList) => (
+                        <Select.Option
+                          key={weightageList.id}
+                          value={weightageList.id}
+                        >
+                          {weightageList.weightage}
+                        </Select.Option>
+                      ))}
+                    </Select>
+                  </div>
+                  <div
+                    className="percentage"
+                    style={{ maxWidth: 45, width: "100%" }}
+                  >
+                    <input
+                      type="text"
+                      value={taskWeightage.weightage_percentage}
+                      onChange={(e) =>
+                        handleWeightageChange(
+                          e.target.value,
+                          index,
+                          "weightage_percentage"
+                        )
+                      }
+                      className="task-weight-value-selector"
+                      style={{
+                        border: "1px solid #eaeaea",
+                        borderRadius: 4,
+                        width: "100%",
+                        paddingTop: 7.5,
+                        paddingBottom: 7.5,
+                        paddingLeft: 5,
+                        paddingRight: 5,
+                      }}
+                    />
+                  </div>
+                  <div className="weightage-unit-container flex">
+                    <div className="weightage-action">
+                      {/* Show the delete icon only if weightage is greater than 0 */}
+                      <span onClick={() => handleDeleteWeightage(taskWeightage.id,index)}>
+                        <img
+                          src="/icons/deleteIcon.svg"
+                          alt="delete-icon"
+                          className="delete-icon"
+                        />
+                      </span>
+                    </div>
                   </div>
                 </div>
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
         </div>
-      </div>
-      <div className="add-weightage-button">
-        <button
-          className="btn create-btn"
-          style={{ padding: 15, cursor: "pointer" }}
-          // className="btn secondary-medium-icon"
-          onClick={handleAddWeightage}
-        >
-          + Add Weightage
-        </button>
-      </div>
-      <div>
-        <div className="apply-weightage">
+        <div className="add-weightage-button">
           <button
-            className="btn primary-medium"
-            // style={{ padding: 15, color: "green", cursor: "pointer" }}
-            onClick={() => handleSaveWeightage()}
+            className="btn create-btn"
+            style={{ padding: 15, cursor: "pointer" }}
+            onClick={handleAddWeightage}
           >
-            Save
+            + Add Weightage
           </button>
+        </div>
+        <div>
+          <div className="apply-weightage">
+            <button
+              className="btn primary-medium"
+              onClick={() => handleSaveWeightage()}
+            >
+              Save
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -167,10 +147,3 @@ const WeightageList = ({
 };
 
 export default WeightageList;
-
-
-
-
-
-
-

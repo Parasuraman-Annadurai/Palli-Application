@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Skeleton } from "antd";
+import { Skeleton, Dropdown, Space } from "antd";
 
 import dayjs from "dayjs";
 
@@ -19,6 +19,8 @@ const TaskCard = ({
       : text;
   };
 
+  
+
   return (
     <>
       <div
@@ -27,7 +29,10 @@ const TaskCard = ({
         } flex`}
         key={assessment.id}
         id={assessment.id}
-        onClick={()=>{setIsStudentScoreOpen(true), handleEdit(assessment.id)}}
+        onClick={() => {
+          setIsStudentScoreOpen(true)
+          handleEdit(assessment.id);
+        }}
       >
         {loading ? (
           <Skeleton avatar={{ size: "small" }} active paragraph={{ rows: 1 }} />
@@ -46,8 +51,10 @@ const TaskCard = ({
                     src="/icons/edit-pencil.svg"
                     className="edit-icon"
                     alt="edit-icon"
-                    onClick={() => {
-                      handleEdit(assessment.id);
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      setIsStudentScoreOpen(false)
+                       handleEdit(assessment.id);
                     }}
                   />
 
@@ -66,7 +73,7 @@ const TaskCard = ({
               <p className="task-description">
                 {truncateText(
                   assessment.task_description.replace(/<[^>]*>/g, ""),
-                  70
+                  60
                 )}
               </p>
               <span className="btn btn-deadline">

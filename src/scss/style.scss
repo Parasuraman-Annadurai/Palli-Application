@@ -1376,7 +1376,7 @@ body {
         border-radius: 4px;
         // margin-bottom: 15px;
         .student-info {
-          max-width: 200px;
+          max-width: 210px;
           width: 100%;
           align-items: center;
           gap: 6px;
@@ -1406,7 +1406,7 @@ body {
         }
 
         .student-status {
-          max-width: 80px;
+          max-width: 90px;
           width: 100%;
           p {
             color: $font-secondary-color;
@@ -1415,8 +1415,8 @@ body {
             line-height: 16px;
           }
           span {
-            background-color: #eefdb0;
-            color: $primary-color;
+            // background-color: #eefdb0;
+            // color: $primary-color;
             padding: 2px 8px;
             font-size: 10px;
             line-height: 14px;
@@ -1425,7 +1425,7 @@ body {
         }
 
         .sumbitted-date {
-          max-width: 100px;
+          max-width: 110px;
           width: 100%;
           p {
             color: $font-secondary-color;
@@ -1441,7 +1441,7 @@ body {
         }
 
         .student-file {
-          max-width: 160px;
+          max-width: 170px;
           width: 100%;
 
           p {
@@ -1453,6 +1453,10 @@ body {
             text-overflow: ellipsis;
             height: 18px;
             cursor: pointer;
+            a{
+              color: $highlight-blue;
+              text-decoration: underline;
+            }
           }
           .upload-file-name {
             display: inline-block;
@@ -1466,6 +1470,8 @@ body {
           }
         }
         .student-work {
+          max-width: 115px;
+          width: 100%;
           button {
             position: relative;
             @include secondary-btn-sm();
@@ -1507,7 +1513,7 @@ body {
             }
           }
           .weightage-checkbox input {
-            width: 29px;
+            width: 32px;
             height: 28px;
             border: 1px solid $border-color;
             background-color: #ffff;

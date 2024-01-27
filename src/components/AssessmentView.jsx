@@ -8,10 +8,9 @@ import {
   Dropdown,
   Skeleton,
   notification,
-
 } from "antd";
 import axios from "axios";
-
+import colorObject from "../utils/validate";
 import dayjs from "dayjs";
 
 import { API_END_POINT } from "../../config";
@@ -163,7 +162,6 @@ const AssessmentView = ({
     );
     const allStudentIds = [...students].map((student) => student.id);
 
-
     setAssigneeloader(true);
     if (isNotAllSelected) {
       //Deselect all students in tasks
@@ -187,7 +185,6 @@ const AssessmentView = ({
           console.log(error);
         });
     } else {
-
       //selectAll students in tasks
       axios
         .post(
@@ -384,8 +381,16 @@ const AssessmentView = ({
                     <div className="main-create-btn">
                       <button
                         type="submit"
-                       className={`${assigneeloader ? "btn primary-medium-default" : "btn primary-medium"}`}
-                        onClick={() => handleSave(currentAssessment)}
+                        className={`${
+                          assigneeloader
+                            ? "btn primary-medium-default"
+                            : "btn primary-medium"
+                        }`}
+                        onClick={() => {
+                          !assigneeloader
+                            ? handleSave(currentAssessment)
+                            : null;
+                        }}
                       >
                         {draft ? "Create" : "Update"}
                       </button>
@@ -513,6 +518,24 @@ const AssessmentView = ({
         </>
       ) : (
         <main className="main-container">
+              <div className="task-heading">
+            <p>{task_title}</p>
+
+            {/* <div className="search-container">
+              <input type="input" placeholder="search..." />
+              <img
+                src="/icons/searchIcon.svg"
+                alt="search-icon"
+                className="search-icon"
+              />
+
+              <img
+                src="/icons/filterIcon.svg"
+                alt="filter-icon"
+                className="filter-icon"
+              />
+            </div> */}
+          </div>
           {currentAssessment?.task_users?.length > 0 ? (
             currentAssessment.task_users.map((students, index) => {
               return (
@@ -538,7 +561,17 @@ const AssessmentView = ({
                       </div>
                       <div className="student-status">
                         <p>Status</p>
-                        <span>{students["task_status"]}</span>
+                        <span
+                          style={{
+                            backgroundColor:
+                              colorObject[students?.task_status]
+                                ?.backgroundColor ,
+                            color:
+                              colorObject[students?.task_status]?.color 
+                          }}
+                        >
+                          {students?.task_status}
+                        </span>{" "}
                       </div>
                       <div className="sumbitted-date">
                         <p>Deadline</p>
@@ -550,7 +583,15 @@ const AssessmentView = ({
                       </div>
                       <div className="student-file">
                         <p>Submission Link</p>
-                        <a href={`${students["submission_link"]}`} target="_blank">{students["submission_link"]}</a>
+                        <p>
+                          {" "}
+                          <a
+                            href={`${students["submission_link"]}`}
+                            target="_blank"
+                          >
+                            {students["submission_link"]}
+                          </a>
+                        </p>
                       </div>
                       <div className="student-work">
                         {weightageShow
@@ -558,8 +599,10 @@ const AssessmentView = ({
                               <button
                                 className="secondary-btn-sm"
                                 onClick={() => {
-                                  setActiveWeightageIndex(index),
+                                  setActiveWeightageIndex(index);
+                                  if(activeWeightageIndex === index){
                                     handleAddScore(studentScore);
+                                  }
                                 }}
                               >
                                 {activeWeightageIndex === index
@@ -574,14 +617,14 @@ const AssessmentView = ({
                                 placement="bottomLeft"
                                 trigger={["click"]}
                               >
-                                <a
+                                <button
                                   className="ant-dropdown-link secondary-btn-sm"
                                   onClick={(e) => {
                                     e.preventDefault();
                                   }}
                                 >
                                   Take action
-                                </a>
+                                </button>
                               </Dropdown>
                             )}
                       </div>
@@ -605,8 +648,7 @@ const AssessmentView = ({
                                 </div>
                                 <div className="weightage-checkbox">
                                   <input
-                                    type="number"
-                                   
+                                    type="text"
                                     onChange={(e) => {
                                       handleScoreOnchange(
                                         e,
@@ -622,7 +664,6 @@ const AssessmentView = ({
                       </div>
                     )}
                   </div>
-               
                 </>
               );
             })

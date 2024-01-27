@@ -342,6 +342,22 @@ li {
   line-height: 16px;
   font-weight: 500;
 }
+.main-container .task-details-header-container .submission-link-container p {
+  font-size: 12px;
+  line-height: 16px;
+  font-family: "Roboto";
+  color: #12160a;
+  font-weight: 400;
+}
+.main-container .task-details-header-container .submission-link-container a {
+  color: #3b82f6;
+  text-decoration: underline;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 200px;
+  display: inline-block;
+  cursor: pointer;
+}
 .main-container .task-details-header-container .student-task-label-container {
   align-items: center;
   gap: 11px;

@@ -1453,6 +1453,10 @@ body {
             text-overflow: ellipsis;
             height: 18px;
             cursor: pointer;
+            a{
+              color: $highlight-blue;
+              text-decoration: underline;
+            }
           }
           .upload-file-name {
             display: inline-block;
@@ -1466,6 +1470,8 @@ body {
           }
         }
         .student-work {
+          max-width: 115px;
+          width: 100%;
           button {
             position: relative;
             @include secondary-btn-sm();

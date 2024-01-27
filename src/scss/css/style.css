@@ -1122,6 +1122,10 @@ body .container .main-container .task-user-list-container .student-file p {
   height: 18px;
   cursor: pointer;
 }
+body .container .main-container .task-user-list-container .student-file p a {
+  color: #3b82f6;
+  text-decoration: underline;
+}
 body .container .main-container .task-user-list-container .student-file .upload-file-name {
   display: inline-block;
   color: #12160a;
@@ -1131,6 +1135,10 @@ body .container .main-container .task-user-list-container .student-file .upload-
 body .container .main-container .task-user-list-container .student-file img {
   width: 16px;
   height: 16px;
+}
+body .container .main-container .task-user-list-container .student-work {
+  max-width: 115px;
+  width: 100%;
 }
 body .container .main-container .task-user-list-container .student-work button {
   position: relative;

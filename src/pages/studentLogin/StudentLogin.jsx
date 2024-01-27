@@ -260,45 +260,67 @@ const StudentLogin = ({ type }) => {
                         <p>Description</p>
 
                         <div className="task-instruction">
-                          <span>
-                            {tasksList.task.task_description.replace(
-                              /<[^>]*>/g,
-                              ""
-                            )}
-                          </span>
+                          <span
+                            dangerouslySetInnerHTML={{
+                              __html: tasksList.task.task_description,
+                            }}
+                            style={{ color: "black" }}
+                          ></span>
                         </div>
                       </div>
-                      {type === "assessment" && (
-                        <div className="weightage-label-container flex">
-                          <h3>Weightage Details</h3>
-                          <div className="horizon-line"></div>
-                        </div>
+                      {type !== "task" && (
+                        <>
+                          <div className="weightage-label-container flex">
+                            <h3>Weightage Details</h3>
+                            <div className="horizon-line"></div>
+                          </div>
+                          <div className="student-weightage-list flex">
+                            {tasksList?.weightage_details &&
+                              tasksList?.weightage_details?.map(
+                                (weightageDetails, index) => (
+                                  <div className="student-weightage-card flex">
+                                    <p>
+                                      {
+                                        weightageDetails.weightage_details
+                                          .weightage
+                                      }{" "}
+                                      {weightageDetails?.task_score?.map((a) =>
+                                        Number(a.task_score)
+                                      )}
+                                      /
+                                      {Number(
+                                        weightageDetails.weightage_percentage
+                                      )}
+                                    </p>{" "}
+                                  </div>
+                                )
+                              )}
+                          </div>
+                        </>
                       )}
 
-                      {type === "assessment" && (
-                        <div className="student-weightage-list flex">
-                          {tasksList?.weightage_details &&
-                            tasksList?.weightage_details?.map(
-                              (weightageDetails, index) => (
-                                <div className="student-weightage-card flex">
-                                  <p>
-                                    {
-                                      weightageDetails.weightage_details
-                                        .weightage
-                                    }{" "}
-                                    {weightageDetails?.task_score?.map((a) =>
-                                      Number(a.task_score)
-                                    )}
-                                    /
-                                    {Number(
-                                      weightageDetails.weightage_percentage
-                                    )}
-                                  </p>{" "}
-                                </div>
-                              )
-                            )}
-                        </div>
-                      )}
+                      <div className="submission-link-container">
+                        <p
+                          // style={{
+                          //   fontSize: "12px",
+                          //   lineHeight: "16px",
+                          //   fontFamily: "Roboto",
+                          //   color: "#12160A",
+                          //   fontWeight: 400,
+                          // }}
+                        >
+                          Submitted Link
+                        </p>
+                        <div className="horizon-line"></div>
+                        <a
+                          href={`${tasksList.submission_link}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          style={{ fontSize: "12px" }}
+                        >
+                          {tasksList.submission_link}
+                        </a>
+                      </div>
                     </div>
                   </div>
 

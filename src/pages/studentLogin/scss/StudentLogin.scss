@@ -128,8 +128,6 @@ li {
   }
 }
 
-
-
 .btn.primary-medium-default {
   cursor: not-allowed;
   background-color: var(--btn-default);
@@ -218,7 +216,6 @@ li {
     opacity: 30%;
   }
 }
-
 
 .btn.create-btn {
   width: 100%;
@@ -430,6 +427,24 @@ li {
           line-height: 16px;
           font-weight: 500;
         }
+      }
+    }
+    .submission-link-container {
+      p {
+        font-size: 12px;
+        line-height: 16px;
+        font-family: $font-Roboto;
+        color: $font-primary-color;
+        font-weight: 400;
+      }
+      a {
+        color: $highlight-blue;
+        text-decoration: underline;
+        overflow: hidden;
+        text-overflow: ellipsis;
+       width: 200px;
+       display: inline-block;
+        cursor: pointer;
       }
     }
 

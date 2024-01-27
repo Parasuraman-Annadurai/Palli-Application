@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 import axios from "axios";
-import { Flex, Modal, Select, Skeleton } from "antd";
+import { Flex, Modal, Select, Skeleton,notification } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
 
@@ -299,22 +299,25 @@ const StudentLogin = ({ type }) => {
                         </>
                       )}
 
-                      <div className="submission-link-container">
-                        <p
-                       
-                        >
-                          Submitted Link
-                        </p>
-                        <div className="horizon-line"></div>
-                        <a
-                          href={`${tasksList.submission_link}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          style={{ fontSize: "12px" }}
-                        >
-                          {tasksList.submission_link}
-                        </a>
-                      </div>
+                        {tasksList?.submission_link && (
+                           <div className="submission-link-container">
+                           <p
+                          
+                           >
+                             Submitted Link
+                           </p>
+                           <div className="horizon-line"></div>
+                           <a
+                             href={`${tasksList.submission_link}`}
+                             target="_blank"
+                             rel="noopener noreferrer"
+                             style={{ fontSize: "12px" }}
+                           >
+                             {tasksList.submission_link}
+                           </a>
+                         </div>
+                        )}
+                     
                     </div>
                   </div>
 

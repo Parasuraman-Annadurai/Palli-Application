@@ -629,33 +629,6 @@ const AssessmentModule = ({ type }) => {
             setIsStudentScoreOpen={setIsStudentScoreOpen}
             isStudentScoreOpen={isStudentScoreOpen}
           />
-          {assessmentList.map((assessment) => {
-            if (assessment.id == editId) {
-              return (
-                <AssessmentView
-                  key={assessment.id}
-                  currentAssessment={assessment}
-                  students={students}
-                  selectedStudents={selectedStudents}
-                  setSelectedStudents={setSelectedStudents}
-                  handleSave={handleSave}
-                  handleInputChange={handleInputChange}
-                  weightageShow={type === "task" ? false : true}
-                  handleSaveWeightage={handleSaveWeightage}
-                  handleAddWeightage={handleAddWeightage}
-                  handleWeightageChange={handleWeightageChange}
-                  isStudentScoreOpen={isStudentScoreOpen}
-                  handleStatusChange={handleStatusChange}
-                  handleAddScore={handleAddScore}
-                  setActiveWeightageIndex={setActiveWeightageIndex}
-                  activeWeightageIndex={activeWeightageIndex}
-                  handleDeleteWeightage={handleDeleteWeightage}
-                  type={type}
-                />
-              );
-            }
-            return null;
-          })}
 
           {loading ? (
             <Skeleton active={true} />
@@ -681,6 +654,7 @@ const AssessmentModule = ({ type }) => {
                       handleAddScore={handleAddScore}
                       setActiveWeightageIndex={setActiveWeightageIndex}
                       activeWeightageIndex={activeWeightageIndex}
+                      handleDeleteWeightage={handleDeleteWeightage}
                       type={type}
                     />
                   );

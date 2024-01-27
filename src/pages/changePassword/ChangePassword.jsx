@@ -37,14 +37,14 @@ const ChangePassword = () => {
 
    if(token){
     axios.get(`${API_END_POINT}/api/accounts/password/token_verification/?token=${token}`).then((res)=>{
-      if(res.data.message){
+      if(res.data.data.is_valid){
         setVerificationToken(token);
       }
     }).catch((error)=>{
       if(error.response && error.response.data.status === 400){
         notification.error({
           message: "Error",
-          description: `${error.response.data.errors}`,
+          description: `${error.response.data.message}`,
         })
         navigate("/login")
       }

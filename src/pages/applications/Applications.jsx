@@ -20,7 +20,7 @@ const Applications = () => {
   const filterFields = useFilter("applicant");
   const { id: batchId } = useParams();
   const { token } = useAuth();
-  const [isLoading, setLoading] = useState(false);
+  const [isLoading, setLoading] = useState(true);
   const [popoverVisible, setPopoverVisible] = useState(false);
 
   const [viewMoreApplicant, setViewMoreApplicant] = useState([]);

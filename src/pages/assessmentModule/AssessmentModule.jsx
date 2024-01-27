@@ -392,7 +392,7 @@ const AssessmentModule = ({ type }) => {
             console.log(results);
             notification.success({
               message: "Sucess",
-              description: "Weightage Linked Successfully",
+              description: "Weightage Update Successfully",
             });
           })
           .catch((error) => {
@@ -425,18 +425,34 @@ const AssessmentModule = ({ type }) => {
   const handleAddWeightage = () => {
     const newWeightage = { weightage: null, weightage_percentage: null };
 
-    let copyAssessment = [...assessmentList];
-
-    //  setAssessmentList();
-    copyAssessment = copyAssessment.map((assessment) => {
+    const updatedAssessmentList = assessmentList.map((assessment) => {
       if (assessment.id === editId) {
-        assessment["task_weightages"] =
-          assessment.task_weightages.concat(newWeightage);
+        const totalWeightagePercentage = assessment.task_weightages
+          .map((task) => Number(task.weightage_percentage) || 0)
+          .reduce((sum, percentage) => sum + percentage, 0);
+
+
+        // Allow adding new weightage only if the total is less than 100%
+        if (totalWeightagePercentage < 100) {
+          console.log("Adding new weightage");
+          assessment.task_weightages = [
+            ...assessment.task_weightages,
+            newWeightage,
+          ];
+        } else {
+          notification.error({
+            message: "Error",
+            description: "Weightage percentage has already reached 100%",
+            duration: 1,
+          });
+        }
       }
+
       return assessment;
     });
 
-    setAssessmentList(copyAssessment);
+    console.log("Updated Assessment List:", updatedAssessmentList);
+    setAssessmentList(updatedAssessmentList);
   };
 
   const handleWeightageChange = (value, index, key) => {
@@ -444,7 +460,7 @@ const AssessmentModule = ({ type }) => {
 
     copyAssessment = copyAssessment.map((assessment) => {
       if (assessment.id === editId) {
-        assessment.task_weightages[index][key] = value;
+        assessment.task_weightages[index][key] = Number(value);
       }
       return assessment;
     });

@@ -18,6 +18,7 @@ const TaskCard = ({
       ? text.substring(0, maxLength) + "..."
       : text;
   };
+
   return (
     <>
       <div

@@ -149,14 +149,19 @@ const StudentLogin = ({ type }) => {
       )
       .then((res) => {
         if (res.status === 200) {
-          let updatedTask = [
-            {
-              ...tasksLists[
-                tasksLists.findIndex((task) => task.id === selectedTaskId)
-              ],
-              task_status: changeStatus,
-            },
-          ];
+          let updatedTask = tasksLists.map((task) => {
+            if (task.id === selectedTaskId) {
+              return {
+                ...task,
+                task_status: changeStatus,
+              };
+            }
+            return task;
+          });
+          notification.success({
+            message:"Success",
+            description : `${type} Submitted`
+          })          
           setTaskLists(updatedTask);
           setIsLoading(false);
           setIsModalOpen(false);
@@ -223,7 +228,7 @@ const StudentLogin = ({ type }) => {
                           <p>Status</p>
                           <Select
                             onChange={handleChange}
-                            disabled={tasksList.task_status === "SUBMITTED"}
+                            disabled={tasksList.task_status === "SUBMITTED" || tasksList.task_status === "COMPLETED"}
                             defaultValue={tasksList.task_status}
                             style={{ width: "60%" }}
                           >
@@ -282,23 +287,7 @@ const StudentLogin = ({ type }) => {
                           )}
                       </div>
                     </div>
-                    {/* <div className="student-task-label-container flex">
-                  <h3>Task File</h3>
-                  <div className="horizon-line"></div>
-                </div> */}
-                    {/* <div className="file-input-container">
-                  <div className="upload-icon-container flex">
-                    <img src="/icons/upload.svg" className="upload-icon" />
-                    <label for="file-input">
-                      Drag your file or
-                      <span className="highlight">
-                        {" "}
-                        click to upload your task
-                      </span>
-                    </label>
-                  </div>
-                  <input type="file" className="file-input" />
-                </div> */}
+                 
                   </div>
 
                   <Modal

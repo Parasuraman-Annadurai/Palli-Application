@@ -240,7 +240,6 @@ const AssessmentView = ({
       task_weightage: weightage.id,
       task_score: Number(e.target.value),
     };
-    console.log(weightage);
     // Check if the score for the same student and weightage ID already exists
     const existingScoreIndex = studentScore.findIndex(
       (score) =>
@@ -514,7 +513,7 @@ const AssessmentView = ({
         </>
       ) : (
         <main className="main-container">
-          {currentAssessment.task_users.length > 0 ? (
+          {currentAssessment?.task_users?.length > 0 ? (
             currentAssessment.task_users.map((students, index) => {
               return (
                 <>

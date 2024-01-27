@@ -565,7 +565,7 @@ const AssessmentView = ({
                       </div>
                       <div className="student-file">
                         <p>Submission Link</p>
-                        <a href={`${students["submission_link"]}`} target="_blank">{students["submission_link"]}</a>
+                       <p> <a href={`${students["submission_link"]}`} target="_blank">{students["submission_link"]}</a></p>
                       </div>
                       <div className="student-work">
                         {weightageShow

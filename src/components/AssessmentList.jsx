@@ -46,7 +46,7 @@ const TaskCard = ({
                     className="edit-icon"
                     alt="edit-icon"
                     onClick={() => {
-                      handleEdit(assessment.id);
+                      setIsStudentScoreOpen(false),handleEdit(assessment.id);
                     }}
                   />
 
@@ -65,7 +65,7 @@ const TaskCard = ({
               <p className="task-description">
                 {truncateText(
                   assessment.task_description.replace(/<[^>]*>/g, ""),
-                  70
+                  60
                 )}
               </p>
               <span className="btn btn-deadline">

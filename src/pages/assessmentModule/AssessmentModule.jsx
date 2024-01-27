@@ -413,6 +413,8 @@ const AssessmentModule = ({ type }) => {
   };
 
   const handleStatusChange = (studentId, status) => {
+
+    setLoading(true)
     const url = `${API_END_POINT}/api/task/${batchId}/update/task/user/${studentId}`;
     const payload = { task_status: status };
 
@@ -422,7 +424,7 @@ const AssessmentModule = ({ type }) => {
     axios
       .put(url, payload, { headers })
       .then((res) => {
-        console.log(res);
+        setLoading(false)
         let copiedTaskStatusChangeStudents = assessmentList.map(
           (assessment) => {
             assessment["task_users"] = assessment.task_users.map((user) => {
@@ -443,6 +445,7 @@ const AssessmentModule = ({ type }) => {
   };
 
   const handleAddScore = (studentScores) => {
+    setLoading(true)
     let statusChangeAfterScore = [...assessmentList];
     statusChangeAfterScore = statusChangeAfterScore.map((assessment) => {
       assessment.task_users = assessment.task_users.map((student) => {
@@ -468,6 +471,7 @@ const AssessmentModule = ({ type }) => {
               { headers }
             )
             .then((res) => {
+              setLoading(false)
               setAssessmentList(statusChangeAfterScore);
               setActiveWeightageIndex(null);
             })
@@ -557,7 +561,7 @@ const AssessmentModule = ({ type }) => {
                     <img src="/icons/select-something.svg" alt="" />
                     <p className="select-something-heading">
                       Please Select any of the Available Tasks or Create New
-                      Task
+                      {type}
                     </p>
                   </div>
                 </div>

@@ -52,6 +52,7 @@ const AssessmentView = ({
   );
 
   const [assigneeloader, setAssigneeloader] = useState(false);
+  const [weightages, setWeighatages] = useState([]);
   const headers = {
     Authorization: `Bearer ${token.access}`,
     "Content-type": "application/json",
@@ -256,6 +257,7 @@ const AssessmentView = ({
     }
   };
 
+  const a = weightages.find((weightage)=>weightage.id === weightage.id)
   return (
     <>
       {!isStudentScoreOpen ? (
@@ -508,6 +510,8 @@ const AssessmentView = ({
                         handleAddWeightage={handleAddWeightage}
                         handleWeightageChange={handleWeightageChange}
                         handleDeleteWeightage={handleDeleteWeightage}
+                        setWeighatages={setWeighatages}
+                        weightages={weightages}
                       />
                     )
                   )}
@@ -640,10 +644,11 @@ const AssessmentView = ({
                                 key={weightageIndex}
                                 className="applied-weightage-card flex"
                               >
+                               
                                 <div className="applied-weightage-name">
                                   <p>
                                     {" "}
-                                    {weightage.weightage_details?.weightage}
+                                    { weightages ? weightages?.find((weightages)=>weightages.id == weightage.weightage)["weightage"] : ""}
                                   </p>
                                 </div>
                                 <div className="weightage-checkbox">

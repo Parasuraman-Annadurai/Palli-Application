@@ -43,6 +43,9 @@ const Applications = () => {
     user_status: "",
   });
 
+  const [filterValues, setFilterValues] = useState({});
+
+
   const headers = {
     Authorization: `Bearer ${token.access}`,
     "Content-type": "application/json",
@@ -51,27 +54,31 @@ const Applications = () => {
     setLoading(true);
 
     //this useEffect used to fetch application list and will re-run whenever filter or search is updated
+    const a =`/?`
+    let urlBuild = `${API_END_POINT}/api/applicant/${batchId}/list/applicants/?`
+   
+    // if(Object.keys(filterValues).length > 0){
+    //   Object.entries(filterValues).map((key,value)=>{
+    //       urlBuild = `filter_${key}=${value}`
+    //   })
+    // }
     axios
-      .get(
-        `${API_END_POINT}/api/applicant/${batchId}/list/applicants/?filter_mark_min=${filterState.mark_min}&&filter_mark_max=${filterState.mark_max}&&filter_subject=${filterState.subject}&&filter_annual_income_min=${filterState.annual_income_min}&&filter_annual_income_max=${filterState.annual_income_max}&&filter_degree=${filterState.degree}&&filter_district=${filterState.district}&&filter_pincode=${filterState.pincode}&limit=${limit}&page=${page}&search=${applicationSearch}`,
-        { headers }
-      )
+      .get(urlBuild,{ headers })
       .then((res) => {
         setApplications(res.data);
         setLoading(false);
       });
-  }, [applicationSearch, limit, page, filterState]);
+  }, [applicationSearch, limit, page, filterState,filterValues]);
 
   const handleApplyFilter = (filterData) => {
-    console.log(filterData);
     setAppliedFilterShow(filterData);
-
-    Object.keys(filterData).forEach((key) => {
-      setFilterState((prevFilterState) => ({
-        ...prevFilterState,
-        [key]: filterData[key],
-      }));
-    });
+   
+    // Object.keys(filterData).forEach((key) => {
+    //   setFilterState((prevFilterState) => ({
+    //     ...prevFilterState,
+    //     [key]: filterData[key],
+    //   }));
+    // });
   };
   const handleRemoveFilter = (fieldName) => {
     const updatedFilterState = { ...filterState, [fieldName]: "" };
@@ -87,6 +94,8 @@ const Applications = () => {
         filter={filterFields}
         applyFilter={handleApplyFilter}
         setPopoverVisible={setPopoverVisible}
+        filterValues={filterValues}
+        setFilterValues={setFilterValues}
       />
     </div>
   );

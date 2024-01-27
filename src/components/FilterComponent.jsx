@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 
-const FilterComponent = ({ filter, applyFilter, setPopoverVisible }) => {
-  const [filterValues, setFilterValues] = useState({});
+const FilterComponent = ({filterValues,setFilterValues, filter, applyFilter, setPopoverVisible }) => {
 
   const handleFilterChange = (fieldName, value) => {
     setFilterValues({ ...filterValues, [fieldName]: value });
+
   };
 
   const handleApplyFilter = () => {
@@ -97,9 +97,8 @@ const FilterComponent = ({ filter, applyFilter, setPopoverVisible }) => {
                       <option value="" disabled hidden>
                         {`Select ${filterItem.label}`}
                       </option>
-                      <option value="all">All</option>
                       {filterItem.extra.choices.map((choice) => (
-                        <option key={choice.key} value={choice.key}>
+                        <option key={choice.label} value={choice.label}>
                           {choice.label}
                         </option>
                       ))}

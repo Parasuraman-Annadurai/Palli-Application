@@ -159,9 +159,9 @@ const StudentLogin = ({ type }) => {
             return task;
           });
           notification.success({
-            message:"Success",
-            description : `${type} Submitted`
-          })          
+            message: "Success",
+            description: `${type} Submitted`,
+          });
           setTaskLists(updatedTask);
           setIsLoading(false);
           setIsModalOpen(false);
@@ -171,6 +171,8 @@ const StudentLogin = ({ type }) => {
         console.log(error);
       });
   };
+  console.log(type);
+
   return (
     <>
       <section className="listing-container">
@@ -228,7 +230,10 @@ const StudentLogin = ({ type }) => {
                           <p>Status</p>
                           <Select
                             onChange={handleChange}
-                            disabled={tasksList.task_status === "SUBMITTED" || tasksList.task_status === "COMPLETED"}
+                            disabled={
+                              tasksList.task_status === "SUBMITTED" ||
+                              tasksList.task_status === "COMPLETED"
+                            }
                             defaultValue={tasksList.task_status}
                             style={{ width: "60%" }}
                           >
@@ -263,31 +268,38 @@ const StudentLogin = ({ type }) => {
                           </span>
                         </div>
                       </div>
+                      {type === "assessment" && (
+                        <div className="weightage-label-container flex">
+                          <h3>Weightage Details</h3>
+                          <div className="horizon-line"></div>
+                        </div>
+                      )}
 
-                      <div className="weightage-label-container flex">
-                        <h3>Weightage Details</h3>
-                        <div className="horizon-line"></div>
-                      </div>
-
-                      <div className="student-weightage-list flex">
-                        {tasksList.weightage_details &&
-                          tasksList.weightage_details.map(
-                            (weightageDetails) => (
-                              <div className="student-weightage-card flex">
-                                <p>
-                                  {weightageDetails.weightage_details.weightage}{" "}
-                                </p>
-                                <span>
-                                  {Number(
-                                    weightageDetails.weightage_percentage
-                                  )}
-                                </span>
-                              </div>
-                            )
-                          )}
-                      </div>
+                      {type === "assessment" && (
+                        <div className="student-weightage-list flex">
+                          {tasksList?.weightage_details &&
+                            tasksList?.weightage_details?.map(
+                              (weightageDetails, index) => (
+                                <div className="student-weightage-card flex">
+                                  <p>
+                                    {
+                                      weightageDetails.weightage_details
+                                        .weightage
+                                    }{" "}
+                                    {weightageDetails?.task_score?.map((a) =>
+                                      Number(a.task_score)
+                                    )}
+                                    /
+                                    {Number(
+                                      weightageDetails.weightage_percentage
+                                    )}
+                                  </p>{" "}
+                                </div>
+                              )
+                            )}
+                        </div>
+                      )}
                     </div>
-                 
                   </div>
 
                   <Modal

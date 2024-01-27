@@ -43,7 +43,6 @@ const Applications = () => {
     user_status: "",
   });
 
-
   const headers = {
     Authorization: `Bearer ${token.access}`,
     "Content-type": "application/json",
@@ -237,9 +236,9 @@ const Applications = () => {
                 <div className="Guardian-detial-background">
                   <div className="details-section">
                     <p className="Guardian-detial-title">Ration/Family Card</p>
-                    
+
                     <p className="Guardian-detial-name">
-                      <a >View document</a>
+                      <a>View document</a>
                     </p>
                   </div>
                 </div>
@@ -249,7 +248,7 @@ const Applications = () => {
                 <div className="line"></div>
               </div>
               <div className="Educational-details-list-container">
-              {details.applicant_academies.map((academy) => (
+                {details.applicant_academies.map((academy) => (
                   <div
                     key={academy.id}
                     className="educational-background-second-container"
@@ -381,11 +380,7 @@ const Applications = () => {
       </div>
       <div className="application-inner-container">
         <div className="search-container">
-          <img
-            src="/icons/searchIcon.svg"
-            alt=""
-            className="search-icon"
-          />
+          <img src="/icons/searchIcon.svg" alt="" className="search-icon" />
           <input
             type="text"
             value={applicationSearch}
@@ -400,11 +395,7 @@ const Applications = () => {
             content={content}
             trigger={["click"]}
           >
-            <img
-              src="/icons/filterIcon.svg"
-              alt=""
-              className="filter-icon"
-            />
+            <img src="/icons/filterIcon.svg" alt="" className="filter-icon" />
           </Popover>
         </div>
         <div className="filter-or-search-container">
@@ -434,98 +425,89 @@ const Applications = () => {
             ))} */}
         </div>
 
-        {applications.data.length > 0 ? (
-          <>
-            <div className="application-list-container">
-              {isLoading ? (
-                <Skeleton active paragraph={20} />
-              ) : (
-                applications.data.map((application) => (
-                  <div
-                    className="application-card-container"
-                    key={application.id}
-                    onClick={() => handleViewMore(application.id)}
-                  >
-                    <div className="application-details-container flex">
-                      <div className="application-info flex">
-                        <div className="application-name-container">
-                          <p>
-                            {application.first_name[0].toUpperCase()}
-                            {application.last_name[0].toUpperCase()}
-                          </p>
-                        </div>
-                        <div className="application-email-container">
-                          <p className="application-name">
-                            <Tooltip
-                              title={`${application.first_name
-                                .charAt(0)
-                                .toUpperCase()}${application.first_name.slice(
-                                1
-                              )} ${application.last_name
-                                .charAt(0)
-                                .toUpperCase()}${application.last_name.slice(
-                                1
-                              )}`}
-                            >
-                              {truncateText(
-                                `${application.first_name
-                                  .charAt(0)
-                                  .toUpperCase()}${application.first_name.slice(
-                                  1
-                                )} ${application.last_name
-                                  .charAt(0)
-                                  .toUpperCase()}${application.last_name.slice(
-                                  1
-                                )}`,
-                                15
-                              )}
-                            </Tooltip>
-                          </p>
-                          <p className="application-email">
-                            {truncateText(application.email, 15)}
-                          </p>
-                        </div>
-                      </div>
-                      <div className="application-gender">
-                        <p>Gender</p>
-                        <span>Male</span>
-                      </div>
-                      <div className="application-dob">
-                        <p>Date of Birth</p>
-                        <span>
-                          {dayjs(application.dob).format("MMM DD, YYYY")}
-                        </span>
-                      </div>
-                      <div className="application-district">
-                        <p>District</p>
-                        <p className="district-heading">{application.district}</p>
-                      </div>
-                      <div className="application-qualification">
-                        <p>Qualification</p>
-                        <span>Diploma</span>
-                      </div>
-                      <div className="application-mobile-no">
-                        <p>Mobile No</p>
-                        <span>{application.contact_number}</span>
-                      </div>
+        <div className="application-list-container">
+          {isLoading ? (
+            <Skeleton active paragraph={20} />
+          ) : (
+            applications.data.map((application) => (
+              <div
+                className="application-card-container"
+                key={application.id}
+                onClick={() => handleViewMore(application.id)}
+              >
+                <div className="application-details-container flex">
+                  <div className="application-info flex">
+                    <div className="application-name-container">
+                      <p>
+                        {application.first_name[0].toUpperCase()}
+                        {application.last_name[0].toUpperCase()}
+                      </p>
+                    </div>
+                    <div className="application-email-container">
+                      <p className="application-name">
+                        <Tooltip
+                          title={`${application.first_name
+                            .charAt(0)
+                            .toUpperCase()}${application.first_name.slice(
+                            1
+                          )} ${application.last_name
+                            .charAt(0)
+                            .toUpperCase()}${application.last_name.slice(1)}`}
+                        >
+                          {truncateText(
+                            `${application.first_name
+                              .charAt(0)
+                              .toUpperCase()}${application.first_name.slice(
+                              1
+                            )} ${application.last_name
+                              .charAt(0)
+                              .toUpperCase()}${application.last_name.slice(1)}`,
+                            15
+                          )}
+                        </Tooltip>
+                      </p>
+                      <p className="application-email">
+                        {truncateText(application.email, 15)}
+                      </p>
                     </div>
                   </div>
-                ))
-              )}
-            </div>
-            <div className="application-pagination-container flex">
-              {applications.data.length > 0 && (
-                <Pagination
-                  className="pagination"
-                  current={applications.currentPage}
-                  pageSize={limit}
-                  total={applications.total}
-                  onChange={(page) => setPage(page)}
-                />
-              )}
-            </div>
-          </>
-        ) : (
+                  <div className="application-gender">
+                    <p>Gender</p>
+                    <span>Male</span>
+                  </div>
+                  <div className="application-dob">
+                    <p>Date of Birth</p>
+                    <span>{dayjs(application.dob).format("MMM DD, YYYY")}</span>
+                  </div>
+                  <div className="application-district">
+                    <p>District</p>
+                    <p className="district-heading">{application.district}</p>
+                  </div>
+                  <div className="application-qualification">
+                    <p>Qualification</p>
+                    <span>Diploma</span>
+                  </div>
+                  <div className="application-mobile-no">
+                    <p>Mobile No</p>
+                    <span>{application.contact_number}</span>
+                  </div>
+                </div>
+              </div>
+            ))
+          )}
+        </div>
+        <div className="application-pagination-container flex">
+          {applications.data.length > 0 && (
+            <Pagination
+              className="pagination"
+              current={applications.currentPage}
+              pageSize={limit}
+              total={applications.total}
+              onChange={(page) => setPage(page)}
+            />
+          )}
+        </div>
+        {applications?.data?.length === 0 && (
           <div className="flex no-data-container">
             <img src="/icons/no-data.svg" className="no-data-image" />
           </div>

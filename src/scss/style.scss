@@ -1415,8 +1415,8 @@ body {
             line-height: 16px;
           }
           span {
-            background-color: #eefdb0;
-            color: $primary-color;
+            // background-color: #eefdb0;
+            // color: $primary-color;
             padding: 2px 8px;
             font-size: 10px;
             line-height: 14px;
@@ -1507,7 +1507,7 @@ body {
             }
           }
           .weightage-checkbox input {
-            width: 29px;
+            width: 32px;
             height: 28px;
             border: 1px solid $border-color;
             background-color: #ffff;

@@ -99,42 +99,7 @@ export const validateAddTask = (addTaskData,setErrors) => {
 
 
 
-//PasswordRequirement.jsx
 
-// export const checkPasswordRequirements = (inputPwd) => {
-//   const requirements = [
-//       {
-//           key: "upperCaseError",
-//           regex: /[A-Z]/,
-//           message: "At least one uppercase letter is required"
-//       },
-//       {
-//           key: "lowerCaseError",
-//           regex: /[a-z]/,
-//           message: "At least one lowercase letter is required"
-//       },
-//       {
-//           key: "lengthError",
-//           regex: /^.{8,}$/, // At least 8 characters
-//           message: "Password must be at least 8 characters long"
-//       }
-//       // Add more criteria as needed
-//   ];
-
-//   // Check each requirement and collect errors
-//   const errors = requirements.reduce((acc, requirement) => {
-//       acc[requirement.key] = !requirement.regex.test(inputPwd);
-//       return acc;
-//   }, {});
-
-//   // Return errors object
-//   return {
-//       error: Object.values(errors).some((error) => error),
-//       content: requirements.filter((req) => errors[req.key]).map((req) => req.message).join(", "),
-//       // You might want to adjust the 'content' message based on your UI or error handling needs
-//       criteria: errors
-//   };
-// };
 const content = [
   {
     error: false,
@@ -194,3 +159,14 @@ export const trackPwdRequirement = (password) => {
 
   return updatedContent;
 };
+
+
+
+const colorObject = {
+  "TODO" : {backgroundColor:"#E2E8F0",color:"#64748B"},
+  "INPROGRESS":{backgroundColor :"#DBEAFE",color:"#3B82F6"},
+  "COMPLETED":{backgroundColor:"#EEFDB0",color:"#49A843"},
+  "REWORK":{backgroundColor:"#FEF3C7",color:"#F59E0B"},
+  "SUBMITTED":{backgroundColor:"#EEFDB0",color:"#49A843"}
+}
+export default colorObject;

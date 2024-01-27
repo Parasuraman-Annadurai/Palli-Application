@@ -1088,8 +1088,6 @@ body .container .main-container .task-user-list-container .student-status p {
   line-height: 16px;
 }
 body .container .main-container .task-user-list-container .student-status span {
-  background-color: #eefdb0;
-  color: #49a843;
   padding: 2px 8px;
   font-size: 10px;
   line-height: 14px;
@@ -1181,7 +1179,7 @@ body .container .main-container .applied-weightage-list-container .applied-weigh
   font-weight: 500;
 }
 body .container .main-container .applied-weightage-list-container .applied-weightage-card .weightage-checkbox input {
-  width: 29px;
+  width: 32px;
   height: 28px;
   border: 1px solid #eaeaea;
   background-color: white;

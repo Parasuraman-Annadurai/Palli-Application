@@ -27,10 +27,8 @@ const Applications = () => {
   const [viewMoreApplicant, setViewMoreApplicant] = useState([]);
   const [applications, setApplications] = useState({ data: [] });
   const [applicationSearch, setApplicationSearch] = useState("");
-  const [appliedFilterShow, setAppliedFilterShow] = useState({});
   const [limit, setLimit] = useState(5);
   const [page, setPage] = useState(1);
-
   const [filterValues, setFilterValues] = useState({});
 
 
@@ -93,10 +91,15 @@ const Applications = () => {
   );
 
   const handleViewMore = (applicantId) => {
-    const applicantDetails = applications.data.filter(
-      (applicant) => applicant.id === applicantId
-    );
-    setViewMoreApplicant(applicantDetails);
+    let copyApplications = [...applications.data];
+    copyApplications = copyApplications.filter((application) => application.id === applicantId);
+    
+    
+    setViewMoreApplicant(copyApplications)
+    // const applicantDetails = applications.data.filter(
+    //   (applicant) => applicant.id === applicantId
+    // );
+    // setViewMoreApplicant(applicantDetails);
   };
 
   const truncateText = (text, maxLength) => {

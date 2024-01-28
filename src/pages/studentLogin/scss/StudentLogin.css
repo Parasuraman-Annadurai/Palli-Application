@@ -336,11 +336,20 @@ li {
   font-size: 12px;
   line-height: 16px;
 }
+.main-container .task-details-header-container .student-weightage-list .student-weightage-card .score {
+  color: #49a843;
+  margin-left: 5px;
+  font-family: "Roboto";
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 500;
+}
 .main-container .task-details-header-container .student-weightage-list .student-weightage-card span {
   font-family: "Roboto";
   font-size: 12px;
   line-height: 16px;
   font-weight: 500;
+  color: #12160a;
 }
 .main-container .task-details-header-container .submission-link-container .heading-line {
   align-items: center;

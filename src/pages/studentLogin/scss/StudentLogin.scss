@@ -421,11 +421,20 @@ li {
           font-size: 12px;
           line-height: 16px;
         }
+        .score{
+          color: $primary-color;
+          margin-left: 5px;
+          font-family: $font-Roboto;
+          font-size: 12px;
+          line-height: 16px;
+          font-weight: 500;
+        }
         span {
           font-family: $font-Roboto;
           font-size: 12px;
           line-height: 16px;
           font-weight: 500;
+          color: $font-primary-color;
         }
       }
     }

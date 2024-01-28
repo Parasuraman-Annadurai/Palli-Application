@@ -14,6 +14,8 @@ import { useParams } from "react-router-dom";
 import "../studentLogin/scss/StudentLogin.css";
 import { Content } from "antd/es/layout/layout";
 
+import colorObject from "../../utils/validate";
+
 const TaskCard = ({
   tasksLists,
   setSeletedTaskId,
@@ -235,7 +237,8 @@ const StudentLogin = ({ type }) => {
                               tasksList.task_status === "COMPLETED"
                             }
                             defaultValue={tasksList.task_status}
-                            style={{ width: "60%" }}
+                    
+                            style={{ width: "60%"}}
                           >
                             <Select.Option value="TODO">Todo</Select.Option>
                             <Select.Option value="INPROGRESS">
@@ -279,19 +282,26 @@ const StudentLogin = ({ type }) => {
                               tasksList?.weightage_details?.map(
                                 (weightageDetails, index) => (
                                   <div className="student-weightage-card flex">
-                                    <p>
-                                      {
+                                    {/* <p> */}
+                                     <p>
+                                     {
                                         weightageDetails.weightage_details
                                           .weightage
                                       }{" "}
-                                      {weightageDetails?.task_score?.map((a) =>
+                                     </p>
+                                     <span className="score">
+                                     {weightageDetails?.task_score?.map((a) =>
                                         Number(a.task_score)
                                       )}
+                                     </span>
                                       /
-                                      {Number(
+                                     <span>
+                                       {Number(
                                         weightageDetails.weightage_percentage
                                       )}
-                                    </p>{" "}
+                                     </span>
+                                    {/* </p> */}
+                                    {" "}
                                   </div>
                                 )
                               )}

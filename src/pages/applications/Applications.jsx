@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 
-import { useParams } from "react-router-dom";
+import { useParams,useNavigate } from "react-router-dom";
 
 import axios from "axios";
-import { Pagination, Popover, Tag, Skeleton, Tooltip, Modal } from "antd";
+import { Pagination, Popover, Tag, Skeleton, Tooltip, Modal, notification } from "antd";
 import dayjs from "dayjs";
 
 import { API_END_POINT } from "../../../config";
@@ -19,6 +19,7 @@ import "./scss/css/Applications.css";
 const Applications = () => {
   const filterFields = useFilter("applicant");
   const { id: batchId } = useParams();
+  const navigate = useNavigate();
   const { token } = useAuth();
   const [isLoading, setLoading] = useState(true);
   const [popoverVisible, setPopoverVisible] = useState(false);
@@ -29,19 +30,6 @@ const Applications = () => {
   const [appliedFilterShow, setAppliedFilterShow] = useState({});
   const [limit, setLimit] = useState(5);
   const [page, setPage] = useState(1);
-  const [filterState, setFilterState] = useState({
-    district: "",
-    annual_income_min: "",
-    annual_income_max: "",
-    userStatus: "",
-    degree: "",
-    venue: "",
-    pincode: "",
-    subject: "",
-    mark_min: "",
-    mark_max: "",
-    user_status: "",
-  });
 
   const [filterValues, setFilterValues] = useState({});
 
@@ -50,49 +38,50 @@ const Applications = () => {
     Authorization: `Bearer ${token.access}`,
     "Content-type": "application/json",
   };
+
+
   useEffect(() => {
     setLoading(true);
 
-    //this useEffect used to fetch application list and will re-run whenever filter or search is updated
-    const a =`/?`
-    let urlBuild = `${API_END_POINT}/api/applicant/${batchId}/list/applicants/?`
-   
-    // if(Object.keys(filterValues).length > 0){
-    //   Object.entries(filterValues).map((key,value)=>{
-    //       urlBuild = `filter_${key}=${value}`
-    //   })
-    // }
-    axios
-      .get(urlBuild,{ headers })
-      .then((res) => {
-        setApplications(res.data);
-        setLoading(false);
+    let urlBuild = `${API_END_POINT}/api/applicant/${batchId}/list/applicants/?`;
+    if (Object.keys(filterValues).length > 0) {
+      Object.keys(filterValues).forEach((key) => {
+        urlBuild += `filter_${key}=${filterValues[key]}&`;
       });
-  }, [applicationSearch, limit, page, filterState,filterValues]);
+    }
+    axios
+    .get(urlBuild,{ headers })
+    .then((res) => {
+      setApplications(res.data);
+      setLoading(false);
+    }).catch((error) => {
+      if(error.response.status == 401 ){
+        notification.error({
+          message:"Error",
+          description:"Unauthorized User",
+          duration:1
+        });
+        navigate("/login");
+      }
+    });
+  }, [filterValues,batchId]);
 
-  const handleApplyFilter = (filterData) => {
-    setAppliedFilterShow(filterData);
-   
-    // Object.keys(filterData).forEach((key) => {
-    //   setFilterState((prevFilterState) => ({
-    //     ...prevFilterState,
-    //     [key]: filterData[key],
-    //   }));
-    // });
-  };
   const handleRemoveFilter = (fieldName) => {
-    const updatedFilterState = { ...filterState, [fieldName]: "" };
-    const updateAppliedFilterState = { ...appliedFilterShow };
-    delete updateAppliedFilterState[fieldName];
-    setAppliedFilterShow(updateAppliedFilterState);
-    setFilterState(updatedFilterState);
+    const updatedFilterState = { ...filterValues };
+   
+    if (fieldName in updatedFilterState) {
+      // Use the 'delete' operator to remove the specified key
+      delete updatedFilterState[fieldName];
+  
+      // Update the state with the modified filterValues
+      setFilterValues(updatedFilterState);
+    }
   };
 
   const content = (
     <div>
       <FilterComponent
         filter={filterFields}
-        applyFilter={handleApplyFilter}
         setPopoverVisible={setPopoverVisible}
         filterValues={filterValues}
         setFilterValues={setFilterValues}
@@ -420,10 +409,10 @@ const Applications = () => {
           ) : (
             ""
           )}
-          {/* {appliedFilterShow &&
-            Object.keys(appliedFilterShow).map((filterName) => (
+          {filterValues &&
+            Object.keys(filterValues).map((filterName) => (
               <>
-                <Tag color="#49a843">{`${filterName} : ${appliedFilterShow[filterName]} `}</Tag>
+                <Tag color="#49a843">{`${filterName} : ${filterValues[filterName].toLowerCase()} `}</Tag>
                 <img
                   src="/icons/Cancel.svg"
                   alt=""
@@ -431,7 +420,7 @@ const Applications = () => {
                   onClick={() => handleRemoveFilter(filterName)}
                 />
               </>
-            ))} */}
+            ))}
         </div>
 
         <div className="application-list-container">

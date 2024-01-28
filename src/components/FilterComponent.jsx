@@ -1,19 +1,16 @@
 import React, { useState } from "react";
 
-const FilterComponent = ({filterValues,setFilterValues, filter, applyFilter, setPopoverVisible }) => {
+const FilterComponent = ({filterValues,setFilterValues, filter, setPopoverVisible }) => {
 
   const handleFilterChange = (fieldName, value) => {
     setFilterValues({ ...filterValues, [fieldName]: value });
 
   };
 
-  const handleApplyFilter = () => {
-    applyFilter(filterValues);
-    setPopoverVisible(false);
-  };
+ 
 
   const handleClearFilter = () => {
-    applyFilter({ ...filterValues, ...{} });
+    setFilterValues({})
     setPopoverVisible(false);
   };
   return (
@@ -110,13 +107,7 @@ const FilterComponent = ({filterValues,setFilterValues, filter, applyFilter, set
             }
           })}
         </div>
-        <div className="apply-btn flex">
-          <div>
-            <button onClick={handleApplyFilter} className="btn primary-medium">
-              Apply
-            </button>
-          </div>
-        
+        <div className="apply-btn flex">        
             <button onClick={handleClearFilter} className="btn primary-default">
               Clear
             </button>

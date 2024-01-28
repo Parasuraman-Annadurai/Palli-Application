@@ -43,11 +43,14 @@ const Applications = () => {
   useEffect(() => {
     setLoading(true);
 
-    let urlBuild = `${API_END_POINT}/api/applicant/${batchId}/list/applicants/?`;
+    let urlBuild = `${API_END_POINT}/api/applicant/${batchId}/list/applicants/?limit=${limit}&page=${page}&`;
     if (Object.keys(filterValues).length > 0) {
       Object.keys(filterValues).forEach((key) => {
         urlBuild += `filter_${key}=${filterValues[key]}&`;
       });
+    }
+    if(applicationSearch){
+      urlBuild += `search=${applicationSearch}`
     }
     axios
     .get(urlBuild,{ headers })
@@ -64,7 +67,7 @@ const Applications = () => {
         navigate("/login");
       }
     });
-  }, [filterValues,batchId]);
+  }, [filterValues,batchId,limit,page,applicationSearch]);
 
   const handleRemoveFilter = (fieldName) => {
     const updatedFilterState = { ...filterValues };

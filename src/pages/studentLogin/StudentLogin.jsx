@@ -301,12 +301,12 @@ const StudentLogin = ({ type }) => {
 
                         {tasksList?.submission_link && (
                            <div className="submission-link-container">
-                           <p
-                          
-                           >
+                            <div className="heading-line flex">
+                            <h3>
                              Submitted Link
-                           </p>
+                              </h3>
                            <div className="horizon-line"></div>
+                            </div>
                            <a
                              href={`${tasksList.submission_link}`}
                              target="_blank"

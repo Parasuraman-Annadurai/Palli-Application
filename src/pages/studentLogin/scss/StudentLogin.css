@@ -342,12 +342,22 @@ li {
   line-height: 16px;
   font-weight: 500;
 }
-.main-container .task-details-header-container .submission-link-container p {
+.main-container .task-details-header-container .submission-link-container .heading-line {
+  align-items: center;
+  gap: 10px;
+  padding-top: 16px;
+  padding-bottom: 5px;
+}
+.main-container .task-details-header-container .submission-link-container h3 {
   font-size: 12px;
   line-height: 16px;
   font-family: "Roboto";
   color: #12160a;
   font-weight: 400;
+}
+.main-container .task-details-header-container .submission-link-container .horizon-line {
+  flex: 1;
+  border-bottom: 1px solid #eaeaea;
 }
 .main-container .task-details-header-container .submission-link-container a {
   color: #3b82f6;

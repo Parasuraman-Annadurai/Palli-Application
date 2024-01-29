@@ -654,13 +654,17 @@ const AssessmentView = ({
                                     <p>
                                       
                                     {weightageLists && weightageLists.length > 0 && (
-                                      weightageLists.find((weightageName) => weightageName.id === weightage.weightage) && (
-                                        <>
-                                          <p>{weightageLists.find((weightageName) => weightageName.id === weightage.weightage).weightage} {Number(weightage.weightage_percentage)}</p>
-                                         
-                                        </>
-                                      )
+                                      (() => {
+                                        const foundWeightage = weightageLists.find((weightageName) => weightageName.id === weightage.weightage);
+
+                                        return foundWeightage && (
+                                          <>
+                                            <p>{foundWeightage.weightage} {Number(weightage.weightage_percentage)}</p>
+                                          </>
+                                        );
+                                      })()
                                     )}
+
 
                                     </p>
                                  </div>

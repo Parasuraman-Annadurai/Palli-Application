@@ -53,8 +53,8 @@ const Login = () => {
 
             {
               userData.data.data.role == "Student"
-                ? navigate("/batch/232/task")
-                : navigate("/batch/232/applications");
+                ? navigate("/batch/253/task")
+                : navigate("/batch/253/applications");
             }
 
             setLoading(false);

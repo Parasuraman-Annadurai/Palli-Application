@@ -281,7 +281,6 @@ const AssessmentView = ({
                         placeholder={"Untitled"}
                         // className={` ${errors.Title ? "error-notify" : ""} `}
                         // readOnly={!isEditing}
-                        autoFocus={true}
                       />
                       {/* {isEditing && (
                       <div>

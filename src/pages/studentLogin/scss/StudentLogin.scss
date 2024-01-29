@@ -421,21 +421,41 @@ li {
           font-size: 12px;
           line-height: 16px;
         }
-        span {
+        .score{
+          color: $primary-color;
+          margin-left: 5px;
           font-family: $font-Roboto;
           font-size: 12px;
           line-height: 16px;
           font-weight: 500;
         }
+        span {
+          font-family: $font-Roboto;
+          font-size: 12px;
+          line-height: 16px;
+          font-weight: 500;
+          color: $font-primary-color;
+        }
       }
     }
     .submission-link-container {
-      p {
+    
+      .heading-line{
+        align-items: center;
+        gap: 10px;
+      padding-top: 16px;
+      padding-bottom: 5px;
+      }
+      h3 {
         font-size: 12px;
         line-height: 16px;
         font-family: $font-Roboto;
         color: $font-primary-color;
         font-weight: 400;
+      }
+      .horizon-line {
+        flex: 1;
+        border-bottom: 1px solid $border-color;
       }
       a {
         color: $highlight-blue;

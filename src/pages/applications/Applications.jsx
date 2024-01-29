@@ -168,18 +168,23 @@ const Applications = () => {
                 </div>
               </div>
               <div className="personal-details-section-two flex">
+                <div>
                 <div className="personal-detial-background">
                   <p className="personal-detial-title">Contact Number</p>
                   <span className="personal-detial-name">
                     {details.contact_number}
                   </span>
                 </div>
+                </div>
+                <div>
                 <div className="personal-detial-background">
                   <p className="personal-detial-title">Whatsapp Number</p>
                   <span className="personal-detial-name">
                     {details.whatsapp_number}
                   </span>
                 </div>
+                </div>
+                <div>
                 <div className="personal-detial-background">
                   <p className="personal-detial-title">Aadhar Number</p>
                   <span className="personal-detial-name">
@@ -187,10 +192,11 @@ const Applications = () => {
                     <a>View document</a>
                   </span>
                 </div>
+                </div>
               </div>
               <div className="Guardian-details-heading-section">
                 <p className="heading-name">Guardian Details</p>
-                <div className="line"></div>
+                <div className="horizon-line"></div>
               </div>
               <div className="Guardian-details-section flex">
                 <div className="Guardian-detial-background">
@@ -245,7 +251,7 @@ const Applications = () => {
               </div>
               <div className="Educational-details-heading-section">
                 <p className="heading-name">Educational Details</p>
-                <div className="line"></div>
+                <div className="horizon-line"></div>
               </div>
               <div className="Educational-details-list-container">
                 {details.applicant_academies.map((academy) => (

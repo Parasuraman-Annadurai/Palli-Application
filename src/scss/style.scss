@@ -1178,8 +1178,8 @@ body {
       .title-section {
         max-width: 167px;
         width: 100%;
-        margin: 0 auto;
-        gap: 24px;
+        // margin: 0 auto;
+        gap: 25px;
 
         .selection {
           cursor: pointer;
@@ -1333,7 +1333,7 @@ body {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        margin-bottom: 7px;
+        margin-bottom: 19px;
       }
       .search-container {
         position: relative;
@@ -1384,7 +1384,7 @@ body {
             p {
               background-color: #d3f9cd;
               color: $font-primary-color;
-              padding: 8px 6px;
+              padding: 8px 9.5px;
               border-radius: 4px;
             }
           }

@@ -14,7 +14,6 @@ import AddBatch from "../components/AddBatchModule/AddBatch";
 import { API_END_POINT } from "../../config";
 
 const Sidebar = ({ menuList, activeMenuItem }) => {
-  console.log(menuList);
   const navigate = useNavigate();
   const { id: batchId } = useParams();
 

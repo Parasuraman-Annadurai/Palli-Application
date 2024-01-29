@@ -1,40 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 
-import { useParams } from "react-router-dom";
-import { Select, notification } from "antd";
-import axios from "axios";
+import { Select } from "antd";
 
-import { API_END_POINT } from "../../config";
-
-import { useAuth } from "../context/AuthContext";
 
 const WeightageList = ({
-  taskId,
   taskWeightages,
   handleSaveWeightage,
   handleAddWeightage,
   handleWeightageChange,
   handleDeleteWeightage,
   weightages,
-  setWeighatages
 }) => {
-  const { id: batchId } = useParams();
-  const { token } = useAuth();
  
-
-  const headers = {
-    Authorization: `Bearer ${token.access}`,
-    "Content-type": "application/json",
-  };
-  useEffect(() => {
-    axios
-      .get(`${API_END_POINT}/api/task/${batchId}/list/weightage`, { headers })
-      .then((res) => {
-        if (res.status === 200 && res.data.message === "Success") {
-          setWeighatages(res.data.data);
-        }
-      });
-  }, []);
 
    return (
     <div
@@ -52,7 +29,6 @@ const WeightageList = ({
         <div className="weightage-adding-container flex">
           <div className="weight-inputs">
             {taskWeightages.map((taskWeightage, index) => {
-              console.log(taskWeightage);
               return (
                 <div
                   style={{

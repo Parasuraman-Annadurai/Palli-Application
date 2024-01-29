@@ -530,13 +530,31 @@ const AssessmentModule = ({ type }) => {
               setLoading(false)
               setAssessmentList(statusChangeAfterScore);
               setActiveWeightageIndex(null);
+              notification.success({
+                message:"Success",
+                description:"Score Added Successfully"
+              })
             })
             .catch((error) => {
               console.log(error);
             });
         })
         .catch((error) => {
-          console.log(error);
+          if("errors" in error.response.data){
+            const errorMessages = error.response.data.errors;
+            notification.error({
+              message: 'Error',
+              description: (
+                <>
+                  {errorMessages.map((message, index) => (
+                    <p key={index}>{message}</p>
+                  ))}
+                </>
+              ),
+            });
+            setLoading(false)
+
+          }
         });
     });
   };

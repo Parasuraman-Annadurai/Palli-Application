@@ -48,7 +48,7 @@ const FilterComponent = ({filterValues,setFilterValues, filter, setPopoverVisibl
                     <input
                       type="number"
                       id={filterItem.name}
-                      placeholder={`Min ${filterItem.name}`}
+                      placeholder={`Min ${filterItem.name.split("_").join(" ")}`}
                       value={filterValues[`${filterItem.name}_min`] || ""}
                       onChange={(e) =>
                         handleFilterChange(
@@ -60,7 +60,7 @@ const FilterComponent = ({filterValues,setFilterValues, filter, setPopoverVisibl
                     <input
                       type="number"
                       id={`${filterItem.name}_max`}
-                      placeholder={`Max ${filterItem.name}`}
+                      placeholder={`Max ${filterItem.name.split("_").join(" ")}`}
                       value={filterValues[`${filterItem.name}_max`] || ""}
                       onChange={(e) =>
                         handleFilterChange(

@@ -430,6 +430,8 @@ body {
                 }
               }
               .application-gender {
+                max-width: 50px;
+                width: 100%;
                 p {
                   font-size: 12px;
                   line-height: 16px;
@@ -445,6 +447,8 @@ body {
                 }
               }
               .application-dob {
+                max-width: 70px;
+                width: 100%;
                 p {
                   font-size: 12px;
                   line-height: 16px;
@@ -459,6 +463,8 @@ body {
                 }
               }
               .application-district {
+                max-width: 100px;
+                width: 100%;
                 p {
                   font-size: 12px;
                   line-height: 16px;
@@ -478,6 +484,8 @@ body {
                 }
               }
               .application-qualification {
+                max-width: 70px;
+                width: 100%;
                 p {
                   font-size: 12px;
                   line-height: 16px;
@@ -492,6 +500,8 @@ body {
                 }
               }
               .application-mobile-no {
+                max-width: 70px;
+                width: 100%;
                 p {
                   font-size: 12px;
                   line-height: 16px;
@@ -600,10 +610,16 @@ body {
           .personal-details-heading-section {
             align-items: center;
             padding-bottom: 20px;
+            gap: 10px;
             .heading-name {
               font: 400 12px/16px $font-Roboto;
               color: $font-primary-color;
             }
+            .horizon-line{
+              flex: 1;
+              height: 1px;
+              background-color: $border-color;
+          }
           }
           .personal-details-section,.Guardian-details-section,.educational-details{
             max-width: 100%;
@@ -615,7 +631,19 @@ body {
               flex: 1 0 15%;
               margin: 0;
               padding: 0;
-              margin: 5px;
+            }
+            
+          }
+          .personal-details-section,.personal-details-section-two,.Guardian-details-section{
+            &>div{
+              width: 220px;
+            }
+            &>div:not(:last-child){
+              border-right: 1px solid lightgrey;
+            }
+            &>div:not(:first-child){
+              display: flex;
+              padding: 0 25px;
             }
           }
           .personal-details-section {
@@ -640,7 +668,7 @@ body {
           }
           .personal-details-section-two {
             justify-content: space-between;
-            max-width: 634px;
+            max-width: 657px;
             width: 100%;
             padding-bottom: 20px;
             p {
@@ -663,7 +691,21 @@ body {
           }
 
           .Guardian-details-heading-section {
+            display: flex;
+            align-items: center;
+            gap: 10px;
             padding-bottom: 20px;
+            .heading-name {
+              color: $font-primary-color;
+              font-family: 400;
+              font-size: 12px;
+              line-height: 16px;
+            }
+            .horizon-line{
+              flex: 1;
+              height: 1px;
+              background-color: $border-color;
+          }
           }
 
           .Guardian-details-section {
@@ -689,7 +731,22 @@ body {
           }
 
           .Educational-details-heading-section {
+
             padding-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            .heading-name {
+              color: $font-primary-color;
+              font-family: 400;
+              font-size: 12px;
+              line-height: 16px;
+            }
+            .horizon-line{
+              flex: 1;
+              height: 1px;
+              background-color: $border-color;
+          }
           }
           .Educational-details-list-container {
             .educational-background-one-container {

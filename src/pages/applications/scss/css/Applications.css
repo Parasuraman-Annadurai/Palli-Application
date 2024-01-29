@@ -364,6 +364,10 @@ body .container .application-full-container .application-inner-container .applic
   font-weight: 400;
   font-family: "Roboto";
 }
+body .container .application-full-container .application-inner-container .application-list-container .application-card-container .application-details-container .application-gender {
+  max-width: 50px;
+  width: 100%;
+}
 body .container .application-full-container .application-inner-container .application-list-container .application-card-container .application-details-container .application-gender p {
   font-size: 12px;
   line-height: 16px;
@@ -377,6 +381,10 @@ body .container .application-full-container .application-inner-container .applic
   line-height: 16px;
   font-weight: 400;
 }
+body .container .application-full-container .application-inner-container .application-list-container .application-card-container .application-details-container .application-dob {
+  max-width: 70px;
+  width: 100%;
+}
 body .container .application-full-container .application-inner-container .application-list-container .application-card-container .application-details-container .application-dob p {
   font-size: 12px;
   line-height: 16px;
@@ -388,6 +396,10 @@ body .container .application-full-container .application-inner-container .applic
   line-height: 16px;
   font-weight: 400;
   color: #12160a;
+}
+body .container .application-full-container .application-inner-container .application-list-container .application-card-container .application-details-container .application-district {
+  max-width: 100px;
+  width: 100%;
 }
 body .container .application-full-container .application-inner-container .application-list-container .application-card-container .application-details-container .application-district p {
   font-size: 12px;
@@ -406,6 +418,10 @@ body .container .application-full-container .application-inner-container .applic
   color: #12160a;
   text-transform: lowercase;
 }
+body .container .application-full-container .application-inner-container .application-list-container .application-card-container .application-details-container .application-qualification {
+  max-width: 70px;
+  width: 100%;
+}
 body .container .application-full-container .application-inner-container .application-list-container .application-card-container .application-details-container .application-qualification p {
   font-size: 12px;
   line-height: 16px;
@@ -417,6 +433,10 @@ body .container .application-full-container .application-inner-container .applic
   line-height: 16px;
   font-family: 400;
   color: #12160a;
+}
+body .container .application-full-container .application-inner-container .application-list-container .application-card-container .application-details-container .application-mobile-no {
+  max-width: 70px;
+  width: 100%;
 }
 body .container .application-full-container .application-inner-container .application-list-container .application-card-container .application-details-container .application-mobile-no p {
   font-size: 12px;
@@ -499,10 +519,16 @@ body .container .application-view-more-container .left-side .personal-and-educat
 body .container .application-view-more-container .left-side .personal-and-education-section .personal-details-heading-section {
   align-items: center;
   padding-bottom: 20px;
+  gap: 10px;
 }
 body .container .application-view-more-container .left-side .personal-and-education-section .personal-details-heading-section .heading-name {
   font: 400 12px/16px "Roboto";
   color: #12160a;
+}
+body .container .application-view-more-container .left-side .personal-and-education-section .personal-details-heading-section .horizon-line {
+  flex: 1;
+  height: 1px;
+  background-color: #eaeaea;
 }
 body .container .application-view-more-container .left-side .personal-and-education-section .personal-details-section, body .container .application-view-more-container .left-side .personal-and-education-section .Guardian-details-section, body .container .application-view-more-container .left-side .personal-and-education-section .educational-details {
   max-width: 100%;
@@ -515,7 +541,16 @@ body .container .application-view-more-container .left-side .personal-and-educat
   flex: 1 0 15%;
   margin: 0;
   padding: 0;
-  margin: 5px;
+}
+body .container .application-view-more-container .left-side .personal-and-education-section .personal-details-section > div, body .container .application-view-more-container .left-side .personal-and-education-section .personal-details-section-two > div, body .container .application-view-more-container .left-side .personal-and-education-section .Guardian-details-section > div {
+  width: 220px;
+}
+body .container .application-view-more-container .left-side .personal-and-education-section .personal-details-section > div:not(:last-child), body .container .application-view-more-container .left-side .personal-and-education-section .personal-details-section-two > div:not(:last-child), body .container .application-view-more-container .left-side .personal-and-education-section .Guardian-details-section > div:not(:last-child) {
+  border-right: 1px solid lightgrey;
+}
+body .container .application-view-more-container .left-side .personal-and-education-section .personal-details-section > div:not(:first-child), body .container .application-view-more-container .left-side .personal-and-education-section .personal-details-section-two > div:not(:first-child), body .container .application-view-more-container .left-side .personal-and-education-section .Guardian-details-section > div:not(:first-child) {
+  display: flex;
+  padding: 0 25px;
 }
 body .container .application-view-more-container .left-side .personal-and-education-section .personal-details-section .personal-detial-background .details-section .personal-detial-title {
   font: 400 12px/16px "Roboto";
@@ -530,7 +565,7 @@ body .container .application-view-more-container .left-side .personal-and-educat
 }
 body .container .application-view-more-container .left-side .personal-and-education-section .personal-details-section-two {
   justify-content: space-between;
-  max-width: 634px;
+  max-width: 657px;
   width: 100%;
   padding-bottom: 20px;
 }
@@ -552,7 +587,21 @@ body .container .application-view-more-container .left-side .personal-and-educat
   text-decoration: underline;
 }
 body .container .application-view-more-container .left-side .personal-and-education-section .Guardian-details-heading-section {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   padding-bottom: 20px;
+}
+body .container .application-view-more-container .left-side .personal-and-education-section .Guardian-details-heading-section .heading-name {
+  color: #12160a;
+  font-family: 400;
+  font-size: 12px;
+  line-height: 16px;
+}
+body .container .application-view-more-container .left-side .personal-and-education-section .Guardian-details-heading-section .horizon-line {
+  flex: 1;
+  height: 1px;
+  background-color: #eaeaea;
 }
 body .container .application-view-more-container .left-side .personal-and-education-section .Guardian-details-section {
   justify-content: space-between;
@@ -572,6 +621,20 @@ body .container .application-view-more-container .left-side .personal-and-educat
 }
 body .container .application-view-more-container .left-side .personal-and-education-section .Educational-details-heading-section {
   padding-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+body .container .application-view-more-container .left-side .personal-and-education-section .Educational-details-heading-section .heading-name {
+  color: #12160a;
+  font-family: 400;
+  font-size: 12px;
+  line-height: 16px;
+}
+body .container .application-view-more-container .left-side .personal-and-education-section .Educational-details-heading-section .horizon-line {
+  flex: 1;
+  height: 1px;
+  background-color: #eaeaea;
 }
 body .container .application-view-more-container .left-side .personal-and-education-section .Educational-details-list-container .educational-background-one-container {
   padding-bottom: 20px;

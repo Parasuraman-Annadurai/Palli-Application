@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 import axios from "axios";
-import { Flex, Modal, Select, Skeleton } from "antd";
+import { Flex, Modal, Select, Skeleton,notification } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
 
@@ -13,6 +13,8 @@ import { useParams } from "react-router-dom";
 
 import "../studentLogin/scss/StudentLogin.css";
 import { Content } from "antd/es/layout/layout";
+
+import colorObject from "../../utils/validate";
 
 const TaskCard = ({
   tasksLists,
@@ -235,7 +237,8 @@ const StudentLogin = ({ type }) => {
                               tasksList.task_status === "COMPLETED"
                             }
                             defaultValue={tasksList.task_status}
-                            style={{ width: "60%" }}
+                    
+                            style={{ width: "60%"}}
                           >
                             <Select.Option value="TODO">Todo</Select.Option>
                             <Select.Option value="INPROGRESS">
@@ -279,19 +282,26 @@ const StudentLogin = ({ type }) => {
                               tasksList?.weightage_details?.map(
                                 (weightageDetails, index) => (
                                   <div className="student-weightage-card flex">
-                                    <p>
-                                      {
+                                    {/* <p> */}
+                                     <p>
+                                     {
                                         weightageDetails.weightage_details
                                           .weightage
                                       }{" "}
-                                      {weightageDetails?.task_score?.map((a) =>
+                                     </p>
+                                     <span className="score">
+                                     {weightageDetails?.task_score?.map((a) =>
                                         Number(a.task_score)
                                       )}
+                                     </span>
                                       /
-                                      {Number(
+                                     <span>
+                                       {Number(
                                         weightageDetails.weightage_percentage
                                       )}
-                                    </p>{" "}
+                                     </span>
+                                    {/* </p> */}
+                                    {" "}
                                   </div>
                                 )
                               )}
@@ -299,22 +309,25 @@ const StudentLogin = ({ type }) => {
                         </>
                       )}
 
-                      <div className="submission-link-container">
-                        <p
-                       
-                        >
-                          Submitted Link
-                        </p>
-                        <div className="horizon-line"></div>
-                        <a
-                          href={`${tasksList.submission_link}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          style={{ fontSize: "12px" }}
-                        >
-                          {tasksList.submission_link}
-                        </a>
-                      </div>
+                        {tasksList?.submission_link && (
+                           <div className="submission-link-container">
+                            <div className="heading-line flex">
+                            <h3>
+                             Submitted Link
+                              </h3>
+                           <div className="horizon-line"></div>
+                            </div>
+                           <a
+                             href={`${tasksList.submission_link}`}
+                             target="_blank"
+                             rel="noopener noreferrer"
+                             style={{ fontSize: "12px" }}
+                           >
+                             {tasksList.submission_link}
+                           </a>
+                         </div>
+                        )}
+                     
                     </div>
                   </div>
 

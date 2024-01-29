@@ -238,9 +238,14 @@ const StudentLogin = ({ type }) => {
                             }
                             defaultValue={tasksList.task_status}
                     
-                            style={{ width: "60%"}}
+                            style={{
+                              width: "60%",
+                              backgroundColor: colorObject[tasksList.task_status]?.backgroundColor,
+                              color: `${colorObject[tasksList.task_status]?.color} !important`
+                            }}
                           >
-                            <Select.Option value="TODO">Todo</Select.Option>
+                            <Select.Option 
+                            value="TODO">Todo</Select.Option>
                             <Select.Option value="INPROGRESS">
                               Inprogress
                             </Select.Option>

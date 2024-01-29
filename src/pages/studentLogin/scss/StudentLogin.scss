@@ -346,16 +346,16 @@ li {
         font-family: $font-Roboto;
       }
 
-      select {
-        padding: 2px 8px;
-        outline: none;
-        background-color: #e2e8f0;
-        color: #64748b;
-        border-radius: 4px;
-        border: 1px solid #eaeaea;
-        width: 100%;
-        font-family: $font-Roboto;
-      }
+      // select {
+      //   padding: 2px 8px;
+      //   outline: none;
+      //   background-color: #e2e8f0;
+      //   color: #64748b;
+      //   border-radius: 4px;
+      //   border: 1px solid #eaeaea;
+      //   width: 100%;
+      //   font-family: $font-Roboto;
+      // }
 
       .sudent-task-supporting-doc {
         img {
@@ -652,4 +652,17 @@ li {
       }
     }
   }
+}
+// ant-select:not(.ant-select-customize-input) .ant-select-selector {
+//   background-color: transparent !important;
+//   border: 1px solid #D9D9D9 !important; 
+//   transition: all 0.2s cubic-bezier(0.645, 0.045, 0.355, 1) !important;
+// }
+
+.ant-select-selector {
+  position: relative;
+  background-color: transparent !important;
+  // color: transparent !important;
+  border: 1px solid #d9d9d9;
+  transition: all 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
 }

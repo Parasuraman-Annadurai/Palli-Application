@@ -275,16 +275,6 @@ li {
   line-height: 16px;
   font-family: "Roboto";
 }
-.main-container .task-details-header-container .student-task-details-main-container select {
-  padding: 2px 8px;
-  outline: none;
-  background-color: #e2e8f0;
-  color: #64748b;
-  border-radius: 4px;
-  border: 1px solid #eaeaea;
-  width: 100%;
-  font-family: "Roboto";
-}
 .main-container .task-details-header-container .student-task-details-main-container .sudent-task-supporting-doc img {
   width: 16px;
   height: 16px;
@@ -530,6 +520,13 @@ li {
 .main-container .task-details-header-container .weightage-adding-container .weight-input .weightage-action .decrement {
   border-radius: 0px 4px 4px 0px;
   font-family: "Roboto";
+}
+
+.ant-select-selector {
+  position: relative;
+  background-color: transparent !important;
+  border: 1px solid #d9d9d9;
+  transition: all 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
 }
 
 /*# sourceMappingURL=StudentLogin.css.map */

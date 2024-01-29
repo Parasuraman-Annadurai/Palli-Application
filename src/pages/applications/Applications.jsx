@@ -93,13 +93,9 @@ const Applications = () => {
   const handleViewMore = (applicantId) => {
     let copyApplications = [...applications.data];
     copyApplications = copyApplications.filter((application) => application.id === applicantId);
-    
-    
+
     setViewMoreApplicant(copyApplications)
-    // const applicantDetails = applications.data.filter(
-    //   (applicant) => applicant.id === applicantId
-    // );
-    // setViewMoreApplicant(applicantDetails);
+  
   };
 
   const truncateText = (text, maxLength) => {
@@ -108,8 +104,8 @@ const Applications = () => {
       : text;
   };
 
-  return viewMoreApplicant.length > 0 ? (
-    viewMoreApplicant.map((details) => {
+  return viewMoreApplicant?.length > 0 ? (
+    viewMoreApplicant?.map((details) => {
       return (
         <main className="application-view-more-container" key={details.id}>
           <div className="left-side">
@@ -433,71 +429,80 @@ const Applications = () => {
           {isLoading ? (
             <Skeleton active paragraph={20} />
           ) : (
-            applications.data.map((application) => (
-              <div
-                className="application-card-container"
-                key={application.id}
-                onClick={() => handleViewMore(application.id)}
-              >
-                <div className="application-details-container flex">
-                  <div className="application-info flex">
-                    <div className="application-name-container">
-                      <p>
-                        {application.first_name[0].toUpperCase()}
-                        {application.last_name[0].toUpperCase()}
-                      </p>
-                    </div>
-                    <div className="application-email-container">
-                      <p className="application-name">
-                        <Tooltip
-                          title={`${application.first_name
-                            .charAt(0)
-                            .toUpperCase()}${application.first_name.slice(
-                            1
-                          )} ${application.last_name
-                            .charAt(0)
-                            .toUpperCase()}${application.last_name.slice(1)}`}
-                        >
-                          {truncateText(
-                            `${application.first_name
+           <>
+            {
+               applications?.data?.map((application) => (
+                <div
+                  className="application-card-container"
+                  key={application.id}
+                  onClick={() => handleViewMore(application.id)}
+                >
+                  <div className="application-details-container flex">
+                    <div className="application-info flex">
+                      <div className="application-name-container">
+                        <p>
+                          {application.first_name[0].toUpperCase()}
+                          {application.last_name[0].toUpperCase()}
+                        </p>
+                      </div>
+                      <div className="application-email-container">
+                        <p className="application-name">
+                          <Tooltip
+                            title={`${application.first_name
                               .charAt(0)
                               .toUpperCase()}${application.first_name.slice(
                               1
                             )} ${application.last_name
                               .charAt(0)
-                              .toUpperCase()}${application.last_name.slice(1)}`,
-                            15
-                          )}
-                        </Tooltip>
-                      </p>
-                      <p className="application-email">
-                        {truncateText(application.email, 15)}
-                      </p>
+                              .toUpperCase()}${application.last_name.slice(1)}`}
+                          >
+                            {truncateText(
+                              `${application.first_name
+                                .charAt(0)
+                                .toUpperCase()}${application.first_name.slice(
+                                1
+                              )} ${application.last_name
+                                .charAt(0)
+                                .toUpperCase()}${application.last_name.slice(1)}`,
+                              15
+                            )}
+                          </Tooltip>
+                        </p>
+                        <p className="application-email">
+                          {truncateText(application.email, 15)}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="application-gender">
+                      <p>Gender</p>
+                      <span>Male</span>
+                    </div>
+                    <div className="application-dob">
+                      <p>Date of Birth</p>
+                      <span>{dayjs(application.dob).format("MMM DD, YYYY")}</span>
+                    </div>
+                    <div className="application-district">
+                      <p>District</p>
+                      <p className="district-heading">{application.district}</p>
+                    </div>
+                    <div className="application-qualification">
+                      <p>Qualification</p>
+                      <span>Diploma</span>
+                    </div>
+                    <div className="application-mobile-no">
+                      <p>Mobile No</p>
+                      <span>{application.contact_number}</span>
                     </div>
                   </div>
-                  <div className="application-gender">
-                    <p>Gender</p>
-                    <span>Male</span>
-                  </div>
-                  <div className="application-dob">
-                    <p>Date of Birth</p>
-                    <span>{dayjs(application.dob).format("MMM DD, YYYY")}</span>
-                  </div>
-                  <div className="application-district">
-                    <p>District</p>
-                    <p className="district-heading">{application.district}</p>
-                  </div>
-                  <div className="application-qualification">
-                    <p>Qualification</p>
-                    <span>Diploma</span>
-                  </div>
-                  <div className="application-mobile-no">
-                    <p>Mobile No</p>
-                    <span>{application.contact_number}</span>
-                  </div>
                 </div>
-              </div>
-            ))
+              ))
+            }
+             {applications?.data?.length === 0 && (
+          <div className="flex no-data-container">
+            <img src="/icons/no-data.svg" className="no-data-image" />
+          </div>
+        )}
+           </>
           )}
         </div>
         <div className="application-pagination-container flex">
@@ -511,11 +516,7 @@ const Applications = () => {
             />
           )}
         </div>
-        {applications?.data?.length === 0 && (
-          <div className="flex no-data-container">
-            <img src="/icons/no-data.svg" className="no-data-image" />
-          </div>
-        )}
+       
       </div>
     </main>
   );

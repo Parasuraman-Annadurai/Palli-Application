@@ -1,19 +1,16 @@
 import React, { useState } from "react";
 
-const FilterComponent = ({ filter, applyFilter, setPopoverVisible }) => {
-  const [filterValues, setFilterValues] = useState({});
+const FilterComponent = ({filterValues,setFilterValues, filter, setPopoverVisible }) => {
 
   const handleFilterChange = (fieldName, value) => {
     setFilterValues({ ...filterValues, [fieldName]: value });
+
   };
 
-  const handleApplyFilter = () => {
-    applyFilter(filterValues);
-    setPopoverVisible(false);
-  };
+ 
 
   const handleClearFilter = () => {
-    applyFilter({ ...filterValues, ...{} });
+    setFilterValues({})
     setPopoverVisible(false);
   };
   return (
@@ -51,7 +48,7 @@ const FilterComponent = ({ filter, applyFilter, setPopoverVisible }) => {
                     <input
                       type="number"
                       id={filterItem.name}
-                      placeholder={`Min ${filterItem.name}`}
+                      placeholder={`Min ${filterItem.name.split("_").join(" ")}`}
                       value={filterValues[`${filterItem.name}_min`] || ""}
                       onChange={(e) =>
                         handleFilterChange(
@@ -63,7 +60,7 @@ const FilterComponent = ({ filter, applyFilter, setPopoverVisible }) => {
                     <input
                       type="number"
                       id={`${filterItem.name}_max`}
-                      placeholder={`Max ${filterItem.name}`}
+                      placeholder={`Max ${filterItem.name.split("_").join(" ")}`}
                       value={filterValues[`${filterItem.name}_max`] || ""}
                       onChange={(e) =>
                         handleFilterChange(
@@ -97,9 +94,8 @@ const FilterComponent = ({ filter, applyFilter, setPopoverVisible }) => {
                       <option value="" disabled hidden>
                         {`Select ${filterItem.label}`}
                       </option>
-                      <option value="all">All</option>
                       {filterItem.extra.choices.map((choice) => (
-                        <option key={choice.key} value={choice.key}>
+                        <option key={choice.label} value={choice.label}>
                           {choice.label}
                         </option>
                       ))}
@@ -111,13 +107,7 @@ const FilterComponent = ({ filter, applyFilter, setPopoverVisible }) => {
             }
           })}
         </div>
-        <div className="apply-btn flex">
-          <div>
-            <button onClick={handleApplyFilter} className="btn primary-medium">
-              Apply
-            </button>
-          </div>
-        
+        <div className="apply-btn flex">        
             <button onClick={handleClearFilter} className="btn primary-default">
               Clear
             </button>

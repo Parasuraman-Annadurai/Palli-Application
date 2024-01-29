@@ -52,11 +52,22 @@ const AssessmentView = ({
   );
 
   const [assigneeloader, setAssigneeloader] = useState(false);
-  const [weightages, setWeighatages] = useState([]);
+  const [weightageLists, setWeightageLists] = useState([]);
   const headers = {
     Authorization: `Bearer ${token.access}`,
     "Content-type": "application/json",
   };
+
+  useEffect(()=>{
+    axios
+    .get(`${API_END_POINT}/api/task/${batchId}/list/weightage`, { headers })
+    .then((res) => {
+      if (res.status === 200 && res.data.message === "Success") {
+        const copyWeightageLists = [...res.data.data];
+        setWeightageLists(copyWeightageLists);
+      }
+    });
+  },[])
   // Destructure the current task
   const {
     id: taskId,
@@ -257,7 +268,7 @@ const AssessmentView = ({
     }
   };
 
-  const a = weightages.find((weightage)=>weightage.id === weightage.id)
+ 
   return (
     <>
       {!isStudentScoreOpen ? (
@@ -441,13 +452,7 @@ const AssessmentView = ({
                   </div>
                   {toggleAssigneeWeightage === 0 ? (
                     <>
-                      {/* <div className="assignee-search-container">
-          <input
-            type="text"
-            style={{ border: "1px solid grey" }}
-            placeholder="Search here..."
-          />
-        </div> */}
+                      
                       <div className="assign-listing-container">
                         <div className="select-all flex">
                           <input
@@ -509,8 +514,7 @@ const AssessmentView = ({
                         handleAddWeightage={handleAddWeightage}
                         handleWeightageChange={handleWeightageChange}
                         handleDeleteWeightage={handleDeleteWeightage}
-                        setWeighatages={setWeighatages}
-                        weightages={weightages}
+                        weightages={weightageLists}
                       />
                     )
                   )}
@@ -544,6 +548,7 @@ const AssessmentView = ({
               return (
                 <>
                   <div className="task-container">
+                   
                     <div className="task-user-list-container flex" key={index}>
                       <div className="student-info flex">
                         <div className="student-name-container">
@@ -601,7 +606,8 @@ const AssessmentView = ({
                           ? students["task_status"] === "SUBMITTED" && (
                               <button
                                 className="secondary-btn-sm"
-                                onClick={() => {
+                                onClick={(e) => {
+                                 
                                   setActiveWeightageIndex(index);
                                   if(activeWeightageIndex === index){
                                     handleAddScore(studentScore);
@@ -635,7 +641,7 @@ const AssessmentView = ({
                     {/* <hr /> */}
 
                     {activeWeightageIndex === index && (
-                      <div className="applied-weightage-list-container flex">
+                      <div className="applied-weightage-list-container flex" style={{gap:"10px"}}>
                         {currentAssessment.task_weightages &&
                           currentAssessment.task_weightages.map(
                             (weightage, weightageIndex) => (
@@ -643,13 +649,27 @@ const AssessmentView = ({
                                 key={weightageIndex}
                                 className="applied-weightage-card flex"
                               >
-                               
+                                
                                 <div className="applied-weightage-name">
-                                  <p>
-                                    {" "}
-                                    { weightages ? weightages?.find((weightages)=>weightages.id == weightage.weightage)["weightage"] : ""}
-                                  </p>
-                                </div>
+                                    <p>
+                                      
+                                    {weightageLists && weightageLists.length > 0 && (
+                                      (() => {
+                                        const foundWeightage = weightageLists.find((weightageName) => weightageName.id === weightage.weightage);
+
+                                        return foundWeightage && (
+                                          <>
+                                            <p>{foundWeightage.weightage} {Number(weightage.weightage_percentage)}</p>
+                                          </>
+                                        );
+                                      })()
+                                    )}
+
+
+                                    </p>
+                                 </div>
+
+
                                 <div className="weightage-checkbox">
                                   <input
                                     type="text"

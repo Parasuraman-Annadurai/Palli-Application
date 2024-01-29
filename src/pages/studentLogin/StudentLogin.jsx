@@ -287,15 +287,15 @@ const StudentLogin = ({ type }) => {
                                      {
                                         weightageDetails.weightage_details
                                           .weightage
-                                      }{" "}
+                                      }{""}
                                      </p>
-                                     <span className="score">
+                                     <span className="score" >
                                      {weightageDetails?.task_score?.map((a) =>
                                         Number(a.task_score)
                                       )}
                                      </span>
                                       /
-                                     <span>
+                                     <span style={{color:"blue"}}>
                                        {Number(
                                         weightageDetails.weightage_percentage
                                       )}

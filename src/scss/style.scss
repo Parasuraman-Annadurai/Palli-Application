@@ -892,7 +892,7 @@ body {
 
           .horizon-line {
             flex: 1;
-            border: 1px solid $border-color;
+            border-bottom: 1px solid $border-color;
           }
         }
 
@@ -1119,7 +1119,7 @@ body {
 
           .horizon-line {
             flex: 1;
-            border: 1px solid $border-color;
+            border-bottom: 1px solid $border-color;
           }
         }
 
@@ -1178,8 +1178,8 @@ body {
       .title-section {
         max-width: 167px;
         width: 100%;
-        margin: 0 auto;
-        gap: 24px;
+        // margin: 0 auto;
+        gap: 25px;
 
         .selection {
           cursor: pointer;
@@ -1333,7 +1333,7 @@ body {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        margin-bottom: 7px;
+        margin-bottom: 19px;
       }
       .search-container {
         position: relative;

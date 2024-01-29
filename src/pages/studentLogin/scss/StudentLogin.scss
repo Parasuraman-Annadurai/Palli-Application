@@ -272,6 +272,7 @@ li {
   .module-header-section {
     justify-content: space-between;
     align-items: center;
+    margin-bottom: 16px;
     // padding-bottom: 20px;
     font-size: 16px;
     font-weight: 500;
@@ -328,8 +329,8 @@ li {
     }
 
     .student-task-details-main-container {
-      // gap: 20px;
-      justify-content: space-between;
+      gap: 50px;
+      // justify-content: space-between;
       padding-bottom: 20px;
 
       p {
@@ -365,7 +366,7 @@ li {
       }
       .student-task-status {
         border-right: 2px solid #eaeaea;
-        max-width: 213px;
+        max-width: 180px;
         width: 100%;
       }
     }
@@ -375,7 +376,7 @@ li {
         padding-bottom: 6px;
         font-size: 12px;
         font-family: $font-Roboto;
-        line-height: 12px;
+        line-height: 16px;
         color: $font-secondary-color;
       }
 

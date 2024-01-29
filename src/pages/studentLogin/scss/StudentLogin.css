@@ -218,6 +218,7 @@ li {
 .main-container .module-header-section {
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 16px;
   font-size: 16px;
   font-weight: 500;
   font-family: "Roboto";
@@ -260,7 +261,7 @@ li {
   border-bottom: 1px solid #eaeaea;
 }
 .main-container .task-details-header-container .student-task-details-main-container {
-  justify-content: space-between;
+  gap: 50px;
   padding-bottom: 20px;
 }
 .main-container .task-details-header-container .student-task-details-main-container p {
@@ -291,14 +292,14 @@ li {
 }
 .main-container .task-details-header-container .student-task-details-main-container .student-task-status {
   border-right: 2px solid #eaeaea;
-  max-width: 213px;
+  max-width: 180px;
   width: 100%;
 }
 .main-container .task-details-header-container .task-editor-container p {
   padding-bottom: 6px;
   font-size: 12px;
   font-family: "Roboto";
-  line-height: 12px;
+  line-height: 16px;
   color: #969d88;
 }
 .main-container .task-details-header-container .task-editor-container .task-editor {

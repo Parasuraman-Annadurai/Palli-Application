@@ -686,7 +686,7 @@ body .container .main-container .task-details-header-container .task-label-conta
 }
 body .container .main-container .task-details-header-container .task-label-container .horizon-line {
   flex: 1;
-  border: 1px solid #eaeaea;
+  border-bottom: 1px solid #eaeaea;
 }
 body .container .main-container .task-details-header-container .task-details-main-container {
   gap: 20px;
@@ -850,7 +850,7 @@ body .container .main-container .task-details-header-container .weightage-label-
 }
 body .container .main-container .task-details-header-container .weightage-label-container .horizon-line {
   flex: 1;
-  border: 1px solid #eaeaea;
+  border-bottom: 1px solid #eaeaea;
 }
 body .container .main-container .task-details-header-container .weightage-adding-container .weight-inputs {
   display: flex;
@@ -901,8 +901,7 @@ body .container .assignee-and-weightage-container {
 body .container .assignee-and-weightage-container .title-section {
   max-width: 167px;
   width: 100%;
-  margin: 0 auto;
-  gap: 24px;
+  gap: 25px;
 }
 body .container .assignee-and-weightage-container .title-section .selection {
   cursor: pointer;
@@ -1015,7 +1014,7 @@ body .container .main-container .task-heading {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 7px;
+  margin-bottom: 19px;
 }
 body .container .main-container .search-container {
   position: relative;

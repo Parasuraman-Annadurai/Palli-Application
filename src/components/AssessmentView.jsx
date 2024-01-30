@@ -313,7 +313,8 @@ const AssessmentView = ({
                     )} */}
                     </div>
                   </div>
-                  <p className="error-message"></p>
+                  {/* <p className="error-message"></p>
+                     */}
                 </div>
                 <div className="task-details-header-container">
                   <div className="task-label-container flex">
@@ -336,7 +337,7 @@ const AssessmentView = ({
                           current && current < dayjs().startOf("day")
                         }
                       />
-                      <p className="error-message"></p>
+                      {/* <p className="error-message"></p> */}
                     </div>
                   </div>
                   <div className="task-editor-container">
@@ -378,7 +379,7 @@ const AssessmentView = ({
                             handleInputChange("task_description", value)
                           }
                         />
-                        <p className="error-message"></p>
+                        {/* <p className="error-message"></p> */}
                       </>
                     </div>
                   </div>
@@ -454,6 +455,18 @@ const AssessmentView = ({
                     <>
                       
                       <div className="assign-listing-container">
+                        
+
+  <div className="assignee-search-container">
+              <input type="input" placeholder="search..." />
+              <img
+                src="/icons/searchIcon.svg"
+                alt="search-icon"
+                className="search-icon"
+              />
+
+           
+            </div>
                         <div className="select-all flex">
                           <input
                             className="global-checkbox"
@@ -528,7 +541,7 @@ const AssessmentView = ({
               <div className="task-heading">
             <p>{task_title}</p>
 
-            {/* <div className="search-container">
+            <div className="search-container">
               <input type="input" placeholder="search..." />
               <img
                 src="/icons/searchIcon.svg"
@@ -541,7 +554,7 @@ const AssessmentView = ({
                 alt="filter-icon"
                 className="filter-icon"
               />
-            </div> */}
+            </div>
           </div>
           {currentAssessment?.task_users?.length > 0 ? (
             currentAssessment.task_users.map((students, index) => {
@@ -694,7 +707,7 @@ const AssessmentView = ({
           ) : (
             <div className="select-something-container flex">
               <div className="image-container ">
-                <img src="/public/icons/select-something.svg" alt="" />
+                <img src="/icons/select-something.svg" alt="" />
                 <p className="select-something-heading">
                   No Assignee has been assigned to this {type}
                 </p>

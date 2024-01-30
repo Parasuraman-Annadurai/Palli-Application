@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Skeleton, Dropdown, Space } from "antd";
+import { Skeleton } from "antd";
 
 import dayjs from "dayjs";
 

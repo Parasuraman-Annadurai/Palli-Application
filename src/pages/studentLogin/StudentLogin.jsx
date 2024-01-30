@@ -9,7 +9,7 @@ import { API_END_POINT } from "../../../config";
 
 import { useAuth } from "../../context/AuthContext";
 
-import { useParams } from "react-router-dom";
+import { useParams,useNavigate } from "react-router-dom";
 
 import "../studentLogin/scss/StudentLogin.css";
 import { Content } from "antd/es/layout/layout";
@@ -69,7 +69,7 @@ const TaskCard = ({
 };
 
 const StudentLogin = ({ type }) => {
-  const taskType = type === "assessment" ? 1 : 0;
+  const navigate = useNavigate();
   const { token, user } = useAuth();
   const { id: batchId } = useParams();
   const [tasksLists, setTaskLists] = useState([]);
@@ -102,7 +102,20 @@ const StudentLogin = ({ type }) => {
         setSeletedTaskId(getFirstTask);
       })
       .catch((error) => {
-        console.log(error);
+        if (
+          error.response.data.status === 400 ||
+          "errors" in error.response.data
+        ) {
+          const errorMessages = error.response.data.errors;
+          if (errorMessages && errorMessages.detail) {
+            notification.error({
+              message: error.response.data.message,
+              description: errorMessages.detail,
+              duration:1
+            });
+          }
+          setIsLoading(false);
+        }
       });
   }, [type]);
 
@@ -173,7 +186,6 @@ const StudentLogin = ({ type }) => {
         console.log(error);
       });
   };
-  console.log(type);
 
   return (
     <>
@@ -224,7 +236,7 @@ const StudentLogin = ({ type }) => {
                       </div>
 
                       <div className="student-task-details-main-container flex">
-                        <div className="student-task-status">
+                        <div className="student-task-trainer-name">
                           <p>Trainer Name</p>
                           <span>Avinash</span>
                         </div>
@@ -232,6 +244,7 @@ const StudentLogin = ({ type }) => {
                           <p>Status</p>
                           <Select
                             onChange={handleChange}
+                            prefixCls={`students-status-${tasksList.task_status}-status`}
                             disabled={
                               tasksList.task_status === "SUBMITTED" ||
                               tasksList.task_status === "COMPLETED"
@@ -239,6 +252,14 @@ const StudentLogin = ({ type }) => {
                             defaultValue={tasksList.task_status}
                     
                             style={{ width: "60%"}}
+                            
+                            suffixIcon={<img
+                              src='/public/icons/drop.svg'
+                              style={{ color: 'red' }} // Change the color as needed
+                              alt="Sample SVG"
+                            />
+                            }
+                            dropdownStyle={{ zIndex: 9999 }}
                           >
                             <Select.Option value="TODO">Todo</Select.Option>
                             <Select.Option value="INPROGRESS">
@@ -282,7 +303,6 @@ const StudentLogin = ({ type }) => {
                               tasksList?.weightage_details?.map(
                                 (weightageDetails, index) => (
                                   <div className="student-weightage-card flex">
-                                    {/* <p> */}
                                      <p>
                                      {
                                         weightageDetails.weightage_details
@@ -400,12 +420,13 @@ const StudentLogin = ({ type }) => {
             }
             return null;
           })}
+          
           {selectedTaskId === null && (
             <div className="select-something-container flex">
               <div className="image-container ">
                 <img src="/icons/select-something.svg" alt="" />
                 <p className="select-something-heading">
-                  Please Select any of the Available Tasks
+                  {selectedTaskId !== null ? `Please Select any of the Available ${type}` : `No ${type} are currently available here.` }
                 </p>
               </div>
             </div>

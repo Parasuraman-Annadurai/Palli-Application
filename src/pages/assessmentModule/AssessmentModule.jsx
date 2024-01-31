@@ -77,8 +77,7 @@ const AssessmentModule = ({ type }) => {
         })
         .then((res) => {
           if (res.status === 200 && res.data.message === "Success") {
-            const copyStudentsLists = [res.data.data]
-            setStudents(copyStudentsLists);
+            setStudents(res.data.data);
             setLoading(false);
           }
         })
@@ -696,7 +695,6 @@ const AssessmentModule = ({ type }) => {
                       setFormErrors={setFormErrors}
                       weightageErrors={weightageErrors}
                       setWeightageErros={setWeightageErros}
-                      setAssigneeSearch={setAssigneeSearch}
 
                     />
                   );

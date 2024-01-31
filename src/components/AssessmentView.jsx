@@ -46,7 +46,6 @@ const AssessmentView = ({
   setFormErrors,
   weightageErrors,
   setWeightageErros,
-  setAssigneeSearch
 }) => {
   const { id: batchId } = useParams();
   const { token } = useAuth();

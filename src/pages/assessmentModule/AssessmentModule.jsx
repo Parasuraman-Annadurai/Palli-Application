@@ -31,7 +31,6 @@ const AssessmentModule = ({ type }) => {
   const [activeWeightageIndex, setActiveWeightageIndex] = useState(null);
   const [isMode,setIsMode] = useState("edit")
   const [formErrors, setFormErrors] = useState({});
-  const [assigneeSearch,setAssigneeSearch] = useState("")
 
   const headers = {
     Authorization: `Bearer ${token.access}`,
@@ -73,7 +72,7 @@ const AssessmentModule = ({ type }) => {
         });
 
       axios
-        .get(`${API_END_POINT}/api/applicant/${batchId}/list/students/?search=${assigneeSearch}`, {
+        .get(`${API_END_POINT}/api/applicant/${batchId}/list/students/`, {
           headers,
         })
         .then((res) => {
@@ -88,7 +87,7 @@ const AssessmentModule = ({ type }) => {
           console.log(error);
         });
     }
-  }, [assessmentSearchWord, type,assigneeSearch]);
+  }, [assessmentSearchWord, type]);
 
   useEffect(() => {
     if (editId && assessmentList.length > 0) {

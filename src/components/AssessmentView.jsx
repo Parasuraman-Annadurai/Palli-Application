@@ -40,6 +40,7 @@ const AssessmentView = ({
   handleWeightageChange,
   handleDeleteWeightage,
   type,
+  isMode
 }) => {
   const { id: batchId } = useParams();
   const { token } = useAuth();

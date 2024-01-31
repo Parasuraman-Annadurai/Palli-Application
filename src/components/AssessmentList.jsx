@@ -11,7 +11,8 @@ const TaskCard = ({
   handleEdit,
   handleDelete,
   setIsStudentScoreOpen,
-  isStudentScoreOpen,
+  isMode,
+  setIsMode,
 }) => {
   const truncateText = (text, maxLength) => {
     return text.length > maxLength
@@ -19,7 +20,6 @@ const TaskCard = ({
       : text;
   };
 
-  
 
   return (
     <>
@@ -32,6 +32,7 @@ const TaskCard = ({
         onClick={() => {
           setIsStudentScoreOpen(true)
           handleEdit(assessment.id);
+          setIsMode("card")
         }}
       >
         {loading ? (
@@ -48,13 +49,15 @@ const TaskCard = ({
 
                 <>
                   <img
-                    src="/icons/edit-pencil.svg"
+                    
+                    src={selectedAssessment === assessment.id  && isMode == "edit" ? "/public/icons/edit-pencil-fill.svg" : "/public/icons/edit-pencil.svg"}
                     className="edit-icon"
                     alt="edit-icon"
                     onClick={(event) => {
                       event.stopPropagation();
                       setIsStudentScoreOpen(false)
                        handleEdit(assessment.id);
+                       setIsMode("edit")
                     }}
                   />
 
@@ -99,7 +102,10 @@ const AssessmentList = ({
   selectedAssessment,
   isStudentScoreOpen,
   setIsStudentScoreOpen,
+  isMode,
+  setIsMode
 }) => {
+
   return (
     <>
       <section className="listing-container">
@@ -140,6 +146,8 @@ const AssessmentList = ({
                 selectedAssessment={selectedAssessment}
                 setIsStudentScoreOpen={setIsStudentScoreOpen}
                 isStudentScoreOpen={isStudentScoreOpen}
+                isMode={isMode}
+                setIsMode={setIsMode}
               />
             ))}
         </div>

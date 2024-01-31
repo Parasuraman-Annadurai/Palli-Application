@@ -221,6 +221,7 @@ li {
   font-size: 16px;
   font-weight: 500;
   font-family: "Roboto";
+  margin-bottom: 16px;
 }
 .main-container .module-header-section .module-title-section {
   gap: 10px;
@@ -260,7 +261,7 @@ li {
   border-bottom: 1px solid #eaeaea;
 }
 .main-container .task-details-header-container .student-task-details-main-container {
-  justify-content: space-between;
+  gap: 70px;
   padding-bottom: 20px;
 }
 .main-container .task-details-header-container .student-task-details-main-container p {
@@ -291,7 +292,7 @@ li {
 }
 .main-container .task-details-header-container .student-task-details-main-container .student-task-status {
   border-right: 2px solid #eaeaea;
-  max-width: 213px;
+  max-width: 180px;
   width: 100%;
 }
 .main-container .task-details-header-container .student-task-details-main-container .student-task-status .students-status-TODO-status .students-status-TODO-status-selector {
@@ -315,6 +316,13 @@ li {
 .main-container .task-details-header-container .student-task-details-main-container .student-task-status .students-status-COMPLETED-status .students-status-COMPLETED-status-selector .students-status-COMPLETED-status-selection-item {
   color: #49a843;
 }
+.main-container .task-details-header-container .student-task-details-main-container .student-task-status .students-status-SUBMITTED-status .students-status-SUBMITTED-status-selector {
+  border: none;
+  background-color: #EEFDB0;
+}
+.main-container .task-details-header-container .student-task-details-main-container .student-task-status .students-status-SUBMITTED-status .students-status-SUBMITTED-status-selector .students-status-SUBMITTED-status-selection-item {
+  color: #49a843;
+}
 .main-container .task-details-header-container .student-task-details-main-container .student-task-status .students-status-REWORK-status .students-status-REWORK-status-selector {
   border: none;
   background-color: #FEF3C7;
@@ -326,7 +334,7 @@ li {
   padding-bottom: 6px;
   font-size: 12px;
   font-family: "Roboto";
-  line-height: 12px;
+  line-height: 16px;
   color: #969d88;
 }
 .main-container .task-details-header-container .task-editor-container .task-editor {

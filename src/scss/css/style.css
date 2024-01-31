@@ -852,11 +852,11 @@ body .container .main-container .task-details-header-container .weightage-label-
   flex: 1;
   border: 1px solid #eaeaea;
 }
-body .container .main-container .task-details-header-container .weightage-adding-container .weight-inputs {
+body .container .main-container .task-details-header-container .weightage-main-container .overall .weightage-adding-container .weight-inputs {
   display: flex;
   gap: 20px;
 }
-body .container .main-container .task-details-header-container .weightage-adding-container .weight-inputs p {
+body .container .main-container .task-details-header-container .weightage-main-container .overall .weightage-adding-container .weight-inputs p {
   font-size: 12px;
   line-height: 16px;
   font-weight: 400;
@@ -864,7 +864,7 @@ body .container .main-container .task-details-header-container .weightage-adding
   color: #969d88;
   padding-bottom: 6px;
 }
-body .container .main-container .task-details-header-container .weightage-adding-container .weight-inputs .weightage-unit-container {
+body .container .main-container .task-details-header-container .weightage-main-container .overall .weightage-adding-container .weight-inputs .weightage-unit-container {
   max-width: 364px;
   width: 100%;
   height: 36px;
@@ -872,7 +872,7 @@ body .container .main-container .task-details-header-container .weightage-adding
   align-items: center;
   gap: 10px;
 }
-body .container .main-container .task-details-header-container .weightage-adding-container .weight-inputs .weightage-unit-container .task-weightage-selector {
+body .container .main-container .task-details-header-container .weightage-main-container .overall .weightage-adding-container .weight-inputs .weightage-unit-container .task-weightage-selector {
   padding: 10px 12px;
   max-width: 200px;
   width: 100%;
@@ -883,7 +883,7 @@ body .container .main-container .task-details-header-container .weightage-adding
   background-color: white;
   font-family: "Roboto";
 }
-body .container .main-container .task-details-header-container .weightage-adding-container .weight-inputs .weightage-unit-container .task-weight-value-selector {
+body .container .main-container .task-details-header-container .weightage-main-container .overall .weightage-adding-container .weight-inputs .weightage-unit-container .task-weight-value-selector {
   max-width: 72px;
   width: 100%;
   padding: 10px 0px 10px 12px;
@@ -901,8 +901,7 @@ body .container .assignee-and-weightage-container {
 body .container .assignee-and-weightage-container .title-section {
   max-width: 167px;
   width: 100%;
-  margin: 0 auto;
-  gap: 24px;
+  gap: 25px;
 }
 body .container .assignee-and-weightage-container .title-section .selection {
   cursor: pointer;
@@ -920,28 +919,43 @@ body .container .assignee-and-weightage-container .title-section .selection h4.a
 body .container .assignee-and-weightage-container .title-section .selection.active {
   border-bottom: 2px solid #49a843;
 }
+body .container .assignee-and-weightage-container .assignee-search-container {
+  position: relative;
+  width: 100%;
+  padding-bottom: 5px;
+}
+body .container .assignee-and-weightage-container .assignee-search-container img {
+  width: 16px;
+  height: 16px;
+}
 body .container .assignee-and-weightage-container .assignee-search-container input {
   width: 100%;
-  padding: 9.5px 0;
-  padding-left: 20px;
+  padding: 10px 18px 10px 33px;
   border-radius: 4px;
-  color: #12160a;
   border: 1px solid #eaeaea;
-  font-family: "Roboto";
-  margin-top: 20px;
-  margin-bottom: 10px;
 }
-body .container .assignee-and-weightage-container .assignee-search-container :focus {
+body .container .assignee-and-weightage-container .assignee-search-container input:focus {
   border: 1px solid #49a843;
+}
+body .container .assignee-and-weightage-container .assignee-search-container .search-icon {
+  position: absolute;
+  left: 12px;
+  top: 10px;
 }
 body .container .assignee-and-weightage-container .assign-listing-container {
   padding-top: 10px;
   font: 400 12px/16px "Roboto";
 }
 body .container .assignee-and-weightage-container .assign-listing-container .select-all {
+  font-family: "Roboto";
   gap: 10px;
   align-items: center;
-  padding-bottom: 10px;
+  padding-top: 10px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 16px;
+  border-bottom: 1px solid #eaeaea;
+  padding-bottom: 12px;
 }
 body .container .assignee-and-weightage-container .assign-listing-container .select-all .global-checkbox {
   accent-color: #49a843;
@@ -951,7 +965,8 @@ body .container .assignee-and-weightage-container .assign-listing-container .sel
   font-family: "Roboto";
 }
 body .container .assignee-and-weightage-container .assign-listing-container .assignee-card-listing-container {
-  height: 520px;
+  font: "Roboto";
+  height: 480px;
   overflow-y: scroll;
 }
 body .container .assignee-and-weightage-container .assign-listing-container .assignee-card-listing-container .individual-assignee-card {
@@ -963,6 +978,7 @@ body .container .assignee-and-weightage-container .assign-listing-container .ass
 }
 body .container .assignee-and-weightage-container .assign-listing-container .assignee-card-listing-container .individual-assignee-card .student-checkbox {
   accent-color: #49a843;
+  border-color: #eaeaea;
 }
 body .container .assignee-and-weightage-container .assign-listing-container .assignee-card-listing-container .individual-assignee-card .profile {
   gap: 6px;
@@ -980,42 +996,17 @@ body .container .assignee-and-weightage-container .assign-listing-container .ass
 body .container .assignee-and-weightage-container .assign-listing-container .assignee-card-listing-container .individual-assignee-card .profile .profile-letter span {
   font-size: 10px;
 }
-body .container .assignee-and-weightage-container .weightage-container {
-  display: flex;
-  align-items: center;
-  margin-top: 24px;
-}
-body .container .assignee-and-weightage-container .weightage-list select {
-  width: 180px;
-  height: 36px;
-  background-color: #f8fbf2;
-  color: #12160a;
-  font: 400 12px/16px "Roboto";
-}
-body .container .assignee-and-weightage-container .weightage-input input {
-  height: 36px;
-  width: 36px;
-  border: 1px solid #eaeaea;
-}
-body .container .assignee-and-weightage-container .weightage-delete {
-  border: 1px solid #eaeaea;
-  width: 36px;
-  height: 36px;
-  margin-left: 5px;
-  border-radius: 3px;
-}
 body .container .weightage-action {
   cursor: pointer;
 }
 body .container .main-container {
-  padding: 20px;
+  padding: 17px;
   width: 100%;
 }
 body .container .main-container .task-heading {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 7px;
 }
 body .container .main-container .search-container {
   position: relative;
@@ -1053,7 +1044,7 @@ body .container .main-container .task-user-list-container {
   border-radius: 4px;
 }
 body .container .main-container .task-user-list-container .student-info {
-  max-width: 210px;
+  max-width: 240px;
   width: 100%;
   align-items: center;
   gap: 6px;
@@ -1061,7 +1052,7 @@ body .container .main-container .task-user-list-container .student-info {
 body .container .main-container .task-user-list-container .student-info .student-name-container p {
   background-color: #d3f9cd;
   color: #12160a;
-  padding: 8px 6px;
+  padding: 8px 9.5px;
   border-radius: 4px;
 }
 body .container .main-container .task-user-list-container .student-info .student-email-container .student-name {
@@ -1078,7 +1069,7 @@ body .container .main-container .task-user-list-container .student-info .student
   font-family: "Roboto";
 }
 body .container .main-container .task-user-list-container .student-status {
-  max-width: 90px;
+  max-width: 100px;
   width: 100%;
 }
 body .container .main-container .task-user-list-container .student-status p {
@@ -1109,7 +1100,7 @@ body .container .main-container .task-user-list-container .sumbitted-date span {
   line-height: 16px;
 }
 body .container .main-container .task-user-list-container .student-file {
-  max-width: 170px;
+  max-width: 100px;
   width: 100%;
 }
 body .container .main-container .task-user-list-container .student-file p {

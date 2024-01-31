@@ -29,6 +29,7 @@ const AssessmentModule = ({ type }) => {
   const [isDraft, setIsDraft] = useState(false);
   const [isStudentScoreOpen, setIsStudentScoreOpen] = useState(false);
   const [activeWeightageIndex, setActiveWeightageIndex] = useState(null);
+  const [isMode,setIsMode] = useState("edit")
 
   const headers = {
     Authorization: `Bearer ${token.access}`,
@@ -614,6 +615,7 @@ const AssessmentModule = ({ type }) => {
     }
   };
 
+
   return (
     <>
       {user.role !== "Student" ? (
@@ -652,6 +654,8 @@ const AssessmentModule = ({ type }) => {
             selectedAssessment={editId}
             setIsStudentScoreOpen={setIsStudentScoreOpen}
             isStudentScoreOpen={isStudentScoreOpen}
+            isMode={isMode}
+            setIsMode={setIsMode}
           />
 
           {loading ? (
@@ -680,7 +684,7 @@ const AssessmentModule = ({ type }) => {
                       setActiveWeightageIndex={setActiveWeightageIndex}
                       activeWeightageIndex={activeWeightageIndex}
                       handleDeleteWeightage={handleDeleteWeightage}
-                      type={type}
+                      type={type} 
                     />
                   );
                 }
@@ -691,7 +695,7 @@ const AssessmentModule = ({ type }) => {
                   <div className="image-container ">
                     <img src="/icons/select-something.svg" alt="" />
                     <p className="select-something-heading">
-                      Please Select any of the Available Tasks or Create New
+                      Please Select any of the Available ${type} or Create New
                       {type}
                     </p>
                   </div>

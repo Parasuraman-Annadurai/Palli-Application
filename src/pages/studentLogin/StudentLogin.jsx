@@ -12,7 +12,6 @@ import { useAuth } from "../../context/AuthContext";
 import { useParams,useNavigate } from "react-router-dom";
 
 import "../studentLogin/scss/StudentLogin.css";
-import { Content } from "antd/es/layout/layout";
 
 import colorObject from "../../utils/validate";
 
@@ -54,7 +53,15 @@ const TaskCard = ({
                   50
                 )}
               </p>
-              <span className="btn btn-inprogress">
+              <span className="btn btn-inprogress"
+                style={{
+                  backgroundColor:
+                    colorObject[tasksLists?.task_status]
+                      ?.backgroundColor ,
+                  color:
+                    colorObject[tasksLists?.task_status]?.color 
+                }}
+              >
                 {tasksLists.task_status}
               </span>
               <span className="btn btn-deadline">
@@ -307,15 +314,15 @@ const StudentLogin = ({ type }) => {
                                      {
                                         weightageDetails.weightage_details
                                           .weightage
-                                      }{" "}
+                                      }{""}
                                      </p>
-                                     <span className="score">
+                                     <span className="score" >
                                      {weightageDetails?.task_score?.map((a) =>
                                         Number(a.task_score)
                                       )}
                                      </span>
                                       /
-                                     <span>
+                                     <span style={{color:"blue"}}>
                                        {Number(
                                         weightageDetails.weightage_percentage
                                       )}

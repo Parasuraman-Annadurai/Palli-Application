@@ -19,6 +19,7 @@ const WeightageList = ({
       style={{ height: 550, overflowY: "scroll" }}
     >
       <div
+        className="overall"
         style={{
           display: "flex",
           flexDirection: "column",
@@ -104,7 +105,8 @@ const WeightageList = ({
         </div>
         {!selectedStudents?.length && (
         <>
-          <div className="add-weightage-button">
+        <div className="all-btns" style={{display: "flex" , justifyContent: "space-between",gap:"10px"}}>
+        <div className="add-weightage-button">
             <button
               className="btn create-btn"
               style={{ padding: 15, cursor: "pointer" }}
@@ -113,8 +115,8 @@ const WeightageList = ({
               + Add Weightage
             </button>
           </div>
-          <div>
-            <div className="apply-weightage">
+          <div style={{flex:1}}>
+            <div className="apply-weightage" >
               <button
                 className="btn primary-medium"
                 onClick={() => handleSaveWeightage()}
@@ -123,6 +125,7 @@ const WeightageList = ({
               </button>
             </div>
           </div>
+        </div>
         </>
       )}
 

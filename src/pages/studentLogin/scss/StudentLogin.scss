@@ -276,6 +276,7 @@ li {
     font-size: 16px;
     font-weight: 500;
     font-family: $font-Roboto;
+    margin-bottom: 16px;
 
     .module-title-section {
       gap: 10px;
@@ -328,8 +329,8 @@ li {
     }
 
     .student-task-details-main-container {
-      // gap: 20px;
-      justify-content: space-between;
+      gap: 70px;
+      // justify-content: space-between;
       padding-bottom: 20px;
 
       p {
@@ -365,7 +366,7 @@ li {
       }
       .student-task-status {
         border-right: 2px solid #eaeaea;
-        max-width: 213px;
+        max-width: 180px;
         width: 100%;
         .students-status-TODO-status{
           .students-status-TODO-status-selector{
@@ -400,6 +401,17 @@ li {
             
           }
         }
+        .students-status-SUBMITTED-status{
+          .students-status-SUBMITTED-status-selector{
+            border: none;
+
+            background-color: #EEFDB0;
+            .students-status-SUBMITTED-status-selection-item{
+              color: $primary-color;
+            }
+            
+          }
+        }
         .students-status-REWORK-status{
           .students-status-REWORK-status-selector{
             border: none;
@@ -410,6 +422,7 @@ li {
             
           }
         }
+        
       }
     }
 
@@ -418,7 +431,7 @@ li {
         padding-bottom: 6px;
         font-size: 12px;
         font-family: $font-Roboto;
-        line-height: 12px;
+        line-height: 16px;
         color: $font-secondary-color;
       }
 

@@ -51,6 +51,7 @@ const AssessmentModule = ({ type }) => {
           if (res.status === 200 && res.data.message === "Success") {
             //manipulate the assessment list task type assessment put the 1 otherwise 0 and remove duplicate
             let assessmentList = [...res.data.data];
+            console.log(assessmentList);
             assessmentList = assessmentList.map((assessment) => ({
               ...assessment,
               task_type: assessment.task_type === "ASSESSMENT" ? 1 : 0,
@@ -241,6 +242,7 @@ const AssessmentModule = ({ type }) => {
             return assessment;
           });
         }
+
 
         setAssessmentList(cloneAssessmentList);
         setEditId(
@@ -676,6 +678,7 @@ const AssessmentModule = ({ type }) => {
                       handleAddWeightage={handleAddWeightage}
                       handleWeightageChange={handleWeightageChange}
                       isStudentScoreOpen={isStudentScoreOpen}
+                      setIsStudentScoreOpen={setIsStudentScoreOpen}
                       handleStatusChange={handleStatusChange}
                       handleAddScore={handleAddScore}
                       setActiveWeightageIndex={setActiveWeightageIndex}

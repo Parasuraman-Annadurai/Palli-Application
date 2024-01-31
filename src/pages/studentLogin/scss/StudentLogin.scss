@@ -368,6 +368,61 @@ li {
         border-right: 2px solid #eaeaea;
         max-width: 180px;
         width: 100%;
+        .students-status-TODO-status{
+          .students-status-TODO-status-selector{
+            border: none;
+
+            background-color: #E2E8F0;
+            .students-status-TODO-status-selection-item{
+              color: #64748B;
+            }
+            
+          }
+        }
+        .students-status-INPROGRESS-status{
+          .students-status-INPROGRESS-status-selector{
+            border: none;
+
+            background-color: #DBEAFE;
+            .students-status-INPROGRESS-status-selection-item{
+              color: $highlight-blue;
+            }
+            
+          }
+        }
+        .students-status-COMPLETED-status{
+          .students-status-COMPLETED-status-selector{
+            border: none;
+
+            background-color: #EEFDB0;
+            .students-status-COMPLETED-status-selection-item{
+              color: $primary-color;
+            }
+            
+          }
+        }
+        .students-status-SUBMITTED-status{
+          .students-status-SUBMITTED-status-selector{
+            border: none;
+
+            background-color: #EEFDB0;
+            .students-status-SUBMITTED-status-selection-item{
+              color: $primary-color;
+            }
+            
+          }
+        }
+        .students-status-REWORK-status{
+          .students-status-REWORK-status-selector{
+            border: none;
+            background-color: #FEF3C7;
+            .students-status-REWORK-status-selection-item{
+              color: #F59E0B;
+            }
+            
+          }
+        }
+        
       }
     }
 

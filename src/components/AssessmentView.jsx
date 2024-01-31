@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 
-import ReactQuill, { Quill } from "react-quill";
+import ReactQuill from "react-quill";
+import "quill/dist/quill.snow.css";
+
 import {
   DatePicker,
-  Popover,
-  Menu,
   Dropdown,
   Skeleton,
   notification,
@@ -18,9 +18,10 @@ import { API_END_POINT } from "../../config";
 import { useParams } from "react-router-dom";
 
 import { useAuth } from "../context/AuthContext";
+
 import WeightageList from "./WeightageList";
 
-import "quill/dist/quill.snow.css";
+import { CustomIcons,toolbarConfig } from "../utils/validate";
 
 const AssessmentView = ({
   weightageShow,
@@ -31,6 +32,7 @@ const AssessmentView = ({
   handleSave,
   handleInputChange,
   isStudentScoreOpen,
+  setIsStudentScoreOpen,
   handleStatusChange,
   handleAddScore,
   activeWeightageIndex,
@@ -51,9 +53,9 @@ const AssessmentView = ({
   const [toggleAssigneeWeightage, setToggleAssigneeWeightage] = useState(
     type == "task" ? 0 : 1
   );
-
   const [assigneeloader, setAssigneeloader] = useState(false);
   const [weightageLists, setWeightageLists] = useState([]);
+
   const headers = {
     Authorization: `Bearer ${token.access}`,
     "Content-type": "application/json",
@@ -79,49 +81,7 @@ const AssessmentView = ({
     task_weightages = [],
   } = currentAssessment;
 
-  const CustomIcons = () => {
-    const icons = Quill.import("ui/icons");
-
-    icons.bold = `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 12 12" fill="none">
-      <path d="M3 2H7C7.53043 2 8.03914 2.21071 8.41421 2.58579C8.78929 2.96086 9 3.46957 9 4C9 4.53043 8.78929 5.03914 8.41421 5.41421C8.03914 5.78929 7.53043 6 7 6H3V2Z" stroke="#969D88" stroke-linecap="round" stroke-linejoin="round"/>
-      <path d="M3 6H7.5C8.03043 6 8.53914 6.21071 8.91421 6.58579C9.28929 6.96086 9.5 7.46957 9.5 8C9.5 8.53043 9.28929 9.03914 8.91421 9.41421C8.53914 9.78929 8.03043 10 7.5 10H3V6Z" stroke="#969D88" stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>`;
-    icons.italic = `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 12 12" fill="none">
-    <path d="M9.5 2H5" stroke="#969D88" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M7 10H2.5" stroke="#969D88" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M7.5 2L4.5 10" stroke="#969D88" stroke-linecap="round" stroke-linejoin="round"/>
-  </svg>`;
-    icons.underline = `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 12 12" fill="none">
-  <path d="M3 1.5V5C3 5.79565 3.31607 6.55871 3.87868 7.12132C4.44129 7.68393 5.20435 8 6 8C6.79565 8 7.55871 7.68393 8.12132 7.12132C8.68393 6.55871 9 5.79565 9 5V1.5" stroke="#969D88" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M2 10.5H10" stroke="#969D88" stroke-linecap="round" stroke-linejoin="round"/>
-  </svg>`;
-
-    icons.alignLeft = `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 12 12" fill="none">
-  <path d="M8.5 5H1.5" stroke="#969D88" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M10.5 3H1.5" stroke="#969D88" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M10.5 7H1.5" stroke="#969D88" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M8.5 9H1.5" stroke="#969D88" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>`;
-    icons.alignCenter = `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 12 12" fill="none">
-     <path d="M9 5H3" stroke="#969D88" stroke-linecap="round" stroke-linejoin="round"/>
-     <path d="M10.5 3H1.5" stroke="#969D88" stroke-linecap="round" stroke-linejoin="round"/>
-     <path d="M10.5 7H1.5" stroke="#969D88" stroke-linecap="round" stroke-linejoin="round"/>
-     <path d="M9 9H3" stroke="#969D88" stroke-linecap="round" stroke-linejoin="round"/>
-   </svg>`;
-    icons.alignRight = `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 12 12" fill="none">
-      <path d="M10.5 5H3.5" stroke="#969D88" stroke-linecap="round" stroke-linejoin="round"/>
-      <path d="M10.5 3H1.5" stroke="#969D88" stroke-linecap="round" stroke-linejoin="round"/>
-      <path d="M10.5 7H1.5" stroke="#969D88" stroke-linecap="round" stroke-linejoin="round"/>
-      <path d="M10.5 9H3.5" stroke="#969D88" stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>`;
-    icons.alignJustify = `<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 10 8" fill="none">
-    <path d="M9.5 3H0.5" stroke="#969D88" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M9.5 1H0.5" stroke="#969D88" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M9.5 5H0.5" stroke="#969D88" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M9.5 7H0.5" stroke="#969D88" stroke-linecap="round" stroke-linejoin="round"/>
-  </svg>`;
-    return null; // This component doesn't render anything
-  };
+ 
 
   const handleCheckboxChange = (studentId) => {
     const isSelected = [...selectedStudents].includes(studentId);
@@ -242,8 +202,6 @@ const AssessmentView = ({
     ];
   };
 
-  // // Function to remove duplicates based on the 'task_weightage' property
-
   const handleScoreOnchange = (e, students, weightage) => {
     const updatedScore = {
       task_user: students.id,
@@ -269,7 +227,8 @@ const AssessmentView = ({
     }
   };
 
- 
+
+  
   return (
     <>
       {!isStudentScoreOpen ? (
@@ -349,36 +308,12 @@ const AssessmentView = ({
                         <ReactQuill
                           placeholder="Type here"
                           value={task_description ? task_description : ""}
-                          modules={{
-                            toolbar: {
-                              container: [
-                                [{ header: [1, 2, false] }],
-                                ["bold", "italic", "underline"],
-                                [
-                                  "alignLeft",
-                                  "alignCenter",
-                                  "alignRight",
-                                  "alignJustify",
-                                ],
-                              ],
-                            },
-                          }}
-                          formats={[
-                            "header",
-                            "bold",
-                            "italic",
-                            "underline",
-                            "list",
-                            "bullet",
-                            "alignLeft",
-                            "alignCenter",
-                            "alignRight",
-                            "alignJustify",
-                          ]}
+                          modules={toolbarConfig}
                           theme="snow"
                           onChange={(value) =>
                             handleInputChange("task_description", value)
                           }
+                        
                         />
                         {/* <p className="error-message"></p> */}
                       </>
@@ -529,6 +464,8 @@ const AssessmentView = ({
                         handleWeightageChange={handleWeightageChange}
                         handleDeleteWeightage={handleDeleteWeightage}
                         weightages={weightageLists}
+                        selectedStudents={selectedStudents}
+
                       />
                     )
                   )}
@@ -567,8 +504,8 @@ const AssessmentView = ({
                       <div className="student-info flex">
                         <div className="student-name-container">
                           <p>
-                            {students["user_details"]["first_name"][0]}
-                            {students["user_details"]["last_name"][0]}
+                            {students["user_details"]["first_name"][0]?.toUpperCase()}
+                            {students["user_details"]["last_name"][0]?.toUpperCase()}
                           </p>
                         </div>
                         <div className="student-email-container">
@@ -606,13 +543,7 @@ const AssessmentView = ({
                       <div className="student-file">
                         <p>Submission Link</p>
                         <p>
-                          {" "}
-                          <a
-                            href={`${students["submission_link"]}`}
-                            target="_blank"
-                          >
-                            {students["submission_link"]}
-                          </a>
+                          {students["submission_link"] !== null ? <a  href={`${students["submission_link"]}` } target="_blank">{students["submission_link"]}</a> : "N/A"}
                         </p>
                       </div>
                       <div className="student-work">
@@ -652,7 +583,7 @@ const AssessmentView = ({
                             )}
                       </div>
                     </div>
-                    {/* <hr /> */}
+                   
 
                     {activeWeightageIndex === index && (
                       <div className="applied-weightage-list-container flex" style={{gap:"10px"}}>
@@ -711,6 +642,7 @@ const AssessmentView = ({
                 <img src="/icons/select-something.svg" alt="" />
                 <p className="select-something-heading">
                   No Assignee has been assigned to this {type}
+                  <button className="btn primary-medium" style={{marginTop:"10px"}} onClick={()=>setIsStudentScoreOpen(!isStudentScoreOpen)}>Add Assignee</button>
                 </p>
               </div>
             </div>

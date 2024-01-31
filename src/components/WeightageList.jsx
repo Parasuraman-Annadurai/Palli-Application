@@ -10,8 +10,10 @@ const WeightageList = ({
   handleWeightageChange,
   handleDeleteWeightage,
   weightages,
+  selectedStudents
 }) => {
-  return (
+ 
+   return (
     <div
       className="weightage-main-container"
       style={{ height: 550, overflowY: "scroll" }}
@@ -45,6 +47,7 @@ const WeightageList = ({
                       onChange={(value) =>
                         handleWeightageChange(value, index, "weightage")
                       }
+                      disabled={selectedStudents.length}
                     >
                       {weightages.map((weightageList) => (
                         <Select.Option
@@ -70,6 +73,7 @@ const WeightageList = ({
                           "weightage_percentage"
                         )
                       }
+                      disabled={selectedStudents.length}
                       className="task-weight-value-selector"
                       style={{
                         border: "1px solid #eaeaea",
@@ -85,11 +89,7 @@ const WeightageList = ({
                   <div className="weightage-unit-container flex">
                     <div className="weightage-action">
                       {/* Show the delete icon only if weightage is greater than 0 */}
-                      <span
-                        onClick={() =>
-                          handleDeleteWeightage(taskWeightage.id, index)
-                        }
-                      >
+                      <span onClick={() => !selectedStudents.length && handleDeleteWeightage(taskWeightage.id,index)} >
                         <img
                           src="/icons/deleteIcon.svg"
                           alt="delete-icon"
@@ -103,8 +103,10 @@ const WeightageList = ({
             })}
           </div>
         </div>
-        <div className="all-btns" style={{display: "flex" , justifyContent: "space-between", gap: 10}}>
-          <div className="add-weightage-button">
+        {!selectedStudents?.length && (
+        <>
+        <div className="all-btns" style={{display: "flex" , justifyContent: "space-between",gap:"10px"}}>
+        <div className="add-weightage-button">
             <button
               className="btn create-btn"
               style={{ padding: 15, cursor: "pointer" }}
@@ -113,16 +115,22 @@ const WeightageList = ({
               + Add Weightage
             </button>
           </div>
-
-          <div className="apply-weightage" style={{flex:1}}>
-            <button
-              className="btn primary-medium"
-              onClick={() => handleSaveWeightage()}
-            >
-              Save
-            </button>
+          <div style={{flex:1}}>
+            <div className="apply-weightage" >
+              <button
+                className="btn primary-medium"
+                onClick={() => handleSaveWeightage()}
+              >
+                Save
+              </button>
+            </div>
           </div>
         </div>
+        </>
+      )}
+
+      
+      
       </div>
     </div>
   );

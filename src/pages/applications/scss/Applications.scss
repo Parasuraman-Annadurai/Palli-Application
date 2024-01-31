@@ -251,7 +251,12 @@ li {
       box-sizing: border-box;
       outline: none;
       background-color: #ffff;
+      color: $font-secondary-color;
+      option{
+        color: $font-primary-color;
+      }
     }
+   
     .apply-btn{
       margin-top: 10px;
       gap: 10px;

@@ -43,7 +43,10 @@ const AssessmentView = ({
   handleDeleteWeightage,
   type,
   formErrors,
-  setFormErrors
+  setFormErrors,
+  weightageErrors,
+  setWeightageErros,
+  setAssigneeSearch
 }) => {
   const { id: batchId } = useParams();
   const { token } = useAuth();
@@ -229,6 +232,7 @@ const AssessmentView = ({
   };
 
 
+
   return (
     <>
       {!isStudentScoreOpen ? (
@@ -337,7 +341,7 @@ const AssessmentView = ({
                             ? "btn primary-medium-default"
                             : "btn primary-medium"
                         }`}
-                        onClick={() => !assigneeloader && validateTask(currentAssessment,setFormErrors,type) ? true : null}
+                        onClick={() => !assigneeloader && validateTask(currentAssessment,setFormErrors,type) ? handleSave(currentAssessment) : null}
 
                       >
                         {draft ? "Create" : "Update"}
@@ -392,8 +396,8 @@ const AssessmentView = ({
                       <div className="assign-listing-container">
                         
 
-                <div className="assignee-search-container">
-                            <input type="input" placeholder="search..." />
+                         <div className="assignee-search-container">
+                            <input type="input" placeholder="search..." onChange={(e)=>setAssigneeSearch(e.target.value)}/>
                             <img
                               src="/icons/searchIcon.svg"
                               alt="search-icon"
@@ -464,7 +468,8 @@ const AssessmentView = ({
                         handleDeleteWeightage={handleDeleteWeightage}
                         weightages={weightageLists}
                         selectedStudents={selectedStudents}
-
+                        weightageErrors={weightageErrors}
+                        setWeightageErros={setWeightageErros}
                       />
                     )
                   )}
@@ -497,7 +502,7 @@ const AssessmentView = ({
             currentAssessment.task_users.map((students, index) => {
               return (
                 <>
-                  <div className="task-container">
+                  <div className="task-container" >
                    
                     <div className="task-user-list-container flex" key={index}>
                       <div className="student-info flex">
@@ -551,7 +556,6 @@ const AssessmentView = ({
                               <button
                                 className="secondary-btn-sm"
                                 onClick={(e) => {
-                                 
                                   setActiveWeightageIndex(index);
                                   if(activeWeightageIndex === index){
                                     handleAddScore(studentScore);
@@ -585,7 +589,8 @@ const AssessmentView = ({
                    
 
                     {activeWeightageIndex === index && (
-                      <div className="applied-weightage-list-container flex" style={{gap:"10px"}}>
+                     <>
+                       <div className="applied-weightage-list-container flex" style={{gap:"10px"}}>
                         {currentAssessment.task_weightages &&
                           currentAssessment.task_weightages.map(
                             (weightage, weightageIndex) => (
@@ -617,19 +622,17 @@ const AssessmentView = ({
                                 <div className="weightage-checkbox">
                                   <input
                                     type="text"
-                                    onChange={(e) => {
-                                      handleScoreOnchange(
-                                        e,
-                                        students,
-                                        weightage
-                                      );
+                                    onChange={(e) => {handleScoreOnchange(e,students, weightage);
                                     }}
                                   />
                                 </div>
                               </div>
                             )
                           )}
+                         
                       </div>
+                      <p className="error-message" style={{paddingLeft:"20px"}}>hh</p>
+                     </>
                     )}
                   </div>
                 </>

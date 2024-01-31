@@ -2,6 +2,7 @@ import React from "react";
 
 import { Select } from "antd";
 
+import { isWeightageVaild } from "../utils/validate";
 
 const WeightageList = ({
   taskWeightages,
@@ -10,9 +11,18 @@ const WeightageList = ({
   handleWeightageChange,
   handleDeleteWeightage,
   weightages,
-  selectedStudents
+  selectedStudents,
+  weightageErrors,
+  setWeightageErros
 }) => {
- 
+
+  const validate = () => {
+    if (isWeightageVaild(taskWeightages,setWeightageErros)) {
+      handleSaveWeightage()
+    } 
+  };
+
+
    return (
     <div
       className="weightage-main-container"
@@ -58,6 +68,7 @@ const WeightageList = ({
                         </Select.Option>
                       ))}
                     </Select>
+                    <p className="error-message">{weightageErrors[`weightage${index}`] ? weightageErrors[`weightage${index}`] : ""}</p>
                   </div>
                   <div
                     className="percentage"
@@ -85,6 +96,8 @@ const WeightageList = ({
                         paddingRight: 5,
                       }}
                     />
+                    <p className="error-message">{weightageErrors[`weightage_percentage${index}`] ? weightageErrors[`weightage_percentage${index}`] : ""}</p>
+
                   </div>
                   <div className="weightage-unit-container flex">
                     <div className="weightage-action">
@@ -119,7 +132,8 @@ const WeightageList = ({
             <div className="apply-weightage" >
               <button
                 className="btn primary-medium"
-                onClick={() => handleSaveWeightage()}
+                // onClick={() => handleSaveWeightage()}
+                onClick={()=> isWeightageVaild(taskWeightages,setWeightageErros) ? handleSaveWeightage() : null}
               >
                 Save
               </button>

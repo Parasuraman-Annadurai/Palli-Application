@@ -31,6 +31,7 @@ const AssessmentModule = ({ type }) => {
   const [activeWeightageIndex, setActiveWeightageIndex] = useState(null);
   const [isMode,setIsMode] = useState("edit")
   const [formErrors, setFormErrors] = useState({});
+  const [assigneeSearch,setAssigneeSearch] = useState("")
 
   const headers = {
     Authorization: `Bearer ${token.access}`,
@@ -72,21 +73,22 @@ const AssessmentModule = ({ type }) => {
         });
 
       axios
-        .get(`${API_END_POINT}/api/applicant/${batchId}/list/students/`, {
+        .get(`${API_END_POINT}/api/applicant/${batchId}/list/students/?search=${assigneeSearch}`, {
           headers,
         })
         .then((res) => {
           if (res.status === 200 && res.data.message === "Success") {
-            setStudents(res.data.data);
+            const copyStudentsLists = [res.data.data]
+            setStudents(copyStudentsLists);
             setLoading(false);
-            // setSelectedStudents(res.data.data.map((student) => student.id));
           }
         })
         .catch((error) => {
+          setLoading(false)
           console.log(error);
         });
     }
-  }, [assessmentSearchWord, type]);
+  }, [assessmentSearchWord, type,assigneeSearch]);
 
   useEffect(() => {
     if (editId && assessmentList.length > 0) {
@@ -397,7 +399,6 @@ const AssessmentModule = ({ type }) => {
       if (updatePromise.length > 0) {
         Promise.all(updatePromise)
           .then((results) => {
-            console.log(results);
             notification.success({
               message: "Sucess",
               description: "Weightage Update Successfully",
@@ -442,7 +443,6 @@ const AssessmentModule = ({ type }) => {
 
         // Allow adding new weightage only if the total is less than 100%
         if (totalWeightagePercentage < 100) {
-          console.log("Adding new weightage");
           assessment.task_weightages = [
             ...assessment.task_weightages,
             newWeightage,
@@ -459,11 +459,13 @@ const AssessmentModule = ({ type }) => {
       return assessment;
     });
 
-    console.log("Updated Assessment List:", updatedAssessmentList);
     setAssessmentList(updatedAssessmentList);
   };
 
   const handleWeightageChange = (value, index, key) => {
+    if(weightageErrors[`${key}${index}`]){
+      delete weightageErrors[`${key}${index}`]
+    }
     let copyAssessment = [...assessmentList];
 
     copyAssessment = copyAssessment.map((assessment) => {
@@ -620,6 +622,7 @@ const AssessmentModule = ({ type }) => {
     }
   };
 
+  const [weightageErrors, setWeightageErros] = useState({});
 
   return (
     <>
@@ -692,6 +695,10 @@ const AssessmentModule = ({ type }) => {
                       type={type}
                       formErrors={formErrors}
                       setFormErrors={setFormErrors}
+                      weightageErrors={weightageErrors}
+                      setWeightageErros={setWeightageErros}
+                      setAssigneeSearch={setAssigneeSearch}
+
                     />
                   );
                 }
@@ -702,7 +709,7 @@ const AssessmentModule = ({ type }) => {
                   <div className="image-container ">
                     <img src="/icons/select-something.svg" alt="" />
                     <p className="select-something-heading">
-                      Please Select any of the Available ${type} or Create New
+                      Please Select any of the Available {type} or Create New
                       {type}
                     </p>
                   </div>

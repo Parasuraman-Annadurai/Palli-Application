@@ -97,6 +97,24 @@ export const validateTask = (taskDetails, setFormErrors,type) => {
   return isValid;
 };
 
+export const isWeightageVaild =(taskWeightageDetails,setWeightageErros)=>{
+  let errors ={};
+  let isVaild = true;
+
+  taskWeightageDetails.forEach((taskWeightageDetail, index) => {
+    if (!taskWeightageDetail?.weightage) {
+      errors[`weightage${index}`] = "Please select a weightage.";
+      isVaild = false;
+    }
+    if (!taskWeightageDetail?.weightage_percentage) {
+      errors[`weightage_percentage${index}`] = "Please enter a percentage.";
+      isVaild = false;
+    }
+  });
+
+  setWeightageErros(errors);
+  return isVaild;
+}
 
 
 

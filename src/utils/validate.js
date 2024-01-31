@@ -73,31 +73,31 @@ export const validateNewpassword = (newPasswordData, setErrors) => {
   return isValid;
 };
 
-export const validateAddTask = (addTaskData,setErrors) => {
-
-
+export const validateTask = (taskDetails, setFormErrors,type) => {
+  const { task_title, task_description, due_date } = taskDetails;
   let errors = {};
-  let isVaild = true;
-  if (!addTaskData.task_title.trim()) {
-    errors.task_title = "Task Name is Required";
-    isVaild = false;
+  let isValid = true;
+
+  if (!task_title.trim()) {
+    errors = { ...errors, task_title: `${type} name is required` };
+    isValid = false;
   }
-  if (!addTaskData.task_description.trim()) {
-    errors.task_description = "Task Description is Required";
-    isVaild = false;
+
+  if (!task_description.trim()) {
+    errors = { ...errors, task_description: `${type} description is required` };
+    isValid = false;
   }
- 
-  if (!addTaskData.due_date) {
-    errors.due_date = "Task Due Date is Required";
-    isVaild = false;
+
+  if (!due_date) {
+    errors = { ...errors, due_date: `${type} due date is required` };
+    isValid = false;
   }
-  if (addTaskData.task_type <0) {
-    errors.task_type = "Task Type is Required";
-    isVaild = false;
-  }
-  setErrors(errors);
-  return isVaild;
+
+  setFormErrors(errors);
+  return isValid;
 };
+
+
 
 
 
@@ -235,3 +235,6 @@ export const toolbarConfig = {
     ],
   },
 };
+
+
+

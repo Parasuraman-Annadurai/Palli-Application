@@ -21,7 +21,7 @@ import { useAuth } from "../context/AuthContext";
 
 import WeightageList from "./WeightageList";
 
-import { CustomIcons,toolbarConfig } from "../utils/validate";
+import { CustomIcons,toolbarConfig,validateTask } from "../utils/validate";
 
 const AssessmentView = ({
   weightageShow,
@@ -42,7 +42,8 @@ const AssessmentView = ({
   handleWeightageChange,
   handleDeleteWeightage,
   type,
-  isMode
+  formErrors,
+  setFormErrors
 }) => {
   const { id: batchId } = useParams();
   const { token } = useAuth();
@@ -228,7 +229,6 @@ const AssessmentView = ({
   };
 
 
-  
   return (
     <>
       {!isStudentScoreOpen ? (
@@ -250,7 +250,7 @@ const AssessmentView = ({
                         }
                         // onDoubleClick={onDoubleClick}
                         placeholder={"Untitled"}
-                        // className={` ${errors.Title ? "error-notify" : ""} `}
+                        className={` ${formErrors["task_title"] ? "error-notify" : ""} `}
                         // readOnly={!isEditing}
                       />
                       {/* {isEditing && (
@@ -273,18 +273,19 @@ const AssessmentView = ({
                     )} */}
                     </div>
                   </div>
-                  {/* <p className="error-message"></p>
-                     */}
+                  <p className="error-message">{formErrors["task_title"] ? formErrors["task_title"]:""}</p>
+                    
                 </div>
                 <div className="task-details-header-container">
                   <div className="task-label-container flex">
-                    <h4>Task Details</h4>
+                    <h4>Task Details </h4>
                     <div className="horizon-line"></div>
                   </div>
                   <div className="task-details-main-container flex">
                     <div className="task-deadline-container common-property">
-                      <p className="task-deadline-label">Deadline</p>
+                      <p className="task-deadline-label">Deadline *</p>
                       <DatePicker
+                        prefixCls={`${formErrors["due_date"] ? "error-notify" :""}`}
                         value={due_date ? dayjs(due_date) : null}
                         showTime={{ format: "HH:mm" }}
                         placeholder="Select here..."
@@ -297,16 +298,17 @@ const AssessmentView = ({
                           current && current < dayjs().startOf("day")
                         }
                       />
-                      {/* <p className="error-message"></p> */}
+                      <p className="error-message">{formErrors["due_date"] ? formErrors["due_date"]:""}</p>
                     </div>
                   </div>
                   <div className="task-editor-container">
-                    <p className="task-description-label">Description</p>
+                    <p className="task-description-label">Description *</p>
                     <div className="task-editor">
                       <>
                         <CustomIcons />
                         <ReactQuill
                           placeholder="Type here"
+                          className={`${formErrors["task_description"] ? "error-notify":""}`}
                           value={task_description ? task_description : ""}
                           modules={toolbarConfig}
                           theme="snow"
@@ -315,7 +317,7 @@ const AssessmentView = ({
                           }
                         
                         />
-                        {/* <p className="error-message"></p> */}
+                        <p className="error-message">{formErrors["task_description"] ? formErrors["task_description"]:""}</p>
                       </>
                     </div>
                   </div>
@@ -335,11 +337,8 @@ const AssessmentView = ({
                             ? "btn primary-medium-default"
                             : "btn primary-medium"
                         }`}
-                        onClick={() => {
-                          !assigneeloader
-                            ? handleSave(currentAssessment)
-                            : null;
-                        }}
+                        onClick={() => !assigneeloader && validateTask(currentAssessment,setFormErrors,type) ? true : null}
+
                       >
                         {draft ? "Create" : "Update"}
                       </button>
@@ -393,16 +392,16 @@ const AssessmentView = ({
                       <div className="assign-listing-container">
                         
 
-  <div className="assignee-search-container">
-              <input type="input" placeholder="search..." />
-              <img
-                src="/icons/searchIcon.svg"
-                alt="search-icon"
-                className="search-icon"
-              />
+                <div className="assignee-search-container">
+                            <input type="input" placeholder="search..." />
+                            <img
+                              src="/icons/searchIcon.svg"
+                              alt="search-icon"
+                              className="search-icon"
+                            />
 
-           
-            </div>
+                        
+                          </div>
                         <div className="select-all flex">
                           <input
                             className="global-checkbox"

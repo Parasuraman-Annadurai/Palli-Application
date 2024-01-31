@@ -30,6 +30,7 @@ const AssessmentModule = ({ type }) => {
   const [isStudentScoreOpen, setIsStudentScoreOpen] = useState(false);
   const [activeWeightageIndex, setActiveWeightageIndex] = useState(null);
   const [isMode,setIsMode] = useState("edit")
+  const [formErrors, setFormErrors] = useState({});
 
   const headers = {
     Authorization: `Bearer ${token.access}`,
@@ -51,7 +52,6 @@ const AssessmentModule = ({ type }) => {
           if (res.status === 200 && res.data.message === "Success") {
             //manipulate the assessment list task type assessment put the 1 otherwise 0 and remove duplicate
             let assessmentList = [...res.data.data];
-            console.log(assessmentList);
             assessmentList = assessmentList.map((assessment) => ({
               ...assessment,
               task_type: assessment.task_type === "ASSESSMENT" ? 1 : 0,
@@ -64,6 +64,7 @@ const AssessmentModule = ({ type }) => {
               res.data.data.length > 0 ? res.data.data[0].id : null;
 
             setEditId(assessmentId);
+            setFormErrors({});
           }
         })
         .catch((error) => {
@@ -223,7 +224,6 @@ const AssessmentModule = ({ type }) => {
           duration: 1,
         });
 
-        // console.log(res.response.data,"jjj");
 
         let cloneAssessmentList = [...assessmentList];
         //finding and filtering the assessment which is new create the assessment
@@ -288,6 +288,11 @@ const AssessmentModule = ({ type }) => {
   };
 
   const handleInputChange = (name, value) => {
+
+    // if name present in formErrors state check and delete the key in onchange example task_name present in error state delete it the key  
+    if (formErrors[name]) {
+      delete formErrors[name];
+    }
     const cloneAssessmentList = [...assessmentList];
     const updatedList = cloneAssessmentList.map((assessment) => {
       if (assessment.id === editId) {
@@ -684,7 +689,9 @@ const AssessmentModule = ({ type }) => {
                       setActiveWeightageIndex={setActiveWeightageIndex}
                       activeWeightageIndex={activeWeightageIndex}
                       handleDeleteWeightage={handleDeleteWeightage}
-                      type={type} 
+                      type={type}
+                      formErrors={formErrors}
+                      setFormErrors={setFormErrors}
                     />
                   );
                 }

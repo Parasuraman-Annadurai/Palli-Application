@@ -47,7 +47,7 @@ const WeightageList = ({
                       onChange={(value) =>
                         handleWeightageChange(value, index, "weightage")
                       }
-                      disabled={selectedStudents.length}
+                      disabled={selectedStudents.length ? true : false}
                     >
                       {weightages.map((weightageList) => (
                         <Select.Option

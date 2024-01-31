@@ -209,6 +209,10 @@ li {
   box-sizing: border-box;
   outline: none;
   background-color: white;
+  color: #969d88;
+}
+.filter-main-container .filter-container select option {
+  color: #12160a;
 }
 .filter-main-container .filter-container .apply-btn {
   margin-top: 10px;
@@ -319,7 +323,6 @@ body .container .application-full-container .application-inner-container .no-dat
   width: 100%;
 }
 body .container .application-full-container .application-inner-container .application-list-container {
-  height: 400px;
   background-color: white;
   border-radius: 4px;
 }

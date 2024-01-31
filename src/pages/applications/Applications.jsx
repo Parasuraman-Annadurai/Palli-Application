@@ -376,7 +376,7 @@ const Applications = () => {
     <main className="application-full-container">
       <div className="application-main-container flex">
         <div className="header-name">
-          <h1>Application list</h1>
+          <h1>Applications list</h1>
         </div>
         <div className="application-actions flex">
           <div className="import">

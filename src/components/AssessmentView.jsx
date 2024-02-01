@@ -21,7 +21,7 @@ import { useAuth } from "../context/AuthContext";
 
 import WeightageList from "./WeightageList";
 
-import { CustomIcons,toolbarConfig,validateTask } from "../utils/validate";
+import { CustomIcons,toolbarConfig,validateTask,isScoreValidate } from "../utils/validate";
 
 const AssessmentView = ({
   weightageShow,
@@ -46,6 +46,7 @@ const AssessmentView = ({
   setFormErrors,
   weightageErrors,
   setWeightageErros,
+  setAssigneeSearch
 }) => {
   const { id: batchId } = useParams();
   const { token } = useAuth();
@@ -58,6 +59,7 @@ const AssessmentView = ({
   );
   const [assigneeloader, setAssigneeloader] = useState(false);
   const [weightageLists, setWeightageLists] = useState([]);
+  const [studentScoreErrors,setStudentsErrors] = useState({})
 
   const headers = {
     Authorization: `Bearer ${token.access}`,
@@ -204,33 +206,45 @@ const AssessmentView = ({
       },
     ];
   };
-
   const handleScoreOnchange = (e, students, weightage) => {
-    const updatedScore = {
-      task_user: students.id,
-      task_weightage: weightage.id,
-      task_score: Number(e.target.value),
-    };
-    // Check if the score for the same student and weightage ID already exists
-    const existingScoreIndex = studentScore.findIndex(
-      (score) =>
-        score.task_user === updatedScore.task_user &&
-        score.task_weightage === updatedScore.task_weightage
-    );
-
-    if (existingScoreIndex !== -1) {
-      // If the score exists, update it
-      const updatedStudentScores = [...studentScore];
-      updatedStudentScores[existingScoreIndex].task_score =
-        updatedScore.task_score;
-      setStudentScore(updatedStudentScores);
+    const scoreValue = Number(e.target.value);
+  
+    // Check if the score is 0, and if so, remove the corresponding object from the state
+    if (scoreValue === 0) {
+      const filteredStudentScores = studentScore.filter(
+        (score) =>
+          score.task_user !== students.id ||
+          score.task_weightage !== weightage.id
+      );
+      setStudentScore(filteredStudentScores);
     } else {
-      // If the score doesn't exist, add it to the state
-      setStudentScore([...studentScore, updatedScore]);
+      // If the score is not 0, update or add the score to the state
+      const updatedScore = {
+        task_user: students.id,
+        task_weightage: weightage.id,
+        task_score: scoreValue,
+      };
+  
+      const existingScoreIndex = studentScore.findIndex(
+        (score) =>
+          score.task_user === updatedScore.task_user &&
+          score.task_weightage === updatedScore.task_weightage
+      );
+  
+      if (existingScoreIndex !== -1) {
+        // If the score exists, update it
+        const updatedStudentScores = [...studentScore];
+        updatedStudentScores[existingScoreIndex].task_score =
+          updatedScore.task_score;
+        setStudentScore(updatedStudentScores);
+      } else {
+        // If the score doesn't exist, add it to the state
+        setStudentScore([...studentScore, updatedScore]);
+      }
     }
   };
-
-
+  
+  console.log(currentAssessment,"kkka");
 
   return (
     <>
@@ -479,24 +493,26 @@ const AssessmentView = ({
         </>
       ) : (
         <main className="main-container">
-              <div className="task-heading">
-            <p>{task_title}</p>
-
-            <div className="search-container">
-              <input type="input" placeholder="search..." />
-              <img
-                src="/icons/searchIcon.svg"
-                alt="search-icon"
-                className="search-icon"
-              />
-
-              <img
-                src="/icons/filterIcon.svg"
-                alt="filter-icon"
-                className="filter-icon"
-              />
-            </div>
-          </div>
+           {currentAssessment?.task_users?.length > 0 && (
+               <div className="task-heading">
+               <p>{task_title}</p>
+   
+               <div className="search-container">
+                 <input type="input" placeholder="search..." />
+                 <img
+                   src="/icons/searchIcon.svg"
+                   alt="search-icon"
+                   className="search-icon"
+                 />
+   
+                 <img
+                   src="/icons/filterIcon.svg"
+                   alt="filter-icon"
+                   className="filter-icon"
+                 />
+               </div>
+                  </div>
+           )}
           {currentAssessment?.task_users?.length > 0 ? (
             currentAssessment.task_users.map((students, index) => {
               return (
@@ -557,7 +573,9 @@ const AssessmentView = ({
                                 onClick={(e) => {
                                   setActiveWeightageIndex(index);
                                   if(activeWeightageIndex === index){
-                                    handleAddScore(studentScore);
+                                    if(isScoreValidate(task_weightages,studentScore,setStudentsErrors)){
+                                      handleAddScore(studentScore);
+                                    }
                                   }
                                 }}
                               >
@@ -630,7 +648,7 @@ const AssessmentView = ({
                           )}
                          
                       </div>
-                      <p className="error-message" style={{paddingLeft:"20px"}}>hh</p>
+                      <p className="error-message">{studentScoreErrors["score"] ? studentScoreErrors["score"]:""}</p>
                      </>
                     )}
                   </div>
@@ -643,7 +661,10 @@ const AssessmentView = ({
                 <img src="/icons/select-something.svg" alt="" />
                 <p className="select-something-heading">
                   No Assignee has been assigned to this {type}
-                  <button className="btn primary-medium" style={{marginTop:"10px"}} onClick={()=>setIsStudentScoreOpen(!isStudentScoreOpen)}>Add Assignee</button>
+                  <button className="btn primary-medium" style={{marginTop:"10px"}} onClick={()=>{
+                    setIsStudentScoreOpen(!isStudentScoreOpen)
+                    setToggleAssigneeWeightage(0)
+                  }}>Add Assignee</button>
                 </p>
               </div>
             </div>

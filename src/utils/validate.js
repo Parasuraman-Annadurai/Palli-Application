@@ -99,24 +99,46 @@ export const validateTask = (taskDetails, setFormErrors,type) => {
 
 export const isWeightageVaild =(taskWeightageDetails,setWeightageErros)=>{
   let errors ={};
-  let isVaild = true;
-
+  let isValid = true;
+  let hasWeightageError = false;
+  
   taskWeightageDetails.forEach((taskWeightageDetail, index) => {
-    if (!taskWeightageDetail?.weightage) {
-      errors[`weightage${index}`] = "Please select a weightage.";
-      isVaild = false;
-    }
-    if (!taskWeightageDetail?.weightage_percentage) {
-      errors[`weightage_percentage${index}`] = "Please enter a percentage.";
-      isVaild = false;
+    if (!taskWeightageDetail?.weightage || !taskWeightageDetail?.weightage_percentage) {
+      if (!hasWeightageError) {
+        errors.general = "Select the weightage from the suggestions and enter the desired percentage.";
+        isValid = false;
+        hasWeightageError = true;
+      }
     }
   });
 
+  if (!hasWeightageError) {
+    // Check if the total percentage is equal to 100
+    const totalPercentage = taskWeightageDetails.reduce(
+      (sum, taskWeightageDetail) => sum + (taskWeightageDetail?.weightage_percentage || 0),
+      0
+    );
+
+    if (totalPercentage !== 100) {
+      errors.general = "Selected weightage is not equal to 100. Please check and adjust the values.";
+      isValid = false;
+    }
+  }
+
   setWeightageErros(errors);
-  return isVaild;
+  return isValid;
 }
 
-
+export const isScoreValidate =(taskWeightageDetails,studentScoreDetails,setScoreErrors)=>{
+  let isValid = true;
+  let errors = {};
+  if(studentScoreDetails?.length !== taskWeightageDetails?.length){
+    errors.score = "Kindly provide the input for the mark";
+    isValid = false;
+  }
+  setScoreErrors(errors);
+  return isValid;
+}
 
 
 

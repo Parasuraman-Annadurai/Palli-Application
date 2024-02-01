@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 
 import { useParams } from "react-router-dom";
 
-import { Modal, Skeleton, notification } from "antd";
+import { Modal, Skeleton, notification,message as messageApi } from "antd";
 import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
 import dayjs from "dayjs";
@@ -31,7 +31,8 @@ const AssessmentModule = ({ type }) => {
   const [activeWeightageIndex, setActiveWeightageIndex] = useState(null);
   const [isMode,setIsMode] = useState("edit")
   const [formErrors, setFormErrors] = useState({});
-
+  const [weightageErrors, setWeightageErros] = useState({});
+  const [assigneeSearch,setAssigneeSearch] = useState("")
   const headers = {
     Authorization: `Bearer ${token.access}`,
     "Content-type": "application/json",
@@ -71,20 +72,20 @@ const AssessmentModule = ({ type }) => {
           console.log(error);
         });
 
-      axios
-        .get(`${API_END_POINT}/api/applicant/${batchId}/list/students/`, {
-          headers,
-        })
-        .then((res) => {
-          if (res.status === 200 && res.data.message === "Success") {
-            setStudents(res.data.data);
-            setLoading(false);
-          }
-        })
-        .catch((error) => {
-          setLoading(false)
-          console.log(error);
-        });
+      // axios
+      //   .get(`${API_END_POINT}/api/applicant/${batchId}/list/students/`, {
+      //     headers,
+      //   })
+      //   .then((res) => {
+      //     if (res.status === 200 && res.data.message === "Success") {
+      //       setStudents(res.data.data);
+      //       setLoading(false);
+      //     }
+      //   })
+      //   .catch((error) => {
+      //     setLoading(false)
+      //     console.log(error);
+      //   });
     }
   }, [assessmentSearchWord, type]);
 
@@ -134,7 +135,22 @@ const AssessmentModule = ({ type }) => {
 
       setSelectedStudents(assignedUsers);
     }
-  }, [editId]);
+
+    if(editId){
+      axios
+      .get(`${API_END_POINT}/api/applicant/${batchId}/list/students/?search=${assigneeSearch}`, {
+        headers,
+      })
+      .then((res) => {
+        if (res.status === 200 && res.data.message === "Success") {
+          setStudents(res.data.data);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    }
+  }, [editId,assigneeSearch]);
 
   const handleDeleteAssessment = (deleteId) => {
     setEditId(deleteId);
@@ -183,6 +199,21 @@ const AssessmentModule = ({ type }) => {
   };
 
   const handleSave = (assessment) => {
+
+    const newTaskName = assessment.task_title;
+      // Check if the task with the same task_title already exists
+      const isDuplicateTask = assessmentList.some(
+        (existingAssessment, index) => index !== 0 && existingAssessment.task_title === newTaskName
+      );
+
+  if (isDuplicateTask) {
+    messageApi.open({
+      type: 'error',
+      content: `${newTaskName} already exits`,
+      duration:1
+    });
+  } else {
+
     const isNew = "draft" in assessment;
 
     const {
@@ -204,6 +235,8 @@ const AssessmentModule = ({ type }) => {
       ? `${API_END_POINT}/api/task/${batchId}/create_task/`
       : `${API_END_POINT}/api/task/${batchId}/update_task/${editId}`;
     const method = isNew ? "POST" : "PUT";
+
+   
 
     axios({
       method: method,
@@ -266,6 +299,11 @@ const AssessmentModule = ({ type }) => {
           });
         }
       });
+
+  }
+
+
+    
   };
 
   const handleAdd = () => {
@@ -288,7 +326,6 @@ const AssessmentModule = ({ type }) => {
   };
 
   const handleInputChange = (name, value) => {
-
     // if name present in formErrors state check and delete the key in onchange example task_name present in error state delete it the key  
     if (formErrors[name]) {
       delete formErrors[name];
@@ -434,24 +471,10 @@ const AssessmentModule = ({ type }) => {
 
     const updatedAssessmentList = assessmentList.map((assessment) => {
       if (assessment.id === editId) {
-        const totalWeightagePercentage = assessment.task_weightages
-          .map((task) => Number(task.weightage_percentage) || 0)
-          .reduce((sum, percentage) => sum + percentage, 0);
-
-
-        // Allow adding new weightage only if the total is less than 100%
-        if (totalWeightagePercentage < 100) {
-          assessment.task_weightages = [
-            ...assessment.task_weightages,
-            newWeightage,
-          ];
-        } else {
-          notification.error({
-            message: "Error",
-            description: "Weightage percentage has already reached 100%",
-            duration: 1,
-          });
-        }
+        assessment.task_weightages = [
+          ...assessment.task_weightages,
+          newWeightage,
+        ];
       }
 
       return assessment;
@@ -620,7 +643,6 @@ const AssessmentModule = ({ type }) => {
     }
   };
 
-  const [weightageErrors, setWeightageErros] = useState({});
 
   return (
     <>
@@ -695,7 +717,7 @@ const AssessmentModule = ({ type }) => {
                       setFormErrors={setFormErrors}
                       weightageErrors={weightageErrors}
                       setWeightageErros={setWeightageErros}
-
+                      setAssigneeSearch ={setAssigneeSearch}
                     />
                   );
                 }

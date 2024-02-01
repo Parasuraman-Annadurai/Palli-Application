@@ -247,9 +247,11 @@ const StudentLogin = ({ type }) => {
                           <p>Trainer Name</p>
                           <span>Avinash</span>
                         </div>
+                        
                         <div className="student-task-status">
                           <p>Status</p>
                           <Select
+
                             onChange={handleChange}
                             prefixCls={`students-status-${tasksList.task_status}-status`}
                             disabled={
@@ -258,11 +260,11 @@ const StudentLogin = ({ type }) => {
                             }
                             defaultValue={tasksList.task_status}
                     
-                            style={{ width: "60%"}}
+                            style={{ width: "70%" }}
                             
                             suffixIcon={<img
                               src='/public/icons/drop.svg'
-                              style={{ color: 'red' }} // Change the color as needed
+                              // style={{ color: 'red' }} // Change the color as needed
                               alt="Sample SVG"
                             />
                             }
@@ -295,7 +297,7 @@ const StudentLogin = ({ type }) => {
                             dangerouslySetInnerHTML={{
                               __html: tasksList.task.task_description,
                             }}
-                            style={{ color: "black" }}
+                           
                           ></span>
                         </div>
                       </div>
@@ -348,7 +350,6 @@ const StudentLogin = ({ type }) => {
                              href={`${tasksList.submission_link}`}
                              target="_blank"
                              rel="noopener noreferrer"
-                             style={{ fontSize: "12px" }}
                            >
                              {tasksList.submission_link}
                            </a>
@@ -359,21 +360,19 @@ const StudentLogin = ({ type }) => {
                   </div>
 
                   <Modal
-                    className="modal"
+                  prefixCls="submission-modal"
+
                     title={
-                      <span style={{ fontWeight: 500 }}>Submission Link</span>
+                      <span >Submission Link</span>
                     }
                     open={isModalOpen}
                     onOk={handleSubmit}
                     onCancel={() => setIsModalOpen(false)}
                     footer={[
-                      <div style={{ display: "flex", justifyContent: "end" }}>
+                      <div className="over-all-btns">
                         <div
                           className="all-btn flex"
-                          style={{
-                            width: 250,
-                            justifyContent: "space-between",
-                          }}
+                        
                         >
                           <button
                             key="cancel"
@@ -407,18 +406,10 @@ const StudentLogin = ({ type }) => {
                   >
                     <div className="submission-link-input">
                       <input
+                      className="input-link"
                         type="url"
                         placeholder="Paste submission link"
                         onChange={(e) => setSubmissionLink(e.target.value)}
-                        style={{
-                          padding: "10px 0px 10px 12px",
-                          width: "100%",
-                          color: "#12160a",
-                          borderRadius: "4px",
-                          border: "1px solid #eaeaea",
-                          marginBottom: "32px",
-                          font: '500 12px/16px "Roboto", sans-serif',
-                        }}
                       />
                     </div>
                   </Modal>

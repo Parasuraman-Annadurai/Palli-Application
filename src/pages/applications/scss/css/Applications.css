@@ -385,7 +385,7 @@ body .container .application-full-container .application-inner-container .applic
   font-weight: 400;
 }
 body .container .application-full-container .application-inner-container .application-list-container .application-card-container .application-details-container .application-dob {
-  max-width: 70px;
+  max-width: 80px;
   width: 100%;
 }
 body .container .application-full-container .application-inner-container .application-list-container .application-card-container .application-details-container .application-dob p {
@@ -464,6 +464,9 @@ body .container .application-full-container .application-inner-container .applic
   line-height: 16px;
   font-family: 400;
   color: #12160a;
+}
+body .container .application-full-container .application-inner-container .application-list-container .application-card-container:hover {
+  background-color: #f8fbf2;
 }
 body .container .application-full-container .application-inner-container .application-pagination-container {
   padding-top: 10px;

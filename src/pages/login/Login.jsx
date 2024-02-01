@@ -146,17 +146,18 @@ const Login = () => {
                   <p className="error-message">
                     {errors.password ? errors.password.message : ""}
                   </p>
-                </div>
-                <div className="remember-container flex">
+                  <div className="remember-container flex">
                   <div className="remember-content flex">
                     {/* its used to in future */}
                     {/* <input type="checkbox" className="remember-input" />
                     <p>Remember me</p> */}
                   </div>
                   <div className="forgot-container">
-                    <a href="/forgot/password">Forgot Password</a>
+                    <a href="/forgot/password">Forgot Password?</a>
                   </div>
                 </div>
+                </div>
+             
                 <div className="login-button-container ">
                   <button className="btn primary-medium " disabled={loading}>
                     {loading ? (

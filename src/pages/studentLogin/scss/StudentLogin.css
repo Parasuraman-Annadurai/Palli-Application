@@ -211,6 +211,27 @@ li {
   background-color: #f8fbf2;
 }
 
+.submission-modal span {
+  font-weight: 500;
+}
+.submission-modal .over-all-btns {
+  display: flex;
+  justify-content: end;
+}
+.submission-modal .over-all-btns .all-btn {
+  width: 250px;
+  justify-content: space-between;
+}
+.submission-modal .submission-link-input .input-link {
+  padding: 10px 0px 10px 12px;
+  width: 100%;
+  color: #12160a;
+  border-radius: 4px;
+  border: 1px solid #eaeaea;
+  margin-bottom: 32px;
+  font: 500 12px/16px "Roboto";
+}
+
 .main-container {
   padding: 20px;
   width: 100%;
@@ -268,11 +289,10 @@ li {
   font-size: 12px;
   font-family: "Roboto";
   color: #969d88;
-  padding-bottom: 6px;
+  padding-bottom: 2px;
 }
 .main-container .task-details-header-container .student-task-details-main-container span {
-  color: #12160a;
-  font-size: 12px;
+  font-size: 10px;
   line-height: 16px;
   font-family: "Roboto";
 }
@@ -286,6 +306,11 @@ li {
   width: 100%;
   font-family: "Roboto";
 }
+.main-container .task-details-header-container .student-task-details-main-container .student-task-trainer-name {
+  border-right: 2px solid #eaeaea;
+  max-width: 180px;
+  width: 100%;
+}
 .main-container .task-details-header-container .student-task-details-main-container .sudent-task-supporting-doc img {
   width: 16px;
   height: 16px;
@@ -297,6 +322,7 @@ li {
 }
 .main-container .task-details-header-container .student-task-details-main-container .student-task-status .students-status-TODO-status .students-status-TODO-status-selector {
   border: none;
+  border-radius: 2px;
   background-color: #E2E8F0;
 }
 .main-container .task-details-header-container .student-task-details-main-container .student-task-status .students-status-TODO-status .students-status-TODO-status-selector .students-status-TODO-status-selection-item {
@@ -304,6 +330,8 @@ li {
 }
 .main-container .task-details-header-container .student-task-details-main-container .student-task-status .students-status-INPROGRESS-status .students-status-INPROGRESS-status-selector {
   border: none;
+  border-radius: 2px;
+  height: 30px;
   background-color: #DBEAFE;
 }
 .main-container .task-details-header-container .student-task-details-main-container .student-task-status .students-status-INPROGRESS-status .students-status-INPROGRESS-status-selector .students-status-INPROGRESS-status-selection-item {
@@ -311,6 +339,8 @@ li {
 }
 .main-container .task-details-header-container .student-task-details-main-container .student-task-status .students-status-COMPLETED-status .students-status-COMPLETED-status-selector {
   border: none;
+  border-radius: 2px;
+  height: 30px;
   background-color: #EEFDB0;
 }
 .main-container .task-details-header-container .student-task-details-main-container .student-task-status .students-status-COMPLETED-status .students-status-COMPLETED-status-selector .students-status-COMPLETED-status-selection-item {
@@ -318,6 +348,8 @@ li {
 }
 .main-container .task-details-header-container .student-task-details-main-container .student-task-status .students-status-SUBMITTED-status .students-status-SUBMITTED-status-selector {
   border: none;
+  border-radius: 2px;
+  height: 30px;
   background-color: #EEFDB0;
 }
 .main-container .task-details-header-container .student-task-details-main-container .student-task-status .students-status-SUBMITTED-status .students-status-SUBMITTED-status-selector .students-status-SUBMITTED-status-selection-item {
@@ -325,6 +357,7 @@ li {
 }
 .main-container .task-details-header-container .student-task-details-main-container .student-task-status .students-status-REWORK-status .students-status-REWORK-status-selector {
   border: none;
+  border-radius: 2px;
   background-color: #FEF3C7;
 }
 .main-container .task-details-header-container .student-task-details-main-container .student-task-status .students-status-REWORK-status .students-status-REWORK-status-selector .students-status-REWORK-status-selection-item {
@@ -344,10 +377,11 @@ li {
   color: #12160a;
   font-family: "Roboto";
 }
-.main-container .task-details-header-container .task-editor-container .task-instruction span {
+.main-container .task-details-header-container .task-editor-container .task-instruction p {
   font-size: 12px;
   line-height: 16px;
   color: #12160a;
+  font: "Roboto";
 }
 .main-container .task-details-header-container .task-editor-container .task-instruction ul {
   margin-left: 20px;
@@ -412,6 +446,7 @@ li {
   width: 200px;
   display: inline-block;
   cursor: pointer;
+  font: 400 12px/16px "Roboto";
 }
 .main-container .task-details-header-container .student-task-label-container {
   align-items: center;
@@ -427,10 +462,6 @@ li {
 .main-container .task-details-header-container .student-task-label-container .horizon-line {
   flex: 1;
   border-bottom: 1px solid #eaeaea;
-}
-.main-container .task-details-header-container .modal .all-btn .submit-btn {
-  max-width: 140px;
-  width: 100%;
 }
 .main-container .task-details-header-container .student-task-file-container {
   align-items: center;

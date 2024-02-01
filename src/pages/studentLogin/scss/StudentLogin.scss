@@ -263,6 +263,32 @@ li {
 }
 //main-container
 
+.submission-modal{
+  span{
+    font-weight: 500;
+  }
+  .over-all-btns{
+    display: flex;
+    justify-content: end;
+    .all-btn{
+      width: 250px;
+      justify-content: space-between;
+    }
+  }
+ 
+  .submission-link-input{
+    .input-link{
+      padding: 10px 0px 10px 12px;
+            width: 100%;
+            color: $font-primary-color;
+            border-radius: 4px;
+            border: 1px solid $border-color;
+            margin-bottom: 32px;
+            font: 500 12px/16px $font-Roboto;
+    }
+  }
+}
+
 .main-container {
   padding: 20px;
   width: 100%;
@@ -337,12 +363,12 @@ li {
         font-size: 12px;
         font-family: $font-Roboto;
         color: $font-secondary-color;
-        padding-bottom: 6px;
+        padding-bottom: 2px;
       }
 
       span {
-        color: $font-primary-color;
-        font-size: 12px;
+      
+        font-size: 10px;
         line-height: 16px;
         font-family: $font-Roboto;
       }
@@ -357,7 +383,11 @@ li {
         width: 100%;
         font-family: $font-Roboto;
       }
-
+.student-task-trainer-name{
+  border-right: 2px solid #eaeaea;
+  max-width: 180px;
+  width: 100%;
+}
       .sudent-task-supporting-doc {
         img {
           width: 16px;
@@ -371,7 +401,7 @@ li {
         .students-status-TODO-status{
           .students-status-TODO-status-selector{
             border: none;
-
+            border-radius: 2px;
             background-color: #E2E8F0;
             .students-status-TODO-status-selection-item{
               color: #64748B;
@@ -382,7 +412,8 @@ li {
         .students-status-INPROGRESS-status{
           .students-status-INPROGRESS-status-selector{
             border: none;
-
+            border-radius: 2px;
+            height: 30px;
             background-color: #DBEAFE;
             .students-status-INPROGRESS-status-selection-item{
               color: $highlight-blue;
@@ -393,7 +424,8 @@ li {
         .students-status-COMPLETED-status{
           .students-status-COMPLETED-status-selector{
             border: none;
-
+            border-radius: 2px;
+            height: 30px;
             background-color: #EEFDB0;
             .students-status-COMPLETED-status-selection-item{
               color: $primary-color;
@@ -404,7 +436,8 @@ li {
         .students-status-SUBMITTED-status{
           .students-status-SUBMITTED-status-selector{
             border: none;
-
+            border-radius: 2px;
+            height: 30px;
             background-color: #EEFDB0;
             .students-status-SUBMITTED-status-selection-item{
               color: $primary-color;
@@ -415,6 +448,7 @@ li {
         .students-status-REWORK-status{
           .students-status-REWORK-status-selector{
             border: none;
+            border-radius: 2px;
             background-color: #FEF3C7;
             .students-status-REWORK-status-selection-item{
               color: #F59E0B;
@@ -445,10 +479,11 @@ li {
       }
 
       .task-instruction {
-        span {
+        p {
           font-size: 12px;
           line-height: 16px;
           color: $font-primary-color;
+          font: $font-Roboto;
         }
 
         ul {
@@ -521,6 +556,7 @@ li {
        width: 200px;
        display: inline-block;
         cursor: pointer;
+        font: 400 12px/16px $font-Roboto;
       }
     }
 
@@ -540,14 +576,7 @@ li {
         border-bottom: 1px solid $border-color;
       }
     }
-    .modal {
-      .all-btn {
-        .submit-btn {
-          max-width: 140px;
-          width: 100%;
-        }
-      }
-    }
+  
 
     .student-task-file-container {
       align-items: center;
@@ -708,4 +737,37 @@ li {
       }
     }
   }
+  
+
+  // .modal {
+  //   background-color: #12160a;
+  //   // span{
+  //   //   font-weight: 500;
+  //   // }
+
+  
+  //   .all-btn {
+  //     width: 250px;
+  //     justify-content: space-between;
+  //     .submit-btn {
+  //       max-width: 140px;
+  //       width: 100%;
+  //     }
+  //   }
+  //   .submission-link-input{
+  //     input{
+  //       padding: 10px 0px 10px 12px !important;
+  //       width: 100% !important;
+  //       color: $font-primary-color !important;
+  //       border-radius: 4px !important;
+  //       border: 1px solid $border-color !important;
+  //       margin-bottom: 32px !important;
+  //       font: 500 12px/16px $font-Roboto !important;
+  //     }
+  //   }
+  // }
+  // ModalStyles.scss
+
+
+
 }

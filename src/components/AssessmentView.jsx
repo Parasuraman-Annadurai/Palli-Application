@@ -244,7 +244,6 @@ const AssessmentView = ({
     }
   };
   
-  console.log(currentAssessment,"kkka");
 
   return (
     <>

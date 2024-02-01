@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useState,useEffect} from "react";
 
 import { Button, Select, Tooltip } from "antd";
 
@@ -15,6 +15,13 @@ const WeightageList = ({
   weightageErrors,
   setWeightageErros
 }) => {
+  const [availableWeightages, setAvailableWeightages] = useState(weightages);
+
+  useEffect(() => {
+    const selectedOptions = taskWeightages.map((taskWeightage) => taskWeightage.weightage);
+    const updatedWeightages = weightages.filter(weightage => !selectedOptions.includes(weightage.id));
+    setAvailableWeightages(updatedWeightages);
+  }, [taskWeightages, weightages]);
 
    return (
     <div
@@ -52,7 +59,7 @@ const WeightageList = ({
                       }
                       disabled={selectedStudents.length ? true : false}
                     >
-                      {weightages.map((weightageList) => (
+                      {availableWeightages.map((weightageList) => (
                         <Select.Option
                           key={weightageList.id}
                           value={weightageList.id}
@@ -60,6 +67,8 @@ const WeightageList = ({
                           {weightageList.weightage}
                         </Select.Option>
                       ))}
+
+
                     </Select>
                   </div>
                   <div

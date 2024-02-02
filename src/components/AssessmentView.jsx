@@ -46,7 +46,8 @@ const AssessmentView = ({
   setFormErrors,
   weightageErrors,
   setWeightageErros,
-  setAssigneeSearch
+  setAssigneeSearch,
+  isAssigneeLoading
 }) => {
   const { id: batchId } = useParams();
   const { token } = useAuth();
@@ -353,7 +354,7 @@ const AssessmentView = ({
                             ? "btn primary-medium-default"
                             : "btn primary-medium"
                         }`}
-                        onClick={() => !assigneeloader && validateTask(currentAssessment,setFormErrors,type) ? handleSave(currentAssessment) : null}
+                        onClick={() => !assigneeloader && validateTask(currentAssessment,setFormErrors) ? handleSave(currentAssessment) : null}
 
                       >
                         {draft ? "Create" : "Update"}
@@ -418,7 +419,9 @@ const AssessmentView = ({
 
                         
                           </div>
-                        <div className="select-all flex">
+                        {isAssigneeLoading ? <Skeleton active paragraph={4}/> : (
+                          <>
+                               <div className="select-all flex">
                           <input
                             className="global-checkbox"
                             type="checkbox"
@@ -467,6 +470,8 @@ const AssessmentView = ({
                             );
                           })}
                         </div>
+                          </>
+                        )}
                       </div>
                     </>
                   ) : (

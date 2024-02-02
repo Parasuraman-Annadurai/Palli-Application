@@ -116,7 +116,7 @@ const WeightageList = ({
             })}
           </div>
         </div>
-        <p className="error-message">{weightageErrors["general"]? weightageErrors["general"]:""}</p>
+        <p className="error-message">{weightageErrors["weightage"]? weightageErrors["weightage"]:""}</p>
 
         {!selectedStudents?.length && (
         <>

@@ -73,29 +73,37 @@ export const validateNewpassword = (newPasswordData, setErrors) => {
   return isValid;
 };
 
-export const validateTask = (taskDetails, setFormErrors,type) => {
+export const validateTask = (taskDetails, setFormErrors) => {
   const { task_title, task_description, due_date } = taskDetails;
+
   let errors = {};
   let isValid = true;
+  const emptyHtmlRegex = /^<p>\s*(?:(?!<br\s*\/?>).)*<\/p>\s*$/;
 
   if (!task_title.trim()) {
-    errors = { ...errors, task_title: `${type} name is required` };
+    errors = { ...errors, task_title: `Task name is required` };
     isValid = false;
   }
 
-  if (!task_description.trim()) {
-    errors = { ...errors, task_description: `${type} description is required` };
+  const trimmedDescription = task_description.trim();
+
+  if (!trimmedDescription || emptyHtmlRegex.test(trimmedDescription)) {
+    errors = { ...errors, task_description: `Description is required` };
     isValid = false;
   }
-
+  
   if (!due_date) {
-    errors = { ...errors, due_date: `${type} due date is required` };
+    errors = { ...errors, due_date: `Due date is required` };
     isValid = false;
   }
-
+  console.log(task_description);
+  console.log(errors);
   setFormErrors(errors);
-  return isValid;
+  // return isValid;
 };
+
+
+
 
 export const isWeightageVaild =(taskWeightageDetails,setWeightageErros)=>{
   let errors ={};
@@ -105,7 +113,7 @@ export const isWeightageVaild =(taskWeightageDetails,setWeightageErros)=>{
   taskWeightageDetails.forEach((taskWeightageDetail, index) => {
     if (!taskWeightageDetail?.weightage || !taskWeightageDetail?.weightage_percentage) {
       if (!hasWeightageError) {
-        errors.general = "Select the weightage from the suggestions and enter the desired percentage.";
+        errors.weightage = "Select the weightage from the suggestions and enter the desired percentage.";
         isValid = false;
         hasWeightageError = true;
       }
@@ -120,7 +128,7 @@ export const isWeightageVaild =(taskWeightageDetails,setWeightageErros)=>{
     );
 
     if (totalPercentage !== 100) {
-      errors.general = "Selected weightage is not equal to 100. Please check and adjust the values.";
+      errors.weightage = "Selected weightage is not equal to 100. Please check and adjust the values.";
       isValid = false;
     }
   }

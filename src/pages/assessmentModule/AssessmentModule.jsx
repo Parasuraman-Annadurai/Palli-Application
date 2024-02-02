@@ -32,7 +32,8 @@ const AssessmentModule = ({ type }) => {
   const [isMode,setIsMode] = useState("edit")
   const [formErrors, setFormErrors] = useState({});
   const [weightageErrors, setWeightageErros] = useState({});
-  const [assigneeSearch,setAssigneeSearch] = useState("")
+  const [assigneeSearch,setAssigneeSearch] = useState("");
+  const [isAssigneeLoading,setIsAssigneeLoading] = useState(false)
   const headers = {
     Authorization: `Bearer ${token.access}`,
     "Content-type": "application/json",
@@ -71,25 +72,11 @@ const AssessmentModule = ({ type }) => {
         .catch((error) => {
           console.log(error);
         });
-
-      // axios
-      //   .get(`${API_END_POINT}/api/applicant/${batchId}/list/students/`, {
-      //     headers,
-      //   })
-      //   .then((res) => {
-      //     if (res.status === 200 && res.data.message === "Success") {
-      //       setStudents(res.data.data);
-      //       setLoading(false);
-      //     }
-      //   })
-      //   .catch((error) => {
-      //     setLoading(false)
-      //     console.log(error);
-      //   });
     }
   }, [assessmentSearchWord, type]);
 
   useEffect(() => {
+    setIsAssigneeLoading(true)
     if (editId && assessmentList.length > 0) {
       const currentAssessment = assessmentList.find(
         (assessment) => assessment.id === editId
@@ -143,11 +130,13 @@ const AssessmentModule = ({ type }) => {
       })
       .then((res) => {
         if (res.status === 200 && res.data.message === "Success") {
+          setIsAssigneeLoading(false)
           setStudents(res.data.data);
         }
       })
       .catch((error) => {
         console.log(error);
+        setIsAssigneeLoading(false)
       });
     }
   }, [editId,assigneeSearch]);
@@ -200,11 +189,14 @@ const AssessmentModule = ({ type }) => {
 
   const handleSave = (assessment) => {
 
-    const newTaskName = assessment.task_title;
-      // Check if the task with the same task_title already exists
-      const isDuplicateTask = assessmentList.some(
-        (existingAssessment, index) => index !== 0 && existingAssessment.task_title === newTaskName
-      );
+    const newTaskName = assessment.task_title.trim().toLowerCase();
+
+    // Check if the task with the same task_title already exists
+    const isDuplicateTask = assessmentList.some(
+      (existingAssessment, index) => index !== 0 &&
+        existingAssessment.task_title.trim().toLowerCase() === newTaskName
+    );
+    
 
   if (isDuplicateTask) {
     messageApi.open({
@@ -484,8 +476,11 @@ const AssessmentModule = ({ type }) => {
   };
 
   const handleWeightageChange = (value, index, key) => {
-    if(weightageErrors[`${key}${index}`]){
-      delete weightageErrors[`${key}${index}`]
+    if(weightageErrors[key]){
+      delete weightageErrors[key]
+    }
+    else if(key === "weightage_percentage"){
+      delete weightageErrors["weightage"]
     }
     let copyAssessment = [...assessmentList];
 
@@ -718,6 +713,7 @@ const AssessmentModule = ({ type }) => {
                       weightageErrors={weightageErrors}
                       setWeightageErros={setWeightageErros}
                       setAssigneeSearch ={setAssigneeSearch}
+                      isAssigneeLoading={isAssigneeLoading}
                     />
                   );
                 }

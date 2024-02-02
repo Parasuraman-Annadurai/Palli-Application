@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 import axios from "axios";
-import { Flex, Modal, Select, Skeleton,notification } from "antd";
+import { Flex, Modal, Select, Skeleton, notification } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
 
@@ -9,7 +9,7 @@ import { API_END_POINT } from "../../../config";
 
 import { useAuth } from "../../context/AuthContext";
 
-import { useParams,useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 import "../studentLogin/scss/StudentLogin.css";
 
@@ -53,13 +53,12 @@ const TaskCard = ({
                   50
                 )}
               </p>
-              <span className="btn btn-inprogress"
+              <span
+                className="btn btn-inprogress"
                 style={{
                   backgroundColor:
-                    colorObject[tasksLists?.task_status]
-                      ?.backgroundColor ,
-                  color:
-                    colorObject[tasksLists?.task_status]?.color 
+                    colorObject[tasksLists?.task_status]?.backgroundColor,
+                  color: colorObject[tasksLists?.task_status]?.color,
                 }}
               >
                 {tasksLists.task_status}
@@ -118,7 +117,7 @@ const StudentLogin = ({ type }) => {
             notification.error({
               message: error.response.data.message,
               description: errorMessages.detail,
-              duration:1
+              duration: 1,
             });
           }
           setIsLoading(false);
@@ -247,11 +246,10 @@ const StudentLogin = ({ type }) => {
                           <p>Trainer Name</p>
                           <span>Avinash</span>
                         </div>
-                        
+
                         <div className="student-task-status">
                           <p>Status</p>
                           <Select
-
                             onChange={handleChange}
                             prefixCls={`students-status-${tasksList.task_status}-status`}
                             disabled={
@@ -259,14 +257,13 @@ const StudentLogin = ({ type }) => {
                               tasksList.task_status === "COMPLETED"
                             }
                             defaultValue={tasksList.task_status}
-                    
                             style={{ width: "70%" }}
-                            
-                            suffixIcon={<img
-                              src='/public/icons/drop.svg'
-                              // style={{ color: 'red' }} // Change the color as needed
-                              alt="Sample SVG"
-                            />
+                            suffixIcon={
+                              <img
+                                src="/public/icons/drop.svg"
+                                // style={{ color: 'red' }} // Change the color as needed
+                                alt="Sample SVG"
+                              />
                             }
                             dropdownStyle={{ zIndex: 9999 }}
                           >
@@ -297,7 +294,6 @@ const StudentLogin = ({ type }) => {
                             dangerouslySetInnerHTML={{
                               __html: tasksList.task.task_description,
                             }}
-                           
                           ></span>
                         </div>
                       </div>
@@ -312,25 +308,24 @@ const StudentLogin = ({ type }) => {
                               tasksList?.weightage_details?.map(
                                 (weightageDetails, index) => (
                                   <div className="student-weightage-card flex">
-                                     <p>
-                                     {
+                                    <p>
+                                      {
                                         weightageDetails.weightage_details
                                           .weightage
-                                      }{""}
-                                     </p>
-                                     <span className="score" >
-                                     {weightageDetails?.task_score?.map((a) =>
-                                        Number(a.task_score)
-                                      )}
-                                     </span>
-                                      /
-                                     <span style={{color:"blue"}}>
-                                       {Number(
+                                      }
+                                      {""}
+                                    </p>
+                                    <span>
+                                      {Number(
                                         weightageDetails.weightage_percentage
                                       )}
-                                     </span>
-                                    {/* </p> */}
-                                    {" "}
+                                    </span>
+                                    <span className="score">
+                                      {weightageDetails?.task_score?.map((a) =>
+                                        Number(a.task_score)
+                                      )}
+                                    </span>
+                                    {/* </p> */}{" "}
                                   </div>
                                 )
                               )}
@@ -338,42 +333,53 @@ const StudentLogin = ({ type }) => {
                         </>
                       )}
 
-                        {tasksList?.submission_link && (
-                           <div className="submission-link-container">
-                            <div className="heading-line flex">
-                            <h3>
-                             Submitted Link
-                              </h3>
-                           <div className="horizon-line"></div>
-                            </div>
-                           <a
-                             href={`${tasksList.submission_link}`}
-                             target="_blank"
-                             rel="noopener noreferrer"
-                           >
-                             {tasksList.submission_link}
-                           </a>
-                         </div>
-                        )}
-                     
+                      {tasksList?.submission_link && (
+                        <div className="submission-link-container">
+                          <div className="heading-line flex">
+                            <h3>Submitted Link</h3>
+                            <div className="horizon-line"></div>
+                          </div>
+                          <a
+                            href={`${tasksList.submission_link}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            {tasksList.submission_link}
+                          </a>
+                        </div>
+                      )}
                     </div>
                   </div>
+                  <div className="student-task-label-container flex">
+                    <h3>Task File</h3>
+                    <div className="horizon-line"></div>
+                  </div>
+
+                  
+
+                  <div className="file-input-container">
+            <div className="upload-icon-container flex">
+              <img src="/icons/upload.svg" className="upload-icon" />
+              <label for="file-input"
+                >Drag your file or
+                <span className="highlight"> click to upload your task</span></label
+              >
+            </div>
+            <input type="file" className="file-input" />
+          </div>
+
+
+
 
                   <Modal
-                  prefixCls="submission-modal"
-
-                    title={
-                      <span >Submission Link</span>
-                    }
+                    prefixCls="submission-modal"
+                    title={<span>Submission Link</span>}
                     open={isModalOpen}
                     onOk={handleSubmit}
                     onCancel={() => setIsModalOpen(false)}
                     footer={[
                       <div className="over-all-btns">
-                        <div
-                          className="all-btn flex"
-                        
-                        >
+                        <div className="all-btn flex">
                           <button
                             key="cancel"
                             className="btn primary-default"
@@ -406,7 +412,7 @@ const StudentLogin = ({ type }) => {
                   >
                     <div className="submission-link-input">
                       <input
-                      className="input-link"
+                        className="input-link"
                         type="url"
                         placeholder="Paste submission link"
                         onChange={(e) => setSubmissionLink(e.target.value)}
@@ -418,13 +424,15 @@ const StudentLogin = ({ type }) => {
             }
             return null;
           })}
-          
+
           {selectedTaskId === null && (
             <div className="select-something-container flex">
               <div className="image-container ">
                 <img src="/icons/select-something.svg" alt="" />
                 <p className="select-something-heading">
-                  {selectedTaskId !== null ? `Please Select any of the Available ${type}` : `No ${type} are currently available here.` }
+                  {selectedTaskId !== null
+                    ? `Please Select any of the Available ${type}`
+                    : `No ${type} are currently available here.`}
                 </p>
               </div>
             </div>

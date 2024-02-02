@@ -590,6 +590,7 @@ const AssessmentView = ({
                         {currentAssessment.task_weightages &&
                           currentAssessment.task_weightages.map(
                             (weightage, weightageIndex) => (
+                            <>
                               <div
                                 key={weightageIndex}
                                 className="applied-weightage-card flex"
@@ -617,7 +618,7 @@ const AssessmentView = ({
 
                                 <div className="weightage-checkbox">
                                   <input
-                                    type="text"
+                                    type="number"
                                     onChange={(e) => {
                                       handleScoreOnchange(
                                         e,
@@ -627,12 +628,21 @@ const AssessmentView = ({
                                     }}
                                   />
                                 </div>
+                              
                               </div>
+                              <div className="feedback">
+                                  <textarea type="text"   placeholder="Type your feedback here..." >
+                                    </textarea>
+                                </div>
+
+                            </>
                             )
                           )}
                       </div>
+                      
                     )}
                   </div>
+                  
                 </>
               );
             })

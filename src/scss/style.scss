@@ -829,9 +829,7 @@ body {
                 // width: 100%;
                 // border: 1px solid $primary-color;
               }
-              
             }
-           
 
             // .task-title {
             //   font-size: 16px;
@@ -872,7 +870,7 @@ body {
       }
 
       .task-details-header-container {
-        height: calc(100vh - 110px);
+        // height: calc(100vh - 110px);
         overflow-y: auto;
         &::-webkit-scrollbar {
           width: 0;
@@ -1124,10 +1122,9 @@ body {
             border: 1px solid $border-color;
           }
         }
-        .weightage-main-container{
+        .weightage-main-container {
           .overall {
             .weightage-adding-container {
-            
               .weight-inputs {
                 display: flex;
                 gap: 20px;
@@ -1139,7 +1136,7 @@ body {
                   color: $font-secondary-color;
                   padding-bottom: 6px;
                 }
-  
+
                 .weightage-unit-container {
                   max-width: 364px;
                   width: 100%;
@@ -1147,7 +1144,7 @@ body {
                   justify-content: space-between;
                   align-items: center;
                   gap: 10px;
-  
+
                   .task-weightage-selector {
                     padding: 10px 12px;
                     max-width: 200px;
@@ -1159,7 +1156,7 @@ body {
                     background-color: white;
                     font-family: $font-Roboto;
                   }
-  
+
                   .task-weight-value-selector {
                     max-width: 72px;
                     width: 100%;
@@ -1170,7 +1167,7 @@ body {
                 }
               }
             }
-  
+
             // .all-btns {
             //   display: flex;
             //   justify-content: space-between;
@@ -1216,32 +1213,29 @@ body {
       }
 
       .assignee-search-container {
-        
-          position: relative;
+        position: relative;
+        width: 100%;
+        padding-bottom: 5px;
+        // background-color: #33762f;
+        img {
+          width: 16px;
+          height: 16px;
+        }
+        input {
           width: 100%;
-          padding-bottom: 5px;
-          // background-color: #33762f;
-          img {
-            width: 16px;
-            height: 16px;
+          padding: 10px 18px 10px 33px;
+          border-radius: 4px;
+          border: 1px solid $border-color;
+          &:focus {
+            border: 1px solid $primary-color;
           }
-          input {
-            width: 100%;
-            padding: 10px 18px 10px 33px;
-            border-radius: 4px;
-            border: 1px solid $border-color;
-            &:focus{
-              border: 1px solid $primary-color;
-            }
-          }
+        }
 
-          .search-icon {
-            position: absolute;
-            left: 12px;
-            top: 10px;
-          }
-         
-        
+        .search-icon {
+          position: absolute;
+          left: 12px;
+          top: 10px;
+        }
       }
       .assign-listing-container {
         padding-top: 10px;
@@ -1520,15 +1514,16 @@ body {
             top: 43px;
           }
         }
-      
       }
-     
+
       hr {
         border: 1px solid $border-color;
       }
       .applied-weightage-list-container {
         // border: 1px solid $border-color;
+        gap: 10px;
         padding: 14px 0px 16px 16px;
+        flex-flow: column;
 
         .applied-weightage-card {
           align-items: center;
@@ -1554,9 +1549,32 @@ body {
             height: 28px;
             border: 1px solid $border-color;
             background-color: #ffff;
+            padding-left: 5px;
             // display: flex;
             // align-items: center;
             // justify-content: center;
+          }
+          .weightage-checkbox input::-webkit-inner-spin-button{
+            display: none;
+          }
+        }
+        .feedback {
+          width: 100%;
+          textarea {
+            padding: 10px 18px 10px 18px;
+            border-radius: 4px;
+            border: 1px solid $border-color;
+            max-width: 750px;
+            min-width: 750px;
+            min-height: 56px;
+
+            &:focus {
+              border: 1px solid $primary-color;
+            }
+            &::placeholder {
+              font: 400 12px/16px $font-Roboto;
+              color: $font-secondary-color;
+            }
           }
         }
       }

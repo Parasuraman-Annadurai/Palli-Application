@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 
 import axios from "axios";
-import { Flex, Modal, Select, Skeleton,notification } from "antd";
+import { Modal, Select, Skeleton,notification,  } from "antd";
+
 import { LoadingOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
 
@@ -85,6 +86,7 @@ const StudentLogin = ({ type }) => {
   const [submissionLink, setSubmissionLink] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [taskComments,setTaskComments] = useState("");
 
   const headers = {
     Authorization: `Bearer ${token.access}`,
@@ -194,6 +196,26 @@ const StudentLogin = ({ type }) => {
       });
   };
 
+  const addComments =(id)=>{
+    const url = `${API_END_POINT}/api/task/${batchId}/create/task_comment/${id}`;
+    axios.post(url,{comments:taskComments},{headers}).then((res)=>{
+      // const copyComments = [...res.data] // Assuming res.data.data is an array
+      let object = res.data.data;
+
+      const updatedTaskLists = tasksLists.map((task) => {
+        if (task.id === selectedTaskId) {
+          task.comments = [object,...task.comments ]; // assuming you want to add the entire object as a single comment
+        }
+        return task;
+      });
+      setTaskComments("")
+      setTaskLists(updatedTaskLists);
+    }).catch((error)=>{
+      console.log(error);
+    })
+  }
+
+  
   return (
     <>
       <section className="listing-container">
@@ -356,6 +378,28 @@ const StudentLogin = ({ type }) => {
                         )}
                      
                     </div>
+                      
+                    <div className="comments-section">
+                      <input type="text" placeholder="hello world" style={{border:"1px solid grey"}} onChange={(e)=>setTaskComments(e.target.value)}/>
+                      <button onClick={()=>addComments(tasksList.id)}>send</button>
+                    </div>
+                    <div className="comments-list-container">
+                    <div>
+                    {tasksList?.comments.map(comment =>{
+                      return (
+                        <>
+                        <div className="profile-section">
+                         <div className="name">{comment.commentor_details.first_name}</div>
+                         <div className="date">{dayjs(comment.commentor_details.created_at).format("MMM, DD YYYY")}</div>
+                       </div>
+                       <div className="comments">
+                         <p>{comment?.comments}</p>
+                       </div>
+                      </>
+                      )
+                    })}
+                  </div>
+                    </div>
                   </div>
 
                   <Modal
@@ -422,7 +466,8 @@ const StudentLogin = ({ type }) => {
                       />
                     </div>
                   </Modal>
-                </main>
+                  
+                  </main>
               );
             }
             return null;
@@ -440,6 +485,7 @@ const StudentLogin = ({ type }) => {
           )}
         </>
       )}
+
     </>
   );
 };

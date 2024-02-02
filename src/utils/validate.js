@@ -75,10 +75,10 @@ export const validateNewpassword = (newPasswordData, setErrors) => {
 
 export const validateTask = (taskDetails, setFormErrors) => {
   const { task_title, task_description, due_date } = taskDetails;
-
+  console.log(task_description);
   let errors = {};
   let isValid = true;
-  const emptyHtmlRegex = /^<p>\s*<\/p>\s*$/; // Adjusted regex for empty paragraphs
+  const emptyHtmlRegex = /^<p>(\s*|<br\s*\/?>)<\/p>\s*$/;
 
   if (!task_title.trim()) {
     errors = { ...errors, task_title: `Task name is required` };

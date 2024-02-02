@@ -78,7 +78,7 @@ export const validateTask = (taskDetails, setFormErrors) => {
 
   let errors = {};
   let isValid = true;
-  const emptyHtmlRegex = /^<p>\s*(?:(?!<br\s*\/?>).)*<\/p>\s*$/;
+  const emptyHtmlRegex = /^<p>\s*<\/p>\s*$/; // Adjusted regex for empty paragraphs
 
   if (!task_title.trim()) {
     errors = { ...errors, task_title: `Task name is required` };
@@ -96,10 +96,9 @@ export const validateTask = (taskDetails, setFormErrors) => {
     errors = { ...errors, due_date: `Due date is required` };
     isValid = false;
   }
-  console.log(task_description);
-  console.log(errors);
+
   setFormErrors(errors);
-  // return isValid;
+  return isValid;
 };
 
 

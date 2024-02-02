@@ -211,11 +211,8 @@ const AssessmentView = ({
   const handleScoreOnchange = (e, students, weightage) => {
     const scoreValue = Number(e.target.value);
   
-    // Treat score of 0 as null
-    const normalizedScore = scoreValue === 0 ? null : scoreValue;
-  
-    if (normalizedScore === null) {
-      // If the normalized score is null or not a number, remove the corresponding object from the state
+    if (scoreValue === null || isNaN(scoreValue)) {
+      // If the score is null or not a number, remove the corresponding object from the state
       const filteredStudentScores = studentScore.filter(
         (score) =>
           score.task_user !== students.id ||
@@ -223,11 +220,11 @@ const AssessmentView = ({
       );
       setStudentScore(filteredStudentScores);
     } else {
-      // If the normalized score is a number, update or add the score to the state
+      // If the score is a number, update or add the score to the state
       const updatedScore = {
         task_user: students.id,
         task_weightage: weightage.id,
-        task_score: normalizedScore,
+        task_score: scoreValue,
       };
   
       const existingScoreIndex = studentScore.findIndex(
@@ -248,6 +245,8 @@ const AssessmentView = ({
       }
     }
   };
+  
+  
   
   
   

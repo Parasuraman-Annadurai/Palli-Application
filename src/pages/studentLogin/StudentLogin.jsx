@@ -87,6 +87,7 @@ const StudentLogin = ({ type }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [taskComments,setTaskComments] = useState("");
+  const [isCommentEditId,setIsCommentEditId] = useState(null);
 
   const headers = {
     Authorization: `Bearer ${token.access}`,
@@ -196,26 +197,78 @@ const StudentLogin = ({ type }) => {
       });
   };
 
-  const addComments =(id)=>{
-    const url = `${API_END_POINT}/api/task/${batchId}/create/task_comment/${id}`;
-    axios.post(url,{comments:taskComments},{headers}).then((res)=>{
-      // const copyComments = [...res.data] // Assuming res.data.data is an array
-      let object = res.data.data;
+  const handleAddComment =(id)=>{
+
+    const url = isCommentEditId ? `${API_END_POINT}/api/task/${batchId}/update/task_comment/${isCommentEditId}` : `${API_END_POINT}/api/task/${batchId}/create/task_comment/${id}`
+    const method = isCommentEditId ? "PUT" : "POST"
+    
+
+    axios({
+      method: method,
+      url: url,
+      data: {comments:taskComments},
+      headers:headers
+    }).then((res)=>{
+
+      let updatedComment = res.data.data;
 
       const updatedTaskLists = tasksLists.map((task) => {
         if (task.id === selectedTaskId) {
-          task.comments = [object,...task.comments ]; // assuming you want to add the entire object as a single comment
+          // Check if it's an edit or a new comment
+          if (isCommentEditId) {
+            // If it's an edit, update the specific comment
+            task.comments = task.comments.map((comment) => {
+              if (comment.id === isCommentEditId) {
+                return updatedComment;
+              }
+              return comment;
+            });
+          } else {
+            // If it's a new comment, concatenate it
+            task.comments = [updatedComment, ...task.comments];
+          }
         }
         return task;
       });
-      setTaskComments("")
+    
+      setTaskComments(" ")
       setTaskLists(updatedTaskLists);
+      setIsCommentEditId(null)
     }).catch((error)=>{
       console.log(error);
     })
   }
 
-  
+  //{{local}}api/task/1/delete/task_comment/5
+  const handleDeleteComment =(commentId)=>{
+    const url = `${API_END_POINT}/api/task/${batchId}/delete/task_comment/${commentId}`
+    axios.delete(url,{headers}).then((res)=>{
+      const updatedTaskLists = tasksLists.map((task) => {
+        if (task.id === selectedTaskId) {
+          // Use filter to exclude the comment with the specified ID
+          task.comments = task.comments.filter((comment) => comment.id !== commentId);
+        }
+        return task;
+      });
+      
+      // Update the local state with the modified task lists
+      setTaskLists(updatedTaskLists);
+      console.log(res.data);
+      if(res.data.status == 200){
+        notification.success({
+          message:"Success",
+          description : res?.data?.message,
+          duration:1
+        })
+      }
+      
+    }).catch((error)=>{
+      console.log(error);
+    })
+  }
+
+
+  console.log(taskComments);
   return (
     <>
       <section className="listing-container">
@@ -380,8 +433,8 @@ const StudentLogin = ({ type }) => {
                     </div>
                       
                     <div className="comments-section">
-                      <input type="text" placeholder="hello world" style={{border:"1px solid grey"}} onChange={(e)=>setTaskComments(e.target.value)}/>
-                      <button onClick={()=>addComments(tasksList.id)}>send</button>
+                      <input type="text" placeholder="heree" value={taskComments} style={{border:"1px solid grey"}} onChange={(e)=>setTaskComments(e.target.value)}/>
+                      <button onClick={()=>handleAddComment(tasksList.id)}>{isCommentEditId ? "Update" : "Send"}</button>
                     </div>
                     <div className="comments-list-container">
                     <div>
@@ -393,7 +446,16 @@ const StudentLogin = ({ type }) => {
                          <div className="date">{dayjs(comment.commentor_details.created_at).format("MMM, DD YYYY")}</div>
                        </div>
                        <div className="comments">
-                         <p>{comment?.comments}</p>
+                         <p>{comment?.comments}</p> 
+                         {comment?.commentor_details.role == "Student" && (
+                          <>
+                            <img src="/icons/deleteIcon.svg" alt="" style={{width:"16px"}} onClick={()=>handleDeleteComment(comment.id)}/>
+                            <img src="/public/icons/edit-pencil.svg" alt="" style={{width:"16px"}} onClick={()=>{
+                              setIsCommentEditId(comment.id)
+                              setTaskComments(comment?.comments)
+                            }} />
+                          </>
+                         )}
                        </div>
                       </>
                       )

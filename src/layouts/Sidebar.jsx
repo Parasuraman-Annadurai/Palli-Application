@@ -27,8 +27,7 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
   const [batchList, setBatchList] = useState([]);
   const [currentBatch, setCurrentBatch] = useState(null);
 
-  // const [showSwitchBatch, setShowSwitchBatch] = useState(false);
-  // const [open, setOpen] = useState(false);
+
   const [open, setOpen] = useState(false);
 
   const showDrawer = () => {
@@ -135,7 +134,7 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
                 ) : (
                   <p>{currentBatch?.batch_name}</p>
                 )}
-                {/* <p>{currentBatch?.batch_name}</p> */}
+                
                 <span>
                   {currentBatch?.start_date?.slice(0, 4)}-
                   {currentBatch?.end_date?.slice(0, 4)}
@@ -149,15 +148,7 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
         )}
         <div className="nav-links">
           <ul>
-            {/* {!isDashboardPage && (
-              <li className={`main-link`}>
-                <a href={"/dashboard"} className="navigation flex">
-                  <img src="/icons/backIcon.svg" alt={"Back to Dashboard"} />
-                  <span>{"Back to Dashboard"}</span>
-                </a>
-              </li>
-            )} */}
-
+         
             {menuList &&
               menuList.map((menu, index) => {
                

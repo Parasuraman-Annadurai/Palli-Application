@@ -596,11 +596,12 @@ const AssessmentView = ({
                         <div className="comments-list-container">
                           <div>
                             {students?.comments?.map((comment)=>{
+                              console.log(comment);
                               return(
                                 <>
                                      <div className="profile-section">
-                                      <div className="name">{""}</div>
-                                      <div className="date">{""}</div>
+                                      <div className="name">{comment.commentor_details.first_name} ({comment.commentor_details.role})</div>
+                                      <div className="date">{dayjs().format("MMMM DD YYYY h:mm A")}</div>
                                     </div>
                                     <div className="comments">
                         
@@ -608,7 +609,7 @@ const AssessmentView = ({
                                       {comment?.commentor_details?.role == "Admin" && (
                                         <>
                                           <img src="/icons/deleteIcon.svg" alt="" style={{width:"16px"}} onClick={()=>handleDeleteComment(comment.id)}/>
-                                          <img src="/public/icons/edit-pencil.svg" alt="" style={{width:"16px"}} onClick={()=>{
+                                          <img src="/icons/edit-pencil.svg" alt="" style={{width:"16px"}} onClick={()=>{
                                           setIsCommentEditId(comment.id)
                                           setCommentText(comment?.comments)
                                         }} />

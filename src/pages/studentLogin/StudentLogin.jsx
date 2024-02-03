@@ -441,7 +441,7 @@ const StudentLogin = ({ type }) => {
                         <>
                         <div className="profile-section">
                          <div className="name">{comment.commentor_details.first_name}</div>
-                         <div className="date">{dayjs(comment.commentor_details.created_at).format("MMM, DD YYYY")}</div>
+                         <div className="date">{dayjs().format("MMMM DD YYYY h:mm A")}</div>
                        </div>
                        <div className="comments">
                          <p>{comment?.comments}</p> 

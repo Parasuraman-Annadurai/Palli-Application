@@ -239,7 +239,6 @@ const StudentLogin = ({ type }) => {
     })
   }
 
-  //{{local}}api/task/1/delete/task_comment/5
   const handleDeleteComment =(commentId)=>{
     const url = `${API_END_POINT}/api/task/${batchId}/delete/task_comment/${commentId}`
     axios.delete(url,{headers}).then((res)=>{
@@ -268,7 +267,6 @@ const StudentLogin = ({ type }) => {
   }
 
 
-  console.log(taskComments);
   return (
     <>
       <section className="listing-container">

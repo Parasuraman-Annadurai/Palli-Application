@@ -6,6 +6,7 @@ import "quill/dist/quill.snow.css";
 import {
   DatePicker,
   Dropdown,
+  Modal,
   Skeleton,
   notification,
 } from "antd";
@@ -42,7 +43,12 @@ const AssessmentView = ({
   handleWeightageChange,
   handleDeleteWeightage,
   type,
-  isMode
+  handleSendComment,
+  handleDeleteComment,
+  commentText,
+  isCommentEditId,
+  setCommentText,
+  setIsCommentEditId
 }) => {
   const { id: batchId } = useParams();
   const { token } = useAuth();
@@ -55,7 +61,7 @@ const AssessmentView = ({
   );
   const [assigneeloader, setAssigneeloader] = useState(false);
   const [weightageLists, setWeightageLists] = useState([]);
-
+  const [openComments,setOpenComments] = useState(false)
   const headers = {
     Authorization: `Bearer ${token.access}`,
     "Content-type": "application/json",
@@ -227,8 +233,8 @@ const AssessmentView = ({
     }
   };
 
-
   
+
   return (
     <>
       {!isStudentScoreOpen ? (
@@ -391,18 +397,16 @@ const AssessmentView = ({
                     <>
                       
                       <div className="assign-listing-container">
-                        
+                    <div className="assignee-search-container">
+                                <input type="input" placeholder="search..." />
+                                <img
+                                  src="/icons/searchIcon.svg"
+                                  alt="search-icon"
+                                  className="search-icon"
+                                />
 
-  <div className="assignee-search-container">
-              <input type="input" placeholder="search..." />
-              <img
-                src="/icons/searchIcon.svg"
-                alt="search-icon"
-                className="search-icon"
-              />
-
-           
-            </div>
+                            
+                              </div>
                         <div className="select-all flex">
                           <input
                             className="global-checkbox"
@@ -582,8 +586,44 @@ const AssessmentView = ({
                               </Dropdown>
                             )}
                       </div>
+                     
+                        <button className="btn" onClick={()=>setOpenComments(true)}>comments</button>
                     </div>
-                   
+                      {/* this modal open comment section for Admin  for functionality purpose*/}
+                   <Modal open={openComments} onCancel={()=>setOpenComments(false)} footer={null}>
+                        <input type="text" value={commentText} placeholder="comments here" style={{border:"1px solid black",cursor:"pointer"}} onChange={(e)=>setCommentText(e.target.value)}/>
+                        <button className="btn primary-medium" onClick={()=>handleSendComment(students.id)}>{isCommentEditId ? "Update":"Send"}</button>
+                        <div className="comments-list-container">
+                          <div>
+                            {students?.comments?.map((comment)=>{
+                              return(
+                                <>
+                                     <div className="profile-section">
+                                      <div className="name">{""}</div>
+                                      <div className="date">{""}</div>
+                                    </div>
+                                    <div className="comments">
+                        
+                                      <p>{comment?.comments}</p> 
+                                      {comment?.commentor_details?.role == "Admin" && (
+                                        <>
+                                          <img src="/icons/deleteIcon.svg" alt="" style={{width:"16px"}} onClick={()=>handleDeleteComment(comment.id)}/>
+                                          <img src="/public/icons/edit-pencil.svg" alt="" style={{width:"16px"}} onClick={()=>{
+                                          setIsCommentEditId(comment.id)
+                                          setCommentText(comment?.comments)
+                                        }} />
+                                        </>
+                                      )}
+                                   
+                                    </div>
+                                </>
+                              )
+                            })}
+                          </div>
+                     
+                     
+                        </div>
+                   </Modal>
 
                     {activeWeightageIndex === index && (
                       <div className="applied-weightage-list-container flex" style={{gap:"10px"}}>

@@ -334,7 +334,7 @@ const StudentLogin = ({ type }) => {
                             style={{ width: "60%"}}
                             
                             suffixIcon={<img
-                              src='/public/icons/drop.svg'
+                              src='/icons/drop.svg'
                               style={{ color: 'red' }} // Change the color as needed
                               alt="Sample SVG"
                             />
@@ -448,7 +448,7 @@ const StudentLogin = ({ type }) => {
                          {comment?.commentor_details.role == "Student" && (
                           <>
                             <img src="/icons/deleteIcon.svg" alt="" style={{width:"16px"}} onClick={()=>handleDeleteComment(comment.id)}/>
-                            <img src="/public/icons/edit-pencil.svg" alt="" style={{width:"16px"}} onClick={()=>{
+                            <img src="/icons/edit-pencil.svg" alt="" style={{width:"16px"}} onClick={()=>{
                               setIsCommentEditId(comment.id)
                               setTaskComments(comment?.comments)
                             }} />

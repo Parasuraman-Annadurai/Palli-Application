@@ -260,7 +260,7 @@ const StudentLogin = ({ type }) => {
                             style={{ width: "70%" }}
                             suffixIcon={
                               <img
-                                src="/public/icons/drop.svg"
+                                src="/icons/drop.svg"
                                 // style={{ color: 'red' }} // Change the color as needed
                                 alt="Sample SVG"
                               />

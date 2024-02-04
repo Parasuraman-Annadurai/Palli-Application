@@ -21,6 +21,7 @@ import { useParams } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
 import WeightageList from "./WeightageList";
+import Comments from "./Comments";
 
 import { CustomIcons,toolbarConfig } from "../utils/validate";
 
@@ -591,39 +592,7 @@ const AssessmentView = ({
                     </div>
                       {/* this modal open comment section for Admin  for functionality purpose*/}
                    <Modal open={openComments} onCancel={()=>setOpenComments(false)} footer={null}>
-                        <input type="text" value={commentText} placeholder="comments here" style={{border:"1px solid black",cursor:"pointer"}} onChange={(e)=>setCommentText(e.target.value)}/>
-                        <button className="btn primary-medium" onClick={()=>handleSendComment(students.id)}>{isCommentEditId ? "Update":"Send"}</button>
-                        <div className="comments-list-container">
-                          <div>
-                            {students?.comments?.map((comment)=>{
-                              console.log(comment);
-                              return(
-                                <>
-                                     <div className="profile-section">
-                                      <div className="name">{comment.commentor_details.first_name} ({comment.commentor_details.role})</div>
-                                      <div className="date">{dayjs().format("MMMM DD YYYY h:mm A")}</div>
-                                    </div>
-                                    <div className="comments">
-                        
-                                      <p>{comment?.comments}</p> 
-                                      {comment?.commentor_details?.role == "Admin" && (
-                                        <>
-                                          <img src="/icons/deleteIcon.svg" alt="" style={{width:"16px"}} onClick={()=>handleDeleteComment(comment.id)}/>
-                                          <img src="/icons/edit-pencil.svg" alt="" style={{width:"16px"}} onClick={()=>{
-                                          setIsCommentEditId(comment.id)
-                                          setCommentText(comment?.comments)
-                                        }} />
-                                        </>
-                                      )}
-                                   
-                                    </div>
-                                </>
-                              )
-                            })}
-                          </div>
-                     
-                     
-                        </div>
+                        <Comments comments={students?.comments} role={"Admin"} commenterId={students.id} commentText={commentText}  isCommentEditId={isCommentEditId} setIsCommentEditId={setIsCommentEditId} setCommentText={setCommentText} handleSendComment={handleSendComment} handleDeleteComment={handleDeleteComment}/>
                    </Modal>
 
                     {activeWeightageIndex === index && (

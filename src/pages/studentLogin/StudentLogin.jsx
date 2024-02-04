@@ -15,6 +15,7 @@ import { useParams,useNavigate } from "react-router-dom";
 import "../studentLogin/scss/StudentLogin.css";
 
 import colorObject from "../../utils/validate";
+import Comments from "../../components/Comments";
 
 const TaskCard = ({
   tasksLists,
@@ -430,35 +431,38 @@ const StudentLogin = ({ type }) => {
                      
                     </div>
                       
-                    <div className="comments-section">
+                    {/* <div className="comments-section">
                       <input type="text" placeholder="heree" value={taskComments} style={{border:"1px solid grey"}} onChange={(e)=>setTaskComments(e.target.value)}/>
                       <button onClick={()=>handleAddComment(tasksList.id)}>{isCommentEditId ? "Update" : "Send"}</button>
                     </div>
                     <div className="comments-list-container">
-                    <div>
-                    {tasksList?.comments.map(comment =>{
-                      return (
-                        <>
-                        <div className="profile-section">
-                         <div className="name">{comment.commentor_details.first_name}</div>
-                         <div className="date">{dayjs().format("MMMM DD YYYY h:mm A")}</div>
-                       </div>
-                       <div className="comments">
-                         <p>{comment?.comments}</p> 
-                         {comment?.commentor_details.role == "Student" && (
-                          <>
-                            <img src="/icons/deleteIcon.svg" alt="" style={{width:"16px"}} onClick={()=>handleDeleteComment(comment.id)}/>
-                            <img src="/icons/edit-pencil.svg" alt="" style={{width:"16px"}} onClick={()=>{
-                              setIsCommentEditId(comment.id)
-                              setTaskComments(comment?.comments)
-                            }} />
+                        <div>
+                        {tasksList?.comments.map(comment =>{
+                          return (
+                            <>
+                            <div className="profile-section">
+                            <div className="name">{comment.commentor_details.first_name}</div>
+                            <div className="date">{dayjs().format("MMMM DD YYYY h:mm A")}</div>
+                          </div>
+                          <div className="comments">
+                            <p>{comment?.comments}</p> 
+                            {comment?.commentor_details.role == "Student" && (
+                              <>
+                                <img src="/icons/deleteIcon.svg" alt="" style={{width:"16px"}} onClick={()=>handleDeleteComment(comment.id)}/>
+                                <img src="/icons/edit-pencil.svg" alt="" style={{width:"16px"}} onClick={()=>{
+                                  setIsCommentEditId(comment.id)
+                                  setTaskComments(comment?.comments)
+                                }} />
+                              </>
+                            )}
+                          </div>
                           </>
-                         )}
-                       </div>
-                      </>
-                      )
-                    })}
-                  </div>
+                          )
+                        })}
+                      </div>
+                    </div> */}
+                    <div className="comments-container">
+                      <Comments comments={tasksList?.comments} commenterId={tasksList.id} commentText={taskComments} isCommentEditId={isCommentEditId} setIsCommentEditId={setIsCommentEditId} setCommentText={setTaskComments} handleSendComment={handleAddComment} handleDeleteComment={handleDeleteComment} role={"Student"}/>
                     </div>
                   </div>
 

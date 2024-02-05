@@ -1051,7 +1051,7 @@ body .container .main-container .task-user-list-container .student-info {
 body .container .main-container .task-user-list-container .student-info .student-name-container p {
   background-color: #d3f9cd;
   color: #12160a;
-  padding: 8px 9.5px;
+  padding: 5.5px 5.6px;
   border-radius: 4px;
 }
 body .container .main-container .task-user-list-container .student-info .student-email-container .student-name {
@@ -1142,6 +1142,15 @@ body .container .main-container .task-user-list-container .student-work button {
   outline: none;
   border-radius: 4px;
   cursor: pointer;
+}
+body .container .main-container .task-user-list-container .student-work button:hover {
+  color: #33762f;
+  border: 1px solid #33762f;
+}
+body .container .main-container .task-user-list-container .student-work button:active {
+  color: #49a843;
+  border: 1px solid #49a843;
+  opacity: 30%;
 }
 body .container .main-container .task-user-list-container .student-work img {
   width: 16px;

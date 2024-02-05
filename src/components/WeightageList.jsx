@@ -118,7 +118,7 @@ const WeightageList = ({
           <div style={{flex:1}}>
             <div className="apply-weightage" >
               <button
-                className="btn primary-medium"
+                className="btn secondary-medium"
                 onClick={() => handleSaveWeightage()}
               >
                 Save

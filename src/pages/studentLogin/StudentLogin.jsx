@@ -15,7 +15,7 @@ import { useParams,useNavigate } from "react-router-dom";
 import "../studentLogin/scss/StudentLogin.css";
 
 import colorObject from "../../utils/validate";
-import Comments from "../../components/Comments";
+import Comments from "../../components/CommentsModule/Comments";
 
 const TaskCard = ({
   tasksLists,

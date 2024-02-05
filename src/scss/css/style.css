@@ -1134,6 +1134,9 @@ body .container .main-container .task-user-list-container .student-file img {
   width: 16px;
   height: 16px;
 }
+body .container .main-container .task-user-list-container .student-comment {
+  cursor: pointer;
+}
 body .container .main-container .task-user-list-container .student-work {
   max-width: 115px;
   width: 100%;

@@ -21,7 +21,7 @@ import { useAuth } from "../context/AuthContext";
 
 import WeightageList from "./WeightageList";
 
-import { CustomIcons,toolbarConfig } from "../utils/validate";
+import { CustomIcons,toolbarConfig,validateTask,isScoreValidate } from "../utils/validate";
 
 const AssessmentView = ({
   weightageShow,
@@ -42,7 +42,12 @@ const AssessmentView = ({
   handleWeightageChange,
   handleDeleteWeightage,
   type,
-  isMode
+  formErrors,
+  setFormErrors,
+  weightageErrors,
+  setWeightageErros,
+  setAssigneeSearch,
+  isAssigneeLoading
 }) => {
   const { id: batchId } = useParams();
   const { token } = useAuth();
@@ -55,6 +60,7 @@ const AssessmentView = ({
   );
   const [assigneeloader, setAssigneeloader] = useState(false);
   const [weightageLists, setWeightageLists] = useState([]);
+  const [studentScoreErrors,setStudentsErrors] = useState({})
 
   const headers = {
     Authorization: `Bearer ${token.access}`,
@@ -203,32 +209,49 @@ const AssessmentView = ({
   };
 
   const handleScoreOnchange = (e, students, weightage) => {
-    const updatedScore = {
-      task_user: students.id,
-      task_weightage: weightage.id,
-      task_score: Number(e.target.value),
-    };
-    // Check if the score for the same student and weightage ID already exists
-    const existingScoreIndex = studentScore.findIndex(
-      (score) =>
-        score.task_user === updatedScore.task_user &&
-        score.task_weightage === updatedScore.task_weightage
-    );
-
-    if (existingScoreIndex !== -1) {
-      // If the score exists, update it
-      const updatedStudentScores = [...studentScore];
-      updatedStudentScores[existingScoreIndex].task_score =
-        updatedScore.task_score;
-      setStudentScore(updatedStudentScores);
+    const scoreValue = Number(e.target.value);
+  
+    if (scoreValue === null || isNaN(scoreValue)) {
+      // If the score is null or not a number, remove the corresponding object from the state
+      const filteredStudentScores = studentScore.filter(
+        (score) =>
+          score.task_user !== students.id ||
+          score.task_weightage !== weightage.id
+      );
+      setStudentScore(filteredStudentScores);
     } else {
-      // If the score doesn't exist, add it to the state
-      setStudentScore([...studentScore, updatedScore]);
+      // If the score is a number, update or add the score to the state
+      const updatedScore = {
+        task_user: students.id,
+        task_weightage: weightage.id,
+        task_score: scoreValue,
+      };
+  
+      const existingScoreIndex = studentScore.findIndex(
+        (score) =>
+          score.task_user === updatedScore.task_user &&
+          score.task_weightage === updatedScore.task_weightage
+      );
+  
+      if (existingScoreIndex !== -1) {
+        // If the score exists, update it
+        const updatedStudentScores = [...studentScore];
+        updatedStudentScores[existingScoreIndex].task_score =
+          updatedScore.task_score;
+        setStudentScore(updatedStudentScores);
+      } else {
+        // If the score doesn't exist, add it to the state
+        setStudentScore([...studentScore, updatedScore]);
+      }
     }
   };
-
-
   
+  
+  
+  
+  
+
+
   return (
     <>
       {!isStudentScoreOpen ? (
@@ -250,7 +273,7 @@ const AssessmentView = ({
                         }
                         // onDoubleClick={onDoubleClick}
                         placeholder={"Untitled"}
-                        // className={` ${errors.Title ? "error-notify" : ""} `}
+                        className={` ${formErrors["task_title"] ? "error-notify" : ""} `}
                         // readOnly={!isEditing}
                       />
                       {/* {isEditing && (
@@ -273,18 +296,19 @@ const AssessmentView = ({
                     )} */}
                     </div>
                   </div>
-                  {/* <p className="error-message"></p>
-                     */}
+                  <p className="error-message">{formErrors["task_title"] ? formErrors["task_title"]:""}</p>
+                    
                 </div>
                 <div className="task-details-header-container">
                   <div className="task-label-container flex">
-                    <h4>Task Details</h4>
+                    <h4>Task Details </h4>
                     <div className="horizon-line"></div>
                   </div>
                   <div className="task-details-main-container flex">
                     <div className="task-deadline-container common-property">
-                      <p className="task-deadline-label">Deadline</p>
+                      <p className="task-deadline-label">Deadline *</p>
                       <DatePicker
+                        prefixCls={`${formErrors["due_date"] ? "error-notify" :""}`}
                         value={due_date ? dayjs(due_date) : null}
                         showTime={{ format: "HH:mm" }}
                         placeholder="Select here..."
@@ -297,16 +321,17 @@ const AssessmentView = ({
                           current && current < dayjs().startOf("day")
                         }
                       />
-                      {/* <p className="error-message"></p> */}
+                      <p className="error-message">{formErrors["due_date"] ? formErrors["due_date"]:""}</p>
                     </div>
                   </div>
                   <div className="task-editor-container">
-                    <p className="task-description-label">Description</p>
+                    <p className="task-description-label">Description *</p>
                     <div className="task-editor">
                       <>
                         <CustomIcons />
                         <ReactQuill
                           placeholder="Type here"
+                          className={`${formErrors["task_description"] ? "error-notify":""}`}
                           value={task_description ? task_description : ""}
                           modules={toolbarConfig}
                           theme="snow"
@@ -315,7 +340,7 @@ const AssessmentView = ({
                           }
                         
                         />
-                        {/* <p className="error-message"></p> */}
+                        <p className="error-message">{formErrors["task_description"] ? formErrors["task_description"]:""}</p>
                       </>
                     </div>
                   </div>
@@ -335,11 +360,8 @@ const AssessmentView = ({
                             ? "btn primary-medium-default"
                             : "btn primary-medium"
                         }`}
-                        onClick={() => {
-                          !assigneeloader
-                            ? handleSave(currentAssessment)
-                            : null;
-                        }}
+                        onClick={() => !assigneeloader && validateTask(currentAssessment,setFormErrors) ? handleSave(currentAssessment) : null}
+
                       >
                         {draft ? "Create" : "Update"}
                       </button>
@@ -393,17 +415,19 @@ const AssessmentView = ({
                       <div className="assign-listing-container">
                         
 
-  <div className="assignee-search-container">
-              <input type="input" placeholder="search..." />
-              <img
-                src="/icons/searchIcon.svg"
-                alt="search-icon"
-                className="search-icon"
-              />
+                         <div className="assignee-search-container">
+                            <input type="input" placeholder="search..." onChange={(e)=>setAssigneeSearch(e.target.value)}/>
+                            <img
+                              src="/icons/searchIcon.svg"
+                              alt="search-icon"
+                              className="search-icon"
+                            />
 
-           
-            </div>
-                        <div className="select-all flex">
+                        
+                          </div>
+                        {isAssigneeLoading ? <Skeleton active paragraph={4}/> : (
+                          <>
+                               <div className="select-all flex">
                           <input
                             className="global-checkbox"
                             type="checkbox"
@@ -452,6 +476,8 @@ const AssessmentView = ({
                             );
                           })}
                         </div>
+                          </>
+                        )}
                       </div>
                     </>
                   ) : (
@@ -465,7 +491,8 @@ const AssessmentView = ({
                         handleDeleteWeightage={handleDeleteWeightage}
                         weightages={weightageLists}
                         selectedStudents={selectedStudents}
-
+                        weightageErrors={weightageErrors}
+                        setWeightageErros={setWeightageErros}
                       />
                     )
                   )}
@@ -476,29 +503,31 @@ const AssessmentView = ({
         </>
       ) : (
         <main className="main-container">
-              <div className="task-heading">
-            <p>{task_title}</p>
-
-            <div className="search-container">
-              <input type="input" placeholder="search..." />
-              <img
-                src="/icons/searchIcon.svg"
-                alt="search-icon"
-                className="search-icon"
-              />
-
-              <img
-                src="/icons/filterIcon.svg"
-                alt="filter-icon"
-                className="filter-icon"
-              />
-            </div>
-          </div>
+           {currentAssessment?.task_users?.length > 0 && (
+               <div className="task-heading">
+               <p>{task_title}</p>
+   
+               <div className="search-container">
+                 <input type="input" placeholder="search..." />
+                 <img
+                   src="/icons/searchIcon.svg"
+                   alt="search-icon"
+                   className="search-icon"
+                 />
+   
+                 <img
+                   src="/icons/filterIcon.svg"
+                   alt="filter-icon"
+                   className="filter-icon"
+                 />
+               </div>
+                  </div>
+           )}
           {currentAssessment?.task_users?.length > 0 ? (
             currentAssessment.task_users.map((students, index) => {
               return (
                 <>
-                  <div className="task-container">
+                  <div className="task-container" >
                    
                     <div className="task-user-list-container flex" key={index}>
                       <div className="student-info flex">
@@ -552,10 +581,11 @@ const AssessmentView = ({
                               <button
                                 className="secondary-btn-sm"
                                 onClick={(e) => {
-                                 
                                   setActiveWeightageIndex(index);
                                   if(activeWeightageIndex === index){
-                                    handleAddScore(studentScore);
+                                    if(isScoreValidate(task_weightages,studentScore,setStudentsErrors)){
+                                      handleAddScore(studentScore);
+                                    }
                                   }
                                 }}
                               >
@@ -586,7 +616,8 @@ const AssessmentView = ({
                    
 
                     {activeWeightageIndex === index && (
-                      <div className="applied-weightage-list-container flex" style={{gap:"10px"}}>
+                     <>
+                       <div className="applied-weightage-list-container flex" style={{gap:"10px"}}>
                         {currentAssessment.task_weightages &&
                           currentAssessment.task_weightages.map(
                             (weightage, weightageIndex) => (
@@ -618,19 +649,17 @@ const AssessmentView = ({
                                 <div className="weightage-checkbox">
                                   <input
                                     type="text"
-                                    onChange={(e) => {
-                                      handleScoreOnchange(
-                                        e,
-                                        students,
-                                        weightage
-                                      );
+                                    onChange={(e) => {handleScoreOnchange(e,students, weightage);
                                     }}
                                   />
                                 </div>
                               </div>
                             )
                           )}
+                         
                       </div>
+                      <p className="error-message">{studentScoreErrors["score"] ? studentScoreErrors["score"]:""}</p>
+                     </>
                     )}
                   </div>
                 </>
@@ -642,7 +671,10 @@ const AssessmentView = ({
                 <img src="/icons/select-something.svg" alt="" />
                 <p className="select-something-heading">
                   No Assignee has been assigned to this {type}
-                  <button className="btn primary-medium" style={{marginTop:"10px"}} onClick={()=>setIsStudentScoreOpen(!isStudentScoreOpen)}>Add Assignee</button>
+                  <button className="btn primary-medium" style={{marginTop:"10px"}} onClick={()=>{
+                    setIsStudentScoreOpen(!isStudentScoreOpen)
+                    setToggleAssigneeWeightage(0)
+                  }}>Add Assignee</button>
                 </p>
               </div>
             </div>

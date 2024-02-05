@@ -50,7 +50,7 @@ const TaskCard = ({
                 <>
                   <img
                     
-                    src={selectedAssessment === assessment.id  && isMode == "edit" ? "/public/icons/edit-pencil-fill.svg" : "/public/icons/edit-pencil.svg"}
+                    src={selectedAssessment === assessment.id  && isMode == "edit" ? "/icons/edit-pencil-fill.svg" : "/icons/edit-pencil.svg"}
                     className="edit-icon"
                     alt="edit-icon"
                     onClick={(event) => {

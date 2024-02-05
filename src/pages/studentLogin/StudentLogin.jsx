@@ -103,7 +103,7 @@ const StudentLogin = ({ type }) => {
         setIsLoading(false);
         const copyTaskList = [...res.data.data];
         setTaskLists(copyTaskList);
-
+        console.log(copyTaskList);
         const getFirstTask =
           [...res.data.data].length > 0 ? [...res.data.data][0]["id"] : null;
         setSeletedTaskId(getFirstTask);
@@ -245,7 +245,7 @@ const StudentLogin = ({ type }) => {
                       <div className="student-task-details-main-container flex">
                         <div className="student-task-trainer-name">
                           <p>Trainer Name</p>
-                          <span>Avinash</span>
+                          <span>{tasksList.reviewer.first_name}</span>
                         </div>
                         <div className="student-task-status">
                           <p>Status</p>
@@ -261,7 +261,7 @@ const StudentLogin = ({ type }) => {
                             style={{ width: "60%"}}
                             
                             suffixIcon={<img
-                              src='/public/icons/drop.svg'
+                              src='/icons/drop.svg'
                               style={{ color: 'red' }} // Change the color as needed
                               alt="Sample SVG"
                             />

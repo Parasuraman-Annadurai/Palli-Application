@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useParams,useNavigate } from "react-router-dom";
 
 import axios from "axios";
-import { Pagination, Popover, Tag, Skeleton, Tooltip, Modal, notification } from "antd";
+import { Pagination, Popover, Tag, Skeleton, Tooltip, notification } from "antd";
 import dayjs from "dayjs";
 
 import { API_END_POINT } from "../../../config";

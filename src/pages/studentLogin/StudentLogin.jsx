@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 import axios from "axios";
-import { Modal, Select, Skeleton,notification,  } from "antd";
+import { Modal, Select, Skeleton, notification, Drawer } from "antd";
 
 import { LoadingOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
@@ -89,7 +89,7 @@ const StudentLogin = ({ type }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [taskComments,setTaskComments] = useState("");
   const [isCommentEditId,setIsCommentEditId] = useState(null);
-
+  const [openCommentSection,setOpenCommentSection] = useState(false);
   const headers = {
     Authorization: `Bearer ${token.access}`,
     "Content-type": "application/json",
@@ -107,7 +107,7 @@ const StudentLogin = ({ type }) => {
         setIsLoading(false);
         const copyTaskList = [...res.data.data];
         setTaskLists(copyTaskList);
-
+        console.log(copyTaskList);
         const getFirstTask =
           [...res.data.data].length > 0 ? [...res.data.data][0]["id"] : null;
         setSeletedTaskId(getFirstTask);
@@ -307,6 +307,9 @@ const StudentLogin = ({ type }) => {
                     <div className="module-title-section flex">
                       <h3>{tasksList.task.task_title}</h3>
                     </div>
+                    <div className="comments">
+                      <button className="btn secondary-medium" onClick={()=>setOpenCommentSection(true)}>Comments</button>
+                    </div>
                   </div>
 
                   <div className="task-details-header-container">
@@ -319,7 +322,7 @@ const StudentLogin = ({ type }) => {
                       <div className="student-task-details-main-container flex">
                         <div className="student-task-trainer-name">
                           <p>Trainer Name</p>
-                          <span>Avinash</span>
+                          <span>{tasksList.reviewer.first_name}</span>
                         </div>
                         <div className="student-task-status">
                           <p>Status</p>
@@ -431,38 +434,11 @@ const StudentLogin = ({ type }) => {
                      
                     </div>
                       
-                    {/* <div className="comments-section">
-                      <input type="text" placeholder="heree" value={taskComments} style={{border:"1px solid grey"}} onChange={(e)=>setTaskComments(e.target.value)}/>
-                      <button onClick={()=>handleAddComment(tasksList.id)}>{isCommentEditId ? "Update" : "Send"}</button>
-                    </div>
-                    <div className="comments-list-container">
-                        <div>
-                        {tasksList?.comments.map(comment =>{
-                          return (
-                            <>
-                            <div className="profile-section">
-                            <div className="name">{comment.commentor_details.first_name}</div>
-                            <div className="date">{dayjs().format("MMMM DD YYYY h:mm A")}</div>
-                          </div>
-                          <div className="comments">
-                            <p>{comment?.comments}</p> 
-                            {comment?.commentor_details.role == "Student" && (
-                              <>
-                                <img src="/icons/deleteIcon.svg" alt="" style={{width:"16px"}} onClick={()=>handleDeleteComment(comment.id)}/>
-                                <img src="/icons/edit-pencil.svg" alt="" style={{width:"16px"}} onClick={()=>{
-                                  setIsCommentEditId(comment.id)
-                                  setTaskComments(comment?.comments)
-                                }} />
-                              </>
-                            )}
-                          </div>
-                          </>
-                          )
-                        })}
-                      </div>
-                    </div> */}
+                    
                     <div className="comments-container">
+                      <Drawer title="Comments" onClose={()=>setOpenCommentSection(false)} open={openCommentSection}>
                       <Comments comments={tasksList?.comments} commenterId={tasksList.id} commentText={taskComments} isCommentEditId={isCommentEditId} setIsCommentEditId={setIsCommentEditId} setCommentText={setTaskComments} handleSendComment={handleAddComment} handleDeleteComment={handleDeleteComment} role={"Student"}/>
+                      </Drawer>
                     </div>
                   </div>
 

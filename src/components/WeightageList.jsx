@@ -1,7 +1,8 @@
-import React from "react";
+import React,{useState,useEffect} from "react";
 
-import { Select } from "antd";
+import { Button, Select, Tooltip } from "antd";
 
+import { isWeightageVaild } from "../utils/validate";
 
 const WeightageList = ({
   taskWeightages,
@@ -10,9 +11,12 @@ const WeightageList = ({
   handleWeightageChange,
   handleDeleteWeightage,
   weightages,
-  selectedStudents
+  selectedStudents,
+  weightageErrors,
+  setWeightageErros
 }) => {
- 
+  
+
    return (
     <div
       className="weightage-main-container"
@@ -47,7 +51,7 @@ const WeightageList = ({
                       onChange={(value) =>
                         handleWeightageChange(value, index, "weightage")
                       }
-                      disabled={selectedStudents.length}
+                      disabled={selectedStudents.length ? true : false}
                     >
                       {weightages.map((weightageList) => (
                         <Select.Option
@@ -57,6 +61,8 @@ const WeightageList = ({
                           {weightageList.weightage}
                         </Select.Option>
                       ))}
+                     
+
                     </Select>
                   </div>
                   <div
@@ -85,6 +91,7 @@ const WeightageList = ({
                         paddingRight: 5,
                       }}
                     />
+
                   </div>
                   <div className="weightage-unit-container flex">
                     <div className="weightage-action">
@@ -103,6 +110,8 @@ const WeightageList = ({
             })}
           </div>
         </div>
+        <p className="error-message">{weightageErrors["weightage"]? weightageErrors["weightage"]:""}</p>
+
         {!selectedStudents?.length && (
         <>
         <div className="all-btns" style={{display: "flex" , justifyContent: "space-between",gap:"10px"}}>
@@ -117,12 +126,15 @@ const WeightageList = ({
           </div>
           <div style={{flex:1}}>
             <div className="apply-weightage" >
-              <button
-                className="btn primary-medium"
-                onClick={() => handleSaveWeightage()}
-              >
-                Save
-              </button>
+                 <Tooltip title={taskWeightages?.length === 0 ? "Add atleast one weightage to link in task" :""}>
+                 <button
+                    className={`${taskWeightages?.length === 0 ? "btn secondary-medium-default":"btn primary-medium"}`}
+                    onClick={()=> taskWeightages?.length > 0 &&  isWeightageVaild(taskWeightages,setWeightageErros) ? handleSaveWeightage() : null}
+                  >
+                    Save
+                  </button>
+                  </Tooltip>
+             
             </div>
           </div>
         </div>

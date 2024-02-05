@@ -73,32 +73,79 @@ export const validateNewpassword = (newPasswordData, setErrors) => {
   return isValid;
 };
 
-export const validateAddTask = (addTaskData,setErrors) => {
-
-
+export const validateTask = (taskDetails, setFormErrors) => {
+  const { task_title, task_description, due_date } = taskDetails;
+  console.log(task_description);
   let errors = {};
-  let isVaild = true;
-  if (!addTaskData.task_title.trim()) {
-    errors.task_title = "Task Name is Required";
-    isVaild = false;
+  let isValid = true;
+  const emptyHtmlRegex = /^<p>(\s*|<br\s*\/?>)<\/p>\s*$/;
+
+  if (!task_title.trim()) {
+    errors = { ...errors, task_title: `Task name is required` };
+    isValid = false;
   }
-  if (!addTaskData.task_description.trim()) {
-    errors.task_description = "Task Description is Required";
-    isVaild = false;
+
+  const trimmedDescription = task_description.trim();
+
+  if (!trimmedDescription || emptyHtmlRegex.test(trimmedDescription)) {
+    errors = { ...errors, task_description: `Description is required` };
+    isValid = false;
   }
- 
-  if (!addTaskData.due_date) {
-    errors.due_date = "Task Due Date is Required";
-    isVaild = false;
+  
+  if (!due_date) {
+    errors = { ...errors, due_date: `Due date is required` };
+    isValid = false;
   }
-  if (addTaskData.task_type <0) {
-    errors.task_type = "Task Type is Required";
-    isVaild = false;
-  }
-  setErrors(errors);
-  return isVaild;
+
+  setFormErrors(errors);
+  return isValid;
 };
 
+
+
+
+export const isWeightageVaild =(taskWeightageDetails,setWeightageErros)=>{
+  let errors ={};
+  let isValid = true;
+  let hasWeightageError = false;
+  
+  taskWeightageDetails.forEach((taskWeightageDetail, index) => {
+    if (!taskWeightageDetail?.weightage || !taskWeightageDetail?.weightage_percentage) {
+      if (!hasWeightageError) {
+        errors.weightage = "Select the weightage from the suggestions and enter the desired percentage.";
+        isValid = false;
+        hasWeightageError = true;
+      }
+    }
+  });
+
+  if (!hasWeightageError) {
+    // Check if the total percentage is equal to 100
+    const totalPercentage = taskWeightageDetails.reduce(
+      (sum, taskWeightageDetail) => sum + (taskWeightageDetail?.weightage_percentage || 0),
+      0
+    );
+
+    if (totalPercentage !== 100) {
+      errors.weightage = "Selected weightage is not equal to 100. Please check and adjust the values.";
+      isValid = false;
+    }
+  }
+
+  setWeightageErros(errors);
+  return isValid;
+}
+
+export const isScoreValidate =(taskWeightageDetails,studentScoreDetails,setScoreErrors)=>{
+  let isValid = true;
+  let errors = {};
+  if(studentScoreDetails?.length !== taskWeightageDetails?.length){
+    errors.score = "Kindly provide the input for the mark";
+    isValid = false;
+  }
+  setScoreErrors(errors);
+  return isValid;
+}
 
 
 
@@ -235,3 +282,6 @@ export const toolbarConfig = {
     ],
   },
 };
+
+
+

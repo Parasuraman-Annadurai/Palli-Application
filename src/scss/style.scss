@@ -1025,16 +1025,17 @@ body {
                 p {
                   color: $font-primary-color;
                 }
+               
               }
             }
 
-            // p {
-            //     color: $font-primary-color;
-            //     font-family: $font-Roboto;
-            //     font-size: 12px;
-            //     line-height: 16px;
-            //     font-weight: 400;
-            // }
+            p {
+                color: $error-message;
+                font-family: $font-Roboto;
+                font-size: 12px;
+                line-height: 16px;
+                font-weight: 400;
+            }
           }
         }
 

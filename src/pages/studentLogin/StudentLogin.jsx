@@ -102,7 +102,7 @@ const StudentLogin = ({ type }) => {
         setIsLoading(false);
         const copyTaskList = [...res.data.data];
         setTaskLists(copyTaskList);
-
+        console.log(copyTaskList);
         const getFirstTask =
           [...res.data.data].length > 0 ? [...res.data.data][0]["id"] : null;
         setSeletedTaskId(getFirstTask);
@@ -244,7 +244,7 @@ const StudentLogin = ({ type }) => {
                       <div className="student-task-details-main-container flex">
                         <div className="student-task-trainer-name">
                           <p>Trainer Name</p>
-                          <span>Avinash</span>
+                          <span>{tasksList.reviewer.first_name}</span>
                         </div>
 
                         <div className="student-task-status">
@@ -261,7 +261,6 @@ const StudentLogin = ({ type }) => {
                             suffixIcon={
                               <img
                                 src="/icons/drop.svg"
-                                // style={{ color: 'red' }} // Change the color as needed
                                 alt="Sample SVG"
                               />
                             }
@@ -325,7 +324,7 @@ const StudentLogin = ({ type }) => {
                                         Number(a.task_score)
                                       )}
                                     </span>
-                                    {/* </p> */}{" "}
+                                    {" "}
                                   </div>
                                 )
                               )}
@@ -355,21 +354,19 @@ const StudentLogin = ({ type }) => {
                     <div className="horizon-line"></div>
                   </div>
 
-                  
-
                   <div className="file-input-container">
-            <div className="upload-icon-container flex">
-              <img src="/icons/upload.svg" className="upload-icon" />
-              <label for="file-input"
-                >Drag your file or
-                <span className="highlight"> click to upload your task</span></label
-              >
-            </div>
-            <input type="file" className="file-input" />
-          </div>
-
-
-
+                    <div className="upload-icon-container flex">
+                      <img src="/icons/upload.svg" className="upload-icon" />
+                      <label for="file-input">
+                        Drag your file or
+                        <span className="highlight">
+                          {" "}
+                          click to upload your task
+                        </span>
+                      </label>
+                    </div>
+                    <input type="file" className="file-input" />
+                  </div>
 
                   <Modal
                     prefixCls="submission-modal"

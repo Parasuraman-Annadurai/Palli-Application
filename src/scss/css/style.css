@@ -777,6 +777,13 @@ body .container .main-container .task-details-header-container .task-editor-cont
 body .container .main-container .task-details-header-container .task-editor-container .task-editor .quill .ql-container.ql-snow p {
   color: #12160a;
 }
+body .container .main-container .task-details-header-container .task-editor-container .task-editor p {
+  color: #ef4444;
+  font-family: "Roboto";
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 400;
+}
 body .container .main-container .task-details-header-container .submission-folder-link-container {
   padding-bottom: 16px;
   padding: 10px 0px 10px 12px;

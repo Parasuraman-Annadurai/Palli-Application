@@ -1,8 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useLocation, useParams, useNavigate, Link } from "react-router-dom";
 
-import { Button, Modal, Input, DatePicker, Skeleton, notification } from "antd";
-
 import axios from "axios";
 import { Dropdown, Tooltip } from "antd";
 
@@ -26,9 +24,7 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
   const [showSwitchBatch, setShowSwitchBatch] = useState(false);
   const [batchList, setBatchList] = useState([]);
   const [currentBatch, setCurrentBatch] = useState(null);
-
-  // const [showSwitchBatch, setShowSwitchBatch] = useState(false);
-  // const [open, setOpen] = useState(false);
+  const [isLoading,setIsLoading] = useState(true);
   const [open, setOpen] = useState(false);
 
   const showDrawer = () => {
@@ -45,6 +41,7 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
   };
 
   useEffect(() => {
+    setIsLoading(true);
     if (user.role !== "Students") {
       if (batchId) {
         // On Batch, setting Applications as default page
@@ -63,8 +60,12 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
             setCurrentBatch(
               batchListData.find((batch) => batch.id === Number(batchId))
             );
+            setIsLoading(false)
           })
-          .catch((err) => console.log(err));
+          .catch((err) => {
+            console.log(err)
+            setIsLoading(false)
+          });
       }
     }
   }, [batchId]);
@@ -87,9 +88,7 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
     },
   ];
 
-  const listBatchLists = batchList.filter(
-    (batch) => batch.id !== currentBatch?.id
-  );
+
 
   return (
     <>
@@ -135,7 +134,6 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
                 ) : (
                   <p>{currentBatch?.batch_name}</p>
                 )}
-                {/* <p>{currentBatch?.batch_name}</p> */}
                 <span>
                   {currentBatch?.start_date?.slice(0, 4)}-
                   {currentBatch?.end_date?.slice(0, 4)}
@@ -143,20 +141,13 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
               </div>
             </div>
             <div className="switch-icon">
-              <img src="/icons/dropdown.svg" alt="" />
+             {user?.role !="Student" && <img src="/icons/dropdown.svg" alt="" />} 
             </div>
           </div>
         )}
         <div className="nav-links">
           <ul>
-            {/* {!isDashboardPage && (
-              <li className={`main-link`}>
-                <a href={"/dashboard"} className="navigation flex">
-                  <img src="/icons/backIcon.svg" alt={"Back to Dashboard"} />
-                  <span>{"Back to Dashboard"}</span>
-                </a>
-              </li>
-            )} */}
+            
 
             {menuList &&
               menuList.map((menu, index) => {
@@ -214,13 +205,14 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
 
       <AddBatch
         showSwitchBatch={showSwitchBatch}
-        batchList={listBatchLists}
+        batchList={batchList}
         setShowSwitchBatch={setShowSwitchBatch}
         setBatchList={setBatchList}
         open={open}
         setOpen={setOpen}
         showDrawer={showDrawer}
         onClose={onClose}
+        isLoading={isLoading}
       />
     </>
   );

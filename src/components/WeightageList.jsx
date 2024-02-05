@@ -122,6 +122,7 @@ const WeightageList = ({
                 display: "flex",
                 justifyContent: "space-between",
                 gap: "10px",
+                marginTop: "15px"
               }}
             >
               <div className="add-weightage-button">
@@ -146,7 +147,7 @@ const WeightageList = ({
                       className={`${
                         taskWeightages?.length === 0
                           ? "btn secondary-medium-default"
-                          : "btn primary-medium"
+                          : "btn secondary-medium"
                       }`}
                       onClick={() =>
                         taskWeightages?.length > 0 &&

@@ -177,7 +177,7 @@ li {
 }
 
 .comments-list-container {
-  height: 510px;
+  height: 480px;
   overflow-y: scroll;
 }
 .comments-list-container .comments-main-container {
@@ -218,6 +218,8 @@ li {
   color: #12160a;
   margin-top: 6px;
   margin-left: 42px;
+  max-width: 280px;
+  width: 100%;
 }
 
 .Input-send {
@@ -240,20 +242,21 @@ li {
 .Input-send .send img {
   width: 16px;
 }
-.Input-send input {
+.Input-send textarea {
   border: 1px solid #eaeaea;
-  padding: 10px 0px 10px 12px;
+  height: auto;
+  padding: 10px 37px 10px 12px;
   width: 100%;
   color: #12160a;
   border-radius: 4px;
   padding-left: 10px;
   font: 400 12px/16px "Roboto";
 }
-.Input-send input::placeholder {
+.Input-send textarea::placeholder {
   color: #969d88;
   font: 400 12px/16px "Roboto";
 }
-.Input-send input:focus {
+.Input-send textarea:focus {
   border: 1px solid #49a843;
   outline: none;
 }

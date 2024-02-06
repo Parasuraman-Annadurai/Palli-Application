@@ -78,10 +78,10 @@ const Comments = (props) => {
           </div>
         </div>
 
-        <input
+        <textarea
           type="text"
           value={commentText}
-          placeholder="Write a comment"
+          placeholder="Write a comment..."
           onChange={(e) => setCommentText(e.target.value)}
         />
       </div>

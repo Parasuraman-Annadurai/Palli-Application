@@ -214,7 +214,7 @@ li {
 // code started line
 
 .comments-list-container {
-  height: 510px;
+  height: 480px;
   overflow-y: scroll;
   .comments-main-container {
     padding-bottom: 24px;
@@ -258,6 +258,8 @@ li {
         color: $font-primary-color;
         margin-top: 6px;
         margin-left: 42px;
+        max-width: 280px;
+        width: 100%;
       }
     }
   }
@@ -282,10 +284,10 @@ li {
       width: 16px;
     }
   }
-  input {
+  textarea {
     border: 1px solid $border-color;
-    // height: 32px;
-    padding: 10px 0px 10px 12px;
+    height: auto;
+    padding: 10px 37px 10px 12px;
     width: 100%;
     color: $font-primary-color;
     border-radius: 4px;

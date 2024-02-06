@@ -3,12 +3,7 @@ import React, { useEffect, useState } from "react";
 import ReactQuill from "react-quill";
 import "quill/dist/quill.snow.css";
 
-import {
-  DatePicker,
-  Dropdown,
-  Skeleton,
-  notification,
-} from "antd";
+import { DatePicker, Dropdown, Skeleton, notification } from "antd";
 import axios from "axios";
 import colorObject from "../utils/validate";
 import dayjs from "dayjs";
@@ -21,7 +16,12 @@ import { useAuth } from "../context/AuthContext";
 
 import WeightageList from "./WeightageList";
 
-import { CustomIcons,toolbarConfig,validateTask,isScoreValidate } from "../utils/validate";
+import {
+  CustomIcons,
+  toolbarConfig,
+  validateTask,
+  isScoreValidate,
+} from "../utils/validate";
 
 const AssessmentView = ({
   weightageShow,
@@ -47,11 +47,10 @@ const AssessmentView = ({
   weightageErrors,
   setWeightageErros,
   setAssigneeSearch,
-  isAssigneeLoading
+  isAssigneeLoading,
 }) => {
   const { id: batchId } = useParams();
   const { token } = useAuth();
-  const [loading, setLoading] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [initialTitle, setInitialTitle] = useState("");
   const [studentScore, setStudentScore] = useState([]);
@@ -60,23 +59,23 @@ const AssessmentView = ({
   );
   const [assigneeloader, setAssigneeloader] = useState(false);
   const [weightageLists, setWeightageLists] = useState([]);
-  const [studentScoreErrors,setStudentsErrors] = useState({})
+  const [studentScoreErrors, setStudentsErrors] = useState({});
 
   const headers = {
     Authorization: `Bearer ${token.access}`,
     "Content-type": "application/json",
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     axios
-    .get(`${API_END_POINT}/api/task/${batchId}/list/weightage`, { headers })
-    .then((res) => {
-      if (res.status === 200 && res.data.message === "Success") {
-        const copyWeightageLists = [...res.data.data];
-        setWeightageLists(copyWeightageLists);
-      }
-    });
-  },[])
+      .get(`${API_END_POINT}/api/task/${batchId}/list/weightage`, { headers })
+      .then((res) => {
+        if (res.status === 200 && res.data.message === "Success") {
+          const copyWeightageLists = [...res.data.data];
+          setWeightageLists(copyWeightageLists);
+        }
+      });
+  }, []);
   // Destructure the current task
   const {
     id: taskId,
@@ -86,8 +85,6 @@ const AssessmentView = ({
     draft,
     task_weightages = [],
   } = currentAssessment;
-
- 
 
   const handleCheckboxChange = (studentId) => {
     const isSelected = [...selectedStudents].includes(studentId);
@@ -210,7 +207,7 @@ const AssessmentView = ({
 
   const handleScoreOnchange = (e, students, weightage) => {
     const scoreValue = Number(e.target.value);
-  
+
     if (scoreValue === null || isNaN(scoreValue)) {
       // If the score is null or not a number, remove the corresponding object from the state
       const filteredStudentScores = studentScore.filter(
@@ -226,13 +223,13 @@ const AssessmentView = ({
         task_weightage: weightage.id,
         task_score: scoreValue,
       };
-  
+
       const existingScoreIndex = studentScore.findIndex(
         (score) =>
           score.task_user === updatedScore.task_user &&
           score.task_weightage === updatedScore.task_weightage
       );
-  
+
       if (existingScoreIndex !== -1) {
         // If the score exists, update it
         const updatedStudentScores = [...studentScore];
@@ -245,21 +242,12 @@ const AssessmentView = ({
       }
     }
   };
-  
-  
-  
-  
-  
-
 
   return (
     <>
       {!isStudentScoreOpen ? (
         <>
           <section className="main-container">
-            {loading ? (
-              <Skeleton active paragraph={4} />
-            ) : (
               <>
                 <div className="module-header-section-container">
                   <div className="module-header-section flex">
@@ -273,7 +261,9 @@ const AssessmentView = ({
                         }
                         // onDoubleClick={onDoubleClick}
                         placeholder={"Untitled"}
-                        className={` ${formErrors["task_title"] ? "error-notify" : ""} `}
+                        className={` ${
+                          formErrors["task_title"] ? "error-notify" : ""
+                        } `}
                         // readOnly={!isEditing}
                       />
                       {/* {isEditing && (
@@ -296,8 +286,9 @@ const AssessmentView = ({
                     )} */}
                     </div>
                   </div>
-                  <p className="error-message">{formErrors["task_title"] ? formErrors["task_title"]:""}</p>
-                    
+                  <p className="error-message">
+                    {formErrors["task_title"] ? formErrors["task_title"] : ""}
+                  </p>
                 </div>
                 <div className="task-details-header-container">
                   <div className="task-label-container flex">
@@ -308,7 +299,9 @@ const AssessmentView = ({
                     <div className="task-deadline-container common-property">
                       <p className="task-deadline-label">Deadline *</p>
                       <DatePicker
-                        prefixCls={`${formErrors["due_date"] ? "error-notify" :""}`}
+                        prefixCls={`${
+                          formErrors["due_date"] ? "error-notify" : ""
+                        }`}
                         value={due_date ? dayjs(due_date) : null}
                         showTime={{ format: "HH:mm" }}
                         placeholder="Select here..."
@@ -321,7 +314,9 @@ const AssessmentView = ({
                           current && current < dayjs().startOf("day")
                         }
                       />
-                      <p className="error-message">{formErrors["due_date"] ? formErrors["due_date"]:""}</p>
+                      <p className="error-message">
+                        {formErrors["due_date"] ? formErrors["due_date"] : ""}
+                      </p>
                     </div>
                   </div>
                   <div className="task-editor-container">
@@ -331,16 +326,21 @@ const AssessmentView = ({
                         <CustomIcons />
                         <ReactQuill
                           placeholder="Type here"
-                          className={`${formErrors["task_description"] ? "error-notify":""}`}
+                          className={`${
+                            formErrors["task_description"] ? "error-notify" : ""
+                          }`}
                           value={task_description ? task_description : ""}
                           modules={toolbarConfig}
                           theme="snow"
                           onChange={(value) =>
                             handleInputChange("task_description", value)
                           }
-                        
                         />
-                        <p className="error-message">{formErrors["task_description"] ? formErrors["task_description"]:""}</p>
+                        <p className="error-message">
+                          {formErrors["task_description"]
+                            ? formErrors["task_description"]
+                            : ""}
+                        </p>
                       </>
                     </div>
                   </div>
@@ -360,8 +360,12 @@ const AssessmentView = ({
                             ? "btn primary-medium-default"
                             : "btn primary-medium"
                         }`}
-                        onClick={() => !assigneeloader && validateTask(currentAssessment,setFormErrors) ? handleSave(currentAssessment) : null}
-
+                        onClick={() =>
+                          !assigneeloader &&
+                          validateTask(currentAssessment, setFormErrors)
+                            ? handleSave(currentAssessment)
+                            : null
+                        }
                       >
                         {draft ? "Create" : "Update"}
                       </button>
@@ -369,7 +373,6 @@ const AssessmentView = ({
                   </div>
                 </div>
               </>
-            )}
           </section>
           {!draft && (
             <section className="assignee-and-weightage-container">
@@ -411,71 +414,75 @@ const AssessmentView = ({
                   </div>
                   {toggleAssigneeWeightage === 0 ? (
                     <>
-                      
                       <div className="assign-listing-container">
-                        
-
-                         <div className="assignee-search-container">
-                            <input type="input" placeholder="search..." onChange={(e)=>setAssigneeSearch(e.target.value)}/>
-                            <img
-                              src="/icons/searchIcon.svg"
-                              alt="search-icon"
-                              className="search-icon"
-                            />
-
-                        
-                          </div>
-                        {isAssigneeLoading ? <Skeleton active paragraph={4}/> : (
-                          <>
-                               <div className="select-all flex">
+                        <div className="assignee-search-container">
                           <input
-                            className="global-checkbox"
-                            type="checkbox"
-                            onChange={handleAllCheckboxChange}
-                            checked={selectedStudents.length == students.length}
+                            type="input"
+                            placeholder="search..."
+                            onChange={(e) => setAssigneeSearch(e.target.value)}
                           />
-                          <span>
-                            {selectedStudents.length === students.length
-                              ? "All Students Selected"
-                              : selectedStudents.length == 0
-                              ? "Select All Students"
-                              : `${selectedStudents.length} Selected`}
-                          </span>
+                          <img
+                            src="/icons/searchIcon.svg"
+                            alt="search-icon"
+                            className="search-icon"
+                          />
                         </div>
-                        <div className="assignee-card-listing-container">
-                          {students.map((student) => {
-                            return (
-                              <div
-                                className="individual-assignee-card flex"
-                                key={student.id}
-                              >
-                                <input
-                                  className="student-checkbox "
-                                  type="checkbox"
-                                  onChange={() =>
-                                    handleCheckboxChange(student.id)
-                                  }
-                                  checked={selectedStudents.includes(
-                                    student.id
-                                  )}
-                                />
-                                <div className="profile flex">
-                                  <div className="profile-letter">
-                                    <span>
-                                      {student?.first_name[0]}
-                                      {student?.last_name[0]}
-                                    </span>
+                        {isAssigneeLoading ? (
+                          <Skeleton active paragraph={4} />
+                        ) : (
+                          <>
+                            <div className="select-all flex">
+                              <input
+                                className="global-checkbox"
+                                type="checkbox"
+                                onChange={handleAllCheckboxChange}
+                                checked={
+                                  selectedStudents.length == students.length
+                                }
+                              />
+                              <span>
+                                {selectedStudents.length === students.length
+                                  ? "All Students Selected"
+                                  : selectedStudents.length == 0
+                                  ? "Select All Students"
+                                  : `${selectedStudents.length} Selected`}
+                              </span>
+                            </div>
+                            <div className="assignee-card-listing-container">
+                              {students.map((student) => {
+                                return (
+                                  <div
+                                    className="individual-assignee-card flex"
+                                    key={student.id}
+                                  >
+                                    <input
+                                      className="student-checkbox "
+                                      type="checkbox"
+                                      onChange={() =>
+                                        handleCheckboxChange(student.id)
+                                      }
+                                      checked={selectedStudents.includes(
+                                        student.id
+                                      )}
+                                    />
+                                    <div className="profile flex">
+                                      <div className="profile-letter">
+                                        <span>
+                                          {student?.first_name[0]}
+                                          {student?.last_name[0]}
+                                        </span>
+                                      </div>
+                                      <div className="assignee-name">
+                                        <p>
+                                          {student.first_name}{" "}
+                                          {student.last_name}
+                                        </p>
+                                      </div>
+                                    </div>
                                   </div>
-                                  <div className="assignee-name">
-                                    <p>
-                                      {student.first_name} {student.last_name}
-                                    </p>
-                                  </div>
-                                </div>
-                              </div>
-                            );
-                          })}
-                        </div>
+                                );
+                              })}
+                            </div>
                           </>
                         )}
                       </div>
@@ -503,38 +510,41 @@ const AssessmentView = ({
         </>
       ) : (
         <main className="main-container">
-           {currentAssessment?.task_users?.length > 0 && (
-               <div className="task-heading">
-               <p>{task_title}</p>
-   
-               <div className="search-container">
-                 <input type="input" placeholder="search..." />
-                 <img
-                   src="/icons/searchIcon.svg"
-                   alt="search-icon"
-                   className="search-icon"
-                 />
-   
-                 <img
-                   src="/icons/filterIcon.svg"
-                   alt="filter-icon"
-                   className="filter-icon"
-                 />
-               </div>
-                  </div>
-           )}
+          {currentAssessment?.task_users?.length > 0 && (
+            <div className="task-heading">
+              <p>{task_title}</p>
+
+              <div className="search-container">
+                <input type="input" placeholder="search..." />
+                <img
+                  src="/icons/searchIcon.svg"
+                  alt="search-icon"
+                  className="search-icon"
+                />
+
+                <img
+                  src="/icons/filterIcon.svg"
+                  alt="filter-icon"
+                  className="filter-icon"
+                />
+              </div>
+            </div>
+          )}
           {currentAssessment?.task_users?.length > 0 ? (
             currentAssessment.task_users.map((students, index) => {
               return (
                 <>
-                  <div className="task-container" >
-                   
+                  <div className="task-container">
                     <div className="task-user-list-container flex" key={index}>
                       <div className="student-info flex">
                         <div className="student-name-container">
                           <p>
-                            {students["user_details"]["first_name"][0]?.toUpperCase()}
-                            {students["user_details"]["last_name"][0]?.toUpperCase()}
+                            {students["user_details"][
+                              "first_name"
+                            ][0]?.toUpperCase()}
+                            {students["user_details"][
+                              "last_name"
+                            ][0]?.toUpperCase()}
                           </p>
                         </div>
                         <div className="student-email-container">
@@ -553,9 +563,8 @@ const AssessmentView = ({
                           style={{
                             backgroundColor:
                               colorObject[students?.task_status]
-                                ?.backgroundColor ,
-                            color:
-                              colorObject[students?.task_status]?.color 
+                                ?.backgroundColor,
+                            color: colorObject[students?.task_status]?.color,
                           }}
                         >
                           {students?.task_status}
@@ -572,7 +581,16 @@ const AssessmentView = ({
                       <div className="student-file">
                         <p>Submission Link</p>
                         <p>
-                          {students["submission_link"] !== null ? <a  href={`${students["submission_link"]}` } target="_blank">{students["submission_link"]}</a> : "N/A"}
+                          {students["submission_link"] !== null ? (
+                            <a
+                              href={`${students["submission_link"]}`}
+                              target="_blank"
+                            >
+                              {students["submission_link"]}
+                            </a>
+                          ) : (
+                            "N/A"
+                          )}
                         </p>
                       </div>
                       <div className="student-work">
@@ -582,8 +600,14 @@ const AssessmentView = ({
                                 className="secondary-btn-sm"
                                 onClick={(e) => {
                                   setActiveWeightageIndex(index);
-                                  if(activeWeightageIndex === index){
-                                    if(isScoreValidate(task_weightages,studentScore,setStudentsErrors)){
+                                  if (activeWeightageIndex === index) {
+                                    if (
+                                      isScoreValidate(
+                                        task_weightages,
+                                        studentScore,
+                                        setStudentsErrors
+                                      )
+                                    ) {
                                       handleAddScore(studentScore);
                                     }
                                   }
@@ -613,64 +637,74 @@ const AssessmentView = ({
                             )}
                       </div>
                     </div>
-                   
 
                     {activeWeightageIndex === index && (
-                     <>
-                       <div className="applied-weightage-list-container flex" style={{gap:"10px"}}>
-                        {currentAssessment.task_weightages &&
-                          currentAssessment.task_weightages.map(
-                            (weightage, weightageIndex) => (
-                            <>
-                              <div
-                                key={weightageIndex}
-                                className="applied-weightage-card flex"
-                              >
-                                
-                                <div className="applied-weightage-name">
-                                    <p>
-                                      
-                                    {weightageLists && weightageLists.length > 0 && (
-                                      (() => {
-                                        const foundWeightage = weightageLists.find((weightageName) => weightageName.id === weightage.weightage);
+                      <>
+                        <div
+                          className="applied-weightage-list-container flex"
+                          style={{ gap: "10px" }}
+                        >
+                          {currentAssessment.task_weightages &&
+                            currentAssessment.task_weightages.map(
+                              (weightage, weightageIndex) => (
+                                <>
+                                  <div
+                                    key={weightageIndex}
+                                    className="applied-weightage-card flex"
+                                  >
+                                    <div className="applied-weightage-name">
+                                      <p>
+                                        {weightageLists &&
+                                          weightageLists.length > 0 &&
+                                          (() => {
+                                            const foundWeightage =
+                                              weightageLists.find(
+                                                (weightageName) =>
+                                                  weightageName.id ===
+                                                  weightage.weightage
+                                              );
 
-                                        return foundWeightage && (
-                                          <>
-                                            <p>{foundWeightage.weightage} {Number(weightage.weightage_percentage)}</p>
-                                          </>
-                                        );
-                                      })()
-                                    )}
+                                            return (
+                                              foundWeightage && (
+                                                <>
+                                                  <p>
+                                                    {foundWeightage.weightage}{" "}
+                                                    {Number(
+                                                      weightage.weightage_percentage
+                                                    )}
+                                                  </p>
+                                                </>
+                                              )
+                                            );
+                                          })()}
+                                      </p>
+                                    </div>
 
-
-                                    </p>
-                                 </div>
-
-
-                                <div className="weightage-checkbox">
-                                  <input
-                                    type="text"
-                                    onChange={(e) => {handleScoreOnchange(e,students, weightage);
-                                    }}
-                                  />
-                                </div>
-                              
-                              </div>
-                              <div className="feedback">
-                                  <textarea type="text"   placeholder="Type your feedback here..." >
-                                    </textarea>
-                                </div>
-
-                            </>
-                            )
-                          )}
-                         
-                      </div>
-                      <p className="error-message">{studentScoreErrors["score"] ? studentScoreErrors["score"]:""}</p>
-                     </>
+                                    <div className="weightage-checkbox">
+                                      <input
+                                        type="text"
+                                        onChange={(e) => {
+                                          handleScoreOnchange(
+                                            e,
+                                            students,
+                                            weightage
+                                          );
+                                        }}
+                                      />
+                                    </div>
+                                  </div>
+                                </>
+                              )
+                            )}
+                        </div>
+                        <p className="error-message">
+                          {studentScoreErrors["score"]
+                            ? studentScoreErrors["score"]
+                            : ""}
+                        </p>
+                      </>
                     )}
                   </div>
-                  
                 </>
               );
             })
@@ -680,10 +714,16 @@ const AssessmentView = ({
                 <img src="/icons/select-something.svg" alt="" />
                 <p className="select-something-heading">
                   No Assignee has been assigned to this {type}
-                  <button className="btn primary-medium" style={{marginTop:"10px"}} onClick={()=>{
-                    setIsStudentScoreOpen(!isStudentScoreOpen)
-                    setToggleAssigneeWeightage(0)
-                  }}>Add Assignee</button>
+                  <button
+                    className="btn primary-medium"
+                    style={{ marginTop: "10px" }}
+                    onClick={() => {
+                      setIsStudentScoreOpen(!isStudentScoreOpen);
+                      setToggleAssigneeWeightage(0);
+                    }}
+                  >
+                    Add Assignee
+                  </button>
                 </p>
               </div>
             </div>

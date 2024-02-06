@@ -220,15 +220,14 @@ const StudentLogin = ({ type }) => {
             })}
         </div>
       </section>
-      {isLoading ? (
-        <Skeleton active paragraph={{ rows: 4 }} />
-      ) : (
-        <>
-          {tasksLists.map((tasksList) => {
+      <div className="main-container">
+        {isLoading ? <Skeleton active paragraph={6}/> : (
+          <>
+             {tasksLists.map((tasksList) => {
             if (tasksList.id == selectedTaskId) {
               return (
-                <main className="main-container" key={tasksList.id}>
-                  <div className="module-header-section flex">
+                <>
+                  <div className="module-header-section flex" key={tasksList.id}>
                     <div className="module-title-section flex">
                       <h3>{tasksList.task.task_title}</h3>
                     </div>
@@ -259,10 +258,7 @@ const StudentLogin = ({ type }) => {
                             defaultValue={tasksList.task_status}
                             style={{ width: "70%" }}
                             suffixIcon={
-                              <img
-                                src="/icons/drop.svg"
-                                alt="Sample SVG"
-                              />
+                              <img src="/icons/drop.svg" alt="Sample SVG" />
                             }
                             dropdownStyle={{ zIndex: 9999 }}
                           >
@@ -323,8 +319,7 @@ const StudentLogin = ({ type }) => {
                                       {weightageDetails?.task_score?.map((a) =>
                                         Number(a.task_score)
                                       )}
-                                    </span>
-                                    {" "}
+                                    </span>{" "}
                                   </div>
                                 )
                               )}
@@ -349,7 +344,10 @@ const StudentLogin = ({ type }) => {
                       )}
                     </div>
                   </div>
-                  <div className="student-task-label-container flex">
+
+                  {/* Future used */}
+                  
+                  {/* <div className="student-task-label-container flex">
                     <h3>Task File</h3>
                     <div className="horizon-line"></div>
                   </div>
@@ -366,8 +364,7 @@ const StudentLogin = ({ type }) => {
                       </label>
                     </div>
                     <input type="file" className="file-input" />
-                  </div>
-
+                  </div> */}
                   <Modal
                     prefixCls="submission-modal"
                     title={<span>Submission Link</span>}
@@ -416,7 +413,7 @@ const StudentLogin = ({ type }) => {
                       />
                     </div>
                   </Modal>
-                </main>
+                </>
               );
             }
             return null;
@@ -434,8 +431,9 @@ const StudentLogin = ({ type }) => {
               </div>
             </div>
           )}
-        </>
-      )}
+          </>
+        )}
+      </div>
     </>
   );
 };

@@ -73,7 +73,7 @@ const AssessmentModule = ({ type }) => {
           console.log(error);
         });
     }
-  }, [assessmentSearchWord, type,isMode]);
+  }, [assessmentSearchWord, type]);
 
   useEffect(() => {
     setIsAssigneeLoading(true)

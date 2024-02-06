@@ -258,15 +258,7 @@ const AssessmentView = ({
   
   
   
-  const handleKeyPress = (e) => {
-    const keyCode = e.keyCode || e.which;
-    const keyValue = String.fromCharCode(keyCode);
-    const validCharacters = /^[0-9.\b]+$/; // Allow digits, dot (.), and backspace (\b)
-
-    if (!validCharacters.test(keyValue)) {
-      e.preventDefault();
-    }
-  };
+  
 
   return (
     <>

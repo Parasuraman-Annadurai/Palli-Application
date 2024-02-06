@@ -75,7 +75,7 @@ const AssessmentView = ({
   );
   const [assigneeloader, setAssigneeloader] = useState(false);
   const [weightageLists, setWeightageLists] = useState([]);
-  const [openComments, setOpenComments] = useState(false);
+  const [openComments, setOpenComments] = useState(null);
   const [studentScoreErrors, setStudentsErrors] = useState({});
 
   const headers = {
@@ -617,7 +617,7 @@ const AssessmentView = ({
                       <div className="student-comment">
                         <img
                           src="/icons/comment-fill.svg"
-                          onClick={() => setOpenComments(true)}
+                          onClick={() => setOpenComments(students.id)}
                           alt="comment-icon"
                         />
                       </div>
@@ -666,33 +666,32 @@ const AssessmentView = ({
                       </div>
                     </div>
                     {/* this modal open comment section for Admin  for functionality purpose*/}
-                    <Drawer
-                      title={
-                        <div
-                          style={{
-                            fontWeight: 500,
-                            fontSize: "16px",
-                            fontFamily: "Roboto",
-                          }}
-                        >
-                          Comments
-                        </div>
-                      }
-                      onClose={() => setOpenComments(false)}
-                      open={openComments}
-                    >
-                      <Comments
-                        comments={students?.comments}
-                        role={"Admin"}
-                        commenterId={students.id}
-                        commentText={commentText}
-                        isCommentEditId={isCommentEditId}
-                        setIsCommentEditId={setIsCommentEditId}
-                        setCommentText={setCommentText}
-                        handleSendComment={handleSendComment}
-                        handleDeleteComment={handleDeleteComment}
-                      />
-                    </Drawer>
+
+                      <Drawer
+                        title={<div>Comments</div>}
+                        onClose={() => {
+                          setOpenComments(null)
+                          setCommentText("")
+                        }}
+                        open={openComments !== null}
+                      >
+                        {/* Pass comments state to Comments component */}
+                        <Comments
+                         comments={
+                          currentAssessment.task_users.find(
+                            (student) => student.id === openComments
+                          )?.comments || []
+                        }
+                          role={"Admin"}
+                          commenterId={openComments}
+                          commentText={commentText}
+                          isCommentEditId={isCommentEditId}
+                          setIsCommentEditId={setIsCommentEditId}
+                          setCommentText={setCommentText}
+                          handleSendComment={handleSendComment}
+                          handleDeleteComment={handleDeleteComment}
+                        />
+                      </Drawer>
 
                     {activeWeightageIndex === index && (
                       <>

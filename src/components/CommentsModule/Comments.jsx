@@ -1,8 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import dayjs from "dayjs";
 
 import "./scss/Comments.css";
-
 const Comments = (props) => {
   const {
     comments,
@@ -23,11 +22,10 @@ const Comments = (props) => {
       <div className="comments-list-container">
         <div>
           {comments &&
-            comments?.map((comment) => {
-              console.log(comment);
+            comments?.map((comment, index) => {
               return (
                 <>
-                  <div className="comments-main-container">
+                  <div className="comments-main-container" key={index}>
                     <div className="comments-section flex">
                       <div className="profile-image flex">GG</div>
 

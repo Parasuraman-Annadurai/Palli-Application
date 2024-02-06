@@ -1,6 +1,7 @@
 import Quill from "quill";
 
 
+
 export const isEmailValid = (email) => {
   const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
   switch (true) {
@@ -284,4 +285,9 @@ export const toolbarConfig = {
 };
 
 
+
+export const getPermission = (permissions,permissionKey,mode)=>{
+  const userPermissions = permissions[permissionKey];
+  return userPermissions.includes(mode);
+}
 

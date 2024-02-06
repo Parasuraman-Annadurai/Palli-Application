@@ -16,11 +16,12 @@ import useFilter from "../../hooks/useFilter";
 
 import "./scss/css/Applications.css";
 
+
 const Applications = () => {
   const filterFields = useFilter("applicant");
   const { id: batchId } = useParams();
   const navigate = useNavigate();
-  const { token } = useAuth();
+  const { token,user } = useAuth();
   const [isLoading, setLoading] = useState(true);
   const [popoverVisible, setPopoverVisible] = useState(false);
 
@@ -30,7 +31,6 @@ const Applications = () => {
   const [limit, setLimit] = useState(5);
   const [page, setPage] = useState(1);
   const [filterValues, setFilterValues] = useState({});
-
 
   const headers = {
     Authorization: `Bearer ${token.access}`,

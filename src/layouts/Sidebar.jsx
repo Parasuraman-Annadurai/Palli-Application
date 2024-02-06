@@ -17,6 +17,8 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
 
   const { token, user } = useAuth();
 
+  console.log(user);
+
   const currentPath = useLocation().pathname;
   const isDashboardPage = currentPath.includes(DASHBOARD);
 
@@ -147,33 +149,26 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
         )}
         <div className="nav-links">
           <ul>
-            
-
             {menuList &&
               menuList.map((menu, index) => {
-               
-
+                const capitalizedMenuId = menu.id.charAt(0).toUpperCase() + menu.id.slice(1).toLowerCase();
+                const hasPermission = user.permissions.hasOwnProperty(capitalizedMenuId);
+                if (!hasPermission) return null;
                 return (
                   <li
                     key={index}
                     onClick={() => setActive(menu.id)}
-                    className={`main-link ${
-                      menu.id === active ? "main-active" : ""
-                    }`}
+                    className={`main-link ${menu.id === active ? "main-active" : ""}`}
                   >
                     <Link
-                      to={
-                        isDashboardPage
-                          ? "/dashboard"
-                          : `/batch/${batchId}/${menu.id}`
-                      }
+                      to={isDashboardPage ? "/dashboard" : `/batch/${batchId}/${menu.id}`}
                       className="flex"
                     >
                       <img src="/icons/application.svg" alt={menu.label} />
                       <span>{menu.label}</span>
                     </Link>
                   </li>
-                ) 
+                );
               })}
           </ul>
         </div>
@@ -202,7 +197,6 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
           </Dropdown>
         </div>
       </nav>
-
       <AddBatch
         showSwitchBatch={showSwitchBatch}
         batchList={batchList}

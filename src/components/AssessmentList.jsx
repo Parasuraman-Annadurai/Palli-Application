@@ -4,6 +4,12 @@ import { Skeleton } from "antd";
 
 import dayjs from "dayjs";
 
+import { getPermission } from "../utils/validate";
+
+
+import { useAuth } from "../context/AuthContext";
+
+
 const TaskCard = ({
   loading,
   assessment,
@@ -20,7 +26,7 @@ const TaskCard = ({
       : text;
   };
 
-
+  const {user} = useAuth();
   return (
     <>
       <div
@@ -46,10 +52,8 @@ const TaskCard = ({
             <div className="task-details">
               <div className="task-name-with-icon flex">
                 <h2>{truncateText(assessment.task_title, 15)}</h2>
-
                 <>
                   <img
-                    
                     src={selectedAssessment === assessment.id  && isMode == "edit" ? "/icons/edit-pencil-fill.svg" : "/icons/edit-pencil.svg"}
                     className="edit-icon"
                     alt="edit-icon"
@@ -60,17 +64,19 @@ const TaskCard = ({
                        setIsMode("edit")
                     }}
                   />
-
-                  <img
-                    src="/icons/deleteIcon.svg"
-                    alt="delete-icon"
-                    className="delete-icon"
-                    id={assessment.id}
-                    onClick={(e) => {
-                      handleDelete(assessment.id);
-                      e.stopPropagation();
-                    }}
-                  />
+                  {getPermission(user.permissions,"Task","delete") && (
+                     <img
+                     src="/icons/deleteIcon.svg"
+                     alt="delete-icon"
+                     className="delete-icon"
+                     id={assessment.id}
+                     onClick={(e) => {
+                       handleDelete(assessment.id);
+                       e.stopPropagation();
+                     }}
+                   />
+                  )}
+                 
                 </>
               </div>
               <p className="task-description">
@@ -105,6 +111,7 @@ const AssessmentList = ({
   isMode,
   setIsMode
 }) => {
+  const { user } = useAuth();
 
   return (
     <>
@@ -130,9 +137,12 @@ const AssessmentList = ({
           )}
         </div>
         <div className="create-container">
-          <button className="btn create-btn" onClick={handleAdd}>
-            <span>+</span>Create {mode}
-          </button>
+          {getPermission(user.permissions, "Task", "create") && (
+            <button className="btn create-btn" onClick={handleAdd}>
+              <span>+</span>Create {mode}
+            </button>
+          )}
+
         </div>
         <div className="task-list-container">
           {assessmentList &&

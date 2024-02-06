@@ -76,7 +76,7 @@ const Comments = (props) => {
           </div>
         </div>
 
-        <textarea
+        <input
           type="text"
           value={commentText}
           placeholder="Write a comment"

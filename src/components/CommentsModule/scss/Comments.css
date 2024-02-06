@@ -176,10 +176,14 @@ li {
   opacity: 30%;
 }
 
-.comments-main-container {
+.comments-list-container {
+  height: 510px;
+  overflow-y: scroll;
+}
+.comments-list-container .comments-main-container {
   padding-bottom: 24px;
 }
-.comments-main-container .comments-section .profile-image {
+.comments-list-container .comments-main-container .comments-section .profile-image {
   width: 32px;
   height: 32px;
   background-color: #d3f9cd;
@@ -188,31 +192,37 @@ li {
   justify-content: center;
   border-radius: 50%;
 }
-.comments-main-container .comments-section .user-detail {
+.comments-list-container .comments-main-container .comments-section .user-detail {
   flex: 1;
   justify-content: space-between;
 }
-.comments-main-container .comments-section .user-detail .name {
+.comments-list-container .comments-main-container .comments-section .user-detail .name {
   font: 500 12px/16px "Roboto";
   color: #12160a;
   margin-left: 10px;
 }
-.comments-main-container .comments-section .user-detail .comment-date {
+.comments-list-container .comments-main-container .comments-section .user-detail .icons {
+  display: flex;
+}
+.comments-list-container .comments-main-container .comments-section .user-detail .comment-date {
   font: 400 10px/14px "Roboto";
   color: #969d88;
   margin-top: 2px;
 }
-.comments-main-container .comments-section .user-detail .icons img {
+.comments-list-container .comments-main-container .comments-section .user-detail .icons img {
   width: 16px;
   cursor: pointer;
 }
-.comments-main-container .comments p {
+.comments-list-container .comments-main-container .comments p {
   font: 400 12px/16px "Roboto";
   color: #12160a;
   margin-top: 6px;
   margin-left: 42px;
 }
 
+.Input-send {
+  position: relative;
+}
 .Input-send .input-wrapper {
   display: flex;
   justify-content: end;
@@ -220,26 +230,32 @@ li {
 }
 .Input-send .send {
   background-color: #49a843;
-  padding: 5px;
+  padding: 7px;
   border-radius: 4px;
   cursor: pointer;
+  position: absolute;
+  top: 8px;
+  right: 3px;
 }
 .Input-send .send img {
   width: 16px;
 }
-.Input-send textarea {
+.Input-send input {
   border: 1px solid #eaeaea;
-  height: 90px;
+  padding: 10px 0px 10px 12px;
   width: 100%;
   color: #12160a;
   border-radius: 4px;
-  padding-top: 10px;
   padding-left: 10px;
   font: 400 12px/16px "Roboto";
 }
-.Input-send textarea::placeholder {
+.Input-send input::placeholder {
   color: #969d88;
   font: 400 12px/16px "Roboto";
+}
+.Input-send input:focus {
+  border: 1px solid #49a843;
+  outline: none;
 }
 
 /*# sourceMappingURL=Comments.css.map */

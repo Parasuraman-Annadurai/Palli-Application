@@ -209,9 +209,12 @@ const AssessmentView = ({
   };
 
   const handleScoreOnchange = (e, students, weightage) => {
-    const scoreValue = Number(e.target.value);
-  
-    if (scoreValue === null || isNaN(scoreValue)) {
+    const scoreValue = e.target.value;
+    const {name}  = e.target;
+    if(studentScoreErrors[name]){
+      delete studentScoreErrors[name];
+    }
+    if (scoreValue === "" ) {
       // If the score is null or not a number, remove the corresponding object from the state
       const filteredStudentScores = studentScore.filter(
         (score) =>
@@ -224,7 +227,7 @@ const AssessmentView = ({
       const updatedScore = {
         task_user: students.id,
         task_weightage: weightage.id,
-        task_score: scoreValue,
+        task_score: Number(scoreValue),
       };
   
       const existingScoreIndex = studentScore.findIndex(
@@ -247,6 +250,7 @@ const AssessmentView = ({
   };
   
   
+  console.log(studentScoreErrors);
   
   
   
@@ -649,6 +653,7 @@ const AssessmentView = ({
                                 <div className="weightage-checkbox">
                                   <input
                                     type="text"
+                                    name="score"
                                     onChange={(e) => {handleScoreOnchange(e,students, weightage);
                                     }}
                                   />

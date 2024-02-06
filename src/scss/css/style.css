@@ -1204,24 +1204,6 @@ body .container .main-container .applied-weightage-list-container .applied-weigh
 body .container .main-container .applied-weightage-list-container .applied-weightage-card .weightage-checkbox input::-webkit-inner-spin-button {
   display: none;
 }
-body .container .main-container .applied-weightage-list-container .feedback {
-  width: 100%;
-}
-body .container .main-container .applied-weightage-list-container .feedback textarea {
-  padding: 10px 18px 10px 18px;
-  border-radius: 4px;
-  border: 1px solid #eaeaea;
-  max-width: 750px;
-  min-width: 750px;
-  min-height: 56px;
-}
-body .container .main-container .applied-weightage-list-container .feedback textarea:focus {
-  border: 1px solid #49a843;
-}
-body .container .main-container .applied-weightage-list-container .feedback textarea::placeholder {
-  font: 400 12px/16px "Roboto";
-  color: #969d88;
-}
 
 .ant-picker-focused {
   border: 1px solid #49a843 !important;

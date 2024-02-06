@@ -210,7 +210,12 @@ const AssessmentView = ({
 
   const handleScoreOnchange = (e, students, weightage) => {
     const scoreValue = e.target.value;
-    const {name}  = e.target;
+    const { name, value } = e.target;
+    const validInput = /^\d*\.?\d*$/.test(scoreValue); // Check if the input is a valid number
+    if (!validInput && scoreValue !== "") {
+      // If the input is not a valid number and not empty, return without further processing
+      return;
+    }
     if(studentScoreErrors[name]){
       delete studentScoreErrors[name];
     }
@@ -227,7 +232,7 @@ const AssessmentView = ({
       const updatedScore = {
         task_user: students.id,
         task_weightage: weightage.id,
-        task_score: Number(scoreValue),
+        task_score: Number(value),
       };
   
       const existingScoreIndex = studentScore.findIndex(
@@ -249,12 +254,19 @@ const AssessmentView = ({
     }
   };
   
-  
-  console.log(studentScoreErrors);
-  
-  
-  
 
+  
+  
+  
+  const handleKeyPress = (e) => {
+    const keyCode = e.keyCode || e.which;
+    const keyValue = String.fromCharCode(keyCode);
+    const validCharacters = /^[0-9.\b]+$/; // Allow digits, dot (.), and backspace (\b)
+
+    if (!validCharacters.test(keyValue)) {
+      e.preventDefault();
+    }
+  };
 
   return (
     <>
@@ -652,7 +664,7 @@ const AssessmentView = ({
 
                                 <div className="weightage-checkbox">
                                   <input
-                                    type="text"
+                                    type="number"
                                     name="score"
                                     onChange={(e) => {handleScoreOnchange(e,students, weightage);
                                     }}
@@ -671,18 +683,22 @@ const AssessmentView = ({
               );
             })
           ) : (
-            <div className="select-something-container flex">
-              <div className="image-container ">
-                <img src="/icons/select-something.svg" alt="" />
-                <p className="select-something-heading">
-                  No Assignee has been assigned to this {type}
-                  <button className="btn primary-medium" style={{marginTop:"10px"}} onClick={()=>{
-                    setIsStudentScoreOpen(!isStudentScoreOpen)
-                    setToggleAssigneeWeightage(0)
-                  }}>Add Assignee</button>
-                </p>
-              </div>
-            </div>
+                <>
+                  {!draft && (
+                    <div className="select-something-container flex">
+                      <div className="image-container ">
+                        <img src="/icons/select-something.svg" alt="" />
+                        <p className="select-something-heading">
+                          No Assignee has been assigned to this {type}
+                          <button className="btn primary-medium" style={{ marginTop: "10px" }} onClick={() => {
+                            setIsStudentScoreOpen(!isStudentScoreOpen)
+                            setToggleAssigneeWeightage(0)
+                          }}>Add Assignee</button>
+                        </p>
+                      </div>
+                    </div>
+                  )}
+                </>
           )}
         </main>
       )}

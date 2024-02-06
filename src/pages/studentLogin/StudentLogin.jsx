@@ -307,8 +307,9 @@ const StudentLogin = ({ type }) => {
                     <div className="module-title-section flex">
                       <h3>{tasksList.task.task_title}</h3>
                     </div>
-                    <div className="comments">
-                      <button className="btn secondary-medium" onClick={()=>setOpenCommentSection(true)}>Comments</button>
+                    <div className="comments" onClick={()=>setOpenCommentSection(true)}>
+                      <img src="/icons/comment-border.svg" alt="" />
+                      <button className="secondary-border-btn" >Comments</button>
                     </div>
                   </div>
 
@@ -335,7 +336,7 @@ const StudentLogin = ({ type }) => {
                             }
                             defaultValue={tasksList.task_status}
                     
-                            style={{ width: "60%"}}
+                            style={{ width: "70%"}}
                             
                             suffixIcon={<img
                               src='/icons/drop.svg'

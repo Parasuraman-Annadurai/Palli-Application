@@ -223,16 +223,6 @@ li {
   font-family: $font-Roboto;
   outline: none;
   border-radius: 4px;
-  &:hover {
-    color: $btn-hover-color;
-    border: 1px solid $btn-hover-color;
-  }
-
-  &:active {
-    color: $primary-color;
-    border: 1px solid $primary-color;
-    opacity: 30%;
-  }
 }
 
 .error-message {
@@ -880,7 +870,7 @@ body {
       }
 
       .task-details-header-container {
-        // height: calc(100vh - 110px);
+        height: calc(100vh - 110px);
         overflow-y: auto;
         &::-webkit-scrollbar {
           width: 0;
@@ -1025,16 +1015,15 @@ body {
                 p {
                   color: $font-primary-color;
                 }
-               
               }
             }
 
             p {
-                color: $error-message;
-                font-family: $font-Roboto;
-                font-size: 12px;
-                line-height: 16px;
-                font-weight: 400;
+              color: $error-message;
+              font-family: $font-Roboto;
+              font-size: 12px;
+              line-height: 16px;
+              font-weight: 400;
             }
           }
         }
@@ -1178,6 +1167,14 @@ body {
                 }
               }
             }
+
+            // .all-btns {
+            //   display: flex;
+            //   justify-content: space-between;
+            //   .apply-weightage {
+            //     flex: 1;
+            //   }
+            // }
           }
         }
 
@@ -1416,7 +1413,7 @@ body {
             p {
               background-color: #d3f9cd;
               color: $font-primary-color;
-              padding: 5.5px 5.6px;
+              padding: 8px 9.5px;
               border-radius: 4px;
             }
           }
@@ -1501,6 +1498,9 @@ body {
             height: 16px;
           }
         }
+        .student-comment {
+          cursor: pointer;
+        }
         .student-work {
           max-width: 115px;
           width: 100%;
@@ -1518,15 +1518,12 @@ body {
           }
         }
       }
-
       hr {
         border: 1px solid $border-color;
       }
       .applied-weightage-list-container {
         // border: 1px solid $border-color;
-        gap: 10px;
         padding: 14px 0px 16px 16px;
-        flex-flow: column;
 
         .applied-weightage-card {
           align-items: center;
@@ -1552,16 +1549,11 @@ body {
             height: 28px;
             border: 1px solid $border-color;
             background-color: #ffff;
-            padding-left: 5px;
             // display: flex;
             // align-items: center;
             // justify-content: center;
           }
-          .weightage-checkbox input::-webkit-inner-spin-button{
-            display: none;
-          }
         }
-      
       }
     }
   }
@@ -1575,4 +1567,34 @@ body {
 }
 .ant-select-selector:hover {
   border: 1px solid $primary-color !important;
+}
+
+.react-quill {
+  .ql-snow.ql-toolbar button:hover,
+  .ql-snow .ql-toolbar button:hover,
+  .ql-snow.ql-toolbar button:focus,
+  .ql-snow .ql-toolbar button:focus,
+  .ql-snow.ql-toolbar button.ql-active,
+  .ql-snow .ql-toolbar button.ql-active,
+  .ql-snow.ql-toolbar .ql-picker-label:hover,
+  .ql-snow .ql-toolbar .ql-picker-label:hover,
+  .ql-snow.ql-toolbar .ql-picker-label.ql-active,
+  .ql-snow .ql-toolbar .ql-picker-label.ql-active,
+  .ql-snow.ql-toolbar .ql-picker-item:hover,
+  .ql-snow .ql-toolbar .ql-picker-item:hover,
+  .ql-snow.ql-toolbar .ql-picker-item.ql-selected,
+  .ql-snow .ql-toolbar .ql-picker-item.ql-selected {
+    color: $primary-color;
+  }
+  .ql-snow.ql-toolbar .ql-picker-label {
+    color: $font-secondary-color;
+    .ql-stroke {
+      stroke: $font-secondary-color;
+    }
+    .ql-bold {
+      &:hover {
+        color: $primary-color;
+      }
+    }
+  }
 }

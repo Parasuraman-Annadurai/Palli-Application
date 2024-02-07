@@ -43,7 +43,9 @@ const WeightageList = ({
                 >
                   <div className="weightage-select">
                     <Select
-                      style={{ width: "170px" }}
+                      style={{ width: "170px", opacity: selectedStudents.length > 0 ? 0.5 : 1,
+                      cursor:
+                        selectedStudents.length > 0 ? "not-allowed" : "auto", }}
                       placeholder={"Select Weightage"}
                       value={taskWeightage.weightage}
                       onChange={(value) =>
@@ -85,6 +87,9 @@ const WeightageList = ({
                         paddingBottom: 7.5,
                         paddingLeft: 5,
                         paddingRight: 5,
+                        opacity: selectedStudents.length > 0 ? 0.5 : 1,
+                        cursor:
+                          selectedStudents.length > 0 ? "not-allowed" : "auto",
                       }}
                     />
                   </div>
@@ -101,6 +106,12 @@ const WeightageList = ({
                           src="/icons/deleteIcon.svg"
                           alt="delete-icon"
                           className="delete-icon"
+                          style={{
+                            cursor: selectedStudents.length
+                              ? "not-allowed"
+                              : "auto",
+                              opacity: selectedStudents.length > 0 ? 0.5 : 1,
+                          }}
                         />
                       </span>
                     </div>
@@ -122,7 +133,7 @@ const WeightageList = ({
                 display: "flex",
                 justifyContent: "space-between",
                 gap: "10px",
-                marginTop: "15px"
+                marginTop: "15px",
               }}
             >
               <div className="add-weightage-button">

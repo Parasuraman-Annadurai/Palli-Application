@@ -665,6 +665,7 @@ body .container .main-container .module-header-section-container .module-header-
   background-color: #f8fbf2;
 }
 body .container .main-container .task-details-header-container {
+  height: calc(100vh - 110px);
   overflow-y: auto;
 }
 body .container .main-container .task-details-header-container::-webkit-scrollbar {
@@ -1058,7 +1059,7 @@ body .container .main-container .task-user-list-container .student-info {
 body .container .main-container .task-user-list-container .student-info .student-name-container p {
   background-color: #d3f9cd;
   color: #12160a;
-  padding: 5.5px 5.6px;
+  padding: 8px 9.5px;
   border-radius: 4px;
 }
 body .container .main-container .task-user-list-container .student-info .student-email-container .student-name {
@@ -1133,6 +1134,9 @@ body .container .main-container .task-user-list-container .student-file img {
   width: 16px;
   height: 16px;
 }
+body .container .main-container .task-user-list-container .student-comment {
+  cursor: pointer;
+}
 body .container .main-container .task-user-list-container .student-work {
   max-width: 115px;
   width: 100%;
@@ -1150,15 +1154,6 @@ body .container .main-container .task-user-list-container .student-work button {
   border-radius: 4px;
   cursor: pointer;
 }
-body .container .main-container .task-user-list-container .student-work button:hover {
-  color: #33762f;
-  border: 1px solid #33762f;
-}
-body .container .main-container .task-user-list-container .student-work button:active {
-  color: #49a843;
-  border: 1px solid #49a843;
-  opacity: 30%;
-}
 body .container .main-container .task-user-list-container .student-work img {
   width: 16px;
   height: 16px;
@@ -1170,9 +1165,7 @@ body .container .main-container hr {
   border: 1px solid #eaeaea;
 }
 body .container .main-container .applied-weightage-list-container {
-  gap: 10px;
   padding: 14px 0px 16px 16px;
-  flex-flow: column;
 }
 body .container .main-container .applied-weightage-list-container .applied-weightage-card {
   align-items: center;
@@ -1199,10 +1192,6 @@ body .container .main-container .applied-weightage-list-container .applied-weigh
   height: 28px;
   border: 1px solid #eaeaea;
   background-color: white;
-  padding-left: 5px;
-}
-body .container .main-container .applied-weightage-list-container .applied-weightage-card .weightage-checkbox input::-webkit-inner-spin-button {
-  display: none;
 }
 
 .ant-picker-focused {
@@ -1215,6 +1204,32 @@ body .container .main-container .applied-weightage-list-container .applied-weigh
 
 .ant-select-selector:hover {
   border: 1px solid #49a843 !important;
+}
+
+.react-quill .ql-snow.ql-toolbar button:hover,
+.react-quill .ql-snow .ql-toolbar button:hover,
+.react-quill .ql-snow.ql-toolbar button:focus,
+.react-quill .ql-snow .ql-toolbar button:focus,
+.react-quill .ql-snow.ql-toolbar button.ql-active,
+.react-quill .ql-snow .ql-toolbar button.ql-active,
+.react-quill .ql-snow.ql-toolbar .ql-picker-label:hover,
+.react-quill .ql-snow .ql-toolbar .ql-picker-label:hover,
+.react-quill .ql-snow.ql-toolbar .ql-picker-label.ql-active,
+.react-quill .ql-snow .ql-toolbar .ql-picker-label.ql-active,
+.react-quill .ql-snow.ql-toolbar .ql-picker-item:hover,
+.react-quill .ql-snow .ql-toolbar .ql-picker-item:hover,
+.react-quill .ql-snow.ql-toolbar .ql-picker-item.ql-selected,
+.react-quill .ql-snow .ql-toolbar .ql-picker-item.ql-selected {
+  color: #49a843;
+}
+.react-quill .ql-snow.ql-toolbar .ql-picker-label {
+  color: #969d88;
+}
+.react-quill .ql-snow.ql-toolbar .ql-picker-label .ql-stroke {
+  stroke: #969d88;
+}
+.react-quill .ql-snow.ql-toolbar .ql-picker-label .ql-bold:hover {
+  color: #49a843;
 }
 
 /*# sourceMappingURL=style.css.map */

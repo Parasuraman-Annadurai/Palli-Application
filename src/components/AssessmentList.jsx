@@ -19,13 +19,13 @@ const TaskCard = ({
   setIsStudentScoreOpen,
   isMode,
   setIsMode,
+  currentAssessment
 }) => {
   const truncateText = (text, maxLength) => {
     return text.length > maxLength
       ? text.substring(0, maxLength) + "..."
       : text;
   };
-
   const {user} = useAuth();
   return (
     <>
@@ -36,9 +36,15 @@ const TaskCard = ({
         key={assessment.id}
         id={assessment.id}
         onClick={() => {
+          if(currentAssessment.draft){
+            setIsStudentScoreOpen(false)
+            handleEdit(assessment.id);
+            setIsMode("edit")
+          }else{
           setIsStudentScoreOpen(true)
           handleEdit(assessment.id);
           setIsMode("card")
+        }
         }}
       >
         {loading ? (
@@ -53,17 +59,20 @@ const TaskCard = ({
               <div className="task-name-with-icon flex">
                 <h2>{truncateText(assessment.task_title, 15)}</h2>
                 <>
+                    {getPermission(user.permissions, "Task", "update") && (
                   <img
-                    src={selectedAssessment === assessment.id  && isMode == "edit" ? "/icons/edit-pencil-fill.svg" : "/icons/edit-pencil.svg"}
-                    className="edit-icon"
-                    alt="edit-icon"
-                    onClick={(event) => {
-                      event.stopPropagation();
-                      setIsStudentScoreOpen(false)
-                       handleEdit(assessment.id);
-                       setIsMode("edit")
-                    }}
-                  />
+                        src={selectedAssessment === assessment.id && isMode == "edit" ? "/icons/edit-pencil-fill.svg" : "/icons/edit-pencil.svg"}
+                        className="edit-icon"
+                        alt="edit-icon"
+                        onClick={(event) => {
+                          event.stopPropagation();
+                          setIsStudentScoreOpen(false)
+                          handleEdit(assessment.id);
+                          setIsMode("edit")
+                        }}
+                      />
+                    )}
+
                   {getPermission(user.permissions,"Task","delete") && (
                      <img
                      src="/icons/deleteIcon.svg"
@@ -109,7 +118,8 @@ const AssessmentList = ({
   isStudentScoreOpen,
   setIsStudentScoreOpen,
   isMode,
-  setIsMode
+  setIsMode,
+  currentAssessment
 }) => {
   const { user } = useAuth();
 
@@ -158,6 +168,7 @@ const AssessmentList = ({
                 isStudentScoreOpen={isStudentScoreOpen}
                 isMode={isMode}
                 setIsMode={setIsMode}
+                currentAssessment={currentAssessment}
               />
             ))}
         </div>

@@ -253,7 +253,6 @@ const AddBatch = (props) => {
         >
         {props.open && (
           <div className="popup-container">
-            {isLoading ? <Skeleton active={true} paragraph={4}/> : (
               <>
                  <div className="popup-content">
             
@@ -439,8 +438,7 @@ const AddBatch = (props) => {
                     </>
                   )}
               </div>
-              </>
-            )}
+            </>
           </div>
         )}
       </Drawer>

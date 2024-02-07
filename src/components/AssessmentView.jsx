@@ -209,9 +209,13 @@ const AssessmentView = ({
   };
 
   const handleScoreOnchange = (e, students, weightage) => {
-    const scoreValue = Number(e.target.value);
-  
-    if (scoreValue === null || isNaN(scoreValue)) {
+    const scoreValue = e.target.value;
+    const { name, value } = e.target;
+
+    if(studentScoreErrors[name]){
+      delete studentScoreErrors[name];
+    }
+    if (scoreValue === "" ) {
       // If the score is null or not a number, remove the corresponding object from the state
       const filteredStudentScores = studentScore.filter(
         (score) =>
@@ -224,7 +228,7 @@ const AssessmentView = ({
       const updatedScore = {
         task_user: students.id,
         task_weightage: weightage.id,
-        task_score: scoreValue,
+        task_score: Number(value),
       };
   
       const existingScoreIndex = studentScore.findIndex(
@@ -246,11 +250,11 @@ const AssessmentView = ({
     }
   };
   
-  
-  
-  
-  
 
+  
+  
+  
+  
 
   return (
     <>
@@ -373,28 +377,29 @@ const AssessmentView = ({
             )}
           </section>
           {!draft && (
-            <section className="assignee-and-weightage-container">
-              {assigneeloader ? (
-                <Skeleton active={true} />
-              ) : (
-                <>
-                  <div className={`title-section flex`}>
-                    <div
-                      className={`weightage-title selection ${
-                        toggleAssigneeWeightage === 1 ? "active" : ""
-                      }`}
-                    >
-                      {weightageShow && (
-                        <h4
-                          onClick={() => setToggleAssigneeWeightage(1)}
-                          className={
-                            toggleAssigneeWeightage === 1 ? "active" : ""
-                          }
-                        >
-                          Weightage
-                        </h4>
-                      )}
-                    </div>
+            <>
+              {getPermission(user.permissions, "TaskWeightage", "create") || getPermission(user.permissions, "TaskUser", "create") ? (
+                <section className="assignee-and-weightage-container">
+                  {assigneeloader ? (
+                    <Skeleton active={true} />
+                  ) : (
+                    <>
+                      <div className={`title-section flex`}>
+                        <div
+                            className={`weightage-title selection ${toggleAssigneeWeightage === 1 ? "active" : ""
+                              }`}
+                          >
+                            {weightageShow && (
+                              <h4
+                                onClick={() => setToggleAssigneeWeightage(1)}
+                                className={
+                                  toggleAssigneeWeightage === 1 ? "active" : ""
+                                }
+                              >
+                                Weightage
+                              </h4>
+                            )}
+                          </div>
                       {getPermission(user.permissions, "TaskUser", "create") && (
                         <div
                           className={`assignee-title selection ${toggleAssigneeWeightage === 0 ? "active" : ""
@@ -411,13 +416,11 @@ const AssessmentView = ({
                         </div>
                       )}
 
-                  </div>
-                  {toggleAssigneeWeightage === 0 ? (
-                    <>
+                        </div>
+                        {toggleAssigneeWeightage === 0 ? (
+                          <>
                         {getPermission(user.permissions, "TaskUser", "create") && (
-                          <div className="assign-listing-container">
-                        
-
+                              <div className="assign-listing-container">
                             <div className="assignee-search-container">
                               <input type="input" placeholder="search..." onChange={(e) => setAssigneeSearch(e.target.value)} />
                               <img
@@ -483,26 +486,28 @@ const AssessmentView = ({
                             )}
                           </div>
                         )}
+                        </>
+                      ) : (
+                        weightageShow && (
+                          <WeightageList
+                            taskId={taskId}
+                            taskWeightages={task_weightages}
+                            handleSaveWeightage={handleSaveWeightage}
+                            handleAddWeightage={handleAddWeightage}
+                            handleWeightageChange={handleWeightageChange}
+                            handleDeleteWeightage={handleDeleteWeightage}
+                            weightages={weightageLists}
+                            selectedStudents={selectedStudents}
+                            weightageErrors={weightageErrors}
+                            setWeightageErros={setWeightageErros}
+                          />
+                        )
+                      )}
                     </>
-                  ) : (
-                    weightageShow && (
-                      <WeightageList
-                        taskId={taskId}
-                        taskWeightages={task_weightages}
-                        handleSaveWeightage={handleSaveWeightage}
-                        handleAddWeightage={handleAddWeightage}
-                        handleWeightageChange={handleWeightageChange}
-                        handleDeleteWeightage={handleDeleteWeightage}
-                        weightages={weightageLists}
-                        selectedStudents={selectedStudents}
-                        weightageErrors={weightageErrors}
-                        setWeightageErros={setWeightageErros}
-                      />
-                    )
                   )}
-                </>
-              )}
-            </section>
+                </section>
+              ) : null}
+            </>
           )}
         </>
       ) : (
@@ -658,7 +663,8 @@ const AssessmentView = ({
 
                                 <div className="weightage-checkbox">
                                   <input
-                                    type="text"
+                                    type="number"
+                                    name="score"
                                     onChange={(e) => {handleScoreOnchange(e,students, weightage);
                                     }}
                                   />
@@ -676,18 +682,22 @@ const AssessmentView = ({
               );
             })
           ) : (
-            <div className="select-something-container flex">
-              <div className="image-container ">
-                <img src="/icons/select-something.svg" alt="" />
-                <p className="select-something-heading">
-                  No Assignee has been assigned to this {type}
-                  <button className="btn primary-medium" style={{marginTop:"10px"}} onClick={()=>{
-                    setIsStudentScoreOpen(!isStudentScoreOpen)
-                    setToggleAssigneeWeightage(0)
-                  }}>Add Assignee</button>
-                </p>
-              </div>
-            </div>
+                <>
+                  {!draft && (
+                    <div className="select-something-container flex">
+                      <div className="image-container ">
+                        <img src="/icons/select-something.svg" alt="" />
+                        <p className="select-something-heading">
+                          No Assignee has been assigned to this {type}
+                          <button className="btn primary-medium" style={{ marginTop: "10px" }} onClick={() => {
+                            setIsStudentScoreOpen(!isStudentScoreOpen)
+                            setToggleAssigneeWeightage(0)
+                          }}>Add Assignee</button>
+                        </p>
+                      </div>
+                    </div>
+                  )}
+                </>
           )}
         </main>
       )}

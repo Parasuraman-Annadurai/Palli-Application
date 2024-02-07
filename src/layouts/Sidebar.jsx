@@ -10,6 +10,7 @@ import { useAuth } from "../context/AuthContext";
 import AddBatch from "../components/AddBatchModule/AddBatch";
 
 import { API_END_POINT } from "../../config";
+import { getPermission } from '../utils/validate';
 
 const Sidebar = ({ menuList, activeMenuItem }) => {
   const navigate = useNavigate();
@@ -17,7 +18,6 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
 
   const { token, user } = useAuth();
 
-  console.log(user);
 
   const currentPath = useLocation().pathname;
   const isDashboardPage = currentPath.includes(DASHBOARD);
@@ -26,7 +26,6 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
   const [showSwitchBatch, setShowSwitchBatch] = useState(false);
   const [batchList, setBatchList] = useState([]);
   const [currentBatch, setCurrentBatch] = useState(null);
-  const [isLoading,setIsLoading] = useState(true);
   const [open, setOpen] = useState(false);
 
   const showDrawer = () => {
@@ -43,7 +42,7 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
   };
 
   useEffect(() => {
-    setIsLoading(true);
+    // setIsLoading(true);
     if (user.role !== "Students") {
       if (batchId) {
         // On Batch, setting Applications as default page
@@ -51,23 +50,13 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
           currentPath.includes(menu.id)
         );
         setActive(activeMenuItem.id);
-
-        axios
-          .get(`${API_END_POINT}/api/list/batch/`, { headers })
-          .then((res) => {
-            const batchListData = res.data.data;
-            setBatchList(
-              batchListData.filter((batch) => batch.id !== Number(batchId))
-            );
-            setCurrentBatch(
-              batchListData.find((batch) => batch.id === Number(batchId))
-            );
-            setIsLoading(false)
-          })
-          .catch((err) => {
-            console.log(err)
-            setIsLoading(false)
-          });
+        const batchListData = user?.batch;
+        setBatchList(
+          batchListData.filter((batch) => batch.id !== Number(batchId))
+        );
+        setCurrentBatch(
+          batchListData.find((batch) => batch.id === Number(batchId))
+        );
       }
     }
   }, [batchId]);
@@ -91,7 +80,8 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
   ];
 
 
-
+  const a = getPermission(user.permissions, "Applicant", "read");
+  console.log(a);
   return (
     <>
       <nav className="side-nav-container flex">
@@ -149,11 +139,9 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
         )}
         <div className="nav-links">
           <ul>
-            {menuList &&
-              menuList.map((menu, index) => {
-                const capitalizedMenuId = menu.id.charAt(0).toUpperCase() + menu.id.slice(1).toLowerCase();
-                const hasPermission = user.permissions.hasOwnProperty(capitalizedMenuId);
-                if (!hasPermission) return null;
+            {menuList.map((menu, index) => {
+              // Check if the menu id is "applications" and the user has permission related to "Applicant"
+              if (menu.id === "applications" && getPermission(user.permissions, "Applicant", "create")) {
                 return (
                   <li
                     key={index}
@@ -169,7 +157,33 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
                     </Link>
                   </li>
                 );
-              })}
+              } else if (menu.id === "task" || menu.id === "assessment") {
+                // Render the remaining menu items only if the user has permission to read Task
+                const hasReadPermissionForTask = getPermission(user.permissions, "Task", "read");
+                if (hasReadPermissionForTask) {
+                  return (
+                    <li
+                      key={index}
+                      onClick={() => setActive(menu.id)}
+                      className={`main-link ${menu.id === active ? "main-active" : ""}`}
+                    >
+                      <Link
+                        to={isDashboardPage ? "/dashboard" : `/batch/${batchId}/${menu.id}`}
+                        className="flex"
+                      >
+                        <img src="/icons/application.svg" alt={menu.label} />
+                        <span>{menu.label}</span>
+                      </Link>
+                    </li>
+                  );
+                } else {
+                  return null; // Skip rendering Task and Assessment if user doesn't have read permission for Task
+                }
+              } else {
+                return null; // Skip rendering other menu items
+              }
+            })}
+
           </ul>
         </div>
 
@@ -206,7 +220,6 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
         setOpen={setOpen}
         showDrawer={showDrawer}
         onClose={onClose}
-        isLoading={isLoading}
       />
     </>
   );

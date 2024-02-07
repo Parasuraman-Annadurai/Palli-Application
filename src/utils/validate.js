@@ -1,6 +1,17 @@
 import Quill from "quill";
 
 
+export const valueTrim = (value,fieldName,setErrors)=>{
+  let errors = {};
+  let isValid = true;
+
+  if (!value.trim()) {
+    errors[fieldName] = `${fieldName} is required`;
+    isValid = false;
+  }
+  setErrors(errors);
+  return isValid;
+}
 
 export const isEmailValid = (email) => {
   const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
@@ -76,7 +87,6 @@ export const validateNewpassword = (newPasswordData, setErrors) => {
 
 export const validateTask = (taskDetails, setFormErrors) => {
   const { task_title, task_description, due_date } = taskDetails;
-  console.log(task_description);
   let errors = {};
   let isValid = true;
   const emptyHtmlRegex = /^<p>(\s*|<br\s*\/?>)<\/p>\s*$/;
@@ -141,8 +151,17 @@ export const isScoreValidate =(taskWeightageDetails,studentScoreDetails,setScore
   let isValid = true;
   let errors = {};
   if(studentScoreDetails?.length !== taskWeightageDetails?.length){
-    errors.score = "Kindly provide the input for the mark";
+    errors.score = "Score field is required ";
     isValid = false;
+  }
+  else {
+    studentScoreDetails.forEach((score, index) => {
+      // Task score should not allow alphabets
+      if (!/^\d+$/.test(score.task_score)) {
+        errors.score = "Task score must be a valid number";
+        isValid = false;
+      }
+    });
   }
   setScoreErrors(errors);
   return isValid;
@@ -287,7 +306,12 @@ export const toolbarConfig = {
 
 
 export const getPermission = (permissions,permissionKey,mode)=>{
-  const userPermissions = permissions[permissionKey];
-  return userPermissions.includes(mode);
+  if (permissions && Object.keys(permissions).length > 0) {
+    const userPermissions = permissions[permissionKey];
+    return userPermissions && userPermissions.includes(mode);
+  } else {
+    // If permissions is empty or undefined, return false
+    return false;
+  }
 }
 

@@ -16,6 +16,7 @@ import useFilter from "../../hooks/useFilter";
 
 import "./scss/css/Applications.css";
 
+import { getPermission } from "../../utils/validate";
 
 const Applications = () => {
   const filterFields = useFilter("applicant");
@@ -380,7 +381,9 @@ const Applications = () => {
         </div>
         <div className="application-actions flex">
           <div className="import">
-            <button className="btn primary-medium">Import</button>
+              {getPermission(user.permissions, "create_Excel_Import", "create_Excel_Import") && (
+                <button className="btn primary-medium">Import</button>
+              )}
           </div>
         </div>
       </div>

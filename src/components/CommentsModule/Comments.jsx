@@ -21,7 +21,9 @@ const Comments = (props) => {
             </button> */}
       <div className="comments-list-container">
         <div>
-          {comments &&
+          {comments?.length > 0 ? (
+            <>
+                {comments &&
             comments?.map((comment, index) => {
               return (
                 <>
@@ -62,6 +64,17 @@ const Comments = (props) => {
                 </>
               );
             })}
+            </>
+          ) : (
+            <>
+              <div className="no-comments-container">
+                <img src="/public/icons/no-data.svg" alt="" />
+                {/* Ganesh change inline style to scss */}
+                <p style={{textAlign:"center"}}>No comments here...</p>
+              </div>
+            </>
+          )}
+        
         </div>
       </div>
 

@@ -211,11 +211,7 @@ const AssessmentView = ({
   const handleScoreOnchange = (e, students, weightage) => {
     const scoreValue = e.target.value;
     const { name, value } = e.target;
-    const validInput = /^\d*\.?\d*$/.test(scoreValue); // Check if the input is a valid number
-    if (!validInput && scoreValue !== "") {
-      // If the input is not a valid number and not empty, return without further processing
-      return;
-    }
+
     if(studentScoreErrors[name]){
       delete studentScoreErrors[name];
     }

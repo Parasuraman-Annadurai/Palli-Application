@@ -679,6 +679,7 @@ const AssessmentModule = ({ type }) => {
             isStudentScoreOpen={isStudentScoreOpen}
             isMode={isMode}
             setIsMode={setIsMode}
+            currentAssessment={assessmentList.find((assessment)=>assessment.id == editId)}
           />
 
           {loading ? (

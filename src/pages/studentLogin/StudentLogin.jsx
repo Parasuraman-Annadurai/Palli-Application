@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 
 import axios from "axios";
-import { Flex, Modal, Select, Skeleton, notification } from "antd";
+import { Modal, Select, Skeleton, notification, Drawer } from "antd";
+
 import { LoadingOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
 
@@ -14,6 +15,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import "../studentLogin/scss/StudentLogin.css";
 
 import colorObject from "../../utils/validate";
+import Comments from "../../components/CommentsModule/Comments";
 
 import { valueTrim } from "../../utils/validate";
 
@@ -86,6 +88,9 @@ const StudentLogin = ({ type }) => {
   const [submissionLink, setSubmissionLink] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [taskComments,setTaskComments] = useState("");
+  const [isCommentEditId,setIsCommentEditId] = useState(null);
+  const [openCommentSection,setOpenCommentSection] = useState(false);
   const [formErrors,setFormErrors] = useState({})
   const [taskSearch,setTaskSearch] = useState("")
 
@@ -201,6 +206,76 @@ const StudentLogin = ({ type }) => {
     
   };
 
+  const handleAddComment =(id)=>{
+
+    const url = isCommentEditId ? `${API_END_POINT}/api/task/${batchId}/update/task_comment/${isCommentEditId}` : `${API_END_POINT}/api/task/${batchId}/create/task_comment/${id}`
+    const method = isCommentEditId ? "PUT" : "POST"
+    
+
+    axios({
+      method: method,
+      url: url,
+      data: {comments:taskComments},
+      headers:headers
+    }).then((res)=>{
+
+      let updatedComment = res.data.data;
+
+      const updatedTaskLists = tasksLists.map((task) => {
+        if (task.id === selectedTaskId) {
+          // Check if it's an edit or a new comment
+          if (isCommentEditId) {
+            // If it's an edit, update the specific comment
+            task.comments = task.comments.map((comment) => {
+              if (comment.id === isCommentEditId) {
+                return updatedComment;
+              }
+              return comment;
+            });
+          } else {
+            // If it's a new comment, concatenate it
+            task.comments = [updatedComment, ...task.comments];
+          }
+        }
+        return task;
+      });
+    
+      setTaskComments(" ")
+      setTaskLists(updatedTaskLists);
+      setIsCommentEditId(null)
+    }).catch((error)=>{
+      console.log(error);
+    })
+  }
+
+  const handleDeleteComment =(commentId)=>{
+    const url = `${API_END_POINT}/api/task/${batchId}/delete/task_comment/${commentId}`
+    axios.delete(url,{headers}).then((res)=>{
+      const updatedTaskLists = tasksLists.map((task) => {
+        if (task.id === selectedTaskId) {
+          // Use filter to exclude the comment with the specified ID
+          task.comments = task.comments.filter((comment) => comment.id !== commentId);
+        }
+        return task;
+      });
+      
+      // Update the local state with the modified task lists
+      setTaskLists(updatedTaskLists);
+      console.log(res.data);
+      if(res.data.status == 200){
+        notification.success({
+          message:"Success",
+          description : res?.data?.message,
+          duration:1
+        })
+      }
+      
+    }).catch((error)=>{
+      console.log(error);
+    })
+  }
+
+
   return (
     <>
       <section className="listing-container">
@@ -238,6 +313,10 @@ const StudentLogin = ({ type }) => {
                   <div className="module-header-section flex" key={tasksList.id}>
                     <div className="module-title-section flex">
                       <h3>{tasksList.task.task_title}</h3>
+                    </div>
+                    <div className="comments" onClick={()=>setOpenCommentSection(true)}>
+                      <img src="/icons/comment-border.svg" alt="" />
+                      <button className="secondary-border-btn" >Comments</button>
                     </div>
                   </div>
 
@@ -350,6 +429,13 @@ const StudentLogin = ({ type }) => {
                           </a>
                         </div>
                       )}
+                    </div>
+                      
+                    
+                    <div className="comments-container">
+                      <Drawer title="Comments" onClose={()=>setOpenCommentSection(false)} open={openCommentSection}>
+                      <Comments comments={tasksList?.comments} commenterId={tasksList.id} commentText={taskComments} isCommentEditId={isCommentEditId} setIsCommentEditId={setIsCommentEditId} setCommentText={setTaskComments} handleSendComment={handleAddComment} handleDeleteComment={handleDeleteComment} role={"Student"}/>
+                      </Drawer>
                     </div>
                   </div>
 

@@ -27,9 +27,11 @@ const AssessmentModule = ({ type }) => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   //for check task or assessment new created or old;
   const [isDraft, setIsDraft] = useState(false);
-  const [isStudentScoreOpen, setIsStudentScoreOpen] = useState(false);
+  const [isStudentScoreOpen, setIsStudentScoreOpen] = useState(true);
   const [activeWeightageIndex, setActiveWeightageIndex] = useState(null);
   const [isMode,setIsMode] = useState("edit")
+  const [commentText,setCommentText] = useState("");
+  const [isCommentEditId,setIsCommentEditId] = useState(null)
   const [formErrors, setFormErrors] = useState({});
   const [weightageErrors, setWeightageErros] = useState({});
   const [assigneeSearch,setAssigneeSearch] = useState("");
@@ -638,6 +640,75 @@ const AssessmentModule = ({ type }) => {
     }
   };
 
+  //comments
+  const handleSendComment=(commentId)=>{
+    const url = isCommentEditId ? `${API_END_POINT}/api/task/${batchId}/update/task_comment/${isCommentEditId}` : `${API_END_POINT}/api/task/${batchId}/create/task_comment/${commentId}`
+    const method = isCommentEditId ? "PUT" : "POST"
+    axios({
+      method: method,
+      url: url,
+      data: {comments:commentText},
+      headers:headers
+    }).then((res)=>{
+      let updatedComment = res.data.data;
+    const updatedAssessmentList = assessmentList.map((assessment) => {
+      if (assessment.id === editId) {
+        // Check if it's an edit or a new comment
+        if (isCommentEditId) {
+          // If it's an edit, update the specific comment
+          assessment.task_users.map((users) => {
+            users.comments.map((comment) => {
+              if (comment.id === isCommentEditId) {
+                // Update the existing comment
+                Object.assign(comment, updatedComment);
+              }
+            });
+          });
+        } else {
+          // If it's a new comment, add it to the task
+          assessment.task_users.map((users) => {
+            users.comments.unshift(updatedComment);
+          });
+        }
+      }
+      return assessment;
+    });
+
+      setAssessmentList(updatedAssessmentList)
+      setIsCommentEditId(null)
+      setCommentText(" ")
+    }).catch((error)=>{
+      console.log(error);
+    })
+  }
+  const handleDeleteComment =(commentId)=>{
+    const url = `${API_END_POINT}/api/task/${batchId}/delete/task_comment/${commentId}`
+    axios.delete(url,{headers}).then((res)=>{
+      const updatedAssessmentList = assessmentList.map((assessment) => {
+        if (assessment.id === editId) {
+          // Use map to update the user's comments by excluding the comment with the specified ID
+          assessment.task_users.map((user) => {
+            user.comments = user.comments.filter((comment) => comment.id !== commentId);
+          });
+        }
+        return assessment;
+      });
+      
+      // Update the local state with the modified task lists
+      setAssessmentList(updatedAssessmentList);
+      
+      if(res.data.status == 200){
+        notification.success({
+          message:"Success",
+          description : res?.data?.message,
+          duration:1
+        })
+      }
+      
+    }).catch((error)=>{
+      console.log(error);
+    })
+  }
 
   return (
     <>
@@ -710,7 +781,13 @@ const AssessmentModule = ({ type }) => {
                       setActiveWeightageIndex={setActiveWeightageIndex}
                       activeWeightageIndex={activeWeightageIndex}
                       handleDeleteWeightage={handleDeleteWeightage}
-                      type={type}
+                      type={type} 
+                      handleSendComment={handleSendComment}
+                      handleDeleteComment={handleDeleteComment}
+                      commentText={commentText}
+                      isCommentEditId={isCommentEditId}
+                      setCommentText={setCommentText}
+                      setIsCommentEditId={setIsCommentEditId}
                       formErrors={formErrors}
                       setFormErrors={setFormErrors}
                       weightageErrors={weightageErrors}

@@ -319,6 +319,44 @@ li {
         height: 20px;
       }
     }
+    .comments {
+      border-radius: 4px;
+      border: 1px solid $primary-color;
+      width: 125px;
+      cursor: pointer;
+      &:hover {
+        color: var(--btn-hover-color);
+        border: 1px solid var(--btn-hover-color);
+      }
+
+      &:active {
+        color: $primary-color;
+        border: 1px solid $primary-color;
+        opacity: 30%;
+      }
+      img {
+        width: 16px;
+        margin-left: 18px;
+      }
+      .secondary-border-btn {
+        height: 38px;
+        color: $primary-color;
+        // border: 1px solid $primary-color;
+        background-color: #ffff;
+        cursor: pointer;
+
+        &:hover {
+          color: var(--btn-hover-color);
+          // border: 1px solid var(--btn-hover-color);
+        }
+
+        &:active {
+          color: $primary-color;
+          // border: 1px solid $primary-color;
+          opacity: 30%;
+        }
+      }
+    }
   }
 
   .task-list-container {
@@ -398,19 +436,18 @@ li {
         border-right: 2px solid #eaeaea;
         max-width: 180px;
         width: 100%;
-        .students-status-TODO-status{
-          .students-status-TODO-status-selector{
+        .students-status-TODO-status {
+          .students-status-TODO-status-selector {
             border: none;
             border-radius: 2px;
             background-color: #E2E8F0;
             .students-status-TODO-status-selection-item{
               color: #64748B;
             }
-            
           }
         }
-        .students-status-INPROGRESS-status{
-          .students-status-INPROGRESS-status-selector{
+        .students-status-INPROGRESS-status {
+          .students-status-INPROGRESS-status-selector {
             border: none;
             border-radius: 2px;
             height: 30px;
@@ -418,11 +455,10 @@ li {
             .students-status-INPROGRESS-status-selection-item{
               color: $highlight-blue;
             }
-            
           }
         }
-        .students-status-COMPLETED-status{
-          .students-status-COMPLETED-status-selector{
+        .students-status-COMPLETED-status {
+          .students-status-COMPLETED-status-selector {
             border: none;
             border-radius: 2px;
             height: 30px;
@@ -430,11 +466,10 @@ li {
             .students-status-COMPLETED-status-selection-item{
               color: $primary-color;
             }
-            
           }
         }
-        .students-status-SUBMITTED-status{
-          .students-status-SUBMITTED-status-selector{
+        .students-status-SUBMITTED-status {
+          .students-status-SUBMITTED-status-selector {
             border: none;
             border-radius: 2px;
             height: 30px;
@@ -442,21 +477,18 @@ li {
             .students-status-SUBMITTED-status-selection-item{
               color: $primary-color;
             }
-            
           }
         }
-        .students-status-REWORK-status{
-          .students-status-REWORK-status-selector{
+        .students-status-REWORK-status {
+          .students-status-REWORK-status-selector {
             border: none;
             border-radius: 2px;
             background-color: #FEF3C7;
             .students-status-REWORK-status-selection-item{
               color: #F59E0B;
             }
-            
           }
         }
-        
       }
     }
 
@@ -518,9 +550,9 @@ li {
           line-height: 16px;
         }
         .score{
-          color: #12160a;
+          color: $font-primary-color;
           margin-left: 5px;
-          font-family: "Roboto";
+          font-family: $font-Roboto;
           font-size: 12px;
           line-height: 16px;
           font-weight: 500;
@@ -544,12 +576,11 @@ li {
       }
     }
     .submission-link-container {
-    
-      .heading-line{
+      .heading-line {
         align-items: center;
         gap: 10px;
-      padding-top: 16px;
-      padding-bottom: 5px;
+        padding-top: 16px;
+        padding-bottom: 5px;
       }
       h3 {
         font-size: 12px;
@@ -567,8 +598,8 @@ li {
         text-decoration: underline;
         overflow: hidden;
         text-overflow: ellipsis;
-       width: 200px;
-       display: inline-block;
+        width: 200px;
+        display: inline-block;
         cursor: pointer;
         font: 400 12px/16px $font-Roboto;
       }

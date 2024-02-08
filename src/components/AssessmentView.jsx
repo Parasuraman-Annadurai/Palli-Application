@@ -3,7 +3,15 @@ import React, { useEffect, useState } from "react";
 import ReactQuill from "react-quill";
 import "quill/dist/quill.snow.css";
 
-import { DatePicker, Dropdown, Skeleton, notification } from "antd";
+import {
+  DatePicker,
+  Dropdown,
+  Modal,
+  Skeleton,
+  notification,
+  Drawer,
+} from "antd";
+
 import axios from "axios";
 import colorObject from "../utils/validate";
 import dayjs from "dayjs";
@@ -15,6 +23,7 @@ import { useParams } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
 import WeightageList from "./WeightageList";
+import Comments from "./CommentsModule/Comments";
 
 import {
   CustomIcons,
@@ -48,6 +57,12 @@ const AssessmentView = ({
   setWeightageErros,
   setAssigneeSearch,
   isAssigneeLoading,
+  handleSendComment,
+  handleDeleteComment,
+  commentText,
+  isCommentEditId,
+  setCommentText,
+  setIsCommentEditId,
 }) => {
   const { id: batchId } = useParams();
   const { token } = useAuth();
@@ -59,6 +74,7 @@ const AssessmentView = ({
   );
   const [assigneeloader, setAssigneeloader] = useState(false);
   const [weightageLists, setWeightageLists] = useState([]);
+  const [openComments, setOpenComments] = useState(null);
   const [studentScoreErrors, setStudentsErrors] = useState({});
 
   const headers = {
@@ -337,7 +353,7 @@ const AssessmentView = ({
                         <ReactQuill
                           placeholder="Type here"
                           className={`${
-                            formErrors["task_description"] ? "error-notify" : ""
+                            formErrors["task_description"] ? "react-quill error-notify" : "react-quill"
                           }`}
                           value={task_description ? task_description : ""}
                           modules={toolbarConfig}
@@ -603,6 +619,13 @@ const AssessmentView = ({
                           )}
                         </p>
                       </div>
+                      <div className="student-comment">
+                        <img
+                          src="/icons/comment-fill.svg"
+                          onClick={() => setOpenComments(students.id)}
+                          alt="comment-icon"
+                        />
+                      </div>
                       <div className="student-work">
                         {weightageShow
                           ? students["task_status"] === "SUBMITTED" && (
@@ -647,6 +670,33 @@ const AssessmentView = ({
                             )}
                       </div>
                     </div>
+                    {/* this modal open comment section for Admin  for functionality purpose*/}
+
+                      <Drawer
+                        title={<div>Comments</div>}
+                        onClose={() => {
+                          setOpenComments(null)
+                          setCommentText("")
+                        }}
+                        open={openComments !== null}
+                      >
+                        {/* Pass comments state to Comments component */}
+                        <Comments
+                         comments={
+                          currentAssessment.task_users.find(
+                            (student) => student.id === openComments
+                          )?.comments || []
+                        }
+                          role={"Admin"}
+                          commenterId={openComments}
+                          commentText={commentText}
+                          isCommentEditId={isCommentEditId}
+                          setIsCommentEditId={setIsCommentEditId}
+                          setCommentText={setCommentText}
+                          handleSendComment={handleSendComment}
+                          handleDeleteComment={handleDeleteComment}
+                        />
+                      </Drawer>
 
                     {activeWeightageIndex === index && (
                       <>
@@ -657,53 +707,51 @@ const AssessmentView = ({
                           {currentAssessment.task_weightages &&
                             currentAssessment.task_weightages.map(
                               (weightage, weightageIndex) => (
-                                <>
-                                  <div
-                                    key={weightageIndex}
-                                    className="applied-weightage-card flex"
-                                  >
-                                    <div className="applied-weightage-name">
-                                      <p>
-                                        {weightageLists &&
-                                          weightageLists.length > 0 &&
-                                          (() => {
-                                            const foundWeightage =
-                                              weightageLists.find(
-                                                (weightageName) =>
-                                                  weightageName.id ===
-                                                  weightage.weightage
-                                              );
-
-                                            return (
-                                              foundWeightage && (
-                                                <>
-                                                  <p>
-                                                    {foundWeightage.weightage}{" "}
-                                                    {Number(
-                                                      weightage.weightage_percentage
-                                                    )}
-                                                  </p>
-                                                </>
-                                              )
+                                <div
+                                  key={weightageIndex}
+                                  className="applied-weightage-card flex"
+                                >
+                                  <div className="applied-weightage-name">
+                                    <p>
+                                      {weightageLists &&
+                                        weightageLists.length > 0 &&
+                                        (() => {
+                                          const foundWeightage =
+                                            weightageLists.find(
+                                              (weightageName) =>
+                                                weightageName.id ===
+                                                weightage.weightage
                                             );
-                                          })()}
-                                      </p>
-                                    </div>
 
-                                    <div className="weightage-checkbox">
-                                      <input
-                                        type="number"
-                                        onChange={(e) => {
-                                          handleScoreOnchange(
-                                            e,
-                                            students,
-                                            weightage
+                                          return (
+                                            foundWeightage && (
+                                              <>
+                                                <p>
+                                                  {foundWeightage.weightage}{" "}
+                                                  {Number(
+                                                    weightage.weightage_percentage
+                                                  )}
+                                                </p>
+                                              </>
+                                            )
                                           );
-                                        }}
-                                      />
-                                    </div>
+                                        })()}
+                                    </p>
                                   </div>
-                                </>
+
+                                  <div className="weightage-checkbox">
+                                    <input
+                                      type="number"
+                                      onChange={(e) => {
+                                        handleScoreOnchange(
+                                          e,
+                                          students,
+                                          weightage
+                                        );
+                                      }}
+                                    />
+                                  </div>
+                                </div>
                               )
                             )}
                         </div>

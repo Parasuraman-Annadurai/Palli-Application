@@ -134,6 +134,7 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
                 ) : (
                   <p>{currentBatch?.batch_name}</p>
                 )}
+                
                 <span>
                   {currentBatch?.start_date?.slice(0, 4)}-
                   {currentBatch?.end_date?.slice(0, 4)}
@@ -147,6 +148,7 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
         )}
         <div className="nav-links">
           <ul>
+         
             
 
             {menuList &&

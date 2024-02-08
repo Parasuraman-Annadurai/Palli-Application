@@ -56,8 +56,18 @@ const Login = () => {
 
             setLoading(false);
           })
-          .catch((err) => {
-            console.error("userData fetch Failed", err);
+          .catch((error) => {
+            if (
+              error.response.data.status === 400 ||
+              "errors" in error.response.data
+            ) {
+              const errorMessages = error.response.data.errors;
+              notification.error({
+                message: `Permission denied Error`,
+                description: errorMessages.detail,
+                duration:1
+              })
+            }
           });
       })
       .catch((err) => {

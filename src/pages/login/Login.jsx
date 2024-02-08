@@ -44,17 +44,41 @@ const Login = () => {
         })
           .then((userData) => {
             localStorage.setItem("token", JSON.stringify(res.data.data));
-            localStorage.setItem("user", JSON.stringify(userData.data.data));
             setToken(res.data.data);
-            setUser(userData.data.data);
-          
-            {
-              userData.data.data.role == "Student"
-                ? navigate("/batch/253/task")
-                : navigate("/batch/253/applications");
+
+           
+
+            const formattedPermissions = {};
+            // Iterate through the permissions data and populate the object dynamically
+            userData.data.data.permissions.forEach(permission => {
+              const { module_name, access_level } = permission;
+              if (!formattedPermissions[module_name]) {
+                // If the key doesn't exist yet, initialize it with an array containing the access level
+                formattedPermissions[module_name] = [access_level];
+              } else {
+                // If the key already exists, push the access level to the existing array
+                formattedPermissions[module_name].push(access_level);
+              }
+            });
+
+            const formattedUserData ={
+              ...userData.data.data,
+              permissions : formattedPermissions
             }
+            localStorage.setItem("user", JSON.stringify(formattedUserData));
+
+            setUser(formattedUserData);
 
             setLoading(false);
+
+            if (formattedUserData.role === "Student") {
+              navigate("/batch/253/task");
+            } else {
+              navigate("/batch/253/applications");
+            }
+
+            console.log(formattedUserData);
+
           })
           .catch((err) => {
             console.error("userData fetch Failed", err);

@@ -305,3 +305,13 @@ export const toolbarConfig = {
 
 
 
+export const getPermission = (permissions,permissionKey,mode)=>{
+  if (permissions && Object.keys(permissions).length > 0) {
+    const userPermissions = permissions[permissionKey];
+    return userPermissions && userPermissions.includes(mode);
+  } else {
+    // If permissions is empty or undefined, return false
+    return false;
+  }
+}
+

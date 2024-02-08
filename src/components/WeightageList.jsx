@@ -2,7 +2,9 @@ import React,{useState,useEffect} from "react";
 
 import { Button, Select, Tooltip } from "antd";
 
-import { isWeightageVaild } from "../utils/validate";
+import { isWeightageVaild, getPermission } from "../utils/validate";
+
+import { useAuth } from "../context/AuthContext";
 
 const WeightageList = ({
   taskWeightages,
@@ -15,7 +17,7 @@ const WeightageList = ({
   weightageErrors,
   setWeightageErros
 }) => {
-  
+  const { user } = useAuth();
 
    return (
     <div
@@ -96,14 +98,15 @@ const WeightageList = ({
                   </div>
                   <div className="weightage-unit-container flex">
                     <div className="weightage-action">
-                      {/* Show the delete icon only if weightage is greater than 0 */}
-                      <span onClick={() => !selectedStudents.length && handleDeleteWeightage(taskWeightage.id,index)} >
-                        <img
-                          src="/icons/deleteIcon.svg"
-                          alt="delete-icon"
-                          className="delete-icon"
-                        />
-                      </span>
+                      {getPermission(user.permissions,"TaskWeightage","delete") && (
+                         <span onClick={() => !selectedStudents.length && handleDeleteWeightage(taskWeightage.id,index)} >
+                         <img
+                           src="/icons/deleteIcon.svg"
+                           alt="delete-icon"
+                           className="delete-icon"
+                         />
+                       </span>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -112,30 +115,32 @@ const WeightageList = ({
           </div>
         </div>
         <p className="error-message">{weightageErrors["weightage"]? weightageErrors["weightage"]:""}</p>
-
         {!selectedStudents?.length && (
         <>
         <div className="all-btns" style={{display: "flex" , justifyContent: "space-between",gap:"10px"}}>
         <div className="add-weightage-button">
-            <button
-              className="btn create-btn"
-              style={{ padding: 15, cursor: "pointer" }}
-              onClick={handleAddWeightage}
-            >
-              + Add Weightage
-            </button>
+                 {getPermission(user.permissions, "TaskWeightage", "create") && (
+                   <button
+                     className="btn create-btn"
+                     style={{ padding: 15, cursor: "pointer" }}
+                     onClick={handleAddWeightage}
+                   >
+                     + Add Weightage
+                   </button>
+                 )}
           </div>
           <div style={{flex:1}}>
             <div className="apply-weightage" >
-                 <Tooltip title={taskWeightages?.length === 0 ? "Add atleast one weightage to link in task" :""}>
-                 <button
-                    className={`${taskWeightages?.length === 0 ? "btn secondary-medium-default":"btn primary-medium"}`}
-                    onClick={()=> taskWeightages?.length > 0 &&  isWeightageVaild(taskWeightages,setWeightageErros) ? handleSaveWeightage() : null}
-                  >
-                    Save
-                  </button>
-                  </Tooltip>
-             
+                   {getPermission(user.permissions, "TaskWeightage", "create") && (
+                     <Tooltip title={taskWeightages?.length === 0 ? "Add atleast one weightage to link in task" : ""}>
+                       <button
+                         className={`${taskWeightages?.length === 0 ? "btn secondary-medium-default" : "btn primary-medium"}`}
+                         onClick={() => taskWeightages?.length > 0 && isWeightageVaild(taskWeightages, setWeightageErros) ? handleSaveWeightage() : null}
+                       >
+                         Save
+                       </button>
+                     </Tooltip>
+                   )}
             </div>
           </div>
         </div>

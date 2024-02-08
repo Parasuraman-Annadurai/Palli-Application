@@ -141,9 +141,6 @@ const WeightageList = ({
         </div>
         </>
       )}
-
-      
-      
       </div>
     </div>
   );

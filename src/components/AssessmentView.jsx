@@ -6,9 +6,12 @@ import "quill/dist/quill.snow.css";
 import {
   DatePicker,
   Dropdown,
+  Modal,
   Skeleton,
   notification,
+  Drawer,
 } from "antd";
+
 import axios from "axios";
 import colorObject from "../utils/validate";
 import dayjs from "dayjs";
@@ -20,8 +23,14 @@ import { useParams } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
 import WeightageList from "./WeightageList";
+import Comments from "./CommentsModule/Comments";
 
-import { CustomIcons,toolbarConfig,validateTask,isScoreValidate } from "../utils/validate";
+import {
+  CustomIcons,
+  toolbarConfig,
+  validateTask,
+  isScoreValidate,
+} from "../utils/validate";
 
 const AssessmentView = ({
   weightageShow,
@@ -47,7 +56,13 @@ const AssessmentView = ({
   weightageErrors,
   setWeightageErros,
   setAssigneeSearch,
-  isAssigneeLoading
+  isAssigneeLoading,
+  handleSendComment,
+  handleDeleteComment,
+  commentText,
+  isCommentEditId,
+  setCommentText,
+  setIsCommentEditId,
 }) => {
   const { id: batchId } = useParams();
   const { token } = useAuth();
@@ -60,23 +75,24 @@ const AssessmentView = ({
   );
   const [assigneeloader, setAssigneeloader] = useState(false);
   const [weightageLists, setWeightageLists] = useState([]);
-  const [studentScoreErrors,setStudentsErrors] = useState({})
+  const [openComments, setOpenComments] = useState(null);
+  const [studentScoreErrors, setStudentsErrors] = useState({});
 
   const headers = {
     Authorization: `Bearer ${token.access}`,
     "Content-type": "application/json",
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     axios
-    .get(`${API_END_POINT}/api/task/${batchId}/list/weightage`, { headers })
-    .then((res) => {
-      if (res.status === 200 && res.data.message === "Success") {
-        const copyWeightageLists = [...res.data.data];
-        setWeightageLists(copyWeightageLists);
-      }
-    });
-  },[])
+      .get(`${API_END_POINT}/api/task/${batchId}/list/weightage`, { headers })
+      .then((res) => {
+        if (res.status === 200 && res.data.message === "Success") {
+          const copyWeightageLists = [...res.data.data];
+          setWeightageLists(copyWeightageLists);
+        }
+      });
+  }, []);
   // Destructure the current task
   const {
     id: taskId,
@@ -86,8 +102,6 @@ const AssessmentView = ({
     draft,
     task_weightages = [],
   } = currentAssessment;
-
- 
 
   const handleCheckboxChange = (studentId) => {
     const isSelected = [...selectedStudents].includes(studentId);
@@ -230,13 +244,13 @@ const AssessmentView = ({
         task_weightage: weightage.id,
         task_score: Number(value),
       };
-  
+
       const existingScoreIndex = studentScore.findIndex(
         (score) =>
           score.task_user === updatedScore.task_user &&
           score.task_weightage === updatedScore.task_weightage
       );
-  
+
       if (existingScoreIndex !== -1) {
         // If the score exists, update it
         const updatedStudentScores = [...studentScore];
@@ -277,7 +291,9 @@ const AssessmentView = ({
                         }
                         // onDoubleClick={onDoubleClick}
                         placeholder={"Untitled"}
-                        className={` ${formErrors["task_title"] ? "error-notify" : ""} `}
+                        className={` ${
+                          formErrors["task_title"] ? "error-notify" : ""
+                        } `}
                         // readOnly={!isEditing}
                       />
                       {/* {isEditing && (
@@ -300,8 +316,9 @@ const AssessmentView = ({
                     )} */}
                     </div>
                   </div>
-                  <p className="error-message">{formErrors["task_title"] ? formErrors["task_title"]:""}</p>
-                    
+                  <p className="error-message">
+                    {formErrors["task_title"] ? formErrors["task_title"] : ""}
+                  </p>
                 </div>
                 <div className="task-details-header-container">
                   <div className="task-label-container flex">
@@ -312,7 +329,9 @@ const AssessmentView = ({
                     <div className="task-deadline-container common-property">
                       <p className="task-deadline-label">Deadline *</p>
                       <DatePicker
-                        prefixCls={`${formErrors["due_date"] ? "error-notify" :""}`}
+                        prefixCls={`${
+                          formErrors["due_date"] ? "error-notify" : ""
+                        }`}
                         value={due_date ? dayjs(due_date) : null}
                         showTime={{ format: "HH:mm" }}
                         placeholder="Select here..."
@@ -325,7 +344,9 @@ const AssessmentView = ({
                           current && current < dayjs().startOf("day")
                         }
                       />
-                      <p className="error-message">{formErrors["due_date"] ? formErrors["due_date"]:""}</p>
+                      <p className="error-message">
+                        {formErrors["due_date"] ? formErrors["due_date"] : ""}
+                      </p>
                     </div>
                   </div>
                   <div className="task-editor-container">
@@ -335,16 +356,21 @@ const AssessmentView = ({
                         <CustomIcons />
                         <ReactQuill
                           placeholder="Type here"
-                          className={`${formErrors["task_description"] ? "error-notify":""}`}
+                          className={`${
+                            formErrors["task_description"] ? "react-quill error-notify" : "react-quill"
+                          }`}
                           value={task_description ? task_description : ""}
                           modules={toolbarConfig}
                           theme="snow"
                           onChange={(value) =>
                             handleInputChange("task_description", value)
                           }
-                        
                         />
-                        <p className="error-message">{formErrors["task_description"] ? formErrors["task_description"]:""}</p>
+                        <p className="error-message">
+                          {formErrors["task_description"]
+                            ? formErrors["task_description"]
+                            : ""}
+                        </p>
                       </>
                     </div>
                   </div>
@@ -364,8 +390,12 @@ const AssessmentView = ({
                             ? "btn primary-medium-default"
                             : "btn primary-medium"
                         }`}
-                        onClick={() => !assigneeloader && validateTask(currentAssessment,setFormErrors) ? handleSave(currentAssessment) : null}
-
+                        onClick={() =>
+                          !assigneeloader &&
+                          validateTask(currentAssessment, setFormErrors)
+                            ? handleSave(currentAssessment)
+                            : null
+                        }
                       >
                         {draft ? "Create" : "Update"}
                       </button>
@@ -415,71 +445,75 @@ const AssessmentView = ({
                   </div>
                   {toggleAssigneeWeightage === 0 ? (
                     <>
-                      
                       <div className="assign-listing-container">
-                        
-
-                         <div className="assignee-search-container">
-                            <input type="input" placeholder="search..." onChange={(e)=>setAssigneeSearch(e.target.value)}/>
-                            <img
-                              src="/icons/searchIcon.svg"
-                              alt="search-icon"
-                              className="search-icon"
-                            />
-
-                        
-                          </div>
-                        {isAssigneeLoading ? <Skeleton active paragraph={4}/> : (
-                          <>
-                               <div className="select-all flex">
+                        <div className="assignee-search-container">
                           <input
-                            className="global-checkbox"
-                            type="checkbox"
-                            onChange={handleAllCheckboxChange}
-                            checked={selectedStudents.length == students.length}
+                            type="input"
+                            placeholder="search..."
+                            onChange={(e) => setAssigneeSearch(e.target.value)}
                           />
-                          <span>
-                            {selectedStudents.length === students.length
-                              ? "All Students Selected"
-                              : selectedStudents.length == 0
-                              ? "Select All Students"
-                              : `${selectedStudents.length} Selected`}
-                          </span>
+                          <img
+                            src="/icons/searchIcon.svg"
+                            alt="search-icon"
+                            className="search-icon"
+                          />
                         </div>
-                        <div className="assignee-card-listing-container">
-                          {students.map((student) => {
-                            return (
-                              <div
-                                className="individual-assignee-card flex"
-                                key={student.id}
-                              >
-                                <input
-                                  className="student-checkbox "
-                                  type="checkbox"
-                                  onChange={() =>
-                                    handleCheckboxChange(student.id)
-                                  }
-                                  checked={selectedStudents.includes(
-                                    student.id
-                                  )}
-                                />
-                                <div className="profile flex">
-                                  <div className="profile-letter">
-                                    <span>
-                                      {student?.first_name[0]}
-                                      {student?.last_name[0]}
-                                    </span>
+                        {isAssigneeLoading ? (
+                          <Skeleton active paragraph={4} />
+                        ) : (
+                          <>
+                            <div className="select-all flex">
+                              <input
+                                className="global-checkbox"
+                                type="checkbox"
+                                onChange={handleAllCheckboxChange}
+                                checked={
+                                  selectedStudents.length == students.length
+                                }
+                              />
+                              <span>
+                                {selectedStudents.length === students.length
+                                  ? "All Students Selected"
+                                  : selectedStudents.length == 0
+                                  ? "Select All Students"
+                                  : `${selectedStudents.length} Selected`}
+                              </span>
+                            </div>
+                            <div className="assignee-card-listing-container">
+                              {students.map((student) => {
+                                return (
+                                  <div
+                                    className="individual-assignee-card flex"
+                                    key={student.id}
+                                  >
+                                    <input
+                                      className="student-checkbox "
+                                      type="checkbox"
+                                      onChange={() =>
+                                        handleCheckboxChange(student.id)
+                                      }
+                                      checked={selectedStudents.includes(
+                                        student.id
+                                      )}
+                                    />
+                                    <div className="profile flex">
+                                      <div className="profile-letter">
+                                        <span>
+                                          {student?.first_name[0]}
+                                          {student?.last_name[0]}
+                                        </span>
+                                      </div>
+                                      <div className="assignee-name">
+                                        <p>
+                                          {student.first_name}{" "}
+                                          {student.last_name}
+                                        </p>
+                                      </div>
+                                    </div>
                                   </div>
-                                  <div className="assignee-name">
-                                    <p>
-                                      {student.first_name} {student.last_name}
-                                    </p>
-                                  </div>
-                                </div>
-                              </div>
-                            );
-                          })}
-                        </div>
+                                );
+                              })}
+                            </div>
                           </>
                         )}
                       </div>
@@ -507,38 +541,41 @@ const AssessmentView = ({
         </>
       ) : (
         <main className="main-container">
-           {currentAssessment?.task_users?.length > 0 && (
-               <div className="task-heading">
-               <p>{task_title}</p>
-   
-               <div className="search-container">
-                 <input type="input" placeholder="search..." />
-                 <img
-                   src="/icons/searchIcon.svg"
-                   alt="search-icon"
-                   className="search-icon"
-                 />
-   
-                 <img
-                   src="/icons/filterIcon.svg"
-                   alt="filter-icon"
-                   className="filter-icon"
-                 />
-               </div>
-                  </div>
-           )}
+          {currentAssessment?.task_users?.length > 0 && (
+            <div className="task-heading">
+              <p>{task_title}</p>
+
+              <div className="search-container">
+                <input type="input" placeholder="search..." />
+                <img
+                  src="/icons/searchIcon.svg"
+                  alt="search-icon"
+                  className="search-icon"
+                />
+
+                <img
+                  src="/icons/filterIcon.svg"
+                  alt="filter-icon"
+                  className="filter-icon"
+                />
+              </div>
+            </div>
+          )}
           {currentAssessment?.task_users?.length > 0 ? (
             currentAssessment.task_users.map((students, index) => {
               return (
                 <>
-                  <div className="task-container" >
-                   
+                  <div className="task-container">
                     <div className="task-user-list-container flex" key={index}>
                       <div className="student-info flex">
                         <div className="student-name-container">
                           <p>
-                            {students["user_details"]["first_name"][0]?.toUpperCase()}
-                            {students["user_details"]["last_name"][0]?.toUpperCase()}
+                            {students["user_details"][
+                              "first_name"
+                            ][0]?.toUpperCase()}
+                            {students["user_details"][
+                              "last_name"
+                            ][0]?.toUpperCase()}
                           </p>
                         </div>
                         <div className="student-email-container">
@@ -557,9 +594,8 @@ const AssessmentView = ({
                           style={{
                             backgroundColor:
                               colorObject[students?.task_status]
-                                ?.backgroundColor ,
-                            color:
-                              colorObject[students?.task_status]?.color 
+                                ?.backgroundColor,
+                            color: colorObject[students?.task_status]?.color,
                           }}
                         >
                           {students?.task_status}
@@ -576,8 +612,24 @@ const AssessmentView = ({
                       <div className="student-file">
                         <p>Submission Link</p>
                         <p>
-                          {students["submission_link"] !== null ? <a  href={`${students["submission_link"]}` } target="_blank">{students["submission_link"]}</a> : "N/A"}
+                          {students["submission_link"] !== null ? (
+                            <a
+                              href={`${students["submission_link"]}`}
+                              target="_blank"
+                            >
+                              {students["submission_link"]}
+                            </a>
+                          ) : (
+                            "N/A"
+                          )}
                         </p>
+                      </div>
+                      <div className="student-comment">
+                        <img
+                          src="/icons/comment-fill.svg"
+                          onClick={() => setOpenComments(students.id)}
+                          alt="comment-icon"
+                        />
                       </div>
                       <div className="student-work">
                         {weightageShow
@@ -586,8 +638,14 @@ const AssessmentView = ({
                                 className="secondary-btn-sm"
                                 onClick={(e) => {
                                   setActiveWeightageIndex(index);
-                                  if(activeWeightageIndex === index){
-                                    if(isScoreValidate(task_weightages,studentScore,setStudentsErrors)){
+                                  if (activeWeightageIndex === index) {
+                                    if (
+                                      isScoreValidate(
+                                        task_weightages,
+                                        studentScore,
+                                        setStudentsErrors
+                                      )
+                                    ) {
                                       handleAddScore(studentScore);
                                     }
                                   }
@@ -617,54 +675,97 @@ const AssessmentView = ({
                             )}
                       </div>
                     </div>
-                   
+                    {/* this modal open comment section for Admin  for functionality purpose*/}
+
+                      <Drawer
+                        title={<div>Comments</div>}
+                        onClose={() => {
+                          setOpenComments(null)
+                          setCommentText("")
+                        }}
+                        open={openComments !== null}
+                      >
+                        {/* Pass comments state to Comments component */}
+                        <Comments
+                         comments={
+                          currentAssessment.task_users.find(
+                            (student) => student.id === openComments
+                          )?.comments || []
+                        }
+                          role={"Admin"}
+                          commenterId={openComments}
+                          commentText={commentText}
+                          isCommentEditId={isCommentEditId}
+                          setIsCommentEditId={setIsCommentEditId}
+                          setCommentText={setCommentText}
+                          handleSendComment={handleSendComment}
+                          handleDeleteComment={handleDeleteComment}
+                        />
+                      </Drawer>
 
                     {activeWeightageIndex === index && (
-                     <>
-                       <div className="applied-weightage-list-container flex" style={{gap:"10px"}}>
-                        {currentAssessment.task_weightages &&
-                          currentAssessment.task_weightages.map(
-                            (weightage, weightageIndex) => (
-                              <div
-                                key={weightageIndex}
-                                className="applied-weightage-card flex"
-                              >
-                                
-                                <div className="applied-weightage-name">
+                      <>
+                        <div
+                          className="applied-weightage-list-container flex"
+                          style={{ gap: "10px" }}
+                        >
+                          {currentAssessment.task_weightages &&
+                            currentAssessment.task_weightages.map(
+                              (weightage, weightageIndex) => (
+                                <div
+                                  key={weightageIndex}
+                                  className="applied-weightage-card flex"
+                                >
+                                  <div className="applied-weightage-name">
                                     <p>
-                                      
-                                    {weightageLists && weightageLists.length > 0 && (
-                                      (() => {
-                                        const foundWeightage = weightageLists.find((weightageName) => weightageName.id === weightage.weightage);
+                                      {weightageLists &&
+                                        weightageLists.length > 0 &&
+                                        (() => {
+                                          const foundWeightage =
+                                            weightageLists.find(
+                                              (weightageName) =>
+                                                weightageName.id ===
+                                                weightage.weightage
+                                            );
 
-                                        return foundWeightage && (
-                                          <>
-                                            <p>{foundWeightage.weightage} {Number(weightage.weightage_percentage)}</p>
-                                          </>
-                                        );
-                                      })()
-                                    )}
-
-
+                                          return (
+                                            foundWeightage && (
+                                              <>
+                                                <p>
+                                                  {foundWeightage.weightage}{" "}
+                                                  {Number(
+                                                    weightage.weightage_percentage
+                                                  )}
+                                                </p>
+                                              </>
+                                            )
+                                          );
+                                        })()}
                                     </p>
-                                 </div>
+                                  </div>
 
-
-                                <div className="weightage-checkbox">
-                                  <input
-                                    type="number"
-                                    name="score"
-                                    onChange={(e) => {handleScoreOnchange(e,students, weightage);
-                                    }}
-                                  />
+                                  <div className="weightage-checkbox">
+                                    <input
+                                      type="number"
+                                      onChange={(e) => {
+                                        handleScoreOnchange(
+                                          e,
+                                          students,
+                                          weightage
+                                        );
+                                      }}
+                                    />
+                                  </div>
                                 </div>
-                              </div>
-                            )
-                          )}
-                         
-                      </div>
-                      <p className="error-message">{studentScoreErrors["score"] ? studentScoreErrors["score"]:""}</p>
-                     </>
+                              )
+                            )}
+                        </div>
+                        <p className="error-message">
+                          {studentScoreErrors["score"]
+                            ? studentScoreErrors["score"]
+                            : ""}
+                        </p>
+                      </>
                     )}
                   </div>
                 </>

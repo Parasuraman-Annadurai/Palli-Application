@@ -829,9 +829,7 @@ body {
                 // width: 100%;
                 // border: 1px solid $primary-color;
               }
-              
             }
-           
 
             // .task-title {
             //   font-size: 16px;
@@ -1017,16 +1015,15 @@ body {
                 p {
                   color: $font-primary-color;
                 }
-               
               }
             }
 
             p {
-                color: $error-message;
-                font-family: $font-Roboto;
-                font-size: 12px;
-                line-height: 16px;
-                font-weight: 400;
+              color: $error-message;
+              font-family: $font-Roboto;
+              font-size: 12px;
+              line-height: 16px;
+              font-weight: 400;
             }
           }
         }
@@ -1125,10 +1122,9 @@ body {
             border: 1px solid $border-color;
           }
         }
-        .weightage-main-container{
+        .weightage-main-container {
           .overall {
             .weightage-adding-container {
-            
               .weight-inputs {
                 display: flex;
                 gap: 20px;
@@ -1140,7 +1136,7 @@ body {
                   color: $font-secondary-color;
                   padding-bottom: 6px;
                 }
-  
+
                 .weightage-unit-container {
                   max-width: 364px;
                   width: 100%;
@@ -1148,7 +1144,7 @@ body {
                   justify-content: space-between;
                   align-items: center;
                   gap: 10px;
-  
+
                   .task-weightage-selector {
                     padding: 10px 12px;
                     max-width: 200px;
@@ -1160,7 +1156,7 @@ body {
                     background-color: white;
                     font-family: $font-Roboto;
                   }
-  
+
                   .task-weight-value-selector {
                     max-width: 72px;
                     width: 100%;
@@ -1171,7 +1167,7 @@ body {
                 }
               }
             }
-  
+
             // .all-btns {
             //   display: flex;
             //   justify-content: space-between;
@@ -1217,32 +1213,29 @@ body {
       }
 
       .assignee-search-container {
-        
-          position: relative;
+        position: relative;
+        width: 100%;
+        padding-bottom: 5px;
+        // background-color: #33762f;
+        img {
+          width: 16px;
+          height: 16px;
+        }
+        input {
           width: 100%;
-          padding-bottom: 5px;
-          // background-color: #33762f;
-          img {
-            width: 16px;
-            height: 16px;
+          padding: 10px 18px 10px 33px;
+          border-radius: 4px;
+          border: 1px solid $border-color;
+          &:focus {
+            border: 1px solid $primary-color;
           }
-          input {
-            width: 100%;
-            padding: 10px 18px 10px 33px;
-            border-radius: 4px;
-            border: 1px solid $border-color;
-            &:focus{
-              border: 1px solid $primary-color;
-            }
-          }
+        }
 
-          .search-icon {
-            position: absolute;
-            left: 12px;
-            top: 10px;
-          }
-         
-        
+        .search-icon {
+          position: absolute;
+          left: 12px;
+          top: 10px;
+        }
       }
       .assign-listing-container {
         padding-top: 10px;
@@ -1505,6 +1498,9 @@ body {
             height: 16px;
           }
         }
+        .student-comment {
+          cursor: pointer;
+        }
         .student-work {
           max-width: 115px;
           width: 100%;
@@ -1578,4 +1574,34 @@ body {
 }
 .ant-select-selector:hover {
   border: 1px solid $primary-color !important;
+}
+
+.react-quill {
+  .ql-snow.ql-toolbar button:hover,
+  .ql-snow .ql-toolbar button:hover,
+  .ql-snow.ql-toolbar button:focus,
+  .ql-snow .ql-toolbar button:focus,
+  .ql-snow.ql-toolbar button.ql-active,
+  .ql-snow .ql-toolbar button.ql-active,
+  .ql-snow.ql-toolbar .ql-picker-label:hover,
+  .ql-snow .ql-toolbar .ql-picker-label:hover,
+  .ql-snow.ql-toolbar .ql-picker-label.ql-active,
+  .ql-snow .ql-toolbar .ql-picker-label.ql-active,
+  .ql-snow.ql-toolbar .ql-picker-item:hover,
+  .ql-snow .ql-toolbar .ql-picker-item:hover,
+  .ql-snow.ql-toolbar .ql-picker-item.ql-selected,
+  .ql-snow .ql-toolbar .ql-picker-item.ql-selected {
+    color: $primary-color;
+  }
+  .ql-snow.ql-toolbar .ql-picker-label {
+    color: $font-secondary-color;
+    .ql-stroke {
+      stroke: $font-secondary-color;
+    }
+    .ql-bold {
+      &:hover {
+        color: $primary-color;
+      }
+    }
+  }
 }

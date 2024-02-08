@@ -1134,6 +1134,9 @@ body .container .main-container .task-user-list-container .student-file img {
   width: 16px;
   height: 16px;
 }
+body .container .main-container .task-user-list-container .student-comment {
+  cursor: pointer;
+}
 body .container .main-container .task-user-list-container .student-work {
   max-width: 115px;
   width: 100%;
@@ -1205,6 +1208,32 @@ body .container .main-container .applied-weightage-list-container .applied-weigh
 
 .ant-select-selector:hover {
   border: 1px solid #49a843 !important;
+}
+
+.react-quill .ql-snow.ql-toolbar button:hover,
+.react-quill .ql-snow .ql-toolbar button:hover,
+.react-quill .ql-snow.ql-toolbar button:focus,
+.react-quill .ql-snow .ql-toolbar button:focus,
+.react-quill .ql-snow.ql-toolbar button.ql-active,
+.react-quill .ql-snow .ql-toolbar button.ql-active,
+.react-quill .ql-snow.ql-toolbar .ql-picker-label:hover,
+.react-quill .ql-snow .ql-toolbar .ql-picker-label:hover,
+.react-quill .ql-snow.ql-toolbar .ql-picker-label.ql-active,
+.react-quill .ql-snow .ql-toolbar .ql-picker-label.ql-active,
+.react-quill .ql-snow.ql-toolbar .ql-picker-item:hover,
+.react-quill .ql-snow .ql-toolbar .ql-picker-item:hover,
+.react-quill .ql-snow.ql-toolbar .ql-picker-item.ql-selected,
+.react-quill .ql-snow .ql-toolbar .ql-picker-item.ql-selected {
+  color: #49a843;
+}
+.react-quill .ql-snow.ql-toolbar .ql-picker-label {
+  color: #969d88;
+}
+.react-quill .ql-snow.ql-toolbar .ql-picker-label .ql-stroke {
+  stroke: #969d88;
+}
+.react-quill .ql-snow.ql-toolbar .ql-picker-label .ql-bold:hover {
+  color: #49a843;
 }
 
 /*# sourceMappingURL=style.css.map */

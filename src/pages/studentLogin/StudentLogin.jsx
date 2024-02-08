@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 
 import axios from "axios";
-import { Flex, Modal, Select, Skeleton,notification } from "antd";
+import { Modal, Select, Skeleton, notification, Drawer } from "antd";
+
 import { LoadingOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
 
@@ -9,12 +10,14 @@ import { API_END_POINT } from "../../../config";
 
 import { useAuth } from "../../context/AuthContext";
 
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 import "../studentLogin/scss/StudentLogin.css";
-import { Content } from "antd/es/layout/layout";
 
 import colorObject from "../../utils/validate";
+import Comments from "../../components/CommentsModule/Comments";
+
+import { valueTrim } from "../../utils/validate";
 
 const TaskCard = ({
   tasksLists,
@@ -54,7 +57,14 @@ const TaskCard = ({
                   50
                 )}
               </p>
-              <span className="btn btn-inprogress">
+              <span
+                className="btn btn-inprogress"
+                style={{
+                  backgroundColor:
+                    colorObject[tasksLists?.task_status]?.backgroundColor,
+                  color: colorObject[tasksLists?.task_status]?.color,
+                }}
+              >
                 {tasksLists.task_status}
               </span>
               <span className="btn btn-deadline">
@@ -69,7 +79,7 @@ const TaskCard = ({
 };
 
 const StudentLogin = ({ type }) => {
-  const taskType = type === "assessment" ? 1 : 0;
+  const navigate = useNavigate();
   const { token, user } = useAuth();
   const { id: batchId } = useParams();
   const [tasksLists, setTaskLists] = useState([]);
@@ -78,6 +88,11 @@ const StudentLogin = ({ type }) => {
   const [submissionLink, setSubmissionLink] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [taskComments,setTaskComments] = useState("");
+  const [isCommentEditId,setIsCommentEditId] = useState(null);
+  const [openCommentSection,setOpenCommentSection] = useState(false);
+  const [formErrors,setFormErrors] = useState({})
+  const [taskSearch,setTaskSearch] = useState("")
 
   const headers = {
     Authorization: `Bearer ${token.access}`,
@@ -89,22 +104,35 @@ const StudentLogin = ({ type }) => {
       .get(
         `${API_END_POINT}/api/task/${batchId}/list/user/task/?filter_task_type=${
           type === "assessment" ? 1 : 0
-        }`,
+        }&search=${taskSearch}`,
         { headers }
       )
       .then((res) => {
         setIsLoading(false);
         const copyTaskList = [...res.data.data];
         setTaskLists(copyTaskList);
-
+        console.log(copyTaskList);
         const getFirstTask =
           [...res.data.data].length > 0 ? [...res.data.data][0]["id"] : null;
         setSeletedTaskId(getFirstTask);
       })
       .catch((error) => {
-        console.log(error);
+        if (
+          error.response.data.status === 400 ||
+          "errors" in error.response.data
+        ) {
+          const errorMessages = error.response.data.errors;
+          if (errorMessages && errorMessages.detail) {
+            notification.error({
+              message: error.response.data.message,
+              description: errorMessages.detail,
+              duration: 1,
+            });
+          }
+          setIsLoading(false);
+        }
       });
-  }, [type]);
+  }, [type,taskSearch]);
 
   const handleChange = (status) => {
     setIsLoading(true);
@@ -137,7 +165,9 @@ const StudentLogin = ({ type }) => {
   };
 
   const handleSubmit = () => {
-    const url = `${API_END_POINT}/api/task/${batchId}/update/task/user/${selectedTaskId}`;
+
+    if(valueTrim(submissionLink,"Submission link",setFormErrors)){
+      const url = `${API_END_POINT}/api/task/${batchId}/update/task/user/${selectedTaskId}`;
     setIsLoading(true);
     axios
       .put(
@@ -172,15 +202,86 @@ const StudentLogin = ({ type }) => {
       .catch((error) => {
         console.log(error);
       });
+    }
+    
   };
-  console.log(type);
+
+  const handleAddComment =(id)=>{
+
+    const url = isCommentEditId ? `${API_END_POINT}/api/task/${batchId}/update/task_comment/${isCommentEditId}` : `${API_END_POINT}/api/task/${batchId}/create/task_comment/${id}`
+    const method = isCommentEditId ? "PUT" : "POST"
+    
+
+    axios({
+      method: method,
+      url: url,
+      data: {comments:taskComments},
+      headers:headers
+    }).then((res)=>{
+
+      let updatedComment = res.data.data;
+
+      const updatedTaskLists = tasksLists.map((task) => {
+        if (task.id === selectedTaskId) {
+          // Check if it's an edit or a new comment
+          if (isCommentEditId) {
+            // If it's an edit, update the specific comment
+            task.comments = task.comments.map((comment) => {
+              if (comment.id === isCommentEditId) {
+                return updatedComment;
+              }
+              return comment;
+            });
+          } else {
+            // If it's a new comment, concatenate it
+            task.comments = [updatedComment, ...task.comments];
+          }
+        }
+        return task;
+      });
+    
+      setTaskComments(" ")
+      setTaskLists(updatedTaskLists);
+      setIsCommentEditId(null)
+    }).catch((error)=>{
+      console.log(error);
+    })
+  }
+
+  const handleDeleteComment =(commentId)=>{
+    const url = `${API_END_POINT}/api/task/${batchId}/delete/task_comment/${commentId}`
+    axios.delete(url,{headers}).then((res)=>{
+      const updatedTaskLists = tasksLists.map((task) => {
+        if (task.id === selectedTaskId) {
+          // Use filter to exclude the comment with the specified ID
+          task.comments = task.comments.filter((comment) => comment.id !== commentId);
+        }
+        return task;
+      });
+      
+      // Update the local state with the modified task lists
+      setTaskLists(updatedTaskLists);
+      console.log(res.data);
+      if(res.data.status == 200){
+        notification.success({
+          message:"Success",
+          description : res?.data?.message,
+          duration:1
+        })
+      }
+      
+    }).catch((error)=>{
+      console.log(error);
+    })
+  }
+
 
   return (
     <>
       <section className="listing-container">
         <h1>{type} list</h1>
         <div className="search-container">
-          <input type="input" placeholder="search..." />{" "}
+          <input type="input" placeholder="search..." onChange={(e)=>setTaskSearch(e.target.value)}/>{" "}
           <img
             src="/icons/searchIcon.svg"
             alt="search-icon"
@@ -202,17 +303,20 @@ const StudentLogin = ({ type }) => {
             })}
         </div>
       </section>
-      {isLoading ? (
-        <Skeleton active paragraph={{ rows: 4 }} />
-      ) : (
-        <>
-          {tasksLists.map((tasksList) => {
+      <div className="main-container">
+        {isLoading ? <Skeleton active paragraph={6}/> : (
+          <>
+             {tasksLists.map((tasksList) => {
             if (tasksList.id == selectedTaskId) {
               return (
-                <main className="main-container" key={tasksList.id}>
-                  <div className="module-header-section flex">
+                <>
+                  <div className="module-header-section flex" key={tasksList.id}>
                     <div className="module-title-section flex">
                       <h3>{tasksList.task.task_title}</h3>
+                    </div>
+                    <div className="comments" onClick={()=>setOpenCommentSection(true)}>
+                      <img src="/icons/comment-border.svg" alt="" />
+                      <button className="secondary-border-btn" >Comments</button>
                     </div>
                   </div>
 
@@ -224,21 +328,26 @@ const StudentLogin = ({ type }) => {
                       </div>
 
                       <div className="student-task-details-main-container flex">
-                        <div className="student-task-status">
+                        <div className="student-task-trainer-name">
                           <p>Trainer Name</p>
-                          <span>Avinash</span>
+                          <span>{tasksList.reviewer.first_name}</span>
                         </div>
+
                         <div className="student-task-status">
                           <p>Status</p>
                           <Select
                             onChange={handleChange}
+                            prefixCls={`students-status-${tasksList.task_status}-status`}
                             disabled={
                               tasksList.task_status === "SUBMITTED" ||
                               tasksList.task_status === "COMPLETED"
                             }
                             defaultValue={tasksList.task_status}
-                    
-                            style={{ width: "60%"}}
+                            style={{ width: "70%" }}
+                            suffixIcon={
+                              <img src="/icons/drop.svg" alt="Sample SVG" />
+                            }
+                            dropdownStyle={{ zIndex: 9999 }}
                           >
                             <Select.Option value="TODO">Todo</Select.Option>
                             <Select.Option value="INPROGRESS">
@@ -267,7 +376,6 @@ const StudentLogin = ({ type }) => {
                             dangerouslySetInnerHTML={{
                               __html: tasksList.task.task_description,
                             }}
-                            style={{ color: "black" }}
                           ></span>
                         </div>
                       </div>
@@ -282,26 +390,23 @@ const StudentLogin = ({ type }) => {
                               tasksList?.weightage_details?.map(
                                 (weightageDetails, index) => (
                                   <div className="student-weightage-card flex">
-                                    {/* <p> */}
-                                     <p>
-                                     {
+                                    <p>
+                                      {
                                         weightageDetails.weightage_details
                                           .weightage
-                                      }{" "}
-                                     </p>
-                                     <span className="score">
-                                     {weightageDetails?.task_score?.map((a) =>
-                                        Number(a.task_score)
-                                      )}
-                                     </span>
-                                      /
-                                     <span>
-                                       {Number(
+                                      }
+                                      {""}
+                                    </p>
+                                    <span>
+                                      {Number(
                                         weightageDetails.weightage_percentage
                                       )}
-                                     </span>
-                                    {/* </p> */}
-                                    {" "}
+                                    </span>
+                                    <span className="score">
+                                      {weightageDetails?.task_score?.map((a) =>
+                                        Number(a.task_score)
+                                      )}
+                                    </span>{" "}
                                   </div>
                                 )
                               )}
@@ -309,45 +414,60 @@ const StudentLogin = ({ type }) => {
                         </>
                       )}
 
-                        {tasksList?.submission_link && (
-                           <div className="submission-link-container">
-                            <div className="heading-line flex">
-                            <h3>
-                             Submitted Link
-                              </h3>
-                           <div className="horizon-line"></div>
-                            </div>
-                           <a
-                             href={`${tasksList.submission_link}`}
-                             target="_blank"
-                             rel="noopener noreferrer"
-                             style={{ fontSize: "12px" }}
-                           >
-                             {tasksList.submission_link}
-                           </a>
-                         </div>
-                        )}
-                     
+                      {tasksList?.submission_link && (
+                        <div className="submission-link-container">
+                          <div className="heading-line flex">
+                            <h3>Submitted Link</h3>
+                            <div className="horizon-line"></div>
+                          </div>
+                          <a
+                            href={`${tasksList.submission_link}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            {tasksList.submission_link}
+                          </a>
+                        </div>
+                      )}
+                    </div>
+                      
+                    
+                    <div className="comments-container">
+                      <Drawer title="Comments" onClose={()=>setOpenCommentSection(false)} open={openCommentSection}>
+                      <Comments comments={tasksList?.comments} commenterId={tasksList.id} commentText={taskComments} isCommentEditId={isCommentEditId} setIsCommentEditId={setIsCommentEditId} setCommentText={setTaskComments} handleSendComment={handleAddComment} handleDeleteComment={handleDeleteComment} role={"Student"}/>
+                      </Drawer>
                     </div>
                   </div>
 
+                  {/* Future used */}
+                  
+                  {/* <div className="student-task-label-container flex">
+                    <h3>Task File</h3>
+                    <div className="horizon-line"></div>
+                  </div>
+
+                  <div className="file-input-container">
+                    <div className="upload-icon-container flex">
+                      <img src="/icons/upload.svg" className="upload-icon" />
+                      <label for="file-input">
+                        Drag your file or
+                        <span className="highlight">
+                          {" "}
+                          click to upload your task
+                        </span>
+                      </label>
+                    </div>
+                    <input type="file" className="file-input" />
+                  </div> */}
                   <Modal
-                    className="modal"
-                    title={
-                      <span style={{ fontWeight: 500 }}>Submission Link</span>
-                    }
+                    prefixCls="submission-modal"
+                    title={<span>Submission Link</span>}
                     open={isModalOpen}
                     onOk={handleSubmit}
                     onCancel={() => setIsModalOpen(false)}
                     footer={[
-                      <div style={{ display: "flex", justifyContent: "end" }}>
-                        <div
-                          className="all-btn flex"
-                          style={{
-                            width: 250,
-                            justifyContent: "space-between",
-                          }}
-                        >
+                      <div className="over-all-btns">
+                        <div className="all-btn flex">
                           <button
                             key="cancel"
                             className="btn primary-default"
@@ -380,38 +500,43 @@ const StudentLogin = ({ type }) => {
                   >
                     <div className="submission-link-input">
                       <input
+                        className="input-link"
                         type="url"
+                        name="Submission link"
                         placeholder="Paste submission link"
-                        onChange={(e) => setSubmissionLink(e.target.value)}
-                        style={{
-                          padding: "10px 0px 10px 12px",
-                          width: "100%",
-                          color: "#12160a",
-                          borderRadius: "4px",
-                          border: "1px solid #eaeaea",
-                          marginBottom: "32px",
-                          font: '500 12px/16px "Roboto", sans-serif',
+                        onChange={(e) =>{
+                          const {value,name} = e.target
+                          setSubmissionLink(value)
+                          if(formErrors[name]){
+                            delete formErrors[name];
+                          }
                         }}
+                        
                       />
+                      <p className="error-message">{formErrors["Submission link"] ? formErrors["Submission link"] :""}</p>
                     </div>
                   </Modal>
-                </main>
+                </>
               );
             }
             return null;
           })}
+
           {selectedTaskId === null && (
             <div className="select-something-container flex">
               <div className="image-container ">
                 <img src="/icons/select-something.svg" alt="" />
                 <p className="select-something-heading">
-                  Please Select any of the Available Tasks
+                  {selectedTaskId !== null
+                    ? `Please Select any of the Available ${type}`
+                    : `No ${type} are currently available here.`}
                 </p>
               </div>
             </div>
           )}
-        </>
-      )}
+          </>
+        )}
+      </div>
     </>
   );
 };

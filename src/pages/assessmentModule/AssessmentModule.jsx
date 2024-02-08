@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 
 import { useParams } from "react-router-dom";
 
-import { Modal, Skeleton, notification } from "antd";
+import { Modal, Skeleton, notification,message as messageApi } from "antd";
 import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
 import dayjs from "dayjs";
@@ -27,9 +27,15 @@ const AssessmentModule = ({ type }) => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   //for check task or assessment new created or old;
   const [isDraft, setIsDraft] = useState(false);
-  const [isStudentScoreOpen, setIsStudentScoreOpen] = useState(false);
+  const [isStudentScoreOpen, setIsStudentScoreOpen] = useState(true);
   const [activeWeightageIndex, setActiveWeightageIndex] = useState(null);
-
+  const [isMode,setIsMode] = useState("edit")
+  const [commentText,setCommentText] = useState("");
+  const [isCommentEditId,setIsCommentEditId] = useState(null)
+  const [formErrors, setFormErrors] = useState({});
+  const [weightageErrors, setWeightageErros] = useState({});
+  const [assigneeSearch,setAssigneeSearch] = useState("");
+  const [isAssigneeLoading,setIsAssigneeLoading] = useState(false)
   const headers = {
     Authorization: `Bearer ${token.access}`,
     "Content-type": "application/json",
@@ -62,21 +68,7 @@ const AssessmentModule = ({ type }) => {
               res.data.data.length > 0 ? res.data.data[0].id : null;
 
             setEditId(assessmentId);
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-
-      axios
-        .get(`${API_END_POINT}/api/applicant/${batchId}/list/students/`, {
-          headers,
-        })
-        .then((res) => {
-          if (res.status === 200 && res.data.message === "Success") {
-            setStudents(res.data.data);
-            setLoading(false);
-            // setSelectedStudents(res.data.data.map((student) => student.id));
+            setFormErrors({});
           }
         })
         .catch((error) => {
@@ -86,6 +78,7 @@ const AssessmentModule = ({ type }) => {
   }, [assessmentSearchWord, type]);
 
   useEffect(() => {
+    setIsAssigneeLoading(true)
     if (editId && assessmentList.length > 0) {
       const currentAssessment = assessmentList.find(
         (assessment) => assessment.id === editId
@@ -131,7 +124,24 @@ const AssessmentModule = ({ type }) => {
 
       setSelectedStudents(assignedUsers);
     }
-  }, [editId]);
+
+    if(editId){
+      axios
+      .get(`${API_END_POINT}/api/applicant/${batchId}/list/students/?search=${assigneeSearch}`, {
+        headers,
+      })
+      .then((res) => {
+        if (res.status === 200 && res.data.message === "Success") {
+          setIsAssigneeLoading(false)
+          setStudents(res.data.data);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        setIsAssigneeLoading(false)
+      });
+    }
+  }, [editId,assigneeSearch]);
 
   const handleDeleteAssessment = (deleteId) => {
     setEditId(deleteId);
@@ -180,6 +190,24 @@ const AssessmentModule = ({ type }) => {
   };
 
   const handleSave = (assessment) => {
+
+    const newTaskName = assessment.task_title.trim().toLowerCase();
+
+    // Check if the task with the same task_title already exists
+    const isDuplicateTask = assessmentList.some(
+      (existingAssessment, index) => index !== 0 &&
+        existingAssessment.task_title.trim().toLowerCase() === newTaskName
+    );
+    
+
+  if (isDuplicateTask) {
+    messageApi.open({
+      type: 'error',
+      content: `${newTaskName} already exits`,
+      duration:1
+    });
+  } else {
+
     const isNew = "draft" in assessment;
 
     const {
@@ -202,6 +230,8 @@ const AssessmentModule = ({ type }) => {
       : `${API_END_POINT}/api/task/${batchId}/update_task/${editId}`;
     const method = isNew ? "POST" : "PUT";
 
+   
+
     axios({
       method: method,
       url: apiEndpoint,
@@ -221,7 +251,6 @@ const AssessmentModule = ({ type }) => {
           duration: 1,
         });
 
-        // console.log(res.response.data,"jjj");
 
         let cloneAssessmentList = [...assessmentList];
         //finding and filtering the assessment which is new create the assessment
@@ -240,6 +269,7 @@ const AssessmentModule = ({ type }) => {
             return assessment;
           });
         }
+
 
         setAssessmentList(cloneAssessmentList);
         setEditId(
@@ -263,6 +293,11 @@ const AssessmentModule = ({ type }) => {
           });
         }
       });
+
+  }
+
+
+    
   };
 
   const handleAdd = () => {
@@ -285,6 +320,10 @@ const AssessmentModule = ({ type }) => {
   };
 
   const handleInputChange = (name, value) => {
+    // if name present in formErrors state check and delete the key in onchange example task_name present in error state delete it the key  
+    if (formErrors[name]) {
+      delete formErrors[name];
+    }
     const cloneAssessmentList = [...assessmentList];
     const updatedList = cloneAssessmentList.map((assessment) => {
       if (assessment.id === editId) {
@@ -389,7 +428,6 @@ const AssessmentModule = ({ type }) => {
       if (updatePromise.length > 0) {
         Promise.all(updatePromise)
           .then((results) => {
-            console.log(results);
             notification.success({
               message: "Sucess",
               description: "Weightage Update Successfully",
@@ -427,35 +465,25 @@ const AssessmentModule = ({ type }) => {
 
     const updatedAssessmentList = assessmentList.map((assessment) => {
       if (assessment.id === editId) {
-        const totalWeightagePercentage = assessment.task_weightages
-          .map((task) => Number(task.weightage_percentage) || 0)
-          .reduce((sum, percentage) => sum + percentage, 0);
-
-
-        // Allow adding new weightage only if the total is less than 100%
-        if (totalWeightagePercentage < 100) {
-          console.log("Adding new weightage");
-          assessment.task_weightages = [
-            ...assessment.task_weightages,
-            newWeightage,
-          ];
-        } else {
-          notification.error({
-            message: "Error",
-            description: "Weightage percentage has already reached 100%",
-            duration: 1,
-          });
-        }
+        assessment.task_weightages = [
+          ...assessment.task_weightages,
+          newWeightage,
+        ];
       }
 
       return assessment;
     });
 
-    console.log("Updated Assessment List:", updatedAssessmentList);
     setAssessmentList(updatedAssessmentList);
   };
 
   const handleWeightageChange = (value, index, key) => {
+    if(weightageErrors[key]){
+      delete weightageErrors[key]
+    }
+    else if(key === "weightage_percentage"){
+      delete weightageErrors["weightage"]
+    }
     let copyAssessment = [...assessmentList];
 
     copyAssessment = copyAssessment.map((assessment) => {
@@ -612,6 +640,76 @@ const AssessmentModule = ({ type }) => {
     }
   };
 
+  //comments
+  const handleSendComment=(commentId)=>{
+    const url = isCommentEditId ? `${API_END_POINT}/api/task/${batchId}/update/task_comment/${isCommentEditId}` : `${API_END_POINT}/api/task/${batchId}/create/task_comment/${commentId}`
+    const method = isCommentEditId ? "PUT" : "POST"
+    axios({
+      method: method,
+      url: url,
+      data: {comments:commentText},
+      headers:headers
+    }).then((res)=>{
+      let updatedComment = res.data.data;
+    const updatedAssessmentList = assessmentList.map((assessment) => {
+      if (assessment.id === editId) {
+        // Check if it's an edit or a new comment
+        if (isCommentEditId) {
+          // If it's an edit, update the specific comment
+          assessment.task_users.map((users) => {
+            users.comments.map((comment) => {
+              if (comment.id === isCommentEditId) {
+                // Update the existing comment
+                Object.assign(comment, updatedComment);
+              }
+            });
+          });
+        } else {
+          // If it's a new comment, add it to the task
+          assessment.task_users.map((users) => {
+            users.comments.unshift(updatedComment);
+          });
+        }
+      }
+      return assessment;
+    });
+
+      setAssessmentList(updatedAssessmentList)
+      setIsCommentEditId(null)
+      setCommentText(" ")
+    }).catch((error)=>{
+      console.log(error);
+    })
+  }
+  const handleDeleteComment =(commentId)=>{
+    const url = `${API_END_POINT}/api/task/${batchId}/delete/task_comment/${commentId}`
+    axios.delete(url,{headers}).then((res)=>{
+      const updatedAssessmentList = assessmentList.map((assessment) => {
+        if (assessment.id === editId) {
+          // Use map to update the user's comments by excluding the comment with the specified ID
+          assessment.task_users.map((user) => {
+            user.comments = user.comments.filter((comment) => comment.id !== commentId);
+          });
+        }
+        return assessment;
+      });
+      
+      // Update the local state with the modified task lists
+      setAssessmentList(updatedAssessmentList);
+      
+      if(res.data.status == 200){
+        notification.success({
+          message:"Success",
+          description : res?.data?.message,
+          duration:1
+        })
+      }
+      
+    }).catch((error)=>{
+      console.log(error);
+    })
+  }
+
   return (
     <>
       {user.role !== "Student" ? (
@@ -650,10 +748,15 @@ const AssessmentModule = ({ type }) => {
             selectedAssessment={editId}
             setIsStudentScoreOpen={setIsStudentScoreOpen}
             isStudentScoreOpen={isStudentScoreOpen}
+            isMode={isMode}
+            setIsMode={setIsMode}
+            currentAssessment={assessmentList.find((assessment)=>assessment.id == editId)}
           />
 
           {loading ? (
-            <Skeleton active={true} />
+            <div className="main-container">
+              <Skeleton active={true} />
+            </div>
           ) : (
             <>
               {assessmentList.map((assessment) => {
@@ -672,12 +775,25 @@ const AssessmentModule = ({ type }) => {
                       handleAddWeightage={handleAddWeightage}
                       handleWeightageChange={handleWeightageChange}
                       isStudentScoreOpen={isStudentScoreOpen}
+                      setIsStudentScoreOpen={setIsStudentScoreOpen}
                       handleStatusChange={handleStatusChange}
                       handleAddScore={handleAddScore}
                       setActiveWeightageIndex={setActiveWeightageIndex}
                       activeWeightageIndex={activeWeightageIndex}
                       handleDeleteWeightage={handleDeleteWeightage}
-                      type={type}
+                      type={type} 
+                      handleSendComment={handleSendComment}
+                      handleDeleteComment={handleDeleteComment}
+                      commentText={commentText}
+                      isCommentEditId={isCommentEditId}
+                      setCommentText={setCommentText}
+                      setIsCommentEditId={setIsCommentEditId}
+                      formErrors={formErrors}
+                      setFormErrors={setFormErrors}
+                      weightageErrors={weightageErrors}
+                      setWeightageErros={setWeightageErros}
+                      setAssigneeSearch ={setAssigneeSearch}
+                      isAssigneeLoading={isAssigneeLoading}
                     />
                   );
                 }
@@ -688,7 +804,7 @@ const AssessmentModule = ({ type }) => {
                   <div className="image-container ">
                     <img src="/icons/select-something.svg" alt="" />
                     <p className="select-something-heading">
-                      Please Select any of the Available Tasks or Create New
+                      Please Select any of the Available {type} or Create New
                       {type}
                     </p>
                   </div>

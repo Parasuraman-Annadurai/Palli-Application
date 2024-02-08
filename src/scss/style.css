@@ -7,8 +7,8 @@
   outline: none;
   border: none;
   -webkit-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
+  -moz-user-select: none;
+       user-select: none;
 }
 
 ::-webkit-scrollbar {
@@ -227,6 +227,10 @@ li {
   outline: none;
   box-shadow: none !important;
   border: 1px solid #eaeaea;
+}
+.datepicker::-moz-placeholder {
+  color: #969d88;
+  font-size: 12px;
 }
 .datepicker::placeholder {
   color: #969d88;
@@ -1240,6 +1244,4 @@ body .container .main-container .applied-weightage-list-container .applied-weigh
 }
 .react-quill .ql-snow.ql-toolbar .ql-picker-label .ql-bold:hover {
   color: #49a843;
-}
-
-/*# sourceMappingURL=style.css.map */
+}/*# sourceMappingURL=style.css.map */

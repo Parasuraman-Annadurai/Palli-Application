@@ -1,8 +1,14 @@
 import React from "react";
 
-import { Skeleton, Dropdown, Space } from "antd";
+import { Skeleton } from "antd";
 
 import dayjs from "dayjs";
+
+import { getPermission } from "../utils/validate";
+
+
+import { useAuth } from "../context/AuthContext";
+
 
 const TaskCard = ({
   loading,
@@ -11,16 +17,16 @@ const TaskCard = ({
   handleEdit,
   handleDelete,
   setIsStudentScoreOpen,
-  isStudentScoreOpen,
+  isMode,
+  setIsMode,
+  currentAssessment
 }) => {
   const truncateText = (text, maxLength) => {
     return text.length > maxLength
       ? text.substring(0, maxLength) + "..."
       : text;
   };
-
-  
-
+  const {user} = useAuth();
   return (
     <>
       <div
@@ -30,8 +36,15 @@ const TaskCard = ({
         key={assessment.id}
         id={assessment.id}
         onClick={() => {
+          if(currentAssessment.draft){
+            setIsStudentScoreOpen(false)
+            handleEdit(assessment.id);
+            setIsMode("edit")
+          }else{
           setIsStudentScoreOpen(true)
           handleEdit(assessment.id);
+          setIsMode("card")
+        }
         }}
       >
         {loading ? (
@@ -45,29 +58,34 @@ const TaskCard = ({
             <div className="task-details">
               <div className="task-name-with-icon flex">
                 <h2>{truncateText(assessment.task_title, 15)}</h2>
-
                 <>
+                    {getPermission(user.permissions, "Task", "update") && (
                   <img
-                    src="/icons/edit-pencil.svg"
-                    className="edit-icon"
-                    alt="edit-icon"
-                    onClick={(event) => {
-                      event.stopPropagation();
-                      setIsStudentScoreOpen(false)
-                       handleEdit(assessment.id);
-                    }}
-                  />
+                        src={selectedAssessment === assessment.id && isMode == "edit" ? "/icons/edit-pencil-fill.svg" : "/icons/edit-pencil.svg"}
+                        className="edit-icon"
+                        alt="edit-icon"
+                        onClick={(event) => {
+                          event.stopPropagation();
+                          setIsStudentScoreOpen(false)
+                          handleEdit(assessment.id);
+                          setIsMode("edit")
+                        }}
+                      />
+                    )}
 
-                  <img
-                    src="/icons/deleteIcon.svg"
-                    alt="delete-icon"
-                    className="delete-icon"
-                    id={assessment.id}
-                    onClick={(e) => {
-                      handleDelete(assessment.id);
-                      e.stopPropagation();
-                    }}
-                  />
+                  {getPermission(user.permissions,"Task","delete") && (
+                     <img
+                     src="/icons/deleteIcon.svg"
+                     alt="delete-icon"
+                     className="delete-icon"
+                     id={assessment.id}
+                     onClick={(e) => {
+                       handleDelete(assessment.id);
+                       e.stopPropagation();
+                     }}
+                   />
+                  )}
+                 
                 </>
               </div>
               <p className="task-description">
@@ -99,7 +117,12 @@ const AssessmentList = ({
   selectedAssessment,
   isStudentScoreOpen,
   setIsStudentScoreOpen,
+  isMode,
+  setIsMode,
+  currentAssessment
 }) => {
+  const { user } = useAuth();
+
   return (
     <>
       <section className="listing-container">
@@ -124,9 +147,12 @@ const AssessmentList = ({
           )}
         </div>
         <div className="create-container">
-          <button className="btn create-btn" onClick={handleAdd}>
-            <span>+</span>Create {mode}
-          </button>
+          {getPermission(user.permissions, "Task", "create") && (
+            <button className="btn create-btn" onClick={handleAdd}>
+              <span>+</span>Create {mode}
+            </button>
+          )}
+
         </div>
         <div className="task-list-container">
           {assessmentList &&
@@ -140,6 +166,9 @@ const AssessmentList = ({
                 selectedAssessment={selectedAssessment}
                 setIsStudentScoreOpen={setIsStudentScoreOpen}
                 isStudentScoreOpen={isStudentScoreOpen}
+                isMode={isMode}
+                setIsMode={setIsMode}
+                currentAssessment={currentAssessment}
               />
             ))}
         </div>

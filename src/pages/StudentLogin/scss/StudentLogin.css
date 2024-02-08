@@ -6,9 +6,9 @@
   font-family: "Roboto";
   -webkit-user-select: none;
   /* Safari */
+  -ms-user-select: none;
   /* IE 10 and IE 11 */
-  -moz-user-select: none;
-       user-select: none;
+  user-select: none;
   /* Standard syntax */
 }
 
@@ -239,7 +239,6 @@ li {
 .main-container .module-header-section {
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 16px;
   font-size: 16px;
   font-weight: 500;
   font-family: "Roboto";
@@ -257,38 +256,6 @@ li {
 .main-container .module-header-section .module-title-section img {
   width: 20px;
   height: 20px;
-}
-.main-container .module-header-section .comments {
-  border-radius: 4px;
-  border: 1px solid #49a843;
-  width: 125px;
-  cursor: pointer;
-}
-.main-container .module-header-section .comments:hover {
-  color: var(--btn-hover-color);
-  border: 1px solid var(--btn-hover-color);
-}
-.main-container .module-header-section .comments:active {
-  color: #49a843;
-  border: 1px solid #49a843;
-  opacity: 30%;
-}
-.main-container .module-header-section .comments img {
-  width: 16px;
-  margin-left: 18px;
-}
-.main-container .module-header-section .comments .secondary-border-btn {
-  height: 38px;
-  color: #49a843;
-  background-color: white;
-  cursor: pointer;
-}
-.main-container .module-header-section .comments .secondary-border-btn:hover {
-  color: var(--btn-hover-color);
-}
-.main-container .module-header-section .comments .secondary-border-btn:active {
-  color: #49a843;
-  opacity: 30%;
 }
 .main-container .task-list-container .task-card {
   margin-top: 12px;
@@ -680,4 +647,6 @@ li {
   height: 100%;
   opacity: 0;
   cursor: pointer;
-}/*# sourceMappingURL=StudentLogin.css.map */
+}
+
+/*# sourceMappingURL=StudentLogin.css.map */

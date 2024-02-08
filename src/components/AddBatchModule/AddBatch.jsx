@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 
 import { Navigate, useNavigate } from "react-router-dom";
 
-import { DatePicker, Modal, notification, Drawer, Tooltip } from "antd";
+import { DatePicker, Modal, notification, Drawer, Tooltip, Skeleton } from "antd";
 
 import { CloseOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
@@ -13,9 +13,10 @@ import { useAuth } from "../../context/AuthContext";
 import { API_END_POINT } from "../../../config";
 
 import "./scss/AddBatch.css";
+import { getPermission } from "../../utils/validate";
 
 const AddBatch = (props) => {
-  const { showSwitchBatch, setShowSwitchBatch, batchList, setBatchList } =
+  const { showSwitchBatch, setShowSwitchBatch, batchList, setBatchList,isLoading } =
     props;
 
   const { user, token } = useAuth();
@@ -33,7 +34,6 @@ const AddBatch = (props) => {
   const [batchinputs, setBatchInputs] = useState(false);
   const [batchShow, setBatchshow] = useState(true);
 
-  // const [buttonText, setButtonText] = useState("Add New Batch");
 
   useEffect(() => {
     if (!showSwitchBatch) {
@@ -43,32 +43,7 @@ const AddBatch = (props) => {
   }, [showSwitchBatch]);
 
   const handleSwitch = (batch) => {
-    //   <Modal
-    //   open={true}
-    //   title={`Confirm Switch to ${batch.batch_name}`}
-    //   content= {`Are you sure you want to Switch this Batch?`}
-    //   onOk={() => {
-    //     navigate(`/batch/${batch.id}/applications`);
-    //     window.location.reload();
-    //   }}
-
-    //   onCancel={() => {
-    //     // setIsDeleteModalOpen(false);
-    //     // setIsDraft(false);
-
-    //   }}
-    //   okButtonProps={{
-    //     style: { background: "#49a843", borderColor: "#EAEAEA" },
-    //   }}
-    // >
-    //   <p>{`${
-    //     isDraft
-    //       ? "Are you sure you want to discard the changes"
-    //       : "Are you sure you want to delete"
-    //   } ${type} ${
-    //     assessmentList.find((asses) => asses.id === editId).task_title
-    //   }?`}</p>
-    // </Modal>
+   
 
     Modal.confirm({
       title: `Confirm Switch to ${batch.batch_name}`,
@@ -101,22 +76,8 @@ const AddBatch = (props) => {
 
   const handleBatchNameChange = (e) => {
     const input = e.target.value;
-    const regex = /^[A-Za-z0-9\- ]*$/;
-
-    if (regex.test(input) || input === "") {
-      const formattedBatchName = input
-        .toLowerCase()
-        .split(" ")
-        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-        .join(" ");
-
-      setBatchName(formattedBatchName);
-      setBatchNameError(null);
-    } else {
-      setBatchNameError(
-        "Batch name can only contain text, numbers, '-' symbol, and spaces"
-      );
-    }
+    setBatchName(input.trim());
+    setBatchNameError(null);
   };
 
   const validateForm = () => {
@@ -126,6 +87,11 @@ const AddBatch = (props) => {
       setBatchNameError("Batch name is required");
       hasError = true;
     }
+    else if (!/^[a-zA-Z0-9\s]+$/.test(batch_name)) {
+      setBatchNameError("Special characters are not allowed in the batch name");
+      hasError = true;
+    }
+  
 
     if (!start_date) {
       setStartError("Start date is required");
@@ -172,13 +138,11 @@ const AddBatch = (props) => {
   };
 
   const handleCLick = (e) => {
-    // setLoading(true);
     e.preventDefault();
     const hasError = validateForm();
-
     if (!hasError) {
       const batchData = {
-        batch_name: batch_name.trim(),
+        batch_name: batch_name,
         company,
         start_date,
         end_date,
@@ -221,8 +185,6 @@ const AddBatch = (props) => {
   };
 
   const handleUpdate = (e) => {
-    // setLoading(true);
-
     e.preventDefault();
     const hasError = validateForm();
 
@@ -268,7 +230,6 @@ const AddBatch = (props) => {
             description: "Batch Updated Successfully",
             duration: 3,
           });
-          // setLoading(false);
         })
         .catch((error) => {
           console.log(error);
@@ -278,233 +239,210 @@ const AddBatch = (props) => {
 
   return (
     <>
-      {/* <Button type="primary" onClick={showDrawer}>
-        Open
-      </Button> */}
-      <Drawer
-        // title={batchShow ? "Switch Batch" : editId ? "Edit Batch" : "Add Batch"}
-        title={
-          <div
-            style={{ fontWeight: 500, fontSize: "16px", fontFamily: "Roboto" }}
-          >
-            {batchShow ? "Switch Batch" : editId ? "Edit Batch" : "Add Batch"}
-          </div>
-        }
-        onClose={props.onClose}
-        open={props.open}
-        placement="left"
-      >
+     
+        <Drawer
+          title={
+            <div
+              style={{ fontWeight: 500, fontSize: "16px", fontFamily: "Roboto" }}
+            >
+              {batchShow ? "Switch Batch" : editId ? "Edit Batch" : "Add Batch"}
+            </div>
+          }
+          onClose={()=>{props.onClose() }}
+          open={props.open}
+          placement="left"
+        >
         {props.open && (
           <div className="popup-container">
-            <div className="popup-content">
-              {/* <div className="inner-content flex">
-                <h3>
-                  {batchShow
-                    ? "Switch Batch"
-                    : editId
-                    ? "Edit Batch"
-                    : "Add Batch"}
-                </h3>
-
-                <div className="close-icon">
-                  <img
-                    src="/icons/Cancel.svg"
-                    className="cancel-btn"
-                    alt=""
-                    onClick={() => {
-                      setShowSwitchBatch(false),
-                        setBatchshow(true),
-                        setBatchInputs(false);
-                    }}
-                  />
+              <>
+                 <div className="popup-content">
+            
+                <div className="add-batch">
+                  {getPermission(user.permissions,"Batch","create") && (
+                     <button
+                     className="add-batch-btn"
+                     onClick={() => {
+                       setBatchInputs(!batchinputs);
+                       setBatchshow(!batchShow);
+                       resetFields();
+                     }}
+                   >
+                     {batchinputs ? (
+                       <>
+                         <span>
+                           <img src="/icons/backIcon.svg" alt="backicon" />
+                         </span>{" "}
+                         Switch Batch
+                       </>
+                     ) : (
+                       <>
+                         <span>+</span> Add New Batch
+                       </>
+                     )}
+                   </button>
+                  )}
+                 
                 </div>
-              </div> */}
-              <div className="add-batch">
-                <button
-                  className="add-batch-btn"
-                  onClick={() => {
-                    setBatchInputs(!batchinputs);
-                    setBatchshow(!batchShow);
-                    resetFields();
-                  }}
-                >
-                  {batchinputs ? (
+
+                {batchinputs && (
+                  <form onSubmit={editId ? handleUpdate : handleCLick}>
+                    <div className="input-fields">
+                      <div className="input-field">
+                        <p>Batch Name</p>
+                        <input
+                          className={`batch-inputs  ${
+                            batchNameError ? "error-notify" : ""
+                          }`}
+                          type="text"
+                          placeholder="Enter the Batch"
+                          name="batchName"
+                          value={batch_name}
+                          onChange={handleBatchNameChange}
+                          autoComplete="off"
+                        />
+                        <p className="error-message">
+                          {batchNameError && (
+                            <span style={{ color: "red" }}>{batchNameError}</span>
+                          )}
+                        </p>
+                      </div>
+
+                      <div className="input-field">
+                        <p>Start Year</p>
+                        <DatePicker
+                          className={`datepicker ${
+                            startError ? "error-notify" : ""
+                          }`}
+                          id="startYearInput"
+                          format="YYYY-MM-DD"
+                          value={start_date ? dayjs(start_date) : null}
+                          onChange={(date, dateString) =>
+                            handleDateChange(
+                              dateString,
+                              setStartDate,
+                              setStartError,
+                              "startError"
+                            )
+                          }
+                          placeholder="Start Year"
+                        />
+                        <p className="error-message">
+                          {startError && (
+                            <span style={{ color: "red" }}>{startError}</span>
+                          )}
+                        </p>
+                      </div>
+                      <div className="input-field">
+                        <p>End Year</p>
+                        <DatePicker
+                          className={`datepicker ${
+                            endError ? "error-notify" : ""
+                          }`}
+                          id="endYearInput"
+                          format="YYYY-MM-DD"
+                          value={end_date ? dayjs(end_date) : null}
+                          onChange={(date, dateString) =>
+                            handleDateChange(
+                              dateString,
+                              setEndDate,
+                              setEndError,
+                              "endError"
+                            )
+                          }
+                          placeholder="End Year"
+                        />
+                        <p className="error-message">
+                          {endError && (
+                            <span style={{ color: "red" }}>{endError}</span>
+                          )}
+                        </p>
+                      </div>
+
+                      {editId ? (
+                        <button
+                          className="btn primary-medium "
+                          // disabled={loading}
+                        >
+                          {/* {loading ? ( */}
+                          <span>
+                            {/* Updating Batch... */}
+                            {/* <LoadingOutlined className="loader" /> */}
+                          </span>
+                          {/* ) : ( */}
+                          Update Batch
+                          {/* // )} */}
+                        </button>
+                      ) : (
+                        <button
+                          className="btn primary-medium"
+                          // disabled={loading}
+                        >
+                          {/* {loading ? ( */}
+                          <span>
+                            {/* Creating Batch... */}
+                            {/* <LoadingOutlined className="loader" /> */}
+                          </span>
+                          {/* ) : ( */}
+                          Create Batch
+                          {/* )} */}
+                        </button>
+                      )}
+                    </div>
+                  </form>
+                )}
+                 </div>
+               <div className="switch-batch-list-container">
+                  {batchShow && batchList.length > 0 && (
                     <>
-                      <span>
-                        <img src="/icons/backIcon.svg" alt="backicon" />
-                      </span>{" "}
-                      Switch Batch
-                    </>
-                  ) : (
-                    <>
-                      <span>+</span> Add New Batch
+                      {batchList.map((batch, index) => (
+                        <>
+                          <div className="switchbatch-container">
+                            <div
+                              className="switch-batch-card flex"
+                              onClick={() => handleSwitch(batch)}
+                              key={index}
+                            >
+                              <div className="batch-left-side flex">
+                                <div className="batch-name-year">
+                                  {batch.batch_name.length > 30 ? (
+                                    <Tooltip title={batch.batch_name}>
+                                      <h4>
+                                        {batch.batch_name.length > 30
+                                          ? `${batch.batch_name.slice(0, 30)}...`
+                                          : batch.batch_name}
+                                      </h4>
+                                    </Tooltip>
+                                  ) : (
+                                    <h4>{batch?.batch_name.charAt(0).toUpperCase() + batch?.batch_name.slice(1)}</h4>
+                                  )}
+    
+                                  <p>
+                                    {batch.start_date.slice(0, 4)} -{" "}
+                                    {batch.end_date.slice(0, 4)}
+                                  </p>
+                                </div>
+                               
+                              </div>
+                            </div>
+                            <div className="batch-right-side">
+                              <img
+                                className="edit-icon"
+                                src="/icons/edit-pencil.svg"
+                                alt=""
+                                onClick={() => {
+                                  handleEditClick(batch);
+                                  setBatchshow(false);
+                                  setBatchInputs(true);
+                                }}
+                              />
+                            </div>
+                          </div>
+                        </>
+                      ))}
                     </>
                   )}
-                </button>
               </div>
-
-              {batchinputs && (
-                <form onSubmit={editId ? handleUpdate : handleCLick}>
-                  <div className="input-fields">
-                    <div className="input-field">
-                      <p>Batch Name</p>
-                      <input
-                        className={`batch-inputs  ${
-                          batchNameError ? "error-notify" : ""
-                        }`}
-                        type="text"
-                        placeholder="Enter the Batch"
-                        name="batchName"
-                        value={batch_name}
-                        onChange={handleBatchNameChange}
-                        autoComplete="off"
-                      />
-                      <p className="error-message">
-                        {batchNameError && (
-                          <span style={{ color: "red" }}>{batchNameError}</span>
-                        )}
-                      </p>
-                    </div>
-
-                    <div className="input-field">
-                      <p>Start Year</p>
-                      <DatePicker
-                        className={`datepicker ${
-                          startError ? "error-notify" : ""
-                        }`}
-                        id="startYearInput"
-                        format="YYYY-MM-DD"
-                        value={start_date ? dayjs(start_date) : null}
-                        onChange={(date, dateString) =>
-                          handleDateChange(
-                            dateString,
-                            setStartDate,
-                            setStartError,
-                            "startError"
-                          )
-                        }
-                        placeholder="Start Year"
-                      />
-                      <p className="error-message">
-                        {startError && (
-                          <span style={{ color: "red" }}>{startError}</span>
-                        )}
-                      </p>
-                    </div>
-                    <div className="input-field">
-                      <p>End Year</p>
-                      <DatePicker
-                        className={`datepicker ${
-                          endError ? "error-notify" : ""
-                        }`}
-                        id="endYearInput"
-                        format="YYYY-MM-DD"
-                        value={end_date ? dayjs(end_date) : null}
-                        onChange={(date, dateString) =>
-                          handleDateChange(
-                            dateString,
-                            setEndDate,
-                            setEndError,
-                            "endError"
-                          )
-                        }
-                        placeholder="End Year"
-                      />
-                      <p className="error-message">
-                        {endError && (
-                          <span style={{ color: "red" }}>{endError}</span>
-                        )}
-                      </p>
-                    </div>
-
-                    {editId ? (
-                      <button
-                        className="btn primary-medium "
-                        // disabled={loading}
-                      >
-                        {/* {loading ? ( */}
-                        <span>
-                          {/* Updating Batch... */}
-                          {/* <LoadingOutlined className="loader" /> */}
-                        </span>
-                        {/* ) : ( */}
-                        Update Batch
-                        {/* // )} */}
-                      </button>
-                    ) : (
-                      <button
-                        className="btn primary-medium"
-                        // disabled={loading}
-                      >
-                        {/* {loading ? ( */}
-                        <span>
-                          {/* Creating Batch... */}
-                          {/* <LoadingOutlined className="loader" /> */}
-                        </span>
-                        {/* ) : ( */}
-                        Create Batch
-                        {/* )} */}
-                      </button>
-                    )}
-                  </div>
-                </form>
-              )}
-            </div>
-            <div className="switch-batch-list-container">
-              {batchShow && batchList.length > 0 && (
-                <>
-                  {batchList.map((batch, index) => (
-                    <>
-                      <div className="switchbatch-container">
-                        <div
-                          className="switch-batch-card flex"
-                          onClick={() => handleSwitch(batch)}
-                          key={index}
-                        >
-                          <div className="batch-left-side flex">
-                            <div className="batch-name-year">
-                              {batch.batch_name.length > 30 ? (
-                                <Tooltip title={batch.batch_name}>
-                                  <h4>
-                                    {batch.batch_name.length > 30
-                                      ? `${batch.batch_name.slice(0, 30)}...`
-                                      : batch.batch_name}
-                                  </h4>
-                                </Tooltip>
-                              ) : (
-                                <h4>{batch.batch_name}</h4>
-                              )}
-
-                              <p>
-                                {batch.start_date.slice(0, 4)} -{" "}
-                                {batch.end_date.slice(0, 4)}
-                              </p>
-                            </div>
-                            {/* Uncomment the following lines if needed */}
-                            {/* <div className="tag">
-                        <span>Internship</span>
-                      </div> */}
-                          </div>
-                          {/* Uncomment the following lines if needed */}
-                        </div>
-                        <div className="batch-right-side">
-                          <img
-                            className="edit-icon"
-                            src="/icons/edit-pencil.svg"
-                            alt=""
-                            onClick={() => {
-                              handleEditClick(batch);
-                              setBatchshow(false);
-                              setBatchInputs(true);
-                            }}
-                          />
-                        </div>
-                      </div>
-                    </>
-                  ))}
-                </>
-              )}
-            </div>
+            </>
           </div>
         )}
       </Drawer>

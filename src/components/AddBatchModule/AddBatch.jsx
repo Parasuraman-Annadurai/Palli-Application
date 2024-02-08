@@ -13,6 +13,7 @@ import { useAuth } from "../../context/AuthContext";
 import { API_END_POINT } from "../../../config";
 
 import "./scss/AddBatch.css";
+import { getPermission } from "../../utils/validate";
 
 const AddBatch = (props) => {
   const { showSwitchBatch, setShowSwitchBatch, batchList, setBatchList,isLoading } =
@@ -257,27 +258,30 @@ const AddBatch = (props) => {
                  <div className="popup-content">
             
                 <div className="add-batch">
-                  <button
-                    className="add-batch-btn"
-                    onClick={() => {
-                      setBatchInputs(!batchinputs);
-                      setBatchshow(!batchShow);
-                      resetFields();
-                    }}
-                  >
-                    {batchinputs ? (
-                      <>
-                        <span>
-                          <img src="/icons/backIcon.svg" alt="backicon" />
-                        </span>{" "}
-                        Switch Batch
-                      </>
-                    ) : (
-                      <>
-                        <span>+</span> Add New Batch
-                      </>
-                    )}
-                  </button>
+                  {getPermission(user.permissions,"Batch","create") && (
+                     <button
+                     className="add-batch-btn"
+                     onClick={() => {
+                       setBatchInputs(!batchinputs);
+                       setBatchshow(!batchShow);
+                       resetFields();
+                     }}
+                   >
+                     {batchinputs ? (
+                       <>
+                         <span>
+                           <img src="/icons/backIcon.svg" alt="backicon" />
+                         </span>{" "}
+                         Switch Batch
+                       </>
+                     ) : (
+                       <>
+                         <span>+</span> Add New Batch
+                       </>
+                     )}
+                   </button>
+                  )}
+                 
                 </div>
 
                 {batchinputs && (

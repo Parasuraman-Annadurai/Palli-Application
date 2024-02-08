@@ -15,6 +15,8 @@ import "../studentLogin/scss/StudentLogin.css";
 
 import colorObject from "../../utils/validate";
 
+import { valueTrim } from "../../utils/validate";
+
 const TaskCard = ({
   tasksLists,
   setSeletedTaskId,
@@ -84,6 +86,8 @@ const StudentLogin = ({ type }) => {
   const [submissionLink, setSubmissionLink] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [formErrors,setFormErrors] = useState({})
+  const [taskSearch,setTaskSearch] = useState("")
 
   const headers = {
     Authorization: `Bearer ${token.access}`,
@@ -95,7 +99,7 @@ const StudentLogin = ({ type }) => {
       .get(
         `${API_END_POINT}/api/task/${batchId}/list/user/task/?filter_task_type=${
           type === "assessment" ? 1 : 0
-        }`,
+        }&search=${taskSearch}`,
         { headers }
       )
       .then((res) => {
@@ -123,7 +127,7 @@ const StudentLogin = ({ type }) => {
           setIsLoading(false);
         }
       });
-  }, [type]);
+  }, [type,taskSearch]);
 
   const handleChange = (status) => {
     setIsLoading(true);
@@ -156,7 +160,9 @@ const StudentLogin = ({ type }) => {
   };
 
   const handleSubmit = () => {
-    const url = `${API_END_POINT}/api/task/${batchId}/update/task/user/${selectedTaskId}`;
+
+    if(valueTrim(submissionLink,"Submission link",setFormErrors)){
+      const url = `${API_END_POINT}/api/task/${batchId}/update/task/user/${selectedTaskId}`;
     setIsLoading(true);
     axios
       .put(
@@ -191,6 +197,8 @@ const StudentLogin = ({ type }) => {
       .catch((error) => {
         console.log(error);
       });
+    }
+    
   };
 
   return (
@@ -198,7 +206,7 @@ const StudentLogin = ({ type }) => {
       <section className="listing-container">
         <h1>{type} list</h1>
         <div className="search-container">
-          <input type="input" placeholder="search..." />{" "}
+          <input type="input" placeholder="search..." onChange={(e)=>setTaskSearch(e.target.value)}/>{" "}
           <img
             src="/icons/searchIcon.svg"
             alt="search-icon"
@@ -408,9 +416,18 @@ const StudentLogin = ({ type }) => {
                       <input
                         className="input-link"
                         type="url"
+                        name="Submission link"
                         placeholder="Paste submission link"
-                        onChange={(e) => setSubmissionLink(e.target.value)}
+                        onChange={(e) =>{
+                          const {value,name} = e.target
+                          setSubmissionLink(value)
+                          if(formErrors[name]){
+                            delete formErrors[name];
+                          }
+                        }}
+                        
                       />
+                      <p className="error-message">{formErrors["Submission link"] ? formErrors["Submission link"] :""}</p>
                     </div>
                   </Modal>
                 </>

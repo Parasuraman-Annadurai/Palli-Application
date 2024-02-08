@@ -13,6 +13,7 @@ const TaskCard = ({
   setIsStudentScoreOpen,
   isMode,
   setIsMode,
+  currentAssessment
 }) => {
   const truncateText = (text, maxLength) => {
     return text.length > maxLength
@@ -30,9 +31,15 @@ const TaskCard = ({
         key={assessment.id}
         id={assessment.id}
         onClick={() => {
+          if(currentAssessment.draft){
+            setIsStudentScoreOpen(false)
+            handleEdit(assessment.id);
+            setIsMode("edit")
+          }else{
           setIsStudentScoreOpen(true)
           handleEdit(assessment.id);
           setIsMode("card")
+        }
         }}
       >
         {loading ? (
@@ -103,7 +110,8 @@ const AssessmentList = ({
   isStudentScoreOpen,
   setIsStudentScoreOpen,
   isMode,
-  setIsMode
+  setIsMode,
+  currentAssessment
 }) => {
 
   return (
@@ -148,6 +156,7 @@ const AssessmentList = ({
                 isStudentScoreOpen={isStudentScoreOpen}
                 isMode={isMode}
                 setIsMode={setIsMode}
+                currentAssessment={currentAssessment}
               />
             ))}
         </div>

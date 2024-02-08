@@ -1193,6 +1193,10 @@ body .container .main-container .applied-weightage-list-container .applied-weigh
   border: 1px solid #eaeaea;
   background-color: white;
 }
+body .container .main-container .applied-weightage-list-container .applied-weightage-card .weightage-checkbox input[type=number]::-webkit-inner-spin-button, body .container .main-container .applied-weightage-list-container .applied-weightage-card .weightage-checkbox input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
 
 .ant-picker-focused {
   border: 1px solid #49a843 !important;

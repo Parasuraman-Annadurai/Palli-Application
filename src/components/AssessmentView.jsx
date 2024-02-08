@@ -325,7 +325,7 @@ const AssessmentView = ({
                   </div>
                   <div className="task-details-main-container flex">
                     <div className="task-deadline-container common-property">
-                      <p className="task-deadline-label">Deadline *</p>
+                      <p className="task-deadline-label">Deadline <span>*</span></p>
                       <DatePicker
                         prefixCls={`${
                           formErrors["due_date"] ? "error-notify" : ""
@@ -348,7 +348,7 @@ const AssessmentView = ({
                     </div>
                   </div>
                   <div className="task-editor-container">
-                    <p className="task-description-label">Description *</p>
+                    <p className="task-description-label">Description <span>*</span></p>
                     <div className="task-editor">
                       <>
                         <CustomIcons />

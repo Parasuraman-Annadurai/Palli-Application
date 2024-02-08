@@ -932,7 +932,9 @@ body {
               color: $font-secondary-color;
               padding-bottom: 6px;
             }
-
+span{
+  color: $error-message;
+}
             .datepicker.task-deadline-selector {
               max-width: 200px;
               width: 100%;
@@ -998,6 +1000,9 @@ body {
             line-height: 12px;
             font-weight: 400;
             color: $font-secondary-color;
+            span{
+              color: $error-message;
+            }
           }
 
           .task-editor {

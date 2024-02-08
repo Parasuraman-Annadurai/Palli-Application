@@ -718,6 +718,9 @@ body .container .main-container .task-details-header-container .task-details-mai
   color: #969d88;
   padding-bottom: 6px;
 }
+body .container .main-container .task-details-header-container .task-details-main-container .task-deadline-container span {
+  color: #ef4444;
+}
 body .container .main-container .task-details-header-container .task-details-main-container .task-deadline-container .datepicker.task-deadline-selector {
   max-width: 200px;
   width: 100%;
@@ -765,6 +768,9 @@ body .container .main-container .task-details-header-container .task-editor-cont
   line-height: 12px;
   font-weight: 400;
   color: #969d88;
+}
+body .container .main-container .task-details-header-container .task-editor-container .task-description-label span {
+  color: #ef4444;
 }
 body .container .main-container .task-details-header-container .task-editor-container .task-editor .quill .ql-toolbar.ql-snow {
   border-radius: 4px 4px 0px 0px;

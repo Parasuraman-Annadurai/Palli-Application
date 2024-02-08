@@ -452,7 +452,7 @@ body {
                 }
               }
               .application-dob {
-                max-width: 70px;
+                max-width: 80px;
                 width: 100%;
                 p {
                   font-size: 12px;
@@ -535,6 +535,9 @@ body {
                 }
               }
             }
+          &:hover{
+            background-color: $side_bar_bg;
+          }
           }
         }
 

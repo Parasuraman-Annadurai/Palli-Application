@@ -754,7 +754,9 @@ const AssessmentModule = ({ type }) => {
           />
 
           {loading ? (
-            <Skeleton active={true} />
+            <div className="main-container">
+              <Skeleton active={true} />
+            </div>
           ) : (
             <>
               {assessmentList.map((assessment) => {

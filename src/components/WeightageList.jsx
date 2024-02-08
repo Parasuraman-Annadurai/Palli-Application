@@ -1,10 +1,8 @@
-import React,{useState,useEffect} from "react";
+import React, { useState, useEffect } from "react";
 
 import { Button, Select, Tooltip } from "antd";
 
-import { isWeightageVaild, getPermission } from "../utils/validate";
-
-import { useAuth } from "../context/AuthContext";
+import { isWeightageVaild } from "../utils/validate";
 
 const WeightageList = ({
   taskWeightages,
@@ -15,11 +13,9 @@ const WeightageList = ({
   weightages,
   selectedStudents,
   weightageErrors,
-  setWeightageErros
+  setWeightageErros,
 }) => {
-  const { user } = useAuth();
-
-   return (
+  return (
     <div
       className="weightage-main-container"
       style={{ height: 550, overflowY: "scroll" }}
@@ -44,11 +40,12 @@ const WeightageList = ({
                     alignItems: "center",
                     marginBottom: 10,
                   }}
-                  key={index}
                 >
                   <div className="weightage-select">
                     <Select
-                      style={{ width: "170px" }}
+                      style={{ width: "170px", opacity: selectedStudents.length > 0 ? 0.5 : 1,
+                      cursor:
+                        selectedStudents.length > 0 ? "not-allowed" : "auto", }}
                       placeholder={"Select Weightage"}
                       value={taskWeightage.weightage}
                       onChange={(value) =>
@@ -64,8 +61,6 @@ const WeightageList = ({
                           {weightageList.weightage}
                         </Select.Option>
                       ))}
-                     
-
                     </Select>
                   </div>
                   <div
@@ -92,21 +87,33 @@ const WeightageList = ({
                         paddingBottom: 7.5,
                         paddingLeft: 5,
                         paddingRight: 5,
+                        opacity: selectedStudents.length > 0 ? 0.5 : 1,
+                        cursor:
+                          selectedStudents.length > 0 ? "not-allowed" : "auto",
                       }}
                     />
-
                   </div>
                   <div className="weightage-unit-container flex">
                     <div className="weightage-action">
-                      {getPermission(user.permissions,"TaskWeightage","delete") && (
-                         <span onClick={() => !selectedStudents.length && handleDeleteWeightage(taskWeightage.id,index)} >
-                         <img
-                           src="/icons/deleteIcon.svg"
-                           alt="delete-icon"
-                           className="delete-icon"
-                         />
-                       </span>
-                      )}
+                      {/* Show the delete icon only if weightage is greater than 0 */}
+                      <span
+                        onClick={() =>
+                          !selectedStudents.length &&
+                          handleDeleteWeightage(taskWeightage.id, index)
+                        }
+                      >
+                        <img
+                          src="/icons/deleteIcon.svg"
+                          alt="delete-icon"
+                          className="delete-icon"
+                          style={{
+                            cursor: selectedStudents.length
+                              ? "not-allowed"
+                              : "auto",
+                              opacity: selectedStudents.length > 0 ? 0.5 : 1,
+                          }}
+                        />
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -114,38 +121,60 @@ const WeightageList = ({
             })}
           </div>
         </div>
-        <p className="error-message">{weightageErrors["weightage"]? weightageErrors["weightage"]:""}</p>
+        <p className="error-message">
+          {weightageErrors["weightage"] ? weightageErrors["weightage"] : ""}
+        </p>
+
         {!selectedStudents?.length && (
-        <>
-        <div className="all-btns" style={{display: "flex" , justifyContent: "space-between",gap:"10px"}}>
-        <div className="add-weightage-button">
-                 {getPermission(user.permissions, "TaskWeightage", "create") && (
-                   <button
-                     className="btn create-btn"
-                     style={{ padding: 15, cursor: "pointer" }}
-                     onClick={handleAddWeightage}
-                   >
-                     + Add Weightage
-                   </button>
-                 )}
-          </div>
-          <div style={{flex:1}}>
-            <div className="apply-weightage" >
-                   {getPermission(user.permissions, "TaskWeightage", "create") && (
-                     <Tooltip title={taskWeightages?.length === 0 ? "Add atleast one weightage to link in task" : ""}>
-                       <button
-                         className={`${taskWeightages?.length === 0 ? "btn secondary-medium-default" : "btn primary-medium"}`}
-                         onClick={() => taskWeightages?.length > 0 && isWeightageVaild(taskWeightages, setWeightageErros) ? handleSaveWeightage() : null}
-                       >
-                         Save
-                       </button>
-                     </Tooltip>
-                   )}
+          <>
+            <div
+              className="all-btns"
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                gap: "10px",
+                marginTop: "15px",
+              }}
+            >
+              <div className="add-weightage-button">
+                <button
+                  className="btn create-btn"
+                  style={{ padding: 15, cursor: "pointer" }}
+                  onClick={handleAddWeightage}
+                >
+                  + Add Weightage
+                </button>
+              </div>
+              <div style={{ flex: 1 }}>
+                <div className="apply-weightage">
+                  <Tooltip
+                    title={
+                      taskWeightages?.length === 0
+                        ? "Add atleast one weightage to link in task"
+                        : ""
+                    }
+                  >
+                    <button
+                      className={`${
+                        taskWeightages?.length === 0
+                          ? "btn secondary-medium-default"
+                          : "btn secondary-medium"
+                      }`}
+                      onClick={() =>
+                        taskWeightages?.length > 0 &&
+                        isWeightageVaild(taskWeightages, setWeightageErros)
+                          ? handleSaveWeightage()
+                          : null
+                      }
+                    >
+                      Save
+                    </button>
+                  </Tooltip>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-        </>
-      )}
+          </>
+        )}
       </div>
     </div>
   );

@@ -263,6 +263,32 @@ li {
 }
 //main-container
 
+.submission-modal{
+  span{
+    font-weight: 500;
+  }
+  .over-all-btns{
+    display: flex;
+    justify-content: end;
+    .all-btn{
+      width: 250px;
+      justify-content: space-between;
+    }
+  }
+ 
+  .submission-link-input{
+    .input-link{
+      padding: 10px 0px 10px 12px;
+            width: 100%;
+            color: $font-primary-color;
+            border-radius: 4px;
+            border: 1px solid $border-color;
+            margin-bottom: 32px;
+            font: 500 12px/16px $font-Roboto;
+    }
+  }
+}
+
 .main-container {
   padding: 20px;
   width: 100%;
@@ -375,12 +401,12 @@ li {
         font-size: 12px;
         font-family: $font-Roboto;
         color: $font-secondary-color;
-        padding-bottom: 6px;
+        padding-bottom: 2px;
       }
 
       span {
-        color: $font-primary-color;
-        font-size: 12px;
+      
+        font-size: 10px;
         line-height: 16px;
         font-family: $font-Roboto;
       }
@@ -395,7 +421,11 @@ li {
         width: 100%;
         font-family: $font-Roboto;
       }
-
+.student-task-trainer-name{
+  border-right: 2px solid #eaeaea;
+  max-width: 180px;
+  width: 100%;
+}
       .sudent-task-supporting-doc {
         img {
           width: 16px;
@@ -409,19 +439,20 @@ li {
         .students-status-TODO-status {
           .students-status-TODO-status-selector {
             border: none;
-
-            background-color: #e2e8f0;
-            .students-status-TODO-status-selection-item {
-              color: #64748b;
+            border-radius: 2px;
+            background-color: #E2E8F0;
+            .students-status-TODO-status-selection-item{
+              color: #64748B;
             }
           }
         }
         .students-status-INPROGRESS-status {
           .students-status-INPROGRESS-status-selector {
             border: none;
-
-            background-color: #dbeafe;
-            .students-status-INPROGRESS-status-selection-item {
+            border-radius: 2px;
+            height: 30px;
+            background-color: #DBEAFE;
+            .students-status-INPROGRESS-status-selection-item{
               color: $highlight-blue;
             }
           }
@@ -429,9 +460,10 @@ li {
         .students-status-COMPLETED-status {
           .students-status-COMPLETED-status-selector {
             border: none;
-
-            background-color: #eefdb0;
-            .students-status-COMPLETED-status-selection-item {
+            border-radius: 2px;
+            height: 30px;
+            background-color: #EEFDB0;
+            .students-status-COMPLETED-status-selection-item{
               color: $primary-color;
             }
           }
@@ -439,9 +471,10 @@ li {
         .students-status-SUBMITTED-status {
           .students-status-SUBMITTED-status-selector {
             border: none;
-
-            background-color: #eefdb0;
-            .students-status-SUBMITTED-status-selection-item {
+            border-radius: 2px;
+            height: 30px;
+            background-color: #EEFDB0;
+            .students-status-SUBMITTED-status-selection-item{
               color: $primary-color;
             }
           }
@@ -449,9 +482,10 @@ li {
         .students-status-REWORK-status {
           .students-status-REWORK-status-selector {
             border: none;
-            background-color: #fef3c7;
-            .students-status-REWORK-status-selection-item {
-              color: #f59e0b;
+            border-radius: 2px;
+            background-color: #FEF3C7;
+            .students-status-REWORK-status-selection-item{
+              color: #F59E0B;
             }
           }
         }
@@ -477,10 +511,11 @@ li {
       }
 
       .task-instruction {
-        span {
+        p {
           font-size: 12px;
           line-height: 16px;
           color: $font-primary-color;
+          font: $font-Roboto;
         }
 
         ul {
@@ -500,7 +535,12 @@ li {
       align-items: center;
       gap: 12px;
       .student-weightage-card {
-        padding: 6px 10px;
+        // padding: 6px 10px;
+        height: 28px;
+        padding-right: 1px;
+        padding-left: 8px;
+        align-items: center;
+        justify-content: center;
         background-color: $border-color;
         border-radius: 4px;
 
@@ -509,19 +549,28 @@ li {
           font-size: 12px;
           line-height: 16px;
         }
-        .score {
-          color: $primary-color;
+        .score{
+          color: $font-primary-color;
           margin-left: 5px;
           font-family: $font-Roboto;
           font-size: 12px;
           line-height: 16px;
           font-weight: 500;
+          background-color: #F8FBF2;
+          width: 23px;
+          height: 26px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          border-radius: 3px;
+       
         }
         span {
           font-family: $font-Roboto;
           font-size: 12px;
           line-height: 16px;
-          font-weight: 500;
+          // font-weight: 500;
+          margin-left: 3px;
           color: $font-primary-color;
         }
       }
@@ -552,33 +601,12 @@ li {
         width: 200px;
         display: inline-block;
         cursor: pointer;
+        font: 400 12px/16px $font-Roboto;
       }
     }
 
-    .student-task-label-container {
-      align-items: center;
-      gap: 11px;
-      padding-bottom: 16px;
-      h3 {
-        font-size: 12px;
-        line-height: 16px;
-        font-family: $font-Roboto;
-        font-weight: 400;
-      }
-
-      .horizon-line {
-        flex: 1;
-        border-bottom: 1px solid $border-color;
-      }
-    }
-    .modal {
-      .all-btn {
-        .submit-btn {
-          max-width: 140px;
-          width: 100%;
-        }
-      }
-    }
+  
+  
 
     .student-task-file-container {
       align-items: center;
@@ -739,4 +767,90 @@ li {
       }
     }
   }
+  .student-task-label-container {
+    align-items: center;
+    gap: 11px;
+    padding-bottom: 16px;
+    h3 {
+      font-size: 12px;
+      line-height: 16px;
+      font-family: $font-Roboto;
+      font-weight: 400;
+    }
+
+    .horizon-line {
+      flex: 1;
+      border-bottom: 1px solid $border-color;
+    }
+  }
+  .file-input-container {
+    position: relative;
+    width: 100%;
+    padding: 14px 0;
+    border: 2px dashed #ccc;
+    border-radius: 5px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    margin-bottom: 20px;
+
+    .upload-icon-container {
+      align-items: center;
+      gap: 8px;
+
+      label {
+        font-size: 12px;
+        line-height: 16px;
+        font-family:$font-Roboto;
+
+        .highlight {
+          color: $primary-color;
+        }
+      }
+
+      .upload-icon {
+        width: 16px;
+        height: 16px;
+      }
+    }
+
+    .file-input {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      cursor: pointer;
+    }
+  }
+
+  
+  //   .all-btn {
+  //     width: 250px;
+  //     justify-content: space-between;
+  //     .submit-btn {
+  //       max-width: 140px;
+  //       width: 100%;
+  //     }
+  //   }
+  //   .submission-link-input{
+  //     input{
+  //       padding: 10px 0px 10px 12px !important;
+  //       width: 100% !important;
+  //       color: $font-primary-color !important;
+  //       border-radius: 4px !important;
+  //       border: 1px solid $border-color !important;
+  //       margin-bottom: 32px !important;
+  //       font: 500 12px/16px $font-Roboto !important;
+  //     }
+  //   }
+  // }
+  // ModalStyles.scss
+
+
+
 }

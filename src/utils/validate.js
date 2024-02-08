@@ -315,3 +315,73 @@ export const getPermission = (permissions,permissionKey,mode)=>{
   }
 }
 
+export const permissions = {
+  Admin: [
+      { module: 'Batch for Applicant', create: false, read: false, update: false, delete: false, all: true },
+      { module: 'Applicants', create: false, read: false, update: false, delete: false, all: true },
+      { module: 'Interviews', create: false, read: false, update: false, delete: false, all: true },
+      { module: 'Interviewers', create: false, read: false, update: false, delete: false, all: true },
+      { module: 'Application Interview status', create: false, read: false, update: false, delete: false, all: true },
+      { module: 'User details', create: false, read: false, update: false, delete: false, all: true },
+      { module: 'Task or assessment', create: false, read: false, update: false, delete: false, all: true },
+      { module: 'Task User(single task can be allocated to multiple trainees)', create: false, read: false, update: false, delete: false, all: true },
+      { module: 'Task or assessment Comments', create: false, read: false, update: false, delete: false, all: true },
+      { module: 'Assessment weightage', create: false, read: false, update: false, delete: false, all: true },
+      { module: 'Assessment weightage percentage', create: false, read: false, update: false, delete: false, all: true },
+      { module: 'Assessment weightage Score', create: false, read: false, update: false, delete: false, all: true },
+      { module: 'Question Bank', create: false, read: false, update: false, delete: false, all: true },
+      { module: 'Quiz', create: false, read: false, update: false, delete: false, all: true },
+      { module: 'Quiz Submission details', create: false, read: false, update: false, delete: false, all: true },
+      { module: 'Quiz Feedback', create: false, read: false, update: false, delete: false, all: true },
+      { module: 'Session', create: false, read: false, update: false, delete: false, all: true },
+      { module: 'Session Feedback', create: false, read: false, update: false, delete: false, all: true }
+  ],
+  Trainer: [
+      { module: 'Task or assessment', create: false, read: false, update: false, delete: false, all: true },
+      { module: 'Task User(single task can be allocated to multiple trainees)', create: false, read: false, update: false, delete: false, all: true },
+      { module: 'Task or assessment Comments', create: false, read: false, update: false, delete: false, all: true },
+      { module: 'Task or assessment weightage', create: false, read: false, update: false, delete: false, all: true },
+      { module: 'Task or assessment weightage percentage', create: false, read: false, update: false, delete: false, all: true },
+      { module: 'Task or assessment weightage Score', create: false, read: false, update: false, delete: false, all: true },
+      { module: 'Question Bank', create: false, read: false, update: false, delete: false, all: true },
+      { module: 'Quiz', create: false, read: false, update: false, delete: false, all: true },
+      { module: 'Quiz Submission details', create: false, read: true, update: true, delete: true, all: false },
+      { module: 'Quiz Feedback', create: false, read: false, update: false, delete: false, all: true },
+      { module: 'Session', create: true, read: true, update: true, delete: false, all: false },
+      { module: 'Session Feedback', create: false, read: false, update: false, delete: false, all: true }
+  ],
+  Student: [
+      { module: 'Task or assessment', create: false, read: true, update: false, delete: false, all: false },
+      { module: 'Task User(single task can be allocated to multiple trainees)', create: false, read: true, update: false, delete: false, all: false },
+      { module: 'Task or assessment Comments', create: false, read: false, update: false, delete: false, all: true },
+      { module: 'Task or assessment weightage', create: false, read: true, update: false, delete: false, all: false },
+      { module: 'Task or assessment weightage percentage', create: false, read: true, update: false, delete: false, all: false },
+      { module: 'Task or assessment weightage Score', create: false, read: true, update: false, delete: false, all: false },
+      { module: 'Question Bank', create: false, read: true, update: false, delete: false, all: false },
+      { module: 'Quiz', create: false, read: true, update: false, delete: false, all: false },
+      { module: 'Quiz Submission details', create: true, read: true, update: false, delete: false, all: false },
+      { module: 'Quiz Feedback', create: true, read: true, update: true, delete: false, all: false },
+      { module: 'Session', create: false, read: true, update: true, delete: false, all: false },
+      { module: 'Session Feedback', create: true, read: true, update: true, delete: false, all: false }
+  ],
+  DckapUser: [
+      { module: 'Batch for Applicant', create: false, read: true, update: false, delete: false, all: false },
+      { module: 'Applicants', create: false, read: true, update: false, delete: false, all: false },
+      { module: 'Interviews', create: false, read: true, update: false, delete: false, all: false },
+      { module: 'Interviewers', create: false, read: true, update: false, delete: false, all: false },
+      { module: 'Application Interview status', create: false, read: false, update: false, delete: false, all: true },
+      { module: 'User details', create: false, read: true, update: false, delete: false, all: false },
+      { module: 'Task or assessment', create: false, read: true, update: false, delete: false, all: false },
+      { module: 'Task User(single task can be allocated to multiple trainees)', create: false, read: true, update: false, delete: false, all: false },
+      { module: 'Task or assessment Comments', create: false, read: true, update: false, delete: false, all: false },
+      { module: 'Task or assessment weightage', create: false, read: true, update: false, delete: false, all: false },
+      { module: 'Task or assessment weightage percentage', create: false, read: true, update: false, delete: false, all: false },
+      { module: 'Task or assessment weightage Score', create: false, read: true, update: false, delete: false, all: false },
+      { module: 'Question Bank', create: false, read: true, update: false, delete: false, all: false },
+      { module: 'Quiz', create: false, read: true, update: false, delete: false, all: false },
+      { module: 'Quiz Submission details', create: false, read: true, update: false, delete: false, all: false },
+      { module: 'Quiz Feedback', create: false, read: true, update: false, delete: false, all: false },
+      { module: 'Session', create: false, read: true, update: false, delete: false, all: false },
+      { module: 'Session Feedback', create: false, read: true, update: false, delete: false, all: false }
+  ]
+};

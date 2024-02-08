@@ -16,11 +16,13 @@ import useFilter from "../../hooks/useFilter";
 
 import "./scss/css/Applications.css";
 
+import { getPermission } from "../../utils/validate";
+
 const Applications = () => {
   const filterFields = useFilter("applicant");
   const { id: batchId } = useParams();
   const navigate = useNavigate();
-  const { token } = useAuth();
+  const { token,user } = useAuth();
   const [isLoading, setLoading] = useState(true);
   const [popoverVisible, setPopoverVisible] = useState(false);
 
@@ -30,7 +32,6 @@ const Applications = () => {
   const [limit, setLimit] = useState(5);
   const [page, setPage] = useState(1);
   const [filterValues, setFilterValues] = useState({});
-
 
   const headers = {
     Authorization: `Bearer ${token.access}`,
@@ -380,11 +381,15 @@ const Applications = () => {
         </div>
         <div className="application-actions flex">
           <div className="import">
-            <button className="btn primary-medium">Import</button>
+              {getPermission(user.permissions, "create_Excel_Import", "create_Excel_Import") && (
+                <button className="btn primary-medium">Import</button>
+              )}
           </div>
         </div>
       </div>
-      <div className="application-inner-container">
+        {getPermission(user.permissions, "Applicant", "read") && (
+          <>
+            <div className="application-inner-container">
         <div className="search-container">
           <img src="/icons/searchIcon.svg" alt="" className="search-icon" />
           <input
@@ -524,6 +529,8 @@ const Applications = () => {
         </div>
        
       </div>
+          </>
+        )}
     </main>
   );
 };

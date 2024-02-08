@@ -40,7 +40,6 @@ const WeightageList = ({
                     alignItems: "center",
                     marginBottom: 10,
                   }}
-                  key={index}
                 >
                   <div className="weightage-select">
                     <Select

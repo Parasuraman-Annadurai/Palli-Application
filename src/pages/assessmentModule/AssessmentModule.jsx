@@ -14,6 +14,7 @@ import StudentLogin from "../studentLogin/StudentLogin";
 import { useAuth } from "../../context/AuthContext";
 
 import { API_END_POINT } from "../../../config";
+import { getPermission } from "../../utils/validate";
 
 const AssessmentModule = ({ type }) => {
   const { token, user } = useAuth();
@@ -44,7 +45,7 @@ const AssessmentModule = ({ type }) => {
   useEffect(() => {
     setLoading(true);
     //this useEffect used to fetch task list and will re-run whenever filter or search is updated
-    if (user.role !== "Student") {
+    if(getPermission(user.permissions,"Task","create")){
       const url = `${API_END_POINT}/api/task/${batchId}/list_task/?limit=10&page=1&filter_task_type=${
         type === "task" ? 0 : 1
       }&search=${assessmentSearchWord}`;
@@ -75,6 +76,7 @@ const AssessmentModule = ({ type }) => {
           console.log(error);
         });
     }
+   
   }, [assessmentSearchWord, type]);
 
   useEffect(() => {
@@ -712,7 +714,7 @@ const AssessmentModule = ({ type }) => {
 
   return (
     <>
-      {user.role !== "Student" ? (
+      {getPermission(user.permissions,"Task","create") ? (
         <>
           {isDeleteModalOpen && (
             <Modal

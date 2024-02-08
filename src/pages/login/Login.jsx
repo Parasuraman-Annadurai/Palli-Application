@@ -72,12 +72,14 @@ const Login = () => {
             setLoading(false);
 
             if (formattedUserData.role === "Student") {
-              navigate("/batch/253/task");
-            } else {
-              navigate("/batch/253/applications");
+              navigate(`/batch/${formattedUserData.batch?.[0].id}/task`);
+            } else if(formattedUserData.role == "Trainer"){
+              navigate(`/batch/${formattedUserData.batch?.[0].id}/task`)
+            } 
+            else {
+              navigate(`/batch/${formattedUserData.batch?.[0].id}/applications`);
             }
 
-            console.log(formattedUserData);
 
           })
           .catch((err) => {

@@ -111,7 +111,6 @@ const StudentLogin = ({ type }) => {
         setIsLoading(false);
         const copyTaskList = [...res.data.data];
         setTaskLists(copyTaskList);
-        console.log(copyTaskList);
         const getFirstTask =
           [...res.data.data].length > 0 ? [...res.data.data][0]["id"] : null;
         setSeletedTaskId(getFirstTask);

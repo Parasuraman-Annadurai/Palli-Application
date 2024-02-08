@@ -357,7 +357,7 @@ const AssessmentView = ({
                         <ReactQuill
                           placeholder="Type here"
                           className={`${
-                            formErrors["task_description"] ? "error-notify" : ""
+                            formErrors["task_description"] ? "react-quill error-notify" : "react-quill"
                           }`}
                           value={task_description ? task_description : ""}
                           modules={toolbarConfig}

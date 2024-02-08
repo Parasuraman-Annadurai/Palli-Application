@@ -387,7 +387,9 @@ const Applications = () => {
           </div>
         </div>
       </div>
-      <div className="application-inner-container">
+        {getPermission(user.permissions, "Applicant", "read") && (
+          <>
+            <div className="application-inner-container">
         <div className="search-container">
           <img src="/icons/searchIcon.svg" alt="" className="search-icon" />
           <input
@@ -527,6 +529,8 @@ const Applications = () => {
         </div>
        
       </div>
+          </>
+        )}
     </main>
   );
 };

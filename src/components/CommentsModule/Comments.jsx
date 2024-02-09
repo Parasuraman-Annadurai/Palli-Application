@@ -1,12 +1,15 @@
 import React from "react";
+
 import dayjs from "dayjs";
 
 import { useAuth } from "../../context/AuthContext";
 
-import "./scss/Comments.css";
 import ReactQuill from "react-quill";
-import { CustomIcons, toolbarConfig, valueTrim } from "../../utils/validate";
-import { getPermission } from "../../utils/validate";
+
+import { CustomIcons, toolbarConfig, valueTrim,getPermission } from "../../utils/validate";
+
+import "./scss/Comments.css";
+
 const Comments = (props) => {
   const {
     comments,

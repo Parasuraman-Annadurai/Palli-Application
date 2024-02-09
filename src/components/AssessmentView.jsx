@@ -77,7 +77,7 @@ const AssessmentView = ({
   const [assigneeloader, setAssigneeloader] = useState(false);
   const [weightageLists, setWeightageLists] = useState([]);
   const [openComments, setOpenComments] = useState(null);
-  const [studentScoreErrors, setStudentsErrors] = useState({});
+  // const [formErrors, setFormErrors] = useState({});
 
   const headers = {
     Authorization: `Bearer ${token.access}`,
@@ -226,10 +226,11 @@ const AssessmentView = ({
   const handleScoreOnchange = (e, students, weightage) => {
     const scoreValue = e.target.value;
     const { name, value } = e.target;
-
-    if(studentScoreErrors[name]){
-      delete studentScoreErrors[name];
+    console.log(e);
+    if(formErrors[name]){
+      delete formErrors[name];
     }
+
     if (scoreValue === "" ) {
       // If the score is null or not a number, remove the corresponding object from the state
       const filteredStudentScores = studentScore.filter(
@@ -635,7 +636,7 @@ const AssessmentView = ({
                                   onClick={(e) => {
                                     setActiveWeightageIndex(index);
                                     if (activeWeightageIndex === index) {
-                                      if (isScoreValidate(task_weightages, studentScore, setStudentsErrors)) {
+                                      if (isScoreValidate(task_weightages, studentScore, setFormErrors)) {
                                         handleAddScore(studentScore);
                                       }
                                     }
@@ -676,11 +677,13 @@ const AssessmentView = ({
                         onClose={() => {
                           setOpenComments(null)
                           setCommentText("")
+                          setIsCommentEditId(null)
                         }}
                         open={openComments !== null}
                       >
                         {/* Pass comments state to Comments component */}
                         <Comments
+
                          comments={
                           currentAssessment.task_users.find(
                             (student) => student.id === openComments
@@ -694,6 +697,8 @@ const AssessmentView = ({
                           setCommentText={setCommentText}
                           handleSendComment={handleSendComment}
                           handleDeleteComment={handleDeleteComment}
+                          commentErrors={formErrors}
+                          setCommentsErrors={setFormErrors}
                         />
                       </Drawer>
 
@@ -741,6 +746,7 @@ const AssessmentView = ({
                                   <div className="weightage-checkbox">
                                     <input
                                       type="number"
+                                      name="score"
                                       onChange={(e) => {
                                         handleScoreOnchange(
                                           e,
@@ -755,8 +761,8 @@ const AssessmentView = ({
                             )}
                         </div>
                         <p className="error-message">
-                          {studentScoreErrors["score"]
-                            ? studentScoreErrors["score"]
+                          {formErrors["score"]
+                            ? formErrors["score"]
                             : ""}
                         </p>
                       </>

@@ -678,7 +678,21 @@ const AssessmentModule = ({ type }) => {
       setIsCommentEditId(null)
       setCommentText(" ")
     }).catch((error)=>{
-      console.log(error);
+      if (
+        error.response.data.status === 400 ||
+        "errors" in error.response.data
+      ) {
+        const errorMessages = error.response.data.errors;
+
+        Object.entries(errorMessages).forEach(([key, messages]) => {
+          messages.forEach((message) =>
+            notification.error({
+              message: `${key} Error`,
+              description: message,
+            })
+          );
+        });
+      }
     })
   }
   const handleDeleteComment =(commentId)=>{

@@ -9,6 +9,7 @@ export const valueTrim = (value,fieldName,setErrors)=>{
     errors[fieldName] = `${fieldName} is required`;
     isValid = false;
   }
+  
   setErrors(errors);
   return isValid;
 }

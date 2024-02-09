@@ -18,7 +18,6 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
 
   const { token, user } = useAuth();
 
-
   const currentPath = useLocation().pathname;
   const isDashboardPage = currentPath.includes(DASHBOARD);
 
@@ -42,24 +41,24 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
   };
 
   useEffect(() => {
-    // setIsLoading(true);
-    if (user.role !== "Students") {
       if (batchId) {
         // On Batch, setting Applications as default page
         const activeMenuItem = menuList.find((menu) =>
-          currentPath.includes(menu.id)
-        );
-        setActive(activeMenuItem.id);
-        const batchListData = user?.batch;
-        setBatchList(
-          batchListData.filter((batch) => batch.id !== Number(batchId))
-        );
-        setCurrentBatch(
-          batchListData.find((batch) => batch.id === Number(batchId))
-        );
+        currentPath.includes(menu.id)
+      );
+      setActive(activeMenuItem.id);
+      const batchListData = user?.batch;
+      console.log(batchListData);
+      setBatchList(
+        batchListData.filter((batch) => batch.id !== Number(batchId))
+      );
+      setCurrentBatch(
+        batchListData.find((batch) => batch.id === Number(batchId))
+      );
+
       }
-    }
   }, [batchId]);
+
 
   const handleLogout = () => {
     axios
@@ -80,8 +79,7 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
   ];
 
 
-  const a = getPermission(user.permissions, "Applicant", "read");
-  console.log(a);
+
   return (
     <>
       <nav className="side-nav-container flex">
@@ -94,8 +92,8 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
         {!isDashboardPage && (
           <div
             className="batch-switch-container flex"
-            onClick={user.role !== "Student" && showDrawer}
-            style={{ cursor: user.role === "Student" ? "default" : "pointer" }}
+            onClick={getPermission(user.permissions,"Batch","read") && showDrawer}
+            style={{ cursor: getPermission(user.permissions,"Batch","read") ?  "pointer" : "default"}}
           >
             <div className="batch-content-container flex">
               <div className="batch-logo">
@@ -134,7 +132,7 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
               </div>
             </div>
             <div className="switch-icon">
-             {user?.role !="Student" && <img src="/icons/dropdown.svg" alt="" />} 
+             {getPermission(user.permissions,"Batch","read") && <img src="/icons/dropdown.svg" alt="" /> }
             </div>
           </div>
         )}
@@ -199,14 +197,10 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
             }}
           >
             <div className="user-details">
-              <p>{user.last_name}</p>
+              <p>{user.first_name} {user.last_name}</p>
               <span>
                 {" "}
-                {user.role === "Student"
-                  ? "Student"
-                  : user.role === "Admin"
-                  ? "Admin"
-                  : user.role}
+                {user.role}
               </span>
             </div>
           </Dropdown>

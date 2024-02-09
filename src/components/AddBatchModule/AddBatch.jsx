@@ -425,16 +425,19 @@ const AddBatch = (props) => {
                               </div>
                             </div>
                             <div className="batch-right-side">
-                              <img
-                                className="edit-icon"
-                                src="/icons/edit-pencil.svg"
-                                alt=""
-                                onClick={() => {
-                                  handleEditClick(batch);
-                                  setBatchshow(false);
-                                  setBatchInputs(true);
-                                }}
-                              />
+                              {getPermission(user.permissions, "Batch", "update") && (
+                                <img
+                                  className="edit-icon"
+                                  src="/icons/edit-pencil.svg"
+                                  alt=""
+                                  onClick={() => {
+                                    handleEditClick(batch);
+                                    setBatchshow(false);
+                                    setBatchInputs(true);
+                                  }}
+                                />
+                              )}
+
                             </div>
                           </div>
                         </>

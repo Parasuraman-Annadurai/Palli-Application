@@ -111,7 +111,6 @@ const StudentLogin = ({ type }) => {
         setIsLoading(false);
         const copyTaskList = [...res.data.data];
         setTaskLists(copyTaskList);
-        console.log(copyTaskList);
         const getFirstTask =
           [...res.data.data].length > 0 ? [...res.data.data][0]["id"] : null;
         setSeletedTaskId(getFirstTask);
@@ -156,6 +155,19 @@ const StudentLogin = ({ type }) => {
         })
         .catch((error) => {
           console.log(error);
+          setIsLoading(false);
+
+          if (
+            error.response.data.status === 400 ||
+            "errors" in error.response.data
+          ) {
+            const errorMessages = error.response.data.errors;
+            notification.error({
+              message: `Permission denied Error`,
+              description: errorMessages.detail,
+              duration:1
+            })
+          }
         });
     } else {
       setIsModalOpen(true);

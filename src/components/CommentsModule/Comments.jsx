@@ -1,7 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 import dayjs from "dayjs";
 
+import { useAuth } from "../../context/AuthContext";
+
 import "./scss/Comments.css";
+import { getPermission } from "../../utils/validate";
 const Comments = (props) => {
   const {
     comments,
@@ -14,6 +17,9 @@ const Comments = (props) => {
     handleSendComment,
     handleDeleteComment,
   } = props;
+
+  const { user } = useAuth()
+
   return (
     <>
       {/* <button className="btn primary-medium" 
@@ -40,19 +46,24 @@ const Comments = (props) => {
                           </div>
                         </div>
                         <div className="icons">
-                          <img
-                            src="/icons/edit-pencil.svg"
-                            alt=""
-                            onClick={() => {
-                              setIsCommentEditId(comment.id);
-                              setCommentText(comment?.comments);
-                            }}
-                          />
-                          <img
+                          {getPermission(user.permissions,"TaskComments","update") && (
+                             <img
+                             src="/icons/edit-pencil.svg"
+                             alt=""
+                             onClick={() => {
+                               setIsCommentEditId(comment.id);
+                               setCommentText(comment?.comments);
+                             }}
+                           />
+                          )}
+                          {getPermission(user.permissions,"TaskComments","delete")&&(
+                            <img
                             src="/icons/deleteIcon.svg"
                             alt=""
                             onClick={() => handleDeleteComment(comment.id)}
                           />
+                          )}
+                          
                         </div>
                       </div>
                     </div>
@@ -77,25 +88,27 @@ const Comments = (props) => {
         
         </div>
       </div>
-
-      <div className="Input-send">
-        <div className="input-wrapper">
-          <div className="send">
-            <img
-              src="/icons/Send.svg"
-              alt="Send-icon"
-              onClick={() => handleSendComment(commenterId)}
-            />
+      {getPermission(user.permissions, "TaskComments", "create") && (
+        <div className="Input-send">
+          <div className="input-wrapper">
+            <div className="send">
+              <img
+                src="/icons/Send.svg"
+                alt="Send-icon"
+                onClick={() => handleSendComment(commenterId)}
+              />
+            </div>
           </div>
-        </div>
 
-        <textarea
-          type="text"
-          value={commentText}
-          placeholder="Write a comment..."
-          onChange={(e) => setCommentText(e.target.value)}
-        />
-      </div>
+          <textarea
+            type="text"
+            value={commentText}
+            placeholder="Write a comment..."
+            onChange={(e) => setCommentText(e.target.value)}
+          />
+        </div>
+      )}
+
     </>
   );
 };

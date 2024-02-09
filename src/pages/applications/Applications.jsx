@@ -38,34 +38,37 @@ const Applications = () => {
     "Content-type": "application/json",
   };
 
-
   useEffect(() => {
     setLoading(true);
-
-    let urlBuild = `${API_END_POINT}/api/applicant/${batchId}/list/applicants/?limit=${limit}&page=${page}&`;
-    if (Object.keys(filterValues).length > 0) {
-      Object.keys(filterValues).forEach((key) => {
-        urlBuild += `filter_${key}=${filterValues[key]}&`;
+    if(getPermission(user.permissions,"Applicant","read")){
+      let urlBuild = `${API_END_POINT}/api/applicant/${batchId}/list/applicants/?limit=${limit}&page=${page}&`;
+      if (Object.keys(filterValues).length > 0) {
+        Object.keys(filterValues).forEach((key) => {
+          urlBuild += `filter_${key}=${filterValues[key]}&`;
+        });
+      }
+      if(applicationSearch){
+        urlBuild += `search=${applicationSearch}`
+      }
+      axios
+      .get(urlBuild,{ headers })
+      .then((res) => {
+        setApplications(res.data);
+        setLoading(false);
+      }).catch((error) => {
+        if(error.response.status == 401 ){
+          notification.error({
+            message:"Error",
+            description:"Unauthorized User",
+            duration:1
+          });
+          navigate("/login");
+        }
       });
     }
-    if(applicationSearch){
-      urlBuild += `search=${applicationSearch}`
-    }
-    axios
-    .get(urlBuild,{ headers })
-    .then((res) => {
-      setApplications(res.data);
-      setLoading(false);
-    }).catch((error) => {
-      if(error.response.status == 401 ){
-        notification.error({
-          message:"Error",
-          description:"Unauthorized User",
-          duration:1
-        });
-        navigate("/login");
-      }
-    });
+    
+
+
   }, [filterValues,batchId,limit,page,applicationSearch]);
 
   const handleRemoveFilter = (fieldName) => {

@@ -72,16 +72,32 @@ const Login = () => {
             setLoading(false);
 
             if (formattedUserData.role === "Student") {
-              navigate("/batch/253/task");
-            } else {
-              navigate("/batch/253/applications");
+              navigate(`/batch/${formattedUserData.batch?.[0].id}/task`);
+            } else if(formattedUserData.role == "Trainer"){
+              navigate(`/batch/${formattedUserData.batch?.[0].id}/task`)
+            } 
+            else if(formattedUserData.role == "DckapUser"){
+              navigate(`/batch/${formattedUserData.batch?.[0].id}/task`)
+            } 
+            else {
+              navigate(`/batch/${formattedUserData.batch?.[0].id}/applications`);
             }
 
-            console.log(formattedUserData);
 
           })
-          .catch((err) => {
+          .catch((error) => {
             console.error("userData fetch Failed", err);
+            if (
+              error.response.data.status === 400 ||
+              "errors" in error.response.data
+            ) {
+              const errorMessages = error.response.data.errors;
+              notification.error({
+                message: `Permission denied Error`,
+                description: errorMessages.detail,
+                duration:1
+              })
+            }
           });
       })
       .catch((err) => {

@@ -629,7 +629,7 @@ const AssessmentView = ({
                         {weightageShow
                           ? students["task_status"] === "SUBMITTED" && (
                             <>
-                              {getPermission(user.permissions, "TaskUser", "create") && (
+                              {getPermission(user.permissions, "TaskScore", "create") && (
                                 <button
                                   className="secondary-btn-sm"
                                   onClick={(e) => {
@@ -651,21 +651,25 @@ const AssessmentView = ({
 
                             )
                           : students["task_status"] === "SUBMITTED" && (
-                              <Dropdown
-                                className="secondary-btn-sm"
-                                menu={{ items: itemRenderer(students.id) }}
-                                placement="bottomLeft"
-                                trigger={["click"]}
-                              >
-                                <button
-                                  className="ant-dropdown-link secondary-btn-sm"
-                                  onClick={(e) => {
-                                    e.preventDefault();
-                                  }}
-                                >
-                                  Take action
-                                </button>
-                              </Dropdown>
+                              <>
+                                {getPermission(user.permissions,"TaskScore","create") && (
+                                    <Dropdown
+                                    className="secondary-btn-sm"
+                                    menu={{ items: itemRenderer(students.id) }}
+                                    placement="bottomLeft"
+                                    trigger={["click"]}
+                                  >
+                                    <button
+                                      className="ant-dropdown-link secondary-btn-sm"
+                                      onClick={(e) => {
+                                        e.preventDefault();
+                                      }}
+                                    >
+                                      Take action
+                                    </button>
+                                  </Dropdown>
+                                )}
+                              </>
                             )}
                       </div>
                     </div>
@@ -680,21 +684,24 @@ const AssessmentView = ({
                         open={openComments !== null}
                       >
                         {/* Pass comments state to Comments component */}
-                        <Comments
-                         comments={
-                          currentAssessment.task_users.find(
-                            (student) => student.id === openComments
-                          )?.comments || []
-                        }
-                          role={"Admin"}
-                          commenterId={openComments}
-                          commentText={commentText}
-                          isCommentEditId={isCommentEditId}
-                          setIsCommentEditId={setIsCommentEditId}
-                          setCommentText={setCommentText}
-                          handleSendComment={handleSendComment}
-                          handleDeleteComment={handleDeleteComment}
-                        />
+                        {getPermission(user.permissions,"TaskComments","read") && (
+                           <Comments
+                           comments={
+                            currentAssessment.task_users.find(
+                              (student) => student.id === openComments
+                            )?.comments || []
+                          }
+                            role={"Admin"}
+                            commenterId={openComments}
+                            commentText={commentText}
+                            isCommentEditId={isCommentEditId}
+                            setIsCommentEditId={setIsCommentEditId}
+                            setCommentText={setCommentText}
+                            handleSendComment={handleSendComment}
+                            handleDeleteComment={handleDeleteComment}
+                          />
+                        )}
+                       
                       </Drawer>
 
                     {activeWeightageIndex === index && (

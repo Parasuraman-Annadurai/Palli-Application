@@ -65,6 +65,9 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
       .post(`${API_END_POINT}/api/accounts/logout/`, token, { headers })
       .then((res) => {
         navigate("/login");
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+
       });
   };
   const items = [

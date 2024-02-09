@@ -76,6 +76,9 @@ const Login = () => {
             } else if(formattedUserData.role == "Trainer"){
               navigate(`/batch/${formattedUserData.batch?.[0].id}/task`)
             } 
+            else if(formattedUserData.role == "DckapUser"){
+              navigate(`/batch/${formattedUserData.batch?.[0].id}/task`)
+            } 
             else {
               navigate(`/batch/${formattedUserData.batch?.[0].id}/applications`);
             }

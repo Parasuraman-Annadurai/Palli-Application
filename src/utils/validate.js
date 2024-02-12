@@ -14,6 +14,18 @@ export const valueTrim = (value,fieldName,setErrors)=>{
   return isValid;
 }
 
+export const validUrl =(value,fieldName,setErrors)=>{
+  let errors = {};
+  let isValid = true;
+
+  if (!/^(ftp|http|https):\/\/[^ "]+$/.test(value)) {
+    errors[fieldName] = `Please enter a valid url`;
+    isValid = false;
+  }
+  
+  setErrors(errors);
+  return isValid;
+}
 export const isEmailValid = (email) => {
   const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
   switch (true) {

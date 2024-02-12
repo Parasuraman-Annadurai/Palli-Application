@@ -14,7 +14,7 @@ import { useParams, useNavigate } from "react-router-dom";
 
 import "../studentLogin/scss/StudentLogin.css";
 
-import colorObject from "../../utils/validate";
+import colorObject, { validUrl } from "../../utils/validate";
 import Comments from "../../components/CommentsModule/Comments";
 
 import { valueTrim } from "../../utils/validate";
@@ -178,7 +178,7 @@ const StudentLogin = ({ type }) => {
 
   const handleSubmit = () => {
 
-    if(valueTrim(submissionLink,"Submission link",setFormErrors)){
+    if(valueTrim(submissionLink,"Submission link",setFormErrors) && validUrl(submissionLink,"Submission link",setFormErrors)){
       const url = `${API_END_POINT}/api/task/${batchId}/update/task/user/${selectedTaskId}`;
     setIsLoading(true);
     axios

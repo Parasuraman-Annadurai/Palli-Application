@@ -5,7 +5,7 @@ import dayjs from "dayjs";
 import { useAuth } from "../../context/AuthContext";
 
 import ReactQuill from "react-quill";
-
+import "quill/dist/quill.snow.css";
 import { CustomIcons, toolbarConfig, valueTrim,getPermission } from "../../utils/validate";
 
 import "./scss/Comments.css";
@@ -93,8 +93,11 @@ const Comments = (props) => {
                               value={commentText}
                               onChange={(value) => setCommentText(value)}
                             />
-                            <button className="btn secondary-medium" onClick={handleCancelEdit}>cancel</button>
-                            <button className="btn primary-medium" style={{ width: "100px" }} onClick={handleSaveComment}>save</button>
+                            <div className="cancel_save_btns">
+                            <button className="btn secondary-medium" onClick={handleCancelEdit}>Cancel</button> 
+                            <button className="btn primary-medium"  onClick={handleSaveComment}>Save</button>
+                            </div>
+                            
                           </div>
                         ) : (
                           <div
@@ -128,13 +131,14 @@ const Comments = (props) => {
         </div>
       </div>
       {getPermission(user.permissions, "TaskComments", "create") && (
-        <div className="Input-send">
+       <div className="overall_input_send">
+         <div className="Input-send">
           <div className="input-wrapper">
-            <div className="send">
+            <div className="send"  onClick={() => valueTrim(commentText, "comments", setCommentsErrors) && handleSendComment(commenterId)}>
               <img
                 src="/icons/Send.svg"
                 alt="Send-icon"
-                onClick={() => valueTrim(commentText, "comments", setCommentsErrors) && handleSendComment(commenterId)}
+               
               />
             </div>
           </div>
@@ -148,6 +152,7 @@ const Comments = (props) => {
           }} />
           <p className="error-message">{commentErrors["comments"] ? commentErrors["comments"] : ""}</p>
         </div>
+       </div>
       )}
 
     </>

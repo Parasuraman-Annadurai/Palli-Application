@@ -93,8 +93,8 @@ const WeightageList = ({
                       }}
                     />
                   </div>
-                  <div className="weightage-unit-container flex">
-                    <div className="weightage-action">
+                  <div className="weightage-unit-container flex" >
+                    <div className="weightage-action" style={{cursor:"pointer"}}>
                       {/* Show the delete icon only if weightage is greater than 0 */}
                       <span
                         onClick={() =>

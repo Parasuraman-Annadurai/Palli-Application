@@ -256,7 +256,21 @@ const StudentLogin = ({ type }) => {
       setTaskLists(updatedTaskLists);
       setIsCommentEditId(null)
     }).catch((error)=>{
-      console.log(error);
+      if (
+        error.response.data.status === 400 ||
+        "errors" in error.response.data
+      ) {
+        const errorMessages = error.response.data.errors;
+
+        Object.entries(errorMessages).forEach(([key, messages]) => {
+          messages.forEach((message) =>
+            notification.error({
+              message: `${key} Error`,
+              description: message,
+            })
+          );
+        });
+      }
     })
   }
 
@@ -445,8 +459,12 @@ const StudentLogin = ({ type }) => {
                       
                     
                     <div className="comments-container">
-                      <Drawer title="Comments" onClose={()=>setOpenCommentSection(false)} open={openCommentSection}>
-                      <Comments comments={tasksList?.comments} commenterId={tasksList.id} commentText={taskComments} isCommentEditId={isCommentEditId} setIsCommentEditId={setIsCommentEditId} setCommentText={setTaskComments} handleSendComment={handleAddComment} handleDeleteComment={handleDeleteComment} role={"Student"}/>
+                      <Drawer title="Comments" onClose={()=>{
+                        setOpenCommentSection(false)
+                        setIsCommentEditId(null)
+                        setTaskComments("")
+                      }} open={openCommentSection}>
+                      <Comments commentErrors={formErrors} setCommentsErrors={setFormErrors} comments={tasksList?.comments} commenterId={tasksList.id} commentText={taskComments} isCommentEditId={isCommentEditId} setIsCommentEditId={setIsCommentEditId} setCommentText={setTaskComments} handleSendComment={handleAddComment} handleDeleteComment={handleDeleteComment} role={"Student"}/>
                       </Drawer>
                     </div>
                   </div>

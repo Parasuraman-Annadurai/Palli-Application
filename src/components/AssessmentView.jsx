@@ -22,7 +22,7 @@ import { useParams } from "react-router-dom";
 
 import { useAuth } from "../context/AuthContext";
 
-import WeightageList from "./WeightageList";
+import WeightageList from "./WeightageList/WeightageList";
 import Comments from "./CommentsModule/Comments";
 
 import {

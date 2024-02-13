@@ -134,7 +134,7 @@ const Comments = (props) => {
        <div className="overall_input_send">
          <div className="Input-send">
           <div className="input-wrapper">
-            <div className="send"  onClick={() => valueTrim(commentText, "comments", setCommentsErrors) && handleSendComment(commenterId)}>
+            <div className="send"  onClick={() => valueTrim(commentText, "Comments", setCommentsErrors) && handleSendComment(commenterId)}>
               <img
                 src="/icons/Send.svg"
                 alt="Send-icon"
@@ -144,13 +144,13 @@ const Comments = (props) => {
           </div>
 
           <CustomIcons />
-          <ReactQuill theme="snow" modules={toolbarConfig} value={commentText} onChange={(value) => {
-            if (commentErrors["comments"]) {
-              delete commentErrors["comments"]
+          <ReactQuill theme="snow" modules={toolbarConfig} value={isCommentEditId ? "" : commentText} onChange={(value) => {
+            if (commentErrors["Comments"]) {
+              delete commentErrors["Comments"]
             }
             setCommentText(value)
           }} />
-          <p className="error-message">{commentErrors["comments"] ? commentErrors["comments"] : ""}</p>
+          <p className="error-message">{commentErrors["Comments"] ? commentErrors["Comments"] : ""}</p>
         </div>
        </div>
       )}

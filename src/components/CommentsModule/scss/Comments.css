@@ -239,7 +239,7 @@ li {
 
 .overall_input_send {
   position: fixed;
-  bottom: 0;
+  bottom: 20px;
   max-width: 407px;
   width: 100%;
 }
@@ -309,6 +309,10 @@ li {
 }
 .quill .ql-snow.ql-toolbar .ql-picker-label .ql-bold:hover {
   color: #49a843;
+}
+
+.ql-toolbar.ql-snow {
+  background-color: white;
 }
 
 .ant-drawer-content-wrapper {

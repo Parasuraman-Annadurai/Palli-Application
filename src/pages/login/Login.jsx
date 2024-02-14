@@ -70,17 +70,17 @@ const Login = () => {
             setUser(formattedUserData);
 
             setLoading(false);
-
+            //the if condition used for the admin,student,dckap user not contain any batches Im redirected to 232 batch
             if (formattedUserData.role === "Student") {
-              navigate(`/batch/${formattedUserData.batch?.[0].id}/task`);
+              navigate(`/batch/${formattedUserData.batch?.[0].id ?formattedUserData.batch?.[0].id :  "232"}/task`)
             } else if(formattedUserData.role == "Trainer"){
-              navigate(`/batch/${formattedUserData.batch?.[0].id}/task`)
+              navigate(`/batch/${formattedUserData.batch?.[0].id ?formattedUserData.batch?.[0].id :  "232"}/task`)
             } 
             else if(formattedUserData.role == "DckapUser"){
-              navigate(`/batch/${formattedUserData.batch?.[0].id}/task`)
+              navigate(`/batch/${formattedUserData.batch?.[0].id ?formattedUserData.batch?.[0].id :  "232"}/task`)
             } 
             else {
-              navigate(`/batch/${formattedUserData.batch?.[0].id}/applications`);
+              navigate(`/batch/${formattedUserData.batch?.[0].id ?formattedUserData.batch?.[0].id :  "232"}/applications`)
             }
 
 

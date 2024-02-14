@@ -30,7 +30,7 @@ const AssessmentModule = ({ type }) => {
   const [isDraft, setIsDraft] = useState(false);
   const [isStudentScoreOpen, setIsStudentScoreOpen] = useState(true);
   const [activeWeightageIndex, setActiveWeightageIndex] = useState(null);
-  const [isMode,setIsMode] = useState("edit")
+  const [isMode,setIsMode] = useState("card")
   const [commentText,setCommentText] = useState("");
   const [isCommentEditId,setIsCommentEditId] = useState(null)
   const [formErrors, setFormErrors] = useState({});
@@ -44,6 +44,9 @@ const AssessmentModule = ({ type }) => {
 
   useEffect(() => {
     setLoading(true);
+    //I have used this condition to prevent that when I click on the edit icon where the task is and then click on the assessment again, the same edit icon is highlighted.
+    setIsMode("card")
+    setIsStudentScoreOpen(true)
     //this useEffect used to fetch task list and will re-run whenever filter or search is updated
     if(getPermission(user.permissions,"Task","create")){
       const url = `${API_END_POINT}/api/task/${batchId}/list_task/?limit=10&page=1&filter_task_type=${
@@ -319,6 +322,7 @@ const AssessmentModule = ({ type }) => {
     setAssessmentList(concatNewAssessment);
 
     setEditId(uniqueId);
+    setIsStudentScoreOpen(false);
   };
 
   const handleInputChange = (name, value) => {

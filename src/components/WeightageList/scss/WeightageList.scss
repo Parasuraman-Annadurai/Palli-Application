@@ -211,157 +211,61 @@ li {
   }
 }
 
-// code started line
-
-.comments-list-container {
-  height: 425px;
+.weightage-main-container {
+  height: 550px;
   overflow-y: scroll;
-  .comments-main-container {
-    position: relative;
-    margin-bottom: 24px;
-    .comments-section {
-      .profile-image {
-        width: 32px;
-        height: 32px;
-        background-color: #d3f9cd;
-        color: $font-primary-color;
-        align-items: center;
-        justify-content: center;
-        border-radius: 50%;
-      }
-      .user-detail {
-        flex: 1;
-        justify-content: space-between;
-        .name {
-          font: 500 12px/16px $font-Roboto;
-          color: $font-primary-color;
-          margin-left: 10px;
-        }
-        .icons {
+  .overall {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 20px;
+    .weightage-adding-container {
+      .weight-inputs {
+        .weight-age-input {
           display: flex;
-        }
-        .comment-date {
-          font: 400 10px/14px $font-Roboto;
-          color: $font-secondary-color;
-          margin-top: 2px;
-        }
-        .icons {
-          img {
-            width: 16px;
-            cursor: pointer;
+          gap: 10px;
+          align-items: center;
+          margin-bottom: 10px;
+          .weightage-select {
+            width: 170px;
+          }
+          .percentage {
+            max-width: 45px;
+            width: 100%;
+
+            .task-weight-value-selector {
+              border: 1px solid #eaeaea;
+              border-radius: 4px;
+              width: 100%;
+              padding-top: 7.5px;
+              padding-bottom: 7.5px;
+              padding-left: 5px;
+              padding-right: 5px;
+            }
+          }
+          .weightage-unit-container {
+            .weightage-action {
+              cursor: pointer;
+            }
           }
         }
       }
+    
     }
-    .edit-comment{
-margin-top: 10px;
-    }
-    .cancel_save_btns{
-          display: flex;
-    max-width: 190px;
-    gap: 10px;
-    position: absolute;
-
-    bottom: 5px;
-    right: 5px;
-    }
-    .comments {
-      p {
-        font: 400 12px/16px $font-Roboto;
-        color: $font-primary-color;
-        margin-top: 6px;
-        margin-left: 42px;
-        max-width: 280px;
-        width: 100%;
-        overflow-wrap: break-word;
-        cursor: pointer;
+    .all-btns{
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        margin-top: 15px;
+        .add-weightage-button{
+            .create-btn{
+                padding: 15px;
+                cursor: pointer;
+            }
+        }
+        .main-apply-weightage{
+            flex: 1;
+        }
       }
-    }
   }
-}
-.overall_input_send{
-  position: fixed;
-  bottom: 20px;
-  max-width: 407px;
-  width: 100%;
-  .Input-send {
-    position: relative;
-    .input-wrapper {
-      display: flex;
-      justify-content: end;
-      margin-bottom: 5px;
-    }
-    .send {
-      background-color: #49a843;
-      padding: 7px;
-      border-radius: 4px;
-      cursor: pointer;
-      position: absolute;
-      top: 8px;
-      right: 3px;
-      img {
-        width: 16px;
-      }
-    }
-    textarea {
-      border: 1px solid $border-color;
-      height: auto;
-      padding: 10px 37px 10px 12px;
-      width: 100%;
-      color: $font-primary-color;
-      border-radius: 4px;
-      padding-left: 10px;
-      font: 400 12px/16px $font-Roboto;
-      &::placeholder {
-        color: $font-secondary-color;
-        font: 400 12px/16px $font-Roboto;
-      }
-      &:focus {
-        border: 1px solid $primary-color;
-        outline: none;
-      }
-    }
-  }
-}
-.quill{
-  .ql-container .ql-snow{
-    // max-height: 80px;
-    min-height: 80px !important;
-  }
-  .ql-snow.ql-toolbar button:hover,
-  .ql-snow .ql-toolbar button:hover,
-  .ql-snow.ql-toolbar button:focus,
-  .ql-snow .ql-toolbar button:focus,
-  .ql-snow.ql-toolbar button.ql-active,
-  .ql-snow .ql-toolbar button.ql-active,
-  .ql-snow.ql-toolbar .ql-picker-label:hover,
-  .ql-snow .ql-toolbar .ql-picker-label:hover,
-  .ql-snow.ql-toolbar .ql-picker-label.ql-active,
-  .ql-snow .ql-toolbar .ql-picker-label.ql-active,
-  .ql-snow.ql-toolbar .ql-picker-item:hover,
-  .ql-snow .ql-toolbar .ql-picker-item:hover,
-  .ql-snow.ql-toolbar .ql-picker-item.ql-selected,
-  .ql-snow .ql-toolbar .ql-picker-item.ql-selected {
-    color: $primary-color;
-  }
-  .ql-snow.ql-toolbar .ql-picker-label {
-    color: $font-secondary-color;
-    .ql-stroke {
-      stroke: $font-secondary-color;
-    }
-    .ql-bold {
-      &:hover {
-        color: $primary-color;
-      }
-    }
-  }
-}
-.ql-toolbar.ql-snow{
-  background-color: white;
-}
-.ant-drawer-content-wrapper{
-  width: 455px !important;
-}
-.ql-editor{
-  padding-bottom: 40px !important;
 }

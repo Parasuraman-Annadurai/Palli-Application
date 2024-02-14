@@ -22,7 +22,7 @@ import { useParams } from "react-router-dom";
 
 import { useAuth } from "../context/AuthContext";
 
-import WeightageList from "./WeightageList";
+import WeightageList from "./WeightageList/WeightageList";
 import Comments from "./CommentsModule/Comments";
 
 import {
@@ -644,7 +644,7 @@ const AssessmentView = ({
                                 >
                                   {activeWeightageIndex === index
                                     ? "Submit"
-                                    : " Add mark"}
+                                    : " Add Score"}
                                 </button>
                               )}
 
@@ -677,7 +677,7 @@ const AssessmentView = ({
                     {/* this modal open comment section for Admin  for functionality purpose*/}
 
                       <Drawer
-                        title={<div>Comments</div>}
+                        title={<div   style={{ fontWeight: 500, fontSize: "16px", fontFamily: "Roboto" }}>Comments</div>}
                         onClose={() => {
                           setOpenComments(null)
                           setCommentText("")

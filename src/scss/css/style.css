@@ -219,7 +219,7 @@ li {
 }
 
 .datepicker {
-  max-width: 325px;
+  max-width: 402px;
   height: 36px;
   width: 100%;
   font-size: 12px;
@@ -884,6 +884,7 @@ body .container .main-container .task-details-header-container .weightage-main-c
   justify-content: space-between;
   align-items: center;
   gap: 10px;
+  cursor: pointer;
 }
 body .container .main-container .task-details-header-container .weightage-main-container .overall .weightage-adding-container .weight-inputs .weightage-unit-container .task-weightage-selector {
   padding: 10px 12px;
@@ -979,7 +980,7 @@ body .container .assignee-and-weightage-container .assign-listing-container .sel
 }
 body .container .assignee-and-weightage-container .assign-listing-container .assignee-card-listing-container {
   font: "Roboto";
-  height: 480px;
+  height: 465px;
   overflow-y: scroll;
 }
 body .container .assignee-and-weightage-container .assign-listing-container .assignee-card-listing-container .individual-assignee-card {

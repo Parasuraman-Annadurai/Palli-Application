@@ -88,6 +88,7 @@ li {
   background-color: #49a843;
   color: white;
   cursor: pointer;
+  width: 100%;
 }
 .btn.primary-medium:hover {
   background-color: #33762f;
@@ -177,11 +178,12 @@ li {
 }
 
 .comments-list-container {
-  height: 480px;
+  height: 425px;
   overflow-y: scroll;
 }
 .comments-list-container .comments-main-container {
-  padding-bottom: 24px;
+  position: relative;
+  margin-bottom: 24px;
 }
 .comments-list-container .comments-main-container .comments-section .profile-image {
   width: 32px;
@@ -213,6 +215,17 @@ li {
   width: 16px;
   cursor: pointer;
 }
+.comments-list-container .comments-main-container .edit-comment {
+  margin-top: 10px;
+}
+.comments-list-container .comments-main-container .cancel_save_btns {
+  display: flex;
+  max-width: 190px;
+  gap: 10px;
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+}
 .comments-list-container .comments-main-container .comments p {
   font: 400 12px/16px "Roboto";
   color: #12160a;
@@ -220,17 +233,25 @@ li {
   margin-left: 42px;
   max-width: 280px;
   width: 100%;
+  overflow-wrap: break-word;
+  cursor: pointer;
 }
 
-.Input-send {
+.overall_input_send {
+  position: fixed;
+  bottom: 20px;
+  max-width: 407px;
+  width: 100%;
+}
+.overall_input_send .Input-send {
   position: relative;
 }
-.Input-send .input-wrapper {
+.overall_input_send .Input-send .input-wrapper {
   display: flex;
   justify-content: end;
   margin-bottom: 5px;
 }
-.Input-send .send {
+.overall_input_send .Input-send .send {
   background-color: #49a843;
   padding: 7px;
   border-radius: 4px;
@@ -239,10 +260,10 @@ li {
   top: 8px;
   right: 3px;
 }
-.Input-send .send img {
+.overall_input_send .Input-send .send img {
   width: 16px;
 }
-.Input-send textarea {
+.overall_input_send .Input-send textarea {
   border: 1px solid #eaeaea;
   height: auto;
   padding: 10px 37px 10px 12px;
@@ -252,13 +273,54 @@ li {
   padding-left: 10px;
   font: 400 12px/16px "Roboto";
 }
-.Input-send textarea::placeholder {
+.overall_input_send .Input-send textarea::placeholder {
   color: #969d88;
   font: 400 12px/16px "Roboto";
 }
-.Input-send textarea:focus {
+.overall_input_send .Input-send textarea:focus {
   border: 1px solid #49a843;
   outline: none;
+}
+
+.quill .ql-container .ql-snow {
+  min-height: 80px !important;
+}
+.quill .ql-snow.ql-toolbar button:hover,
+.quill .ql-snow .ql-toolbar button:hover,
+.quill .ql-snow.ql-toolbar button:focus,
+.quill .ql-snow .ql-toolbar button:focus,
+.quill .ql-snow.ql-toolbar button.ql-active,
+.quill .ql-snow .ql-toolbar button.ql-active,
+.quill .ql-snow.ql-toolbar .ql-picker-label:hover,
+.quill .ql-snow .ql-toolbar .ql-picker-label:hover,
+.quill .ql-snow.ql-toolbar .ql-picker-label.ql-active,
+.quill .ql-snow .ql-toolbar .ql-picker-label.ql-active,
+.quill .ql-snow.ql-toolbar .ql-picker-item:hover,
+.quill .ql-snow .ql-toolbar .ql-picker-item:hover,
+.quill .ql-snow.ql-toolbar .ql-picker-item.ql-selected,
+.quill .ql-snow .ql-toolbar .ql-picker-item.ql-selected {
+  color: #49a843;
+}
+.quill .ql-snow.ql-toolbar .ql-picker-label {
+  color: #969d88;
+}
+.quill .ql-snow.ql-toolbar .ql-picker-label .ql-stroke {
+  stroke: #969d88;
+}
+.quill .ql-snow.ql-toolbar .ql-picker-label .ql-bold:hover {
+  color: #49a843;
+}
+
+.ql-toolbar.ql-snow {
+  background-color: white;
+}
+
+.ant-drawer-content-wrapper {
+  width: 455px !important;
+}
+
+.ql-editor {
+  padding-bottom: 40px !important;
 }
 
 /*# sourceMappingURL=Comments.css.map */

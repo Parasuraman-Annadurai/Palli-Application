@@ -272,7 +272,7 @@ li {
 //datepicker
 
 .datepicker {
-  max-width: 325px;
+  max-width: 402px;
   height: 36px;
   width: 100%;
   font-size: 12px;
@@ -1150,6 +1150,7 @@ span{
                   justify-content: space-between;
                   align-items: center;
                   gap: 10px;
+                  cursor: pointer;
 
                   .task-weightage-selector {
                     padding: 10px 12px;
@@ -1266,7 +1267,7 @@ span{
         }
         .assignee-card-listing-container {
           font: $font-Roboto;
-          height: 480px;
+          height: 465px;
           overflow-y: scroll;
           .individual-assignee-card {
             gap: 10px;

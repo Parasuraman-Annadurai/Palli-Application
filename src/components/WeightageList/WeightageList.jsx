@@ -2,8 +2,9 @@ import React, { useState, useEffect } from "react";
 
 import { Button, Select, Tooltip } from "antd";
 
-import { isWeightageVaild } from "../utils/validate";
+import { isWeightageVaild } from "../../utils/validate";
 
+import "./scss/WeightageList.css"
 const WeightageList = ({
   taskWeightages,
   handleSaveWeightage,
@@ -18,29 +19,13 @@ const WeightageList = ({
   return (
     <div
       className="weightage-main-container"
-      style={{ height: 550, overflowY: "scroll" }}
     >
-      <div
-        className="overall"
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          gap: 10,
-          marginTop: 20,
-        }}
-      >
+      <div className="overall">
         <div className="weightage-adding-container flex">
           <div className="weight-inputs">
             {taskWeightages.map((taskWeightage, index) => {
               return (
-                <div
-                  style={{
-                    display: "flex",
-                    gap: 10,
-                    alignItems: "center",
-                    marginBottom: 10,
-                  }}
-                >
+                <div className="weight-age-input">
                   <div className="weightage-select">
                     <Select
                       style={{ width: "170px", opacity: selectedStudents.length > 0 ? 0.5 : 1,
@@ -63,10 +48,7 @@ const WeightageList = ({
                       ))}
                     </Select>
                   </div>
-                  <div
-                    className="percentage"
-                    style={{ maxWidth: 45, width: "100%" }}
-                  >
+                  <div className="percentage">
                     <input
                       type="text"
                       value={taskWeightage.weightage_percentage}
@@ -80,21 +62,14 @@ const WeightageList = ({
                       disabled={selectedStudents.length}
                       className="task-weight-value-selector"
                       style={{
-                        border: "1px solid #eaeaea",
-                        borderRadius: 4,
-                        width: "100%",
-                        paddingTop: 7.5,
-                        paddingBottom: 7.5,
-                        paddingLeft: 5,
-                        paddingRight: 5,
                         opacity: selectedStudents.length > 0 ? 0.5 : 1,
                         cursor:
                           selectedStudents.length > 0 ? "not-allowed" : "auto",
                       }}
                     />
                   </div>
-                  <div className="weightage-unit-container flex">
-                    <div className="weightage-action">
+                  <div className="weightage-unit-container flex" >
+                    <div className="weightage-action" >
                       {/* Show the delete icon only if weightage is greater than 0 */}
                       <span
                         onClick={() =>
@@ -121,31 +96,22 @@ const WeightageList = ({
             })}
           </div>
         </div>
-        <p className="error-message">
+       {weightageErrors["weightage"] ? <p className="error-message">
           {weightageErrors["weightage"] ? weightageErrors["weightage"] : ""}
-        </p>
+        </p> :"" } 
 
         {!selectedStudents?.length && (
           <>
-            <div
-              className="all-btns"
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                gap: "10px",
-                marginTop: "15px",
-              }}
-            >
+            <div className="all-btns">
               <div className="add-weightage-button">
                 <button
                   className="btn create-btn"
-                  style={{ padding: 15, cursor: "pointer" }}
                   onClick={handleAddWeightage}
                 >
                   + Add Weightage
                 </button>
               </div>
-              <div style={{ flex: 1 }}>
+              <div>
                 <div className="apply-weightage">
                   <Tooltip
                     title={

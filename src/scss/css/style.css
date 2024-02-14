@@ -542,9 +542,6 @@ body .container .listing-container .task-list-container .task-card {
   font-family: "Roboto";
   cursor: pointer;
 }
-body .container .listing-container .task-list-container .task-card:hover {
-  background-color: #f8fbf2;
-}
 body .container .listing-container .task-list-container .task-card .task-icon {
   background-color: #fbf4ca;
   height: 26px;
@@ -581,6 +578,7 @@ body .container .listing-container .task-list-container .task-card .task-details
 body .container .listing-container .task-list-container .task-card .task-details .task-name-with-icon .delete-icon {
   margin-left: 5px;
   cursor: pointer;
+  visibility: hidden;
 }
 body .container .listing-container .task-list-container .task-card .task-details .task-description {
   max-width: 205px;
@@ -612,6 +610,12 @@ body .container .listing-container .task-list-container .task-card .task-details
   color: #f59e0b;
   background-color: #fef3c7;
   font-family: "Roboto";
+}
+body .container .listing-container .task-list-container .task-card:hover {
+  background-color: #f8fbf2;
+}
+body .container .listing-container .task-list-container .task-card:hover .task-details .task-name-with-icon .delete-icon {
+  visibility: visible;
 }
 body .container .listing-container .task-list-container .task-card:hover .task-name-with-icon img {
   visibility: visible;
@@ -974,9 +978,9 @@ body .container .assignee-and-weightage-container .assign-listing-container .sel
 body .container .assignee-and-weightage-container .assign-listing-container .select-all .global-checkbox {
   accent-color: #49a843;
 }
-body .container .assignee-and-weightage-container .assign-listing-container .select-all .span {
-  font-size: 12px;
-  font-family: "Roboto";
+body .container .assignee-and-weightage-container .assign-listing-container .select-all span {
+  font: 500 12px/16px "Roboto";
+  color: #49a843;
 }
 body .container .assignee-and-weightage-container .assign-listing-container .assignee-card-listing-container {
   font: "Roboto";
@@ -1009,6 +1013,10 @@ body .container .assignee-and-weightage-container .assign-listing-container .ass
 }
 body .container .assignee-and-weightage-container .assign-listing-container .assignee-card-listing-container .individual-assignee-card .profile .profile-letter span {
   font-size: 10px;
+}
+body .container .assignee-and-weightage-container .assign-listing-container .assignee-card-listing-container .individual-assignee-card .profile .assignee-name p {
+  font: 400 12px/16px "Roboto";
+  color: #12160a;
 }
 body .container .weightage-action {
   cursor: pointer;
@@ -1173,6 +1181,7 @@ body .container .main-container hr {
 }
 body .container .main-container .applied-weightage-list-container {
   padding: 14px 0px 16px 16px;
+  gap: 10px;
 }
 body .container .main-container .applied-weightage-list-container .applied-weightage-card {
   align-items: center;

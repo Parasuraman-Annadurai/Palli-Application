@@ -492,8 +492,8 @@ const AssessmentView = ({
                                         <div className="profile flex">
                                           <div className="profile-letter">
                                             <span>
-                                              {student?.first_name[0]}
-                                              {student?.last_name[0]}
+                                            {student?.first_name[0]?.toUpperCase()}
+                                            {student?.last_name[0]?.toUpperCase()} 
                                             </span>
                                           </div>
                                           <div className="assignee-name">
@@ -711,8 +711,7 @@ const AssessmentView = ({
                     {activeWeightageIndex === index && (
                       <>
                         <div
-                          className="applied-weightage-list-container flex"
-                          style={{ gap: "10px" }}
+                          className="applied-weightage-list-container flex" 
                         >
                           {currentAssessment.task_weightages &&
                             currentAssessment.task_weightages.map(

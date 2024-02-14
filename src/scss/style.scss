@@ -680,9 +680,7 @@ body {
           font-family: $font-Roboto;
           cursor: pointer;
 
-          &:hover {
-            background-color: $side_bar_bg;
-          }
+
           // &:active {
           //   background-color: red;
           // }
@@ -725,6 +723,7 @@ body {
               .delete-icon {
                 margin-left: 5px;
                 cursor: pointer;
+                visibility: hidden;
               }
             }
 
@@ -760,6 +759,16 @@ body {
               color: $highlight-yellow;
               background-color: $highlight-yellow-bg;
               font-family: $font-Roboto;
+            }
+          }
+          &:hover {
+            background-color: $side_bar_bg;
+            .task-details{
+             .task-name-with-icon{
+                .delete-icon{
+                  visibility: visible;
+                }
+              }
             }
           }
         }
@@ -1260,9 +1269,9 @@ span{
           .global-checkbox {
             accent-color: $primary-color;
           }
-          .span {
-            font-size: 12px;
-            font-family: $font-Roboto;
+          span {
+            font: 500 12px/16px $font-Roboto;
+            color: $primary-color;
           }
         }
         .assignee-card-listing-container {
@@ -1285,7 +1294,6 @@ span{
 
               .profile-letter {
                 background-color: #eaf1db;
-
                 height: 24px;
                 width: 24px;
                 border-radius: 50%;
@@ -1295,6 +1303,12 @@ span{
 
                 span {
                   font-size: 10px;
+                }
+              }
+              .assignee-name{
+                p{
+                  font: 400 12px/16px $font-Roboto;
+                  color: $font-primary-color;
                 }
               }
             }
@@ -1531,6 +1545,7 @@ span{
       .applied-weightage-list-container {
         // border: 1px solid $border-color;
         padding: 14px 0px 16px 16px;
+        gap: 10px;
 
         .applied-weightage-card {
           align-items: center;

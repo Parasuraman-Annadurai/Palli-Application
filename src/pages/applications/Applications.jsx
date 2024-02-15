@@ -26,7 +26,7 @@ import "./scss/css/Applications.css";
 import { getPermission } from "../../utils/validate";
 
 const Applications = () => {
-  const filterFields = useFilter("applicant");
+  const filterFields = useFilter("applicant");  
   const { id: batchId } = useParams();
   const navigate = useNavigate();
   const { token, user } = useAuth();

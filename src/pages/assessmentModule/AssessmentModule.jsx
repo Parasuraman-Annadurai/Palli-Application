@@ -118,6 +118,7 @@ const AssessmentModule = ({ type }) => {
               const weightObject = {
                 weightage_percentage: weightage.weightage_percentage,
                 weightage: weightage.weightage,
+                taskScore : weightage.task_score
               };
 
               if ("id" in weightage) {
@@ -561,24 +562,28 @@ const AssessmentModule = ({ type }) => {
 
   const handleAddScore = (studentScores) => {
     setLoading(true)
-    let statusChangeAfterScore = [...assessmentList];
-    statusChangeAfterScore = statusChangeAfterScore.map((assessment) => {
-      assessment.task_users = assessment.task_users.map((student) => {
-        studentScores.forEach((scores) => {
-          if (student.id === scores.task_user) {
-            student.task_status = "COMPLETED";
-          }
-        });
-        return student;
-      });
-      return assessment;
-    });
+   
+   
     //weightage open and score added only submit the score
     studentScores.map((scores) => {
       const url = `${API_END_POINT}/api/task/${batchId}/create/task_score/`;
       axios
         .post(url, scores, { headers })
         .then((res) => {
+          let statusChangeAfterScore = [...assessmentList];
+
+          statusChangeAfterScore.forEach((assessment) => {
+            if (assessment.id === editId) {
+              assessment.task_weightages.forEach((weightage) => {
+                weightage.taskScore = [{...res.data.data}];
+              });
+            }
+          });
+          
+          setAssessmentList(statusChangeAfterScore);
+          
+          
+
           axios
             .put(
               `${API_END_POINT}/api/task/${batchId}/update/task/user/${scores.task_user}`,
@@ -587,6 +592,19 @@ const AssessmentModule = ({ type }) => {
             )
             .then((res) => {
               setLoading(false)
+              let statusChangeAfterScore = [...assessmentList];
+
+              statusChangeAfterScore = statusChangeAfterScore.map((assessment) => {
+                assessment.task_users = assessment.task_users.map((student) => {
+                  studentScores.forEach((scores) => {
+                    if (student.id === scores.task_user) {
+                      student.task_status = "COMPLETED";
+                    }
+                  });
+                  return student;
+                });
+                return assessment;
+              });
               setAssessmentList(statusChangeAfterScore);
               setActiveWeightageIndex(null);
               notification.success({

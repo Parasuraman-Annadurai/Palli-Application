@@ -132,7 +132,7 @@ const AssessmentView = ({
       setStudentLoading(false)
       console.log(error);
     })
-  }, [taskId])
+  }, [taskId,isStudentScoreOpen])
 
   const handleCheckboxChange = (studentId) => {
     const isSelected = [...selectedStudents].includes(studentId);
@@ -300,7 +300,7 @@ const AssessmentView = ({
   
   
   
-  
+  const [showMark,SetShowMark] = useState(false)
 
   return (
     <>
@@ -474,71 +474,81 @@ const AssessmentView = ({
                         {toggleAssigneeWeightage === 0 ? (
                           <>
                         {getPermission(user.permissions, "TaskUser", "create") && (
-                              <div className="assign-listing-container">
-                            <div className="assignee-search-container">
-                              <input type="input" placeholder="search..." onChange={(e) => setAssigneeSearch(e.target.value)} />
-                              <img
-                                src="/icons/searchIcon.svg"
-                                alt="search-icon"
-                                className="search-icon"
-                              />
-
-
-                            </div>
-                            {isAssigneeLoading ? <Skeleton active paragraph={4} /> : (
-                              <>
-                                <div className="select-all flex">
-                                  <input
-                                    className="global-checkbox"
-                                    type="checkbox"
-                                    onChange={handleAllCheckboxChange}
-                                    checked={selectedStudents.length == students.length}
-                                  />
-                                  <span>
-                                    {selectedStudents.length === students.length
-                                      ? "All Students Selected"
-                                      : selectedStudents.length == 0
-                                        ? "Select All Students"
-                                        : `${selectedStudents.length} Selected`}
-                                  </span>
-                                </div>
-                                <div className="assignee-card-listing-container">
-                                  {students.map((student) => {
-                                    return (
-                                      <div
-                                        className="individual-assignee-card flex"
-                                        key={student.id}
-                                      >
-                                        <input
-                                          className="student-checkbox "
-                                          type="checkbox"
-                                          onChange={() =>
-                                            handleCheckboxChange(student.id)
-                                          }
-                                          checked={selectedStudents.includes(
-                                            student.id
-                                          )}
-                                        />
-                                        <div className="profile flex">
-                                          <div className="profile-letter">
-                                            <span>
-                                              {student?.first_name[0]}
-                                              {student?.last_name[0]}
-                                            </span>
-                                          </div>
-                                          <div className="assignee-name">
-                                            <p>
-                                              {student.first_name} {student.last_name}
-                                            </p>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    );
-                                  })}
-                                </div>
-                              </>
+                          <>
+                            {students?.length > 0 ? (
+                                   <div className="assign-listing-container">
+                                   <div className="assignee-search-container">
+                                     <input type="input" placeholder="search..." onChange={(e) => setAssigneeSearch(e.target.value)} />
+                                     <img
+                                       src="/icons/searchIcon.svg"
+                                       alt="search-icon"
+                                       className="search-icon"
+                                     />
+       
+       
+                                   </div>
+                                   {isAssigneeLoading ? <Skeleton active paragraph={4} /> : (
+                                     <>
+                                       <div className="select-all flex">
+                                         <input
+                                           className="global-checkbox"
+                                           type="checkbox"
+                                           onChange={handleAllCheckboxChange}
+                                           checked={selectedStudents.length == students.length}
+                                         />
+                                         <span>
+                                           {selectedStudents.length === students.length
+                                             ? "All Students Selected"
+                                             : selectedStudents.length == 0
+                                               ? "Select All Students"
+                                               : `${selectedStudents.length} Selected`}
+                                         </span>
+                                       </div>
+                                       <div className="assignee-card-listing-container">
+                                         {students.map((student) => {
+                                           return (
+                                             <div
+                                               className="individual-assignee-card flex"
+                                               key={student.id}
+                                             >
+                                               <input
+                                                 className="student-checkbox "
+                                                 type="checkbox"
+                                                 onChange={() =>
+                                                   handleCheckboxChange(student.id)
+                                                 }
+                                                 checked={selectedStudents.includes(
+                                                   student.id
+                                                 )}
+                                               />
+                                               <div className="profile flex">
+                                                 <div className="profile-letter">
+                                                   <span>
+                                                     {student?.first_name[0]}
+                                                     {student?.last_name[0]}
+                                                   </span>
+                                                 </div>
+                                                 <div className="assignee-name">
+                                                   <p>
+                                                     {student.first_name} {student.last_name}
+                                                   </p>
+                                                 </div>
+                                               </div>
+                                             </div>
+                                           );
+                                         })}
+                                       </div>
+                                     </>
+                                   )}
+                                 </div>
+                            ) : (
+                              <div>
+                                <img src="/public/icons/no-data.svg"/>
+                                <p>No students Available in this batch</p>
+                              </div>
                             )}
-                          </div>
+                          </>
+                         
                         )}
                         </>
                       ) : (
@@ -565,7 +575,7 @@ const AssessmentView = ({
           )}
         </>
       ) : (
-          <main className="main-container" onClick={() => setActiveWeightageIndex(null)}>
+          <main className="main-container" >
             {studentLoading ? <Skeleton active /> : (
               <>
                 <div className="task-heading">
@@ -661,6 +671,22 @@ const AssessmentView = ({
                                       />
                                     </div>
                                     <div className="student-work">
+                                      {weightageShow && students["task_status"] == "COMPLETED" && (
+                                         <>
+                                         {getPermission(user.permissions, "TaskScore", "read") && (
+                                           <button
+                                             className="secondary-btn-sm"
+                                            onClick={()=>{
+                                              setActiveWeightageIndex(index)
+                                              SetShowMark(!showMark)
+                                            }}
+                                           >
+                                             View More
+                                           </button>
+                                         )}
+
+                                       </>
+                                      )}
                                       {weightageShow
                                         ? students["task_status"] === "SUBMITTED" && (
                                           <>
@@ -785,7 +811,8 @@ const AssessmentView = ({
                                                 </div>
 
                                                 <div className="weightage-checkbox">
-                                                  <input
+                                                  {showMark ? (<input readOnly={!!weightage?.taskScore} value={weightage?.taskScore ? Number(weightage?.taskScore[0]?.task_score) : ""} />) :(
+                                                      <input
                                                     type="number"
                                                     name="score"
                                                     onChange={(e) => {
@@ -795,7 +822,9 @@ const AssessmentView = ({
                                                         weightage
                                                       );
                                                     }}
-                                                  />
+                                                  /> 
+                                                  ) }
+                                                 
                                                 </div>
                                               </div>
                                             )

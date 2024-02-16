@@ -148,9 +148,12 @@ const AssessmentList = ({
         </div>
         <div className="create-container">
           {getPermission(user.permissions, "Task", "create") && (
+           !loading && (
             <button className="btn create-btn" onClick={handleAdd}>
               <span>+</span>Create {mode}
             </button>
+           )
+
           )}
 
         </div>

@@ -546,7 +546,7 @@ const AssessmentView = ({
                                  </div>
                             ) : (
                               <div>
-                                <img src="/public/icons/no-data.svg"/>
+                                <img src="/public/icons/no-data.svg" className="no-data-image"/>
                                 <p>No students Available in this batch</p>
                               </div>
                             )}

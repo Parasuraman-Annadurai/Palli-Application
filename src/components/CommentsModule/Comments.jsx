@@ -6,7 +6,7 @@ import { useAuth } from "../../context/AuthContext";
 
 import ReactQuill from "react-quill";
 import "quill/dist/quill.snow.css";
-import { CustomIcons, toolbarConfig, valueTrim,getPermission } from "../../utils/validate";
+import { CustomIcons, toolbarConfig, validateComments,getPermission } from "../../utils/validate";
 
 import "./scss/Comments.css";
 
@@ -49,11 +49,12 @@ const Comments = (props) => {
             <>
               {comments &&
                 comments?.map((comment, index) => {
+                  console.log(comment);
                   return (
                     <>
                       <div className="comments-main-container" key={index}>
                         <div className="comments-section flex">
-                          <div className="profile-image flex">GG</div>
+                          <div className="profile-image flex">{comment.commentor_details?.first_name[0]}{comment.commentor_details?.last_name[0]}</div>
 
                           <div className="user-detail flex">
                             <div className="name">
@@ -92,6 +93,12 @@ const Comments = (props) => {
                               modules={toolbarConfig}
                               value={commentText}
                               onChange={(value) => setCommentText(value)}
+                              onKeyUp={(e) => {
+                                if (e.key === 'Enter') {
+                                  // Call your function here
+                                  handleSaveComment();
+                                }
+                              }}
                               placeholder="comment here..."
                             />
                             <div className="cancel_save_btns">
@@ -135,7 +142,7 @@ const Comments = (props) => {
        <div className="overall_input_send">
          <div className="Input-send">
           <div className="input-wrapper">
-            <div className="send"  onClick={() => valueTrim(commentText, "Comments", setCommentsErrors) && handleSendComment(commenterId)}>
+            <div className="send"  onClick={() => validateComments(commentText, "Comments", setCommentsErrors) && handleSendComment(commenterId)}>
               <img
                 src="/icons/Send.svg"
                 alt="Send-icon"
@@ -145,12 +152,27 @@ const Comments = (props) => {
           </div>
 
           <CustomIcons />
-          <ReactQuill placeholder="comment here..." theme="snow" modules={toolbarConfig} value={isCommentEditId ? "" : commentText} onChange={(value) => {
-            if (commentErrors["Comments"]) {
-              delete commentErrors["Comments"]
-            }
-            setCommentText(value)
-          }} />
+            <ReactQuill
+              placeholder="comment here..."
+              theme="snow"
+              modules={toolbarConfig}
+              value={isCommentEditId ? "" : commentText}
+              onChange={(value) => {
+                if (commentErrors["Comments"]) {
+                  delete commentErrors["Comments"];
+                }
+                setCommentText(value);
+              }}
+              onKeyUp={(e) => {
+                if (e.key === 'Enter') {
+                  // Call your function here
+                  if (validateComments(commentText, "Comments", setCommentsErrors)) {
+                    handleSendComment(commenterId);
+                  }
+                }
+              }}
+            />
+
           <p className="error-message">{commentErrors["Comments"] ? commentErrors["Comments"] : ""}</p>
         </div>
        </div>

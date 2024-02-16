@@ -14,6 +14,23 @@ export const valueTrim = (value,fieldName,setErrors)=>{
   return isValid;
 }
 
+export const validateComments =(value,fieldName,setErrors)=>{
+  let errors = {};
+  let isValid = true;
+
+  const emptyHtmlRegex = /^<p>(\s*|<br\s*\/?>)<\/p>\s*$/;
+
+  const trimmedComment = value.trim();
+
+  if (!trimmedComment || emptyHtmlRegex.test(trimmedComment)) {
+    errors[fieldName] = `${fieldName} is required`;
+    isValid = false;
+  }
+
+  setErrors(errors);
+  return isValid;
+}
+
 export const validUrl =(value,fieldName,setErrors)=>{
   let errors = {};
   let isValid = true;

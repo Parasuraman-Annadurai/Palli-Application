@@ -413,29 +413,32 @@ const Applications = () => {
       {getPermission(user.permissions, "Applicant", "read") && (
         <>
           <div className="application-inner-container">
-            <div className="search-container">
-              <img src="/icons/searchIcon.svg" alt="" className="search-icon" />
-              <input
-                type="text"
-                value={applicationSearch}
-                placeholder="Search here"
-                onChange={(e) => setApplicationSearch(e.target.value)}
-              />
-
-              <Popover
-                placement="leftTop"
-                open={popoverVisible}
-                onOpenChange={(visible) => setPopoverVisible(visible)}
-                content={content}
-                trigger={["click"]}
-              >
-                <img
-                  src="/icons/filterIcon.svg"
-                  alt=""
-                  className="filter-icon"
-                />
-              </Popover>
-            </div>
+            {isLoading ? <Skeleton active/> : (
+               <div className="search-container">
+               <img src="/icons/searchIcon.svg" alt="" className="search-icon" />
+               <input
+                 type="text"
+                 value={applicationSearch}
+                 placeholder="Search here"
+                 onChange={(e) => setApplicationSearch(e.target.value)}
+               />
+ 
+               <Popover
+                 placement="leftTop"
+                 open={popoverVisible}
+                 onOpenChange={(visible) => setPopoverVisible(visible)}
+                 content={content}
+                 trigger={["click"]}
+               >
+                 <img
+                   src="/icons/filterIcon.svg"
+                   alt=""
+                   className="filter-icon"
+                 />
+               </Popover>
+             </div>
+            )}
+           
             <div className="filter-or-search-container">
               {applicationSearch.length > 0 ? (
                 <>

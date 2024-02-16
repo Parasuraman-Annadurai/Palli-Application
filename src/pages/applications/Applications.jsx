@@ -518,7 +518,7 @@ const Applications = () => {
                         </div>
                         <div className="application-gender">
                           <p>Gender</p>
-                          <span>Male</span>
+                          <span>-</span>
                         </div>
                         <div className="application-dob">
                           <p>Date of Birth</p>

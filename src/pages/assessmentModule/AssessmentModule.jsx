@@ -162,7 +162,7 @@ const AssessmentModule = ({ type }) => {
           ) {
             const errorMessages = error.response.data.errors;
             notification.error({
-              message: `Permission denied Error`,
+              message: error.response.data?.message,
               description: errorMessages.detail,
               duration:1
             })

@@ -92,6 +92,7 @@ const Comments = (props) => {
                               modules={toolbarConfig}
                               value={commentText}
                               onChange={(value) => setCommentText(value)}
+                              placeholder="comment here..."
                             />
                             <div className="cancel_save_btns">
                             <button className="btn secondary-medium" onClick={handleCancelEdit}>Cancel</button> 
@@ -144,7 +145,7 @@ const Comments = (props) => {
           </div>
 
           <CustomIcons />
-          <ReactQuill theme="snow" modules={toolbarConfig} value={isCommentEditId ? "" : commentText} onChange={(value) => {
+          <ReactQuill placeholder="comment here..." theme="snow" modules={toolbarConfig} value={isCommentEditId ? "" : commentText} onChange={(value) => {
             if (commentErrors["Comments"]) {
               delete commentErrors["Comments"]
             }

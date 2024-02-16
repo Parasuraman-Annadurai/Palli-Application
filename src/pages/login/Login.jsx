@@ -27,7 +27,7 @@ const Login = () => {
   } = useForm({
     defaultValues: {
       email: "parasu@gmail.com",
-      password: "Dckap@123",
+      password: "Dckap@122222",
     },
   });
   const handleLogin = (loginData) => {
@@ -86,26 +86,34 @@ const Login = () => {
 
           })
           .catch((error) => {
-            console.error("userData fetch Failed", err);
             if (
               error.response.data.status === 400 ||
               "errors" in error.response.data
             ) {
               const errorMessages = error.response.data.errors;
               notification.error({
-                message: `Permission denied Error`,
+                message: error.response.data?.message,
                 description: errorMessages.detail,
                 duration:1
               })
             }
           });
       })
-      .catch((err) => {
-        notification.error({
-          message: "Unauthorized",
-          description: `Credentials not found `,
-          duration: 3,
-        });
+      .catch((error) => {
+        if (
+          error.response.data.status === 400 ||
+          "errors" in error.response.data
+        ) {
+          const errorMessages = error.response.data.errors;
+
+          Object.entries(errorMessages).forEach(([key, messages]) => {
+            notification.error({
+              message: `${key} Error`,
+              description: messages,
+              duration:1
+            })
+          });
+        }
         navigate("/login");
       });
   };

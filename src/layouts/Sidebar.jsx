@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useLocation, useParams, useNavigate, Link } from "react-router-dom";
 
 import axios from "axios";
-import { Dropdown, Tooltip } from "antd";
+import { Dropdown, Tooltip,notification } from "antd";
 
 import { DASHBOARD } from "../routes/routes";
 import { useAuth } from "../context/AuthContext";
@@ -68,7 +68,19 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
         localStorage.removeItem("token");
         localStorage.removeItem("user");
 
-      });
+      }).catch((error)=>{
+        if (
+          error.response.data.status === 400 ||
+          "errors" in error.response.data
+        ) {
+          const errorMessages = error.response.data.errors;
+          notification.error({
+            message: error.response.data?.message,
+            description: errorMessages.detail,
+            duration:1
+          })
+        }
+      })
   };
   const items = [
     {

@@ -77,6 +77,17 @@ const AssessmentModule = ({ type }) => {
         })
         .catch((error) => {
           console.log(error);
+          if (
+            error.response.data.status === 400 ||
+            "errors" in error.response.data
+          ) {
+            const errorMessages = error.response.data.errors;
+            notification.error({
+              message: error.response.data?.message,
+              description: errorMessages.detail,
+              duration:1
+            })
+          }
         });
     }
    
@@ -131,20 +142,34 @@ const AssessmentModule = ({ type }) => {
     }
 
     if(editId){
-      axios
-      .get(`${API_END_POINT}/api/applicant/${batchId}/list/students/?search=${assigneeSearch}`, {
-        headers,
-      })
-      .then((res) => {
-        if (res.status === 200 && res.data.message === "Success") {
+
+      if(getPermission(user.permissions,"TaskUser","create")){
+        axios
+        .get(`${API_END_POINT}/api/applicant/${batchId}/list/students/?search=${assigneeSearch}`, {
+          headers,
+        })
+        .then((res) => {
+          if (res.status === 200 && res.data.message === "Success") {
+            setIsAssigneeLoading(false)
+            setStudents(res.data.data);
+          }
+        })
+        .catch((error) => {
           setIsAssigneeLoading(false)
-          setStudents(res.data.data);
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-        setIsAssigneeLoading(false)
-      });
+          if (
+            error.response.data.status === 400 ||
+            "errors" in error.response.data
+          ) {
+            const errorMessages = error.response.data.errors;
+            notification.error({
+              message: `Permission denied Error`,
+              description: errorMessages.detail,
+              duration:1
+            })
+          }
+        });
+      }
+     
     }
   }, [editId,assigneeSearch]);
 

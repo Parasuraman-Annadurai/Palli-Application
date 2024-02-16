@@ -22,7 +22,6 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
   const isDashboardPage = currentPath.includes(DASHBOARD);
 
   const [active, setActive] = useState(activeMenuItem);
-  const [showSwitchBatch, setShowSwitchBatch] = useState(false);
   const [batchList, setBatchList] = useState([]);
   const [currentBatch, setCurrentBatch] = useState(null);
   const [open, setOpen] = useState(false);
@@ -210,13 +209,10 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
         </div>
       </nav>
       <AddBatch
-        showSwitchBatch={showSwitchBatch}
-        batchList={batchList}
-        setShowSwitchBatch={setShowSwitchBatch}
-        setBatchList={setBatchList}
-        open={open}
-        setOpen={setOpen}
-        showDrawer={showDrawer}
+        batchList={batchList} //all batches
+        setBatchList={setBatchList} // for setting all batches 
+        open={open} // drawer open
+        setOpen={setOpen} // set drawer open state
         onClose={onClose}
       />
     </>

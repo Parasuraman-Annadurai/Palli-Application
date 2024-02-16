@@ -16,7 +16,7 @@ import "./scss/AddBatch.css";
 import { getPermission } from "../../utils/validate";
 
 const AddBatch = (props) => {
-  const { showSwitchBatch, setShowSwitchBatch, batchList, setBatchList,isLoading } =
+  const { batchList, setBatchList,isLoading } =
     props;
 
   const { user, token } = useAuth();
@@ -31,19 +31,11 @@ const AddBatch = (props) => {
   const [batchNameError, setBatchNameError] = useState(null);
   const [selectedBatch, setSelectedBatch] = useState(null);
   const [editId, setEditId] = useState(null);
-  const [batchinputs, setBatchInputs] = useState(false);
-  const [batchShow, setBatchshow] = useState(true);
+  const [batchShow, setBatchshow] = useState(false);
 
 
-  useEffect(() => {
-    if (!showSwitchBatch) {
-      setBatchInputs(false);
-      setBatchshow(true);
-    }
-  }, [showSwitchBatch]);
 
   const handleSwitch = (batch) => {
-   
 
     Modal.confirm({
       title: `Confirm Switch to ${batch.batch_name}`,
@@ -165,7 +157,7 @@ const AddBatch = (props) => {
           });
           resetFields();
           // setLoading(false);
-          setBatchInputs(false);
+          // setBatchInputs(false);
           setBatchshow(true);
         })
         .catch((error) => {
@@ -221,8 +213,7 @@ const AddBatch = (props) => {
 
           setBatchList(updatedData);
           resetFields();
-          setBatchInputs(false);
-          setBatchshow(true);
+          setBatchshow(false);
           setEditId(null);
 
           notification.success({
@@ -239,13 +230,12 @@ const AddBatch = (props) => {
 
   return (
     <>
-     
-        <Drawer
+      <Drawer
           title={
             <div
               style={{ fontWeight: 500, fontSize: "16px", fontFamily: "Roboto" }}
             >
-              {batchShow ? "Switch Batch" : editId ? "Edit Batch" : "Add Batch"}
+              {!batchShow ? "Switch Batch" : editId ? "Edit Batch" : "Add Batch"}
             </div>
           }
           onClose={()=>{props.onClose() }}
@@ -262,12 +252,12 @@ const AddBatch = (props) => {
                      <button
                      className="add-batch-btn"
                      onClick={() => {
-                       setBatchInputs(!batchinputs);
+                      //  setBatchInputs(!batchinputs);
                        setBatchshow(!batchShow);
                        resetFields();
                      }}
                    >
-                     {batchinputs ? (
+                     {batchShow ? (
                        <>
                          <span>
                            <img src="/icons/backIcon.svg" alt="backicon" />
@@ -284,7 +274,7 @@ const AddBatch = (props) => {
                  
                 </div>
 
-                {batchinputs && (
+                {batchShow && (
                   <form onSubmit={editId ? handleUpdate : handleCLick}>
                     <div className="input-fields">
                       <div className="input-field">
@@ -392,7 +382,7 @@ const AddBatch = (props) => {
                 )}
                  </div>
                <div className="switch-batch-list-container">
-                  {batchShow && batchList.length > 0 && (
+                  {!batchShow && batchList.length > 0 && (
                     <>
                       {batchList.map((batch, index) => (
                         <>
@@ -432,8 +422,8 @@ const AddBatch = (props) => {
                                   alt=""
                                   onClick={() => {
                                     handleEditClick(batch);
-                                    setBatchshow(false);
-                                    setBatchInputs(true);
+                                    setBatchshow(!batchShow);
+                                    // setBatchInputs(true);
                                   }}
                                 />
                               )}

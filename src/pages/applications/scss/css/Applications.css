@@ -479,6 +479,9 @@ body .container .application-full-container .application-inner-container .applic
   padding-top: 10px;
   justify-content: center;
   align-items: center;
+  position: fixed;
+  bottom: 54px;
+  left: 50%;
 }
 
 body .container .application-view-more-container {

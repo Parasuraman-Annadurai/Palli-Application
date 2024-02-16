@@ -548,15 +548,18 @@ const AssessmentView = ({
                   className="search-icon"
                 />
 
-                <img
+                {/* <img
                   src="/icons/filterIcon.svg"
                   alt="filter-icon"
                   className="filter-icon"
-                />
+                /> */}
               </div>
             </div>
           )}
-          {currentAssessment?.task_users?.length > 0 ? (
+          <>
+        <div className="task-main-container">
+
+        {currentAssessment?.task_users?.length > 0 ? (
             currentAssessment.task_users.map((students, index) => {
               return (
                 <>
@@ -765,11 +768,14 @@ const AssessmentView = ({
                               )
                             )}
                         </div>
+                        <div className="main-error-msg">
                         <p className="error-message">
                           {formErrors["score"]
                             ? formErrors["score"]
                             : ""}
                         </p>
+                        </div>
+                      
                       </>
                     )}
                   </div>
@@ -794,6 +800,8 @@ const AssessmentView = ({
                   )}
                 </>
           )}
+        </div>
+            </>
         </main>
       )}
     </>

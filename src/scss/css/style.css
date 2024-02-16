@@ -422,18 +422,21 @@ body .container .side-nav-container .user-profile {
   cursor: pointer;
 }
 body .container .side-nav-container .user-profile .profile-img {
-  width: 40px;
-  height: auto;
-  overflow: hidden;
   border-radius: 50%;
   background: linear-gradient(12deg, transparent 0%, #49a843 100%);
-  border-radius: 50px;
-  padding: 4px;
-  box-sizing: border-box;
+  background-color: #cdeec7;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
-body .container .side-nav-container .user-profile .profile-img img {
-  width: 100%;
-  height: auto;
+body .container .side-nav-container .user-profile .profile-img p {
+  background-color: #d3f9cd;
+  color: #12160a;
+  padding: 8px 9.5px;
+  border-radius: 4px;
+  font: 400 12px/16px "Roboto";
 }
 body .container .side-nav-container .user-profile .user-details p {
   font-size: 12px;
@@ -442,7 +445,11 @@ body .container .side-nav-container .user-profile .user-details p {
   font-weight: 500;
   color: #12160a;
 }
-body .container .side-nav-container .user-profile .user-details span {
+body .container .side-nav-container .user-profile .user-details .logout-icon {
+  width: 16px;
+  height: 16px;
+}
+body .container .side-nav-container .user-profile .user-details .logout-icon span {
   font-family: "Roboto";
   font-size: 12px;
   line-height: 16px;
@@ -1054,7 +1061,11 @@ body .container .main-container .search-container .search-icon {
 body .container .main-container .search-container .filter-icon {
   right: 12px;
 }
-body .container .main-container .task-container {
+body .container .main-container .task-main-container {
+  height: calc(100vh - 80px);
+  overflow-y: auto;
+}
+body .container .main-container .task-main-container .task-container {
   border: 1px solid #eaeaea;
   border-radius: 4px;
   margin: 6px 0px;
@@ -1180,7 +1191,7 @@ body .container .main-container hr {
   border: 1px solid #eaeaea;
 }
 body .container .main-container .applied-weightage-list-container {
-  padding: 14px 0px 16px 16px;
+  padding: 14px 0px 0px 16px;
   gap: 10px;
 }
 body .container .main-container .applied-weightage-list-container .applied-weightage-card {
@@ -1212,6 +1223,10 @@ body .container .main-container .applied-weightage-list-container .applied-weigh
 body .container .main-container .applied-weightage-list-container .applied-weightage-card .weightage-checkbox input[type=number]::-webkit-inner-spin-button, body .container .main-container .applied-weightage-list-container .applied-weightage-card .weightage-checkbox input[type=number]::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
+}
+body .container .main-container .main-error-msg {
+  margin-left: 15px;
+  margin-bottom: 20px;
 }
 
 .ant-picker-focused {
@@ -1250,6 +1265,41 @@ body .container .main-container .applied-weightage-list-container .applied-weigh
 }
 .react-quill .ql-snow.ql-toolbar .ql-picker-label .ql-bold:hover {
   color: #49a843;
+}
+
+tooltip[data-mode=link]::before {
+  content: "Enter link:";
+  color: #12160a;
+  font: 500 12px/16px "Roboto";
+}
+
+.ql-snow .ql-tooltip.ql-editing input[type=text] {
+  display: inline-block;
+  border: 1px solid #eaeaea;
+  border-radius: 4px;
+}
+
+.ql-snow .ql-tooltip.ql-editing input[type=text]:focus {
+  border: 1px solid #49a843;
+}
+
+.ql-snow .ql-tooltip.ql-editing input[type=text]::placeholder {
+  color: #969d88;
+}
+
+.ql-snow .ql-tooltip a {
+  line-height: 26px;
+  color: #49a843;
+}
+.ql-snow .ql-tooltip a:hover {
+  color: #33762f;
+}
+
+.ql-snow .ql-tooltip {
+  top: -51px !important;
+  left: 0 !important;
+  z-index: 999;
+  background-color: #f8fbf2;
 }
 
 /*# sourceMappingURL=style.css.map */

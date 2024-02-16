@@ -72,7 +72,13 @@ const Comments = (props) => {
                                     <>
                                       <img
                                         src="/icons/deleteIcon.svg"
-                                        alt=""
+                                        alt="delete-icon"
+                                        onMouseOver={(e)=>{
+                                          e.target.src ="/icons/delete-icon-hover.svg"
+                                        }}
+                                        onMouseOut={(e)=>{
+                                          e.target.src ="/icons/deleteIcon.svg"
+                                        }}
                                         onClick={() => handleDeleteComment(comment.id)}
                                       />
                                     </>}
@@ -122,8 +128,7 @@ const Comments = (props) => {
             <>
               <div className="no-comments-container">
                 <img src="/icons/no-data.svg" alt="" />
-                {/* Ganesh change inline style to scss */}
-                <p style={{ textAlign: "center" }}>No comments here...</p>
+                <p>No comments here...</p>
               </div>
             </>
           )}

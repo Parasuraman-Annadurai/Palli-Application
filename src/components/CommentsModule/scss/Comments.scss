@@ -278,10 +278,23 @@ margin-top: 10px;
       }
     }
   }
+  .no-comments-container{
+    img{
+      width: 90%;
+    }
+    p{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font: 500 12px/16px $font-Roboto;
+      color: $font-primary-color;
+    }
+  }
 }
+
 .overall_input_send{
   position: fixed;
-  bottom: 20px;
+  bottom: 45px;
   max-width: 407px;
   width: 100%;
   .Input-send {
@@ -364,4 +377,8 @@ margin-top: 10px;
 }
 .ql-editor{
   padding-bottom: 40px !important;
+}
+.ql-tooltip .ql-editing{
+  left: 0px;
+    top: 45px;
 }

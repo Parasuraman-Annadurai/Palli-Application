@@ -418,12 +418,18 @@ const AddBatch = (props) => {
                               {getPermission(user.permissions, "Batch", "update") && (
                                 <img
                                   className="edit-icon"
-                                  src="/icons/edit-pencil.svg"
+                                  src="/icons/edit-pencil-icon.svg"
                                   alt=""
                                   onClick={() => {
                                     handleEditClick(batch);
                                     setBatchshow(!batchShow);
                                     // setBatchInputs(true);
+                                  }}
+                                  onMouseOver={(e)=>{
+                                      e.target.src = "/icons/edit-icon-hover.svg";
+                                  }}
+                                  onMouseOut={(e)=>{
+                                      e.target.src = "/icons/edit-pencil-icon.svg";
                                   }}
                                 />
                               )}

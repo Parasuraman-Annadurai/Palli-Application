@@ -374,7 +374,8 @@ li {
     }
   }
 }
-.dark-overlay {
-  background-color: black;
-  opacity: 0.4;
+
+:where(.css-dev-only-do-not-override-6j9yrn).ant-btn-default:not(:disabled):not(.ant-btn-disabled):hover {
+  color: $primary-color;
+  border-color: $primary-color;
 }

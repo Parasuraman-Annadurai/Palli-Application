@@ -52,7 +52,7 @@ const TaskCard = ({
         ) : (
           <>
             <div className="task-icon flex">
-              <span>JS</span>
+                <span>{assessment?.task_title.substring(0, 2)}</span>
             </div>
 
             <div className="task-details">
@@ -127,8 +127,12 @@ const AssessmentList = ({
     <>
       <section className="listing-container">
         <h1>{mode} list</h1>
-        <div className="search-container">
-          <input
+        {loading ? <Skeleton active/> : (
+          <>
+             <div className="search-container">
+          {!loading && (
+            <>
+              <input
             type="input"
             placeholder="search..."
             onChange={(e) => setAssessmentSearchWord(e.target.value)}
@@ -145,6 +149,9 @@ const AssessmentList = ({
               className="filter-icon"
             />
           )}
+            </>
+          )}
+
         </div>
         <div className="create-container">
           {getPermission(user.permissions, "Task", "create") && (
@@ -175,6 +182,8 @@ const AssessmentList = ({
               />
             ))}
         </div>
+          </>
+        )}
       </section>
     </>
   );

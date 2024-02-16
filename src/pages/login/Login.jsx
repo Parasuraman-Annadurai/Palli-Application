@@ -71,17 +71,22 @@ const Login = () => {
 
             setLoading(false);
             //the if condition used for the admin,student,dckap user not contain any batches Im redirected to 232 batch
-            if (formattedUserData.role === "Student") {
-              navigate(`/batch/${formattedUserData.batch?.[0].id}/task`)
-            } else if(formattedUserData.role == "Trainer"){
-              navigate(`/batch/${formattedUserData.batch?.[0].id}/task`)
-            } 
-            else if(formattedUserData.role == "DckapUser"){
-              navigate(`/batch/${formattedUserData.batch?.[0].id}/task`)
-            } 
-            else {
+            if (formattedUserData.role === "Student" ||
+              formattedUserData.role === "Trainer" ||
+              formattedUserData.role === "DckapUser") {
+              if (formattedUserData.batch && formattedUserData.batch.length > 0) {
+                navigate(`/batch/${formattedUserData.batch[0].id}/task`);
+              } else {
+                // Display notification for no batch access
+                notification.error({
+                  message: "Batch Access Error",
+                  description: "You don't have batch access."
+                });
+              }
+            } else {
               navigate(`/batch/${formattedUserData.batch?.[0].id}/applications`);
             }
+
 
 
           })

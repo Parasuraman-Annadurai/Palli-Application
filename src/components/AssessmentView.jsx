@@ -80,6 +80,8 @@ const AssessmentView = ({
   // const [formErrors, setFormErrors] = useState({});
   const [studentLoading, setStudentLoading] = useState(false)
   const [assignedUsers, setAssignedUsers] = useState([])
+  const [showMark,SetShowMark] = useState(false)
+  const [assginesUsersSeacrh,setAssignedUsersSearch] = useState("")
 
   const headers = {
     Authorization: `Bearer ${token.access}`,
@@ -300,8 +302,9 @@ const AssessmentView = ({
   
   
   
-  const [showMark,SetShowMark] = useState(false)
 
+
+ 
   return (
     <>
       {!isStudentScoreOpen ? (
@@ -582,29 +585,31 @@ const AssessmentView = ({
                   <p>{task_title}</p>
 
                   <div className="search-container">
-                    <input type="input" placeholder="search..." />
+                    <input type="input" placeholder="search..." onChange={(e)=>setAssignedUsersSearch(e.target.value)} />
                     <img
                       src="/icons/searchIcon.svg"
                       alt="search-icon"
                       className="search-icon"
                     />
-
-                    <img
-                      src="/icons/filterIcon.svg"
-                      alt="filter-icon"
-                      className="filter-icon"
-                    />
                   </div>
                 </div>
                 {assignedUsers?.map((taskAssignedUsers) => {
+                   const filteredUsers = taskAssignedUsers?.task_users?.filter((student) => {
+                    // Customize this condition according to your search requirements
+                    return (
+                      student.user_details.first_name.toLowerCase().includes(assginesUsersSeacrh.toLowerCase()) ||
+                      student.user_details.last_name.toLowerCase().includes(assginesUsersSeacrh.toLowerCase()) ||
+                      student.user_details.email.toLowerCase().includes(assginesUsersSeacrh.toLowerCase())
+                    );
+                  });
                   return (
                     <>
                       {taskAssignedUsers?.task_users?.length > 0 ? (
                         <>
-                          {taskAssignedUsers?.task_users?.map((students, index) => {
+                          {filteredUsers?.map((students, index) => {
                             return (
                               <>
-                                <div className="task-container">
+                                <div className="task-container" >
                                   <div className="task-user-list-container flex" key={index}>
                                     <div className="student-info flex">
                                       <div className="student-name-container">
@@ -841,6 +846,11 @@ const AssessmentView = ({
                               </>
                             )
                           })}
+                          {filteredUsers?.length === 0 && (
+                            <div className="flex" >
+                              <p>No Search Data found</p>
+                            </div>
+                          )}
                         </>
                       ) : (
                               <>

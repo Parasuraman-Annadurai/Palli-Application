@@ -402,18 +402,17 @@ const Applications = () => {
         </div>
         <div className="application-actions flex">
           <div className="import">
-            {getPermission(
+            {/* {getPermission(
               user.permissions,
               "create_Excel_Import",
               "create_Excel_Import"
-            ) && <button className="btn primary-medium">Import</button>}
+            ) && <button className="btn primary-medium">Import</button>} */}
           </div>
         </div>
       </div>
       {getPermission(user.permissions, "Applicant", "read") && (
         <>
           <div className="application-inner-container">
-            {isLoading ? <Skeleton active/> : (
                <div className="search-container">
                <img src="/icons/searchIcon.svg" alt="" className="search-icon" />
                <input
@@ -437,7 +436,6 @@ const Applications = () => {
                  />
                </Popover>
              </div>
-            )}
            
             <div className="filter-or-search-container">
               {applicationSearch.length > 0 ? (
@@ -547,8 +545,9 @@ const Applications = () => {
                     </div>
                   ))}
                   {applications?.data?.length === 0 && (
-                    <div className="flex no-data-container">
+                    <div className="flex no-data-container flex" style={{flexDirection:"column"}}>
                       <img src="/icons/no-data.svg" className="no-data-image" />
+                      <span>There are currently no data available.</span>
                     </div>
                   )}
                 </>

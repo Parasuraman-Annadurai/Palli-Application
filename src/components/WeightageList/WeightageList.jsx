@@ -27,6 +27,7 @@ const WeightageList = ({
               return (
                 <div className="weight-age-input">
                   <div className="weightage-select">
+                    <Tooltip placement="left" title={selectedStudents.length > 0  && <p>Once users are assigned to the assessment, weightage cannot be modified</p>}>
                     <Select
                       style={{ width: "170px", opacity: selectedStudents.length > 0 ? 0.5 : 1,
                       cursor:
@@ -47,6 +48,8 @@ const WeightageList = ({
                         </Select.Option>
                       ))}
                     </Select>
+                    </Tooltip>
+                  
                   </div>
                   <div className="percentage">
                     <input

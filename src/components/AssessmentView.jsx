@@ -80,7 +80,6 @@ const AssessmentView = ({
   // const [formErrors, setFormErrors] = useState({});
   const [studentLoading, setStudentLoading] = useState(false)
   const [assignedUsers, setAssignedUsers] = useState([])
-  const [showMark,SetShowMark] = useState(false)
   const [assginesUsersSeacrh,setAssignedUsersSearch] = useState("")
 
   const headers = {
@@ -583,15 +582,21 @@ const AssessmentView = ({
               <>
                 <div className="task-heading">
                   <p>{task_title}</p>
-
-                  <div className="search-container">
-                    <input type="input" placeholder="search..." onChange={(e)=>setAssignedUsersSearch(e.target.value)} />
-                    <img
-                      src="/icons/searchIcon.svg"
-                      alt="search-icon"
-                      className="search-icon"
-                    />
-                  </div>
+                  {/* the fetch particular its return one array of object that's why I'm use 0 index hardcoded */}
+                  {assignedUsers[0]?.task_users && assignedUsers[0].task_users.length > 0 && (
+                    <div className="search-container">
+                      <input
+                        type="input"
+                        placeholder="Search..."
+                        onChange={(e) => setAssignedUsersSearch(e.target.value)}
+                      />
+                      <img
+                        src="/icons/searchIcon.svg"
+                        alt="Search icon"
+                        className="search-icon"
+                      />
+                    </div>
+                  )}
                 </div>
                 {assignedUsers?.map((taskAssignedUsers) => {
                    const filteredUsers = taskAssignedUsers?.task_users?.filter((student) => {
@@ -676,22 +681,7 @@ const AssessmentView = ({
                                       />
                                     </div>
                                     <div className="student-work">
-                                      {weightageShow && students["task_status"] == "COMPLETED" && (
-                                         <>
-                                         {getPermission(user.permissions, "TaskScore", "read") && (
-                                           <button
-                                             className="secondary-btn-sm"
-                                            onClick={()=>{
-                                              setActiveWeightageIndex(index)
-                                              SetShowMark(!showMark)
-                                            }}
-                                           >
-                                             View More
-                                           </button>
-                                         )}
 
-                                       </>
-                                      )}
                                       {weightageShow
                                         ? students["task_status"] === "SUBMITTED" && (
                                           <>
@@ -816,8 +806,7 @@ const AssessmentView = ({
                                                 </div>
 
                                                 <div className="weightage-checkbox">
-                                                  {showMark ? (<input readOnly={!!weightage?.taskScore} value={weightage?.taskScore ? Number(weightage?.taskScore[0]?.task_score) : ""} />) :(
-                                                      <input
+                                                  <input
                                                     type="number"
                                                     name="score"
                                                     onChange={(e) => {
@@ -828,8 +817,6 @@ const AssessmentView = ({
                                                       );
                                                     }}
                                                   /> 
-                                                  ) }
-                                                 
                                                 </div>
                                               </div>
                                             )
@@ -847,8 +834,13 @@ const AssessmentView = ({
                             )
                           })}
                           {filteredUsers?.length === 0 && (
-                            <div className="flex" >
-                              <p>No Search Data found</p>
+                            <div className="select-something-container flex">
+                              <div className="image-container ">
+                                <img src="/icons/select-something.svg" alt="" />
+                                <p className="select-something-heading">
+                                  No search results found
+                                </p>
+                              </div>
                             </div>
                           )}
                         </>

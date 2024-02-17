@@ -31,10 +31,12 @@ const Login = () => {
     },
   });
   const handleLogin = (loginData) => {
+    setLoading(true);
+
     axios
       .post(`${API_END_POINT}/api/accounts/login/`, loginData)
       .then((res) => {
-        setLoading(true);
+        setLoading(false)
         axios({
           url: `${API_END_POINT}/api/accounts/get/user_info/`,
           method: "GET",
@@ -71,26 +73,42 @@ const Login = () => {
 
             setLoading(false);
             //the if condition used for the admin,student,dckap user not contain any batches Im redirected to 232 batch
-            if (formattedUserData.role === "Student" ||
+            if (
+              formattedUserData.role === "Student" ||
               formattedUserData.role === "Trainer" ||
-              formattedUserData.role === "DckapUser") {
+              formattedUserData.role === "DckapUser"
+            ) {
               if (formattedUserData.batch && formattedUserData.batch.length > 0) {
                 navigate(`/batch/${formattedUserData.batch[0].id}/task`);
               } else {
                 // Display notification for no batch access
+                setLoading(false)
                 notification.error({
                   message: "Batch Access Error",
                   description: "You don't have batch access."
                 });
               }
             } else {
-              navigate(`/batch/${formattedUserData.batch?.[0].id}/applications`);
+              const batchId = formattedUserData.batch?.[0]?.id;
+              if (batchId) {
+                navigate(`/batch/${batchId}/applications`);
+              } else {
+                // Handle the scenario where batch data is not available
+                setLoading(false)
+
+                notification.error({
+                  message: "Batch Access Error",
+                  description: "Batch data is not available."
+                });
+              }
             }
+            
 
 
 
           })
           .catch((error) => {
+            setLoading(false)
             if (
               error.response.data.status === 400 ||
               "errors" in error.response.data
@@ -105,6 +123,7 @@ const Login = () => {
           });
       })
       .catch((error) => {
+        setLoading(false)
         if (
           error.response.data.status === 400 ||
           "errors" in error.response.data

@@ -127,12 +127,8 @@ const AssessmentList = ({
     <>
       <section className="listing-container">
         <h1>{mode} list</h1>
-        {loading ? <Skeleton active/> : (
-          <>
-             <div className="search-container">
-          {!loading && (
-            <>
-              <input
+        <div className="search-container">
+          <input
             type="input"
             placeholder="search..."
             onChange={(e) => setAssessmentSearchWord(e.target.value)}
@@ -149,10 +145,12 @@ const AssessmentList = ({
               className="filter-icon"
             />
           )}
-            </>
-          )}
+
 
         </div>
+
+        {loading ? <Skeleton active /> : (
+          <>
         <div className="create-container">
           {getPermission(user.permissions, "Task", "create") && (
            !loading && (

@@ -476,9 +476,8 @@ const AssessmentView = ({
                         {toggleAssigneeWeightage === 0 ? (
                           <>
                         {getPermission(user.permissions, "TaskUser", "create") && (
-                          <>
-                            {students?.length > 0 ? (
-                                   <div className="assign-listing-container">
+                              <>
+                                <div className="assign-listing-container">
                                    <div className="assignee-search-container">
                                      <input type="input" placeholder="search..." onChange={(e) => setAssigneeSearch(e.target.value)} />
                                      <img
@@ -491,7 +490,9 @@ const AssessmentView = ({
                                    </div>
                                    {isAssigneeLoading ? <Skeleton active paragraph={4} /> : (
                                      <>
-                                       <div className="select-all flex">
+                                      {students?.length > 0 ? (
+                                        <>
+                                          <div className="select-all flex">
                                          <input
                                            className="global-checkbox"
                                            type="checkbox"
@@ -540,15 +541,23 @@ const AssessmentView = ({
                                            );
                                          })}
                                        </div>
-                                     </>
-                                   )}
-                                 </div>
-                            ) : (
-                              <div>
-                                <img src="/public/icons/no-data.svg" className="no-data-image"/>
-                                <p>No students Available in this batch</p>
-                              </div>
-                            )}
+                                        </>
+                                      ) : (
+                                        <div className="select-something-container flex">
+                                          <div className="image-container ">
+                                            <img src="/icons/select-something.svg" alt="" />
+                                            <p className="select-something-heading">
+                                              No students Available in this batch
+
+                                            </p>
+                                          </div>
+                                        </div>
+                                      )}
+
+                                    </>
+                                  )}
+                                </div>
+
                           </>
                          
                         )}

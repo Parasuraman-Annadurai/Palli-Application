@@ -820,13 +820,16 @@ const AssessmentModule = ({ type }) => {
                 return null;
               })}
               {editId === null && (
-                <div className="select-something-container flex">
+                <div className="main-container">
+                  <div className="task-main-container">
+                  <div className="select-something-container flex">
                   <div className="image-container ">
                     <img src="/icons/select-something.svg" alt="" />
                     <p className="select-something-heading">
-                      Please Select any of the Available {type} or Create New
-                      {type}
+                      Please Select any of the Available {type} or Create New {type}
                     </p>
+                  </div>
+                </div>
                   </div>
                 </div>
               )}

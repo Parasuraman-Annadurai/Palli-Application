@@ -36,15 +36,17 @@ const AddBatch = (props) => {
 
 
   const handleSwitch = (batch) => {
-
     Modal.confirm({
-      title: `Confirm Switch to ${batch.batch_name}`,
+      title: (
+        <div style={{ fontWeight: 500, fontSize: "16px", fontFamily: "Roboto" }}>
+          {`Confirm Switch to ${batch.batch_name}`}
+        </div>
+      ),
       content: "Are you sure you want to Switch this Batch?",
       onOk: () => {
         navigate(`/batch/${batch.id}/applications`);
         window.location.reload();
       },
-      // Attach the ref to the modal
     });
   };
 

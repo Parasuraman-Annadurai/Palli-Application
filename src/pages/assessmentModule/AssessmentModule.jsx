@@ -273,7 +273,6 @@ const AssessmentModule = ({ type }) => {
       data: currentAssessment,
     })
       .then((res) => {
-        console.log(res.message);
         notification.success({
           message: "Success",
           description: isNew

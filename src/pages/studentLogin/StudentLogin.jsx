@@ -287,7 +287,6 @@ const StudentLogin = ({ type }) => {
       
       // Update the local state with the modified task lists
       setTaskLists(updatedTaskLists);
-      console.log(res.data);
       if(res.data.status == 200){
         notification.success({
           message:"Success",

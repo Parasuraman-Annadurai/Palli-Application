@@ -126,7 +126,6 @@ const AssessmentView = ({
   useEffect(() => {
     setStudentLoading(true)
     axios.get(`${API_END_POINT}/api/task/${batchId}/get/task/${taskId}`, { headers }).then((res) => {
-      console.log();
       setAssignedUsers(res.data.data)
       setStudentLoading(false)
     }).catch((error)=>{
@@ -229,6 +228,7 @@ const AssessmentView = ({
           }
         })
         .catch((error) => {
+          setAssigneeloader(false);
           console.log(error, "error");
         });
     }
@@ -257,7 +257,6 @@ const AssessmentView = ({
   const handleScoreOnchange = (e, students, weightage) => {
     const scoreValue = e.target.value;
     const { name, value } = e.target;
-    console.log(e);
     if(formErrors[name]){
       delete formErrors[name];
     }

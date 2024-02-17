@@ -49,7 +49,6 @@ const Comments = (props) => {
             <>
               {comments &&
                 comments?.map((comment, index) => {
-                  console.log(comment);
                   return (
                     <>
                       <div className="comments-main-container" key={index}>

@@ -71,12 +71,7 @@ const PrivateRoute = () => {
   const filteredMenuList = menuList.filter(
     (menuItem) => !(user.role === "Student" && menuItem.id === "applications")
   );
-    
-  if (loading) {
-    return <div>
-      <Skeleton active/>
-    </div>;
-  }
+
   return auth ? (
     <div className="container">
       <Sidebar menuList={pathname.includes("dashboard") ? [] : filteredMenuList} />

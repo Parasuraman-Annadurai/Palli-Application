@@ -64,13 +64,20 @@ const Applications = () => {
           setLoading(false);
         })
         .catch((error) => {
-          if (error.response.status == 401) {
-            notification.error({
-              message: "Error",
-              description: "Unauthorized User",
-              duration: 1,
+          setLoading(false);
+          if (
+            error.response.data.status === 400 ||
+            "errors" in error.response.data
+          ) {
+            const errorMessages = error.response.data.errors;
+  
+            Object.entries(errorMessages).forEach(([key, messages]) => {
+              notification.error({
+                message: `${key} Error`,
+                description: messages,
+                duration:1
+              })
             });
-            navigate("/login");
           }
         });
     }

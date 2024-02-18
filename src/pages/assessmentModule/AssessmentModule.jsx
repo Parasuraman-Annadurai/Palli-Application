@@ -76,6 +76,8 @@ const AssessmentModule = ({ type }) => {
           }
         })
         .catch((error) => {
+          setLoading(false);
+
           console.log(error);
           if (
             error.response.data.status === 400 ||
@@ -215,6 +217,7 @@ const AssessmentModule = ({ type }) => {
           setEditId(updatedTasks.length > 0 ? updatedTasks[0].id : null);
         })
         .catch((error) => {
+          setIsDeleteModalOpen(false);
           console.log(error);
         });
     }
@@ -555,6 +558,7 @@ const AssessmentModule = ({ type }) => {
         setAssessmentList(copiedTaskStatusChangeStudents);
       })
       .catch((error) => {
+        setLoading(false)
         console.log(error);
       });
   };

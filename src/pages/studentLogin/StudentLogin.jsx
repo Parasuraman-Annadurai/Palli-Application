@@ -212,6 +212,8 @@ const StudentLogin = ({ type }) => {
         }
       })
       .catch((error) => {
+        setIsLoading(false);
+          setIsModalOpen(false);
         console.log(error);
       });
     }

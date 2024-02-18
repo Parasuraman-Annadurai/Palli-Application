@@ -159,6 +159,7 @@ const AssessmentView = ({
           }
         })
         .catch((error) => {
+          setAssigneeloader(false);
           console.log(error);
         });
     } else {
@@ -206,6 +207,7 @@ const AssessmentView = ({
           }
         })
         .catch((error) => {
+          setAssigneeloader(false);
           console.log(error);
         });
     } else {

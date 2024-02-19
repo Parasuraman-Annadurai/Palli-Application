@@ -573,20 +573,6 @@ const AssessmentModule = ({ type }) => {
       axios
         .post(url, scores, { headers })
         .then((res) => {
-          let statusChangeAfterScore = [...assessmentList];
-
-          statusChangeAfterScore.forEach((assessment) => {
-            if (assessment.id === editId) {
-              assessment.task_weightages.forEach((weightage) => {
-                weightage.taskScore = [{...res.data.data}];
-              });
-            }
-          });
-          
-          setAssessmentList(statusChangeAfterScore);
-          
-          
-
           axios
             .put(
               `${API_END_POINT}/api/task/${batchId}/update/task/user/${scores.task_user}`,

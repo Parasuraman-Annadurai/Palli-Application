@@ -240,7 +240,6 @@ li {
 }
 .popup-container .switch-batch-list-container {
   overflow: scroll;
-  height: calc(100vh - 110px);
   overflow-y: auto;
 }
 .popup-container .switch-batch-list-container::-webkit-scrollbar {

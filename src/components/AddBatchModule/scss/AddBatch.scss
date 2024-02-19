@@ -297,7 +297,7 @@ li {
 
   .switch-batch-list-container {
     overflow: scroll;
-    height: calc(100vh - 110px);
+    // height: calc(100vh - 150px);
     overflow-y: auto;
     &::-webkit-scrollbar {
       width: 0;

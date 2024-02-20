@@ -1,0 +1,410 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap");
+
+$font-Roboto: "Roboto";
+$side_bar_bg: #f8fbf2;
+$font-primary-color: #12160a;
+$font-secondary-color: #969d88;
+$border-color: #eaeaea;
+$primary-color: #49a843;
+$btn-hover-color: #33762f;
+$btn-default: #e6e6e6;
+$error-message: #ef4444;
+
+$highlight-yellow: #f59e0b;
+$highlight-yellow-bg: #fef3c7;
+
+$highlight-blue: #3b82f6;
+$highlight-blue-bg: #dbeafe;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: $font-Roboto;
+  outline: none;
+  border: none;
+  -webkit-user-select: none;
+  /* Safari */
+  -ms-user-select: none;
+  /* IE 10 and IE 11 */
+  user-select: none;
+  /* Standard syntax */
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: $primary-color;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: $primary-color;
+}
+
+::-webkit-scrollbar-track {
+  background: #ffff;
+}
+
+::-webkit-scrollbar-thumb:active {
+  background-color: $primary-color;
+}
+
+body {
+  background-color: #ffff;
+}
+
+img {
+  max-width: 100%;
+  width: 100%;
+  height: auto;
+  // display: inline-block;
+  vertical-align: middle;
+}
+
+input:focus {
+  outline: none;
+}
+
+.flex {
+  display: flex;
+}
+
+.background-props {
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+a {
+  text-decoration: none;
+  color: $font-secondary-color;
+  font-family: $font-Roboto;
+}
+
+li {
+  list-style: none;
+}
+
+.btn {
+  width: 90px;
+  height: 38px;
+  padding: 10px 24px;
+  outline: none;
+  border-radius: 4px;
+  font-size: 14px;
+  line-height: 18px;
+  cursor: pointer;
+  border: none;
+  font-family: $font-Roboto;
+}
+
+//primary button section
+
+.btn.primary-medium-default {
+  cursor: not-allowed;
+  background-color: $btn-default;
+  color: #ffff;
+}
+
+.btn.primary-medium-icon {
+  background-color: $primary-color;
+  color: #ffff;
+  cursor: pointer;
+  font-weight: 500;
+
+  &::before {
+    content: "+";
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    margin-right: 2px;
+    font-family: $font-Roboto;
+    font-weight: 500;
+  }
+
+  &:hover {
+    background-color: $btn-hover-color;
+  }
+
+  &:active {
+    background-color: $btn-hover-color;
+    opacity: 30%;
+  }
+}
+
+//secondary button section
+.btn.secondary-medium {
+  color: $primary-color;
+  border: 1px solid $primary-color;
+  background-color: #ffff;
+  cursor: pointer;
+
+  &:hover {
+    color: $btn-hover-color;
+    border: 1px solid $btn-hover-color;
+  }
+
+  &:active {
+    color: $primary-color;
+    border: 1px solid $primary-color;
+    opacity: 30%;
+  }
+}
+
+.btn.secondary-medium-default {
+  color: $font-secondary-color;
+  background-color: #ffff;
+  border: 1px solid$border-color;
+  border-radius: 4px;
+  cursor: not-allowed;
+}
+
+.btn.secondary-medium-icon {
+  background-color: #ffff;
+  color: $primary-color;
+  border: 1px solid$primary-color;
+  cursor: pointer;
+  font-weight: 500;
+
+  &::before {
+    content: "+";
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    margin-right: 2px;
+    font-family: $font-Roboto;
+    font-weight: 500;
+  }
+
+  &:hover {
+    border: 1px solid$btn-hover-color;
+    color: $btn-hover-color;
+  }
+
+  &:active {
+    border: 1px solid$btn-hover-color;
+    background-color: #ffff;
+    opacity: 30%;
+  }
+}
+
+//sec small
+
+@mixin secondary-btn-sm {
+  color: $primary-color;
+  border: 1px solid $primary-color;
+  background-color: #ffff;
+  padding: 8px 24px;
+  font-size: 12px;
+  line-height: 16px;
+  font-family: $font-Roboto;
+  outline: none;
+  border-radius: 4px;
+}
+
+.error-message {
+  padding-top: 6px;
+  height: 16px;
+  font-size: 12px;
+  line-height: 16px;
+  color: $error-message;
+}
+
+.error-notify {
+  border: 1px solid $error-message !important;
+  color: $error-message;
+  border-radius: 4px;
+}
+
+// Starting
+.application-form-main-container {
+  background-color: #f8fbf2;
+  //   max-width: 1280px;
+  //   height: 720px;
+  .form-header {
+    align-items: center;
+    background-color: white;
+    height: 75px;
+    width: 100%;
+    box-shadow: 0 4px 2px -2px rgba(0, 0, 0, 0.2);
+    .form-logo {
+      margin-left: 20px;
+    }
+  }
+  .sub-container {
+    .requirement-criteria-container {
+      background-color: white;
+      margin: 20px;
+      padding: 20px;
+      max-width: 340px;
+      width: 100%;
+      .criteria-heading {
+        margin-bottom: 16px;
+      }
+      .criteria-content {
+        p {
+          font: 400 12px/16px $font-Roboto;
+          color: $font-secondary-color;
+          margin-bottom: 12px;
+          span {
+            font: 500 12px/16px $font-Roboto;
+            color: $font-primary-color;
+          }
+        }
+      }
+    }
+    .application-form-container {
+      //   max-width: 880px;
+      width: 100%;
+      margin: 20px;
+      .ant-tabs-content-holder {
+        background-color: white;
+        padding: 20px;
+        .personal-container {
+          // background-color: rgb(255, 0, 0);
+          .personal-form {
+            // background-color: red;
+            .row-one {
+              justify-content: space-between;
+              .applicant-name {
+                p {
+                  font: 400 12px/16px $font-Roboto;
+                  color: $font-secondary-color;
+                  span {
+                    color: red;
+                  }
+                }
+                input {
+                  margin-top: 6px;
+                  color: $font-primary-color;
+                  width: 100%;
+                  padding: 10px 79px 10px 10px;
+                  border-radius: 4px;
+                  border: 1px solid $border-color;
+                  &:focus {
+                    border: 1px solid $primary-color;
+                  }
+                  &::placeholder {
+                    color: $font-secondary-color;
+                  }
+                }
+              }
+              .applicant-dob {
+                font: 400 12px/16px $font-Roboto;
+                color: $font-secondary-color;
+                span {
+                  color: red;
+                }
+                input {
+                  margin-top: 6px;
+                  color: $font-primary-color;
+                  width: 100%;
+                  padding: 10px 79px 10px 10px;
+                  border-radius: 4px;
+                  border: 1px solid $border-color;
+                  &:focus {
+                    border: 1px solid $primary-color;
+                  }
+                  &::placeholder {
+                    color: $font-secondary-color;
+                  }
+                }
+              }
+              .applicant-gender {
+                font: 400 12px/16px $font-Roboto;
+                color: $font-secondary-color;
+                span {
+                  color: red;
+                }
+                input {
+                  margin-top: 6px;
+                  color: $font-primary-color;
+                  width: 100%;
+                  padding: 10px 79px 10px 10px;
+                  border-radius: 4px;
+                  border: 1px solid $border-color;
+                  &:focus {
+                    border: 1px solid $primary-color;
+                  }
+                  &::placeholder {
+                    color: $font-secondary-color;
+                  }
+                }
+              }
+            }
+            .row-two {
+                justify-content: space-between;
+              .applicant-email {
+                p {
+                  font: 400 12px/16px $font-Roboto;
+                  color: $font-secondary-color;
+                  span {
+                    color: red;
+                  }
+                }
+                input {
+                    margin-top: 6px;
+                    color: $font-primary-color;
+                    width: 100%;
+                    padding: 10px 331px 10px 10px;
+                    
+                    border-radius: 4px;
+                    border: 1px solid $border-color;
+                    &:focus {
+                      border: 1px solid $primary-color;
+                    }
+                    &::placeholder {
+                      color: $font-secondary-color;
+                    }
+                  }
+              }
+              .applicant-contact-number{
+                p {
+                    font: 400 12px/16px $font-Roboto;
+                    color: $font-secondary-color;
+                    span {
+                      color: red;
+                    }
+                  }
+                  input {
+                      margin-top: 6px;
+                      color: $font-primary-color;
+                      width: 100%;
+                      padding: 10px 79px 10px 10px;
+                      border-radius: 4px;
+                      border: 1px solid $border-color;
+                      &:focus {
+                        border: 1px solid $primary-color;
+                      }
+                      &::placeholder {
+                        color: $font-secondary-color;
+                      }
+                    }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.ant-tabs-nav-list {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+.ant-tabs-nav-wrap {
+  background-color: white;
+  padding: 0 20px;
+  border-radius: 4px;
+}
+
+.ant-tabs-tab {
+  span {
+    color: $font-secondary-color;
+  }
+}

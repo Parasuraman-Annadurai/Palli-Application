@@ -16,10 +16,10 @@ import "./scss/AddBatch.css";
 import { getPermission } from "../../utils/validate";
 
 const AddBatch = (props) => {
-  const { batchList, setBatchList,isLoading } =
+  const { batchList} =
     props;
 
-  const { user, token } = useAuth();
+  const { user, token, setUser } = useAuth();
   const navigate = useNavigate();
   const company = 1;
   // const [loading, setLoading] = useState(false);
@@ -68,7 +68,7 @@ const AddBatch = (props) => {
 
   const handleBatchNameChange = (e) => {
     const input = e.target.value;
-    setBatchName(input.trim());
+    setBatchName(input);
     setBatchNameError(null);
   };
 
@@ -147,9 +147,10 @@ const AddBatch = (props) => {
       axios
         .post(`${API_END_POINT}/api/create/batch/`, batchData, { headers })
         .then((res) => {
-          const newBatch = { ...batchData, ...res.data.data };
-          const updatedArray = [...batchList, newBatch];
-          setBatchList(updatedArray);
+          const newBatch = res.data.data; // Assuming res.data.data is the new batch object
+          const updatedArray = [newBatch,...user.batch, ];
+          setUser({ ...user, batch: updatedArray });
+
           notification.success({
             message: "Success",
             description: "Batch Created Successfully",
@@ -158,7 +159,7 @@ const AddBatch = (props) => {
           resetFields();
           // setLoading(false);
           // setBatchInputs(false);
-          setBatchshow(true);
+          setBatchshow(!batchShow);
         })
         .catch((error) => {
           console.log(error);
@@ -198,22 +199,18 @@ const AddBatch = (props) => {
           headers,
         })
         .then((res) => {
-          const updatedData = batchList.map((item) => {
+          const updatedData = user.batch.map((item) => {
             if (item.id === editId) {
-              return {
-                ...item,
-                batch_name: batch_name.trim(),
-                start_date: dayjs(start_date).format("YYYY-MM-DD"),
-                end_date: dayjs(end_date).format("YYYY-MM-DD"),
-                // Add other properties you want to update
-              };
+                return {
+                    ...item,
+                    ...res.data.data // Spread the properties of res.data.data to update the item
+                };
             }
             return item;
-          });
-
-          setBatchList(updatedData);
+        });
+          setUser({...user,batch:updatedData})
           resetFields();
-          setBatchshow(false);
+          setBatchshow(!batchShow);
           setEditId(null);
 
           notification.success({

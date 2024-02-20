@@ -60,7 +60,7 @@ const Comments = (props) => {
                               {comment.commentor_details.first_name} (
                               {comment.commentor_details.role})
                               <div className="comment-date">
-                                {dayjs().format("MMMM DD YYYY h:mm A")}
+                                {dayjs.utc(comment?.created_at).format("MMM DD YYYY hh:mm a")}
                               </div>
                             </div>
                             <div className="icons">

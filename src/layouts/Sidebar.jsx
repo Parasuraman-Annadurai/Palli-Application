@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useLocation, useParams, useNavigate, Link } from "react-router-dom";
 
 import axios from "axios";
-import { Dropdown, Tooltip,notification } from "antd";
+import { Dropdown, Skeleton, Tooltip,notification } from "antd";
 
 import { DASHBOARD } from "../routes/routes";
 import { useAuth } from "../context/AuthContext";
@@ -10,13 +10,13 @@ import { useAuth } from "../context/AuthContext";
 import AddBatch from "../components/AddBatchModule/AddBatch";
 
 import { API_END_POINT } from "../../config";
-import { getPermission } from '../utils/validate';
+import { fetchUserInfo, formatPermissions, getPermission } from '../utils/validate';
 
 const Sidebar = ({ menuList, activeMenuItem }) => {
   const navigate = useNavigate();
   const { id: batchId } = useParams();
 
-  const { token, user } = useAuth();
+  const { token,setToken, user,setUser } = useAuth();
 
   const currentPath = useLocation().pathname;
   const isDashboardPage = currentPath.includes(DASHBOARD);
@@ -25,6 +25,7 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
   const [batchList, setBatchList] = useState([]);
   const [currentBatch, setCurrentBatch] = useState(null);
   const [open, setOpen] = useState(false);
+  const [batchLoading,setBatchLoading] = useState(false)
 
   const showDrawer = () => {
     setOpen(true);
@@ -46,13 +47,10 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
         currentPath.includes(menu.id)
       );
       setActive(activeMenuItem.id);
-      const batchListData = user?.batch;
-      setBatchList(
-        batchListData.filter((batch) => batch.id !== Number(batchId))
-      );
-      setCurrentBatch(
-        batchListData.find((batch) => batch.id === Number(batchId))
-      );
+      fetchUserInfo(token, setToken, setUser, navigate, setBatchLoading,false);
+      
+      const currentBatch = user?.batch.find(batch => batch.id === Number(batchId));
+      setCurrentBatch(currentBatch);
 
       }
   }, [batchId]);
@@ -219,13 +217,15 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
           </Dropdown>
         </div>
       </nav>
-      <AddBatch
-        batchList={batchList} //all batches
-        setBatchList={setBatchList} // for setting all batches 
+      {batchLoading ? <Skeleton active/> : (
+        <AddBatch
+        batchList={user?.batch} //all batches
         open={open} // drawer open
         setOpen={setOpen} // set drawer open state
         onClose={onClose}
       />
+      )}
+      
     </>
   );
 };

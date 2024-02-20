@@ -6,6 +6,7 @@ import { Modal, Select, Skeleton, notification, Drawer } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
 
+
 import { API_END_POINT } from "../../../config";
 
 import { useAuth } from "../../context/AuthContext";
@@ -30,6 +31,7 @@ const TaskCard = ({
       ? text.substring(0, maxLength) + "..."
       : text;
   };
+
   return (
     <>
       <div
@@ -44,7 +46,7 @@ const TaskCard = ({
         ) : (
           <>
             <div className="task-icon flex">
-              <span>JS</span>
+              <span>{tasksLists?.task?.task_title?.split(" ").slice(0, 2).map(word => word[0].toUpperCase()).join("")}</span>
             </div>
 
             <div className="task-details">
@@ -68,7 +70,7 @@ const TaskCard = ({
                 {tasksLists.task_status}
               </span>
               <span className="btn btn-deadline">
-                {dayjs(tasksLists.task.due_date).format("MMM,DD YYYY")}
+                {dayjs.utc(tasksLists.task.due_date).format("MMM DD YYYY")}
               </span>
             </div>
           </>
@@ -357,7 +359,7 @@ const StudentLogin = ({ type }) => {
                       <div className="student-task-details-main-container flex">
                         <div className="student-task-trainer-name">
                           <p>Trainer Name</p>
-                          <span>{tasksList.reviewer.first_name}</span>
+                          <span>{tasksList?.reviewer?.first_name}</span>
                         </div>
 
                         <div className="student-task-status">

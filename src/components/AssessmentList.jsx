@@ -3,6 +3,9 @@ import React from "react";
 import { Skeleton } from "antd";
 
 import dayjs from "dayjs";
+import utcPlugin from 'dayjs/plugin/utc';
+
+dayjs.extend(utcPlugin);
 
 import { getPermission } from "../utils/validate";
 
@@ -52,7 +55,7 @@ const TaskCard = ({
         ) : (
           <>
             <div className="task-icon flex">
-                <span>{assessment?.task_title.substring(0, 2)}</span>
+                <span>{assessment?.task_title?.split(" ").slice(0, 2).map(word => word[0].toUpperCase()).join("")}</span>
             </div>
 
             <div className="task-details">
@@ -95,7 +98,7 @@ const TaskCard = ({
                 )}
               </p>
               <span className="btn btn-deadline">
-                {dayjs(assessment.due_date).format("MMM,DD YYYY")}
+                {dayjs.utc(assessment.due_date).format('MMM DD YYYY')}
               </span>
             </div>
           </>

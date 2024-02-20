@@ -64,6 +64,7 @@ const AssessmentView = ({
   isCommentEditId,
   setCommentText,
   setIsCommentEditId,
+  setIsMode
 }) => {
   const { id: batchId } = useParams();
   const { token, user } = useAuth();
@@ -75,6 +76,7 @@ const AssessmentView = ({
     type == "task" ? 0 : 1
   );
   const [assigneeloader, setAssigneeloader] = useState(false);
+  const [assigneLoadingMessage,setAssigneLoadingMessage] = useState("")
   const [weightageLists, setWeightageLists] = useState([]);
   const [openComments, setOpenComments] = useState(null);
   // const [formErrors, setFormErrors] = useState({});
@@ -161,9 +163,17 @@ const AssessmentView = ({
         .catch((error) => {
           setAssigneeloader(false);
           console.log(error);
+          if (error.response && error.response.data && error.response.data.message) {
+            const errorMessage = error.response.data.message;
+            notification.error({
+              message: 'Error',
+              description: errorMessage,
+            });
+          }
         });
     } else {
       const updatedStudents = [...selectedStudents, studentId];
+      setAssigneLoadingMessage("Sending email to students...")
 
       //students add in task
       const url = `${API_END_POINT}/api/task/${batchId}/assign/task/${taskId}`;
@@ -176,8 +186,18 @@ const AssessmentView = ({
           });
           setAssigneeloader(false);
           setSelectedStudents(updatedStudents);
+          setAssigneLoadingMessage("")
+
         }
-      });
+      }).catch((error)=>{
+        if (error.response && error.response.data && error.response.data.message) {
+          const errorMessage = error.response.data.message;
+          notification.error({
+            message: 'Error',
+            description: errorMessage,
+          });
+        }
+      })
     }
   };
 
@@ -209,9 +229,18 @@ const AssessmentView = ({
         .catch((error) => {
           setAssigneeloader(false);
           console.log(error);
+          if (error.response && error.response.data && error.response.data.message) {
+            const errorMessage = error.response.data.message;
+            notification.error({
+              message: 'Error',
+              description: errorMessage,
+            });
+          }
         });
     } else {
       //selectAll students in tasks
+      setAssigneLoadingMessage("Sending email to All students...")
+
       axios
         .post(
           `${API_END_POINT}/api/task/${batchId}/assign/task/${taskId}`,
@@ -227,11 +256,20 @@ const AssessmentView = ({
             });
             setSelectedStudents(allStudentIds);
             setAssigneeloader(false);
+            setAssigneLoadingMessage("")
+
           }
         })
         .catch((error) => {
           setAssigneeloader(false);
           console.log(error, "error");
+          if (error.response && error.response.data && error.response.data.message) {
+            const errorMessage = error.response.data.message;
+            notification.error({
+              message: 'Error',
+              description: errorMessage,
+            });
+          }
         });
     }
   };
@@ -438,7 +476,11 @@ const AssessmentView = ({
               {getPermission(user.permissions, "TaskWeightage", "create") || getPermission(user.permissions, "TaskUser", "create") ? (
                 <section className="assignee-and-weightage-container">
                   {assigneeloader ? (
+                   <>
                     <Skeleton active={true} />
+                    <p style={{fontFamily:"roboto",fontSize:"16px",paddingTop:"15px"}}>{assigneLoadingMessage}</p>
+                   </>
+
                   ) : (
                     <>
                       <div className={`title-section flex`}>
@@ -591,7 +633,7 @@ const AssessmentView = ({
             {studentLoading ? <Skeleton active /> : (
               <>
                 <div className="task-heading">
-                  <p>{task_title}</p>
+                  <p>{assignedUsers[0]?.task_users?.length > 0 ? task_title :""}</p>
                   {/* the fetch particular its return one array of object that's why I'm use 0 index hardcoded */}
                   {assignedUsers[0]?.task_users && assignedUsers[0].task_users.length > 0 && (
                     <div className="search-container">
@@ -865,6 +907,7 @@ const AssessmentView = ({
                                 <button className="btn primary-medium" style={{ marginTop: "10px" }} onClick={() => {
                                   setIsStudentScoreOpen(!isStudentScoreOpen)
                                   setToggleAssigneeWeightage(0)
+                                  setIsMode("edit")
                                 }}>Add Assignee</button>
                               </p>
                             </div>

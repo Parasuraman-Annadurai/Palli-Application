@@ -345,3 +345,85 @@ export const getPermission = (permissions,permissionKey,mode)=>{
   }
 }
 
+export const formatPermissions = (permissions) => {
+  const formattedPermissions = {};
+  permissions.forEach(permission => {
+    const { module_name, access_level } = permission;
+    formattedPermissions[module_name] = formattedPermissions[module_name] || [];
+    formattedPermissions[module_name].push(access_level);
+  });
+  return formattedPermissions;
+};
+
+//
+
+
+// authUtils.js
+
+
+import axios from "axios";
+import { API_END_POINT } from "../../config";
+export const fetchUserInfo = (token, setToken, setUser, navigate, setLoading,redirectStatus) => {
+  axios({
+    url: `${API_END_POINT}/api/accounts/get/user_info/`,
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${token.access}`,
+    },
+  })
+    .then((userData) => {
+      localStorage.setItem("token", JSON.stringify(token));
+      setToken(token);
+
+      const formattedPermissions = formatPermissions(userData.data.data.permissions);
+      const formattedUserData = {
+        ...userData.data.data,
+        permissions: formattedPermissions,
+      };
+      localStorage.setItem("user", JSON.stringify(formattedUserData));
+      setUser(formattedUserData);
+
+      if(redirectStatus){
+        if(getPermission(formattedUserData.permissions,"Applicant","read")){
+          if (formattedUserData.batch && formattedUserData.batch.length > 0) {
+            navigate(`/batch/${formattedUserData.batch[0].id}/applications`);
+          } else {
+            setLoading(false);
+            notification.error({
+              message: "Batch Access Error",
+              description: "You don't have batch access.",
+              duration: 1
+            });
+          }
+        }else{
+          const batchId = formattedUserData.batch?.[0]?.id;
+          if (batchId) {
+            navigate(`/batch/${formattedUserData.batch[0].id}/task`);
+          } else {
+            setLoading(false);
+            notification.error({
+              message: "Batch Access Error",
+              description: "You don't have batch access.",
+              duration: 1
+            });
+          }
+        }
+      }
+
+    
+    })
+    .catch((error) => {
+      setLoading(false);
+      if (
+        error.response.data.status === 400 ||
+        "errors" in error.response.data
+      ) {
+        const errorMessages = error.response.data.errors;
+        notification.error({
+          message: error.response.data?.message,
+          description: errorMessages.detail,
+          duration: 1
+        })
+      }
+    });
+};

@@ -773,6 +773,7 @@ const AssessmentModule = ({ type }) => {
               open={true}
               title={`${isDraft ? "Discard" : "Delete"} Confirmation`}
               onOk={handleConfirmDelete}
+              maskClosable={false}
               onCancel={() => {
                 setIsDeleteModalOpen(false);
                 setIsDraft(false);
@@ -848,6 +849,7 @@ const AssessmentModule = ({ type }) => {
                       setWeightageErros={setWeightageErros}
                       setAssigneeSearch ={setAssigneeSearch}
                       isAssigneeLoading={isAssigneeLoading}
+                      setIsMode={setIsMode}
                     />
                   );
                 }

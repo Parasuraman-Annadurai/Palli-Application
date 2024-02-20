@@ -15,48 +15,6 @@ const PrivateRoute = () => {
   const {pathname} = useLocation()
 
   const auth = token["access"] ? true : false;
-  const [loading, setLoading] = useState(true);
-
-  //this refresh token implementation
-  useEffect(() => {
-    const refreshToken = () => {
-      axios.post(`${API_END_POINT}accounts/token/refresh/`, { refresh: token.refresh }).then((res) => {
-        const newAccessToken = [...response.data.access];
-        setToken({ ...token, access: newAccessToken });
-      }).catch((error) => {
-        setLoading(false);
-
-      })
-    }
-
-    // Check if access token is expired
-    const isTokenExpired = (token) => {
-      if (!token || !token.access) {
-        // If token or access token is not available, consider it expired
-        return true;
-      }
-
-      const decodedToken = jwtDecode(token.access);
-
-      if (!decodedToken || !decodedToken.exp) {
-        // If the token cannot be decoded or does not have an expiration time, consider it expired
-        console.error('Error decoding token or token does not have an expiration time');
-        return true;
-      }
-
-      const expirationTime = decodedToken.exp * 1000; // Convert expiration time to milliseconds
-      const currentTime = Date.now();
-
-      return currentTime > expirationTime; // Check if the current time is greater than the expiration time
-    };
-
-
-    if (isTokenExpired(token)) {
-      refreshToken();
-    } else {
-      setLoading(false);
-    }
-  }, [token, setToken]);
 
   // If authorized, return an outlet that will render child elements
   // If not, return element that will navigate to login page

@@ -10,7 +10,7 @@ import { notification } from "antd";
 
 import { useAuth } from "../../context/AuthContext";
 
-import { isEmailValid, isPasswordValid } from "../../utils/validate";
+import { fetchUserInfo, isEmailValid, isPasswordValid } from "../../utils/validate";
 
 import { API_END_POINT } from "../../../config";
 
@@ -37,90 +37,7 @@ const Login = () => {
       .post(`${API_END_POINT}/api/accounts/login/`, loginData)
       .then((res) => {
         setLoading(false)
-        axios({
-          url: `${API_END_POINT}/api/accounts/get/user_info/`,
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${res.data.data.access}`,
-          },
-        })
-          .then((userData) => {
-            localStorage.setItem("token", JSON.stringify(res.data.data));
-            setToken(res.data.data);
-
-           
-
-            const formattedPermissions = {};
-            // Iterate through the permissions data and populate the object dynamically
-            userData.data.data.permissions.forEach(permission => {
-              const { module_name, access_level } = permission;
-              if (!formattedPermissions[module_name]) {
-                // If the key doesn't exist yet, initialize it with an array containing the access level
-                formattedPermissions[module_name] = [access_level];
-              } else {
-                // If the key already exists, push the access level to the existing array
-                formattedPermissions[module_name].push(access_level);
-              }
-            });
-
-            const formattedUserData ={
-              ...userData.data.data,
-              permissions : formattedPermissions
-            }
-            localStorage.setItem("user", JSON.stringify(formattedUserData));
-
-            setUser(formattedUserData);
-
-            setLoading(false);
-            //the if condition used for the admin,student,dckap user not contain any batches Im redirected to 232 batch
-            if (
-              formattedUserData.role === "Student" ||
-              formattedUserData.role === "Trainer" ||
-              formattedUserData.role === "DckapUser"
-            ) {
-              if (formattedUserData.batch && formattedUserData.batch.length > 0) {
-                navigate(`/batch/${formattedUserData.batch[0].id}/task`);
-              } else {
-                // Display notification for no batch access
-                setLoading(false)
-                notification.error({
-                  message: "Batch Access Error",
-                  description: "You don't have batch access."
-                });
-              }
-            } else {
-              const batchId = formattedUserData.batch?.[0]?.id;
-              if (batchId) {
-                navigate(`/batch/${batchId}/applications`);
-              } else {
-                // Handle the scenario where batch data is not available
-                setLoading(false)
-
-                notification.error({
-                  message: "Batch Access Error",
-                  description: "Batch data is not available."
-                });
-              }
-            }
-            
-
-
-
-          })
-          .catch((error) => {
-            setLoading(false)
-            if (
-              error.response.data.status === 400 ||
-              "errors" in error.response.data
-            ) {
-              const errorMessages = error.response.data.errors;
-              notification.error({
-                message: error.response.data?.message,
-                description: errorMessages.detail,
-                duration:1
-              })
-            }
-          });
+        fetchUserInfo(res.data.data, setToken, setUser, navigate, setLoading,true);
       })
       .catch((error) => {
         setLoading(false)
@@ -138,7 +55,6 @@ const Login = () => {
             })
           });
         }
-        navigate("/login");
       });
   };
   const handleEyeIconLongPress = (field) => {

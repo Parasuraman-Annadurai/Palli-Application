@@ -352,7 +352,7 @@ const AssessmentView = ({
                     <p className="task-description-label">Description <span>*</span></p>
                     <div className="task-editor">
                       <>
-                        <CustomIcons />
+                        {/* <CustomIcons /> */}
                         <ReactQuill
                           placeholder="Type here"
                           className={`${

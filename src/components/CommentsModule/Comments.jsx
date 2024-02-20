@@ -92,7 +92,7 @@ const Comments = (props) => {
 
                         {isCommentEditId === comment.id ? (
                           <div className="edit-comment">
-                            <CustomIcons />
+                            {/* <CustomIcons /> */}
                             <ReactQuill
                               theme="snow"
                               modules={toolbarConfig}
@@ -148,7 +148,7 @@ const Comments = (props) => {
             </div>
           </div>
 
-          <CustomIcons />
+          {/* <CustomIcons /> */}
           <ReactQuill theme="snow" modules={toolbarConfig} value={isCommentEditId ? "" : commentText} onChange={(value) => {
             if (commentErrors["Comments"]) {
               delete commentErrors["Comments"]

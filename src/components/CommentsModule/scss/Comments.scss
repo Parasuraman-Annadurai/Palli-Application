@@ -214,7 +214,7 @@ li {
 // code started line
 
 .comments-list-container {
-  height: 425px;
+  height: 395px;
   overflow-y: scroll;
   .comments-main-container {
     position: relative;
@@ -271,7 +271,7 @@ margin-top: 10px;
         color: $font-primary-color;
         margin-top: 6px;
         margin-left: 42px;
-        max-width: 280px;
+        max-width: 350px;
         width: 100%;
         overflow-wrap: break-word;
         cursor: pointer;
@@ -376,7 +376,9 @@ margin-top: 10px;
   width: 455px !important;
 }
 .ql-editor{
-  padding-bottom: 40px !important;
+  padding-bottom: 34px !important;
+  max-height: 400px ;
+  background-color: white;
 }
 .ql-tooltip .ql-editing{
   left: 0px;

@@ -1630,34 +1630,41 @@ span{
   border: 1px solid $primary-color !important;
 }
 
-.react-quill {
-  .ql-snow.ql-toolbar button:hover,
-  .ql-snow .ql-toolbar button:hover,
-  .ql-snow.ql-toolbar button:focus,
-  .ql-snow .ql-toolbar button:focus,
-  .ql-snow.ql-toolbar button.ql-active,
-  .ql-snow .ql-toolbar button.ql-active,
-  .ql-snow.ql-toolbar .ql-picker-label:hover,
-  .ql-snow .ql-toolbar .ql-picker-label:hover,
-  .ql-snow.ql-toolbar .ql-picker-label.ql-active,
-  .ql-snow .ql-toolbar .ql-picker-label.ql-active,
-  .ql-snow.ql-toolbar .ql-picker-item:hover,
-  .ql-snow .ql-toolbar .ql-picker-item:hover,
-  .ql-snow.ql-toolbar .ql-picker-item.ql-selected,
-  .ql-snow .ql-toolbar .ql-picker-item.ql-selected {
-    color: $primary-color;
-  }
-  .ql-snow.ql-toolbar .ql-picker-label {
-    color: $font-secondary-color;
-    .ql-stroke {
-      stroke: $font-secondary-color;
-    }
-    .ql-bold {
-      &:hover {
-        color: $primary-color;
-      }
-    }
-  }
+// .react-quill {
+//   .ql-snow.ql-toolbar button:hover,
+//   .ql-snow .ql-toolbar button:hover,
+//   .ql-snow.ql-toolbar button:focus,
+//   .ql-snow .ql-toolbar button:focus,
+//   .ql-snow.ql-toolbar button.ql-active,
+//   .ql-snow .ql-toolbar button.ql-active,
+//   .ql-snow.ql-toolbar .ql-picker-label:hover,
+//   .ql-snow .ql-toolbar .ql-picker-label:hover,
+//   .ql-snow.ql-toolbar .ql-picker-label.ql-active,
+//   .ql-snow .ql-toolbar .ql-picker-label.ql-active,
+//   .ql-snow.ql-toolbar .ql-picker-item:hover,
+//   .ql-snow .ql-toolbar .ql-picker-item:hover,
+//   .ql-snow.ql-toolbar .ql-picker-item.ql-selected,
+//   .ql-snow .ql-toolbar .ql-picker-item.ql-selected 
+//   .ql-snow.ql-toolbar .ql-formats button:hover
+//   .ql-snow.ql-toolbar .ql-formats button:hover{
+//     color: $primary-color;
+//   }
+//   .ql-snow.ql-toolbar .ql-picker-label {
+//     color: $font-secondary-color;
+//     .ql-stroke {
+//       stroke: $font-secondary-color;
+//     }
+//     .ql-bold {
+//       &:hover {
+//         color: $primary-color;
+//       }
+//     }
+//   }
+// }
+
+.ql-snow.ql-toolbar button:hover .ql-stroke, .ql-snow .ql-toolbar button:hover .ql-stroke, .ql-snow.ql-toolbar button:focus .ql-stroke, .ql-snow .ql-toolbar button:focus .ql-stroke, .ql-snow.ql-toolbar button.ql-active .ql-stroke, .ql-snow .ql-toolbar button.ql-active .ql-stroke, .ql-snow.ql-toolbar .ql-picker-label:hover .ql-stroke, .ql-snow .ql-toolbar .ql-picker-label:hover .ql-stroke, .ql-snow.ql-toolbar .ql-picker-label.ql-active .ql-stroke, .ql-snow .ql-toolbar .ql-picker-label.ql-active .ql-stroke, .ql-snow.ql-toolbar .ql-picker-item:hover .ql-stroke, .ql-snow .ql-toolbar .ql-picker-item:hover .ql-stroke, .ql-snow.ql-toolbar .ql-picker-item.ql-selected .ql-stroke, .ql-snow .ql-toolbar .ql-picker-item.ql-selected .ql-stroke, .ql-snow.ql-toolbar button:hover .ql-stroke-miter, .ql-snow .ql-toolbar button:hover .ql-stroke-miter, .ql-snow.ql-toolbar button:focus .ql-stroke-miter, .ql-snow .ql-toolbar button:focus .ql-stroke-miter, .ql-snow.ql-toolbar button.ql-active .ql-stroke-miter, .ql-snow .ql-toolbar button.ql-active .ql-stroke-miter, .ql-snow.ql-toolbar .ql-picker-label:hover .ql-stroke-miter, .ql-snow .ql-toolbar .ql-picker-label:hover .ql-stroke-miter, .ql-snow.ql-toolbar .ql-picker-label.ql-active .ql-stroke-miter, .ql-snow .ql-toolbar .ql-picker-label.ql-active .ql-stroke-miter, .ql-snow.ql-toolbar .ql-picker-item:hover .ql-stroke-miter, .ql-snow .ql-toolbar .ql-picker-item:hover .ql-stroke-miter, .ql-snow.ql-toolbar .ql-picker-item.ql-selected .ql-stroke-miter, .ql-snow .ql-toolbar .ql-picker-item.ql-selected .ql-stroke-miter {
+  stroke: $primary-color;
+ 
 }
 
 tooltip[data-mode=link]::before {
@@ -1688,10 +1695,31 @@ tooltip[data-mode=link]::before {
   }
 }
 
-
+.ql-snow .ql-editor a {
+  text-decoration: underline;
+  color: $highlight-blue !important;
+  cursor: pointer;
+}
 .ql-snow .ql-tooltip {
   top: -51px !important;
   left: 0 !important;
   z-index: 999;
   background-color: $side_bar_bg;
+}
+.ql-snow .ql-stroke {
+  fill: none;
+  stroke: #969d88;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2;
+}
+
+.ql-snow .ql-fill{
+  fill: $font-secondary-color;
+}
+
+.ql-underline:hover{
+  .ql-fill{
+    fill: $primary-color !important;
+  }
 }

@@ -226,7 +226,7 @@ li {
   bottom: 5px;
   right: 5px;
 }
-.comments-list-container .comments-main-container .comments p {
+.comments-list-container .comments-main-container .comments p, .comments-list-container .comments-main-container .comments li {
   font: 400 12px/16px "Roboto";
   color: #12160a;
   margin-top: 6px;
@@ -235,6 +235,10 @@ li {
   width: 100%;
   overflow-wrap: break-word;
   cursor: pointer;
+}
+.comments-list-container .comments-main-container .comments h1, .comments-list-container .comments-main-container .comments h2, .comments-list-container .comments-main-container .comments h3, .comments-list-container .comments-main-container .comments h4, .comments-list-container .comments-main-container .comments h5 {
+  margin-top: 6px;
+  margin-left: 42px;
 }
 .comments-list-container .no-comments-container img {
   width: 90%;

@@ -627,6 +627,12 @@ const AssessmentView = ({
                           src="/icons/comment-fill.svg"
                           onClick={() => setOpenComments(students.id)}
                           alt="comment-icon"
+                          onMouseOver={(e)=>{
+                            e.target.src = "/icons/comment-fill-hover.svg";
+                        }}
+                        onMouseOut={(e)=>{
+                            e.target.src = "/icons/comment-fill.svg";
+                        }}
                         />
                       </div>
                       <div className="student-work">

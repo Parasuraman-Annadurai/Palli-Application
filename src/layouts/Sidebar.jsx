@@ -158,7 +158,7 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
                     </Link>
                   </li>
                 );
-              } else if (menu.id === "task" || menu.id === "assessment") {
+              } else if (menu.id === "task" || menu.id === "assessment" || menu.id == "permissions") {
                 // Render the remaining menu items only if the user has permission to read Task
                 const hasReadPermissionForTask = getPermission(user.permissions, "Task", "read");
                 if (hasReadPermissionForTask) {

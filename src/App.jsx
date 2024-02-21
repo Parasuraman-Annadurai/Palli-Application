@@ -12,6 +12,7 @@ import {
   INDEX,
   TASKMODULE,
   ASSESSMENTMODULE,
+  PERMISSIONS
 } from "./routes/routes.jsx";
 //Define your routes for APP here
 import Login from "./pages/login/Login.jsx";
@@ -21,6 +22,7 @@ import Applications from "./pages/applications/Applications.jsx";
 import DashBoard from "./pages/dashBoard/DashBoard.jsx";
 import AssessmentModule from "./pages/assessmentModule/AssessmentModule.jsx";
 import ErrorPage from "./pages/errorPage/ErrorPage.jsx";
+import PermissionShow from "./pages/permissionShow/PermissionShow.jsx";
 //Private Routes will be wrapped in below component
 import PrivateRoute from "./routes/PrivateRoute";
 
@@ -52,6 +54,7 @@ const App = () => {
             <Route path={ASSESSMENTMODULE} element={<AssessmentModule type="assessment"/>} />
           </Route>
 
+          <Route path={PERMISSIONS} element={<PermissionShow/>} />
          
           <Route path="*" element={<ErrorPage />} />
         </Routes>

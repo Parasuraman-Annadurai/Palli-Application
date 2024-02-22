@@ -677,6 +677,7 @@ body .container .main-container .module-header-section-container .module-header-
   padding: 5px;
   padding-left: 10px;
   border: 1px solid transparent;
+  border-radius: 4px;
   width: 70%;
 }
 body .container .main-container .module-header-section-container .module-header-section .module-title-section input:focus {

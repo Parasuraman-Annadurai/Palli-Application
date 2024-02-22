@@ -854,14 +854,17 @@ body {
             input {
               font-size: 16px;
               padding: 5px;
-              padding-left: 0px;
+              padding-left: 10px;
+              border: 1px solid transparent;
               width: 70%;
-              &:hover {
-                background-color: $side_bar_bg;
-                // padding: 3px;
-                // width: 100%;
-                // border: 1px solid $primary-color;
-              }
+            //   max-height: 30px;
+             &:focus{
+              // padding-left: 10px;
+              border: 1px solid $primary-color;
+             }
+              // &:hover {
+              //   background-color: $side_bar_bg;
+             
             }
 
             // .task-title {
@@ -1549,6 +1552,8 @@ span{
         }
         .student-comment {
           cursor: pointer;
+          max-width: 20px;
+          width: 100%;
         }
         .student-work {
           max-width: 115px;

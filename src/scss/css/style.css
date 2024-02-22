@@ -675,11 +675,12 @@ body .container .main-container .module-header-section-container .module-header-
 body .container .main-container .module-header-section-container .module-header-section .module-title-section input {
   font-size: 16px;
   padding: 5px;
-  padding-left: 0px;
+  padding-left: 10px;
+  border: 1px solid transparent;
   width: 70%;
 }
-body .container .main-container .module-header-section-container .module-header-section .module-title-section input:hover {
-  background-color: #f8fbf2;
+body .container .main-container .module-header-section-container .module-header-section .module-title-section input:focus {
+  border: 1px solid #49a843;
 }
 body .container .main-container .task-details-header-container {
   height: calc(100vh - 110px);
@@ -1168,6 +1169,8 @@ body .container .main-container .task-user-list-container .student-file img {
 }
 body .container .main-container .task-user-list-container .student-comment {
   cursor: pointer;
+  max-width: 20px;
+  width: 100%;
 }
 body .container .main-container .task-user-list-container .student-work {
   max-width: 115px;

@@ -1,19 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
-import { Navigate, useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 
-import { DatePicker, Modal, notification, Drawer, Tooltip, Skeleton } from "antd";
+import { DatePicker, Modal, notification, Drawer, Tooltip } from "antd";
 
-import { CloseOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
 import axios from "axios";
 
 import { useAuth } from "../../context/AuthContext";
 
 import { API_END_POINT } from "../../../config";
+import { getPermission } from "../../utils/validate";
 
 import "./scss/AddBatch.css";
-import { getPermission } from "../../utils/validate";
 
 const AddBatch = (props) => {
   const { batchList, setBatchList,isLoading } =

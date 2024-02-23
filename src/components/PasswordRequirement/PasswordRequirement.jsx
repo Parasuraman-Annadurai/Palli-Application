@@ -3,6 +3,7 @@ import React from "react";
 import { trackPwdRequirement } from "../../utils/validate";
 
 import "./scss/PasswordRequirement.css";
+
 const GetPasswordPopover = ({ password }) => {
  
   const requirementsList = trackPwdRequirement(password);

@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 
-import { Button, Select, Tooltip } from "antd";
+import {  Select, Tooltip } from "antd";
 
 import { isWeightageVaild } from "../../utils/validate";
 

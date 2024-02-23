@@ -6,6 +6,7 @@ import { useAuth } from "../../context/AuthContext";
 
 import ReactQuill from "react-quill";
 import "quill/dist/quill.snow.css";
+
 import { CustomIcons, toolbarConfig, valueTrim,getPermission } from "../../utils/validate";
 
 import "./scss/Comments.css";

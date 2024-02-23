@@ -1,4 +1,5 @@
 import Quill from "quill";
+import { notification } from "antd";
 
 
 export const valueTrim = (value,fieldName,setErrors)=>{
@@ -145,8 +146,8 @@ export const validateTask = (taskDetails, setFormErrors) => {
 
 
 
-export const isWeightageVaild =(taskWeightageDetails,setWeightageErros)=>{
-  let errors ={};
+export const isWeightageValid = (taskWeightageDetails, setWeightageErrors) => {
+  let errors = {};
   let isValid = true;
   let hasWeightageError = false;
   
@@ -163,17 +164,17 @@ export const isWeightageVaild =(taskWeightageDetails,setWeightageErros)=>{
   if (!hasWeightageError) {
     // Check if the total percentage is equal to 100
     const totalPercentage = taskWeightageDetails.reduce(
-      (sum, taskWeightageDetail) => sum + (taskWeightageDetail?.weightage_percentage || 0),
+      (sum, taskWeightageDetail) => sum + parseFloat(taskWeightageDetail?.weightage_percentage || 0),
       0
     );
 
     if (totalPercentage !== 100) {
-      errors.weightage = "Selected weightage is not equal to 100. Please check and adjust the values.";
+      errors.weightage = "Selected weightage does not sum up to 100. Please check and adjust the values.";
       isValid = false;
     }
   }
 
-  setWeightageErros(errors);
+  setWeightageErrors(errors);
   return isValid;
 }
 

@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 
-import { Button, Select, Tooltip } from "antd";
-
-import { isWeightageVaild } from "../../utils/validate";
+import {  Select, Tooltip } from "antd";
+import { isWeightageValid } from "../../utils/validate";
 
 import "./scss/WeightageList.css"
 const WeightageList = ({
@@ -53,8 +52,10 @@ const WeightageList = ({
                   </div>
                   <div className="percentage">
                     <input
-                      type="text"
-                      value={taskWeightage.weightage_percentage}
+                      type="number"
+                      min="1" // Set the minimum allowed value
+                      max="100" // Set the maximum allowed value
+                      value={parseFloat(taskWeightage.weightage_percentage)} // Ensure it's a string or an empty string
                       onChange={(e) =>
                         handleWeightageChange(
                           e.target.value,
@@ -68,6 +69,7 @@ const WeightageList = ({
                         opacity: selectedStudents.length > 0 ? 0.5 : 1,
                         cursor:
                           selectedStudents.length > 0 ? "not-allowed" : "auto",
+                          '-moz-appearance': 'textfield'
                       }}
                     />
                   </div>
@@ -131,7 +133,7 @@ const WeightageList = ({
                       }`}
                       onClick={() =>
                         taskWeightages?.length > 0 &&
-                        isWeightageVaild(taskWeightages, setWeightageErros)
+                        isWeightageValid(taskWeightages, setWeightageErros)
                           ? handleSaveWeightage()
                           : null
                       }

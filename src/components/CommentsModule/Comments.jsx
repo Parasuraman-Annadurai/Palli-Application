@@ -162,14 +162,7 @@ const Comments = (props) => {
                 }
                 setCommentText(value);
               }}
-              onKeyUp={(e) => {
-                if (e.key === 'Enter') {
-                  // Call your function here
-                  if (validateComments(commentText, "Comments", setCommentsErrors)) {
-                    handleSendComment(commenterId);
-                  }
-                }
-              }}
+              
             />
 
           <p className="error-message">{commentErrors["Comments"] ? commentErrors["Comments"] : ""}</p>

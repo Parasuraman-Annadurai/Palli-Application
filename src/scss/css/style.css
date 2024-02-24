@@ -675,13 +675,14 @@ body .container .main-container .module-header-section-container .module-header-
 body .container .main-container .module-header-section-container .module-header-section .module-title-section input {
   font-size: 16px;
   padding: 5px;
-  padding-left: 10px;
-  border: 1px solid transparent;
   border-radius: 4px;
   width: 70%;
 }
 body .container .main-container .module-header-section-container .module-header-section .module-title-section input:focus {
-  border: 1px solid #49a843;
+  padding-left: 10px;
+}
+body .container .main-container .module-header-section-container .module-header-section .module-title-section input:hover {
+  background-color: #f8fbf2;
 }
 body .container .main-container .task-details-header-container {
   height: calc(100vh - 110px);
@@ -934,7 +935,6 @@ body .container .assignee-and-weightage-container {
 body .container .assignee-and-weightage-container .title-section {
   max-width: 167px;
   width: 100%;
-  gap: 25px;
 }
 body .container .assignee-and-weightage-container .title-section .selection {
   cursor: pointer;
@@ -1310,6 +1310,17 @@ tooltip[data-mode=link]::before {
 
 .ql-underline:hover .ql-fill {
   fill: #49a843 !important;
+}
+
+.ant-drawer .ant-drawer-header-title {
+  flex-direction: row-reverse !important;
+}
+
+.ant-drawer .ant-drawer-close {
+  color: #EF4444;
+}
+.ant-drawer .ant-drawer-close:hover {
+  color: #C13939;
 }
 
 /*# sourceMappingURL=style.css.map */

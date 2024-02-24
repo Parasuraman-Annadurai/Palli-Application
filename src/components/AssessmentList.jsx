@@ -66,7 +66,7 @@ const TaskCard = ({
                         alt="edit-icon"
                         onMouseOver={(e)=>{
                           if (!(selectedAssessment === assessment.id && isMode === "edit")) {
-                            e.target.src = "/icons/edit-icon-hover.svg";
+                            e.target.src = "/icons/edit-icon-hover.svg";   
                         }
                         }}
                         onMouseOut={(e)=>{

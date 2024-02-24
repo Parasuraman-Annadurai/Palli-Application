@@ -190,7 +190,7 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
 
         <div className="user-profile flex">
           <div className="profile-img">
-          {user.first_name[0]?.toUpperCase()} {user.last_name[0]?.toUpperCase()}
+          {user.first_name[0]?.toUpperCase()}{user.last_name[0]?.toUpperCase()}
             {/* <img src="/icons/profile.svg" alt="" /> */}
           </div>
 
@@ -212,7 +212,9 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
                    {" "}
                   {user.role}
               </span>
-              <img src="/icons/logout.svg" alt="logout" onClick={handleLogout}/>
+              <Tooltip title="Logout">
+                     <img src="/icons/logout.svg" alt="logout" onClick={handleLogout}/>
+              </Tooltip>
               </div>
             </div>
           {/* </Dropdown> */}

@@ -854,18 +854,18 @@ body {
             input {
               font-size: 16px;
               padding: 5px;
-              padding-left: 10px;
-              border: 1px solid transparent;
+              // padding-left: 10px;
+              // border: 1px solid transparent;
               border-radius: 4px;
               width: 70%;
             //   max-height: 30px;
              &:focus{
-              // padding-left: 10px;
-              border: 1px solid $primary-color;
+              padding-left: 10px;
+              // border: 1px solid $primary-color;
              }
-              // &:hover {
-              //   background-color: $side_bar_bg;
-             
+              &:hover {
+                background-color: $side_bar_bg;
+              }
             }
 
             // .task-title {
@@ -1235,7 +1235,7 @@ span{
         max-width: 167px;
         width: 100%;
         // margin: 0 auto;
-        gap: 25px;
+        // gap: 25px;
 
         .selection {
           cursor: pointer;
@@ -1728,4 +1728,13 @@ tooltip[data-mode=link]::before {
   .ql-fill{
     fill: $primary-color !important;
   }
+}
+.ant-drawer .ant-drawer-header-title {
+  flex-direction: row-reverse !important;
+}
+.ant-drawer .ant-drawer-close{
+color: #EF4444;
+&:hover{
+  color: #C13939;
+}
 }

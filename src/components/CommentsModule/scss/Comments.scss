@@ -79,11 +79,11 @@ input:focus {
   background-repeat: no-repeat;
 }
 
-a {
-  text-decoration: none;
-  color: $font-secondary-color;
-  font-family: $font-Roboto;
-}
+// a {
+//   text-decoration: none;
+//   color: $font-secondary-color;
+//   font-family: $font-Roboto;
+// }
 
 li {
   list-style: none;
@@ -105,9 +105,18 @@ li {
   border: none;
   font-family: $font-Roboto;
 }
+.btn-small{
+  padding: 5px 14px;
+  outline: none;
+  border-radius: 4px;
+  font: 400 12px/16px $font-Roboto;
+  cursor: pointer;
+  border: none;
+}
+//primary button section
 
 //primary button section
-.btn.primary-medium {
+.btn-small.primary-medium {
   background-color: $primary-color;
   color: #ffff;
   cursor: pointer;
@@ -156,7 +165,7 @@ li {
 }
 
 //secondary button section
-.btn.secondary-medium {
+.btn-small.secondary-medium {
   color: $primary-color;
   border: 1px solid $primary-color;
   background-color: #ffff;
@@ -236,6 +245,11 @@ li {
           font: 500 12px/16px $font-Roboto;
           color: $font-primary-color;
           margin-left: 10px;
+          span{
+            font: 400 10px/14px $font-Roboto;
+            color: $font-secondary-color;
+            margin-left: 5px;
+          }
         }
         .icons {
           display: flex;
@@ -266,7 +280,7 @@ margin-top: 10px;
     right: 5px;
     }
     .comments {
-      p,li {
+      p {
         font: 400 12px/16px $font-Roboto;
         color: $font-primary-color;
         margin-top: 6px;
@@ -279,6 +293,12 @@ margin-top: 10px;
       h1, h2, h3, h4, h5{
         margin-top: 6px;
         margin-left: 42px;
+      }
+      a{
+        font: 400 12px/16px $font-Roboto;
+          text-decoration: underline;
+          font-family: $font-Roboto;
+          color: $highlight-blue;
       }
     }
   }
@@ -309,7 +329,7 @@ margin-top: 10px;
       margin-bottom: 5px;
     }
     .send {
-      background-color: #49a843;
+      background-color: $primary-color;
       padding: 7px;
       border-radius: 4px;
       cursor: pointer;
@@ -341,6 +361,10 @@ margin-top: 10px;
   }
 }
 .quill{
+  .ql-toolbar.ql-snow + .ql-container.ql-snow {
+    border-top: 0px;
+    border-radius: 0px 0px 4px 4px !important;
+}
   .ql-container .ql-snow{
     // max-height: 80px;
     min-height: 80px !important;
@@ -375,6 +399,7 @@ margin-top: 10px;
 }
 .ql-toolbar.ql-snow{
   background-color: white;
+  border-radius: 4px 4px 0px 0px;
 }
 .ant-drawer-content-wrapper{
   width: 455px !important;

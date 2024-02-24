@@ -522,7 +522,7 @@ const AssessmentModule = ({ type }) => {
 
     copyAssessment = copyAssessment.map((assessment) => {
       if (assessment.id === editId) {
-        assessment.task_weightages[index][key] = value;
+        assessment.task_weightages[index][key] = parseFloat(value);
       }
       return assessment;
     });

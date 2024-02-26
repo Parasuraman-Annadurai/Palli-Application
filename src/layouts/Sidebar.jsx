@@ -162,7 +162,7 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
                       to={isDashboardPage ? "/dashboard" : `/batch/${batchId}/${menu.id}`}
                       className="flex"
                     >
-                      <img src="/icons/application.svg" alt={menu.label} />
+                      <img src={menu.id === active ? "/icons/application_active.svg" : "/icons/application_icon.svg"}alt={menu.label} />
                       <span>{menu.label}</span>
                     </Link>
                   </li>
@@ -181,7 +181,7 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
                         to={isDashboardPage ? "/dashboard" : `/batch/${batchId}/${menu.id}`}
                         className="flex"
                       >
-                        <img src="/icons/application.svg" alt={menu.label} />
+                        <img src={menu.id === active ? "/icons/task_active.svg":"/icons/task_icon.svg"} alt={menu.label} />
                         <span>{menu.label}</span>
                       </Link>
                     </li>

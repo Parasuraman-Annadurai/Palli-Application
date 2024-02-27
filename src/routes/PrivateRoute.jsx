@@ -7,7 +7,6 @@ import Sidebar from "../layouts/Sidebar";
 import axios from "axios";
 import { API_END_POINT } from "../../config";
 
-import { jwtDecode } from "jwt-decode";
 import { Skeleton } from "antd";
 
 const PrivateRoute = () => {

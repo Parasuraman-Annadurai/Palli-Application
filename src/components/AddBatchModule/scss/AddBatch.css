@@ -7,8 +7,8 @@
   outline: none;
   border: none;
   -webkit-user-select: none;
-  -moz-user-select: none;
-       user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 ::-webkit-scrollbar {
@@ -231,9 +231,6 @@ li {
   background-color: white;
   color: #12160a;
 }
-.popup-container .popup-content .input-fields .input-field .batch-inputs::-moz-placeholder {
-  color: #969d88;
-}
 .popup-container .popup-content .input-fields .input-field .batch-inputs::placeholder {
   color: #969d88;
 }
@@ -243,7 +240,6 @@ li {
 }
 .popup-container .switch-batch-list-container {
   overflow: scroll;
-  height: calc(100vh - 110px);
   overflow-y: auto;
 }
 .popup-container .switch-batch-list-container::-webkit-scrollbar {
@@ -309,7 +305,9 @@ li {
   cursor: pointer;
 }
 
-.dark-overlay {
-  background-color: black;
-  opacity: 0.4;
-}/*# sourceMappingURL=AddBatch.css.map */
+:where(.css-dev-only-do-not-override-6j9yrn).ant-btn-default:not(:disabled):not(.ant-btn-disabled):hover {
+  color: #49a843;
+  border-color: #49a843;
+}
+
+/*# sourceMappingURL=AddBatch.css.map */

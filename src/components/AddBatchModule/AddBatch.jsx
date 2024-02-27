@@ -36,15 +36,17 @@ const AddBatch = (props) => {
 
 
   const handleSwitch = (batch) => {
-
     Modal.confirm({
-      title: `Confirm Switch to ${batch.batch_name}`,
+      title: (
+        <div style={{ fontWeight: 500, fontSize: "16px", fontFamily: "Roboto" }}>
+          {`Confirm Switch to ${batch.batch_name}`}
+        </div>
+      ),
       content: "Are you sure you want to Switch this Batch?",
       onOk: () => {
         navigate(`/batch/${batch.id}/applications`);
         window.location.reload();
       },
-      // Attach the ref to the modal
     });
   };
 
@@ -415,12 +417,18 @@ const AddBatch = (props) => {
                               {getPermission(user.permissions, "Batch", "update") && (
                                 <img
                                   className="edit-icon"
-                                  src="/icons/edit-pencil.svg"
+                                  src="/icons/edit-pencil-icon.svg"
                                   alt=""
                                   onClick={() => {
                                     handleEditClick(batch);
                                     setBatchshow(!batchShow);
                                     // setBatchInputs(true);
+                                  }}
+                                  onMouseOver={(e)=>{
+                                      e.target.src = "/icons/edit-icon-hover.svg";
+                                  }}
+                                  onMouseOut={(e)=>{
+                                      e.target.src = "/icons/edit-pencil-icon.svg";
                                   }}
                                 />
                               )}

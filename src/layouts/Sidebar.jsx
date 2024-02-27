@@ -78,16 +78,16 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
         }
       })
   };
-  const items = [
-    {
-      label: (
-        <button className="btn primary-medium" onClick={handleLogout}>
-          Logout
-        </button>
-      ),
-      key: "0",
-    },
-  ];
+  // const items = [
+  //   {
+  //     label: (
+  //       <button className="btn primary-medium" onClick={handleLogout}>
+  //         Logout
+  //       </button>
+  //     ),
+  //     key: "0",
+  //   },
+  // ];
 
 
 
@@ -199,22 +199,34 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
 
         <div className="user-profile flex">
           <div className="profile-img">
-            <img src="/icons/profile.svg" alt="" />
+          {user.first_name[0]?.toUpperCase()}{user.last_name[0]?.toUpperCase()}
+            {/* <img src="/icons/profile.svg" alt="" /> */}
           </div>
 
-          <Dropdown
+          {/* <Dropdown
             menu={{
               items,
             }}
-          >
+          > */}
             <div className="user-details">
               <p>{user.first_name} {user.last_name}</p>
-              <span>
-                {" "}
-                {user.role}
+                 <div className="logout-icon flex"
+                  onMouseOver={(e)=>{
+                    e.target.src ="/icons/logout-hover.svg"
+                  }}
+                  onMouseOut={(e)=>{
+                    e.target.src ="/icons/logout.svg"
+                  }}>
+                   <span>
+                   {" "}
+                  {user.role}
               </span>
+              <Tooltip title="Logout">
+                     <img src="/icons/logout.svg" alt="logout" onClick={handleLogout}/>
+              </Tooltip>
+              </div>
             </div>
-          </Dropdown>
+          {/* </Dropdown> */}
         </div>
       </nav>
       {batchLoading ? <Skeleton active/> : (

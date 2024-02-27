@@ -422,18 +422,21 @@ body .container .side-nav-container .user-profile {
   cursor: pointer;
 }
 body .container .side-nav-container .user-profile .profile-img {
-  width: 40px;
-  height: auto;
-  overflow: hidden;
   border-radius: 50%;
   background: linear-gradient(12deg, transparent 0%, #49a843 100%);
-  border-radius: 50px;
-  padding: 4px;
-  box-sizing: border-box;
+  background-color: #cdeec7;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
-body .container .side-nav-container .user-profile .profile-img img {
-  width: 100%;
-  height: auto;
+body .container .side-nav-container .user-profile .profile-img p {
+  background-color: #d3f9cd;
+  color: #12160a;
+  padding: 8px 9.5px;
+  border-radius: 4px;
+  font: 400 12px/16px "Roboto";
 }
 body .container .side-nav-container .user-profile .user-details p {
   font-size: 12px;
@@ -442,7 +445,11 @@ body .container .side-nav-container .user-profile .user-details p {
   font-weight: 500;
   color: #12160a;
 }
-body .container .side-nav-container .user-profile .user-details span {
+body .container .side-nav-container .user-profile .user-details .logout-icon {
+  width: 16px;
+  height: 16px;
+}
+body .container .side-nav-container .user-profile .user-details .logout-icon span {
   font-family: "Roboto";
   font-size: 12px;
   line-height: 16px;
@@ -542,9 +549,6 @@ body .container .listing-container .task-list-container .task-card {
   font-family: "Roboto";
   cursor: pointer;
 }
-body .container .listing-container .task-list-container .task-card:hover {
-  background-color: #f8fbf2;
-}
 body .container .listing-container .task-list-container .task-card .task-icon {
   background-color: #fbf4ca;
   height: 26px;
@@ -581,6 +585,7 @@ body .container .listing-container .task-list-container .task-card .task-details
 body .container .listing-container .task-list-container .task-card .task-details .task-name-with-icon .delete-icon {
   margin-left: 5px;
   cursor: pointer;
+  visibility: hidden;
 }
 body .container .listing-container .task-list-container .task-card .task-details .task-description {
   max-width: 205px;
@@ -613,6 +618,12 @@ body .container .listing-container .task-list-container .task-card .task-details
   background-color: #fef3c7;
   font-family: "Roboto";
 }
+body .container .listing-container .task-list-container .task-card:hover {
+  background-color: #f8fbf2;
+}
+body .container .listing-container .task-list-container .task-card:hover .task-details .task-name-with-icon .delete-icon {
+  visibility: visible;
+}
 body .container .listing-container .task-list-container .task-card:hover .task-name-with-icon img {
   visibility: visible;
 }
@@ -626,6 +637,12 @@ body .container .select-something-container {
   width: 100%;
   align-items: center;
   justify-content: center;
+  height: 100%;
+}
+body .container .select-something-container .image-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 body .container .select-something-container .image-container img {
   max-width: 350px;
@@ -658,8 +675,11 @@ body .container .main-container .module-header-section-container .module-header-
 body .container .main-container .module-header-section-container .module-header-section .module-title-section input {
   font-size: 16px;
   padding: 5px;
-  padding-left: 0px;
+  border-radius: 4px;
   width: 70%;
+}
+body .container .main-container .module-header-section-container .module-header-section .module-title-section input:focus {
+  padding-left: 10px;
 }
 body .container .main-container .module-header-section-container .module-header-section .module-title-section input:hover {
   background-color: #f8fbf2;
@@ -915,6 +935,7 @@ body .container .assignee-and-weightage-container {
 body .container .assignee-and-weightage-container .title-section {
   max-width: 167px;
   width: 100%;
+  align-items: center;
   gap: 25px;
 }
 body .container .assignee-and-weightage-container .title-section .selection {
@@ -974,9 +995,9 @@ body .container .assignee-and-weightage-container .assign-listing-container .sel
 body .container .assignee-and-weightage-container .assign-listing-container .select-all .global-checkbox {
   accent-color: #49a843;
 }
-body .container .assignee-and-weightage-container .assign-listing-container .select-all .span {
-  font-size: 12px;
-  font-family: "Roboto";
+body .container .assignee-and-weightage-container .assign-listing-container .select-all span {
+  font: 500 12px/16px "Roboto";
+  color: #49a843;
 }
 body .container .assignee-and-weightage-container .assign-listing-container .assignee-card-listing-container {
   font: "Roboto";
@@ -1009,6 +1030,10 @@ body .container .assignee-and-weightage-container .assign-listing-container .ass
 }
 body .container .assignee-and-weightage-container .assign-listing-container .assignee-card-listing-container .individual-assignee-card .profile .profile-letter span {
   font-size: 10px;
+}
+body .container .assignee-and-weightage-container .assign-listing-container .assignee-card-listing-container .individual-assignee-card .profile .assignee-name p {
+  font: 400 12px/16px "Roboto";
+  color: #12160a;
 }
 body .container .weightage-action {
   cursor: pointer;
@@ -1046,7 +1071,11 @@ body .container .main-container .search-container .search-icon {
 body .container .main-container .search-container .filter-icon {
   right: 12px;
 }
-body .container .main-container .task-container {
+body .container .main-container .task-main-container {
+  height: calc(100vh - 80px);
+  overflow-y: auto;
+}
+body .container .main-container .task-main-container .task-container {
   border: 1px solid #eaeaea;
   border-radius: 4px;
   margin: 6px 0px;
@@ -1143,6 +1172,8 @@ body .container .main-container .task-user-list-container .student-file img {
 }
 body .container .main-container .task-user-list-container .student-comment {
   cursor: pointer;
+  max-width: 20px;
+  width: 100%;
 }
 body .container .main-container .task-user-list-container .student-work {
   max-width: 115px;
@@ -1172,7 +1203,8 @@ body .container .main-container hr {
   border: 1px solid #eaeaea;
 }
 body .container .main-container .applied-weightage-list-container {
-  padding: 14px 0px 16px 16px;
+  padding: 14px 0px 0px 16px;
+  gap: 10px;
 }
 body .container .main-container .applied-weightage-list-container .applied-weightage-card {
   align-items: center;
@@ -1204,6 +1236,10 @@ body .container .main-container .applied-weightage-list-container .applied-weigh
   -webkit-appearance: none;
   margin: 0;
 }
+body .container .main-container .main-error-msg {
+  margin-left: 15px;
+  margin-bottom: 20px;
+}
 
 .ant-picker-focused {
   border: 1px solid #49a843 !important;
@@ -1217,30 +1253,76 @@ body .container .main-container .applied-weightage-list-container .applied-weigh
   border: 1px solid #49a843 !important;
 }
 
-.react-quill .ql-snow.ql-toolbar button:hover,
-.react-quill .ql-snow .ql-toolbar button:hover,
-.react-quill .ql-snow.ql-toolbar button:focus,
-.react-quill .ql-snow .ql-toolbar button:focus,
-.react-quill .ql-snow.ql-toolbar button.ql-active,
-.react-quill .ql-snow .ql-toolbar button.ql-active,
-.react-quill .ql-snow.ql-toolbar .ql-picker-label:hover,
-.react-quill .ql-snow .ql-toolbar .ql-picker-label:hover,
-.react-quill .ql-snow.ql-toolbar .ql-picker-label.ql-active,
-.react-quill .ql-snow .ql-toolbar .ql-picker-label.ql-active,
-.react-quill .ql-snow.ql-toolbar .ql-picker-item:hover,
-.react-quill .ql-snow .ql-toolbar .ql-picker-item:hover,
-.react-quill .ql-snow.ql-toolbar .ql-picker-item.ql-selected,
-.react-quill .ql-snow .ql-toolbar .ql-picker-item.ql-selected {
-  color: #49a843;
+.ql-snow.ql-toolbar button:hover .ql-stroke, .ql-snow .ql-toolbar button:hover .ql-stroke, .ql-snow.ql-toolbar button:focus .ql-stroke, .ql-snow .ql-toolbar button:focus .ql-stroke, .ql-snow.ql-toolbar button.ql-active .ql-stroke, .ql-snow .ql-toolbar button.ql-active .ql-stroke, .ql-snow.ql-toolbar .ql-picker-label:hover .ql-stroke, .ql-snow .ql-toolbar .ql-picker-label:hover .ql-stroke, .ql-snow.ql-toolbar .ql-picker-label.ql-active .ql-stroke, .ql-snow .ql-toolbar .ql-picker-label.ql-active .ql-stroke, .ql-snow.ql-toolbar .ql-picker-item:hover .ql-stroke, .ql-snow .ql-toolbar .ql-picker-item:hover .ql-stroke, .ql-snow.ql-toolbar .ql-picker-item.ql-selected .ql-stroke, .ql-snow .ql-toolbar .ql-picker-item.ql-selected .ql-stroke, .ql-snow.ql-toolbar button:hover .ql-stroke-miter, .ql-snow .ql-toolbar button:hover .ql-stroke-miter, .ql-snow.ql-toolbar button:focus .ql-stroke-miter, .ql-snow .ql-toolbar button:focus .ql-stroke-miter, .ql-snow.ql-toolbar button.ql-active .ql-stroke-miter, .ql-snow .ql-toolbar button.ql-active .ql-stroke-miter, .ql-snow.ql-toolbar .ql-picker-label:hover .ql-stroke-miter, .ql-snow .ql-toolbar .ql-picker-label:hover .ql-stroke-miter, .ql-snow.ql-toolbar .ql-picker-label.ql-active .ql-stroke-miter, .ql-snow .ql-toolbar .ql-picker-label.ql-active .ql-stroke-miter, .ql-snow.ql-toolbar .ql-picker-item:hover .ql-stroke-miter, .ql-snow .ql-toolbar .ql-picker-item:hover .ql-stroke-miter, .ql-snow.ql-toolbar .ql-picker-item.ql-selected .ql-stroke-miter, .ql-snow .ql-toolbar .ql-picker-item.ql-selected .ql-stroke-miter {
+  stroke: #49a843;
 }
-.react-quill .ql-snow.ql-toolbar .ql-picker-label {
+
+tooltip[data-mode=link]::before {
+  content: "Enter link:";
+  color: #12160a;
+  font: 500 12px/16px "Roboto";
+}
+
+.ql-snow .ql-tooltip.ql-editing input[type=text] {
+  display: inline-block;
+  border: 1px solid #eaeaea;
+  border-radius: 4px;
+}
+
+.ql-snow .ql-tooltip.ql-editing input[type=text]:focus {
+  border: 1px solid #49a843;
+}
+
+.ql-snow .ql-tooltip.ql-editing input[type=text]::placeholder {
   color: #969d88;
 }
-.react-quill .ql-snow.ql-toolbar .ql-picker-label .ql-stroke {
-  stroke: #969d88;
-}
-.react-quill .ql-snow.ql-toolbar .ql-picker-label .ql-bold:hover {
+
+.ql-snow .ql-tooltip a {
+  line-height: 26px;
   color: #49a843;
+}
+.ql-snow .ql-tooltip a:hover {
+  color: #33762f;
+}
+
+.ql-snow .ql-editor a {
+  text-decoration: underline;
+  color: #3b82f6 !important;
+  cursor: pointer;
+}
+
+.ql-snow .ql-tooltip {
+  top: -51px !important;
+  left: 0 !important;
+  z-index: 999;
+  background-color: #f8fbf2;
+}
+
+.ql-snow .ql-stroke {
+  fill: none;
+  stroke: #969d88;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2;
+}
+
+.ql-snow .ql-fill {
+  fill: #969d88;
+}
+
+.ql-underline:hover .ql-fill {
+  fill: #49a843 !important;
+}
+
+.ant-drawer .ant-drawer-header-title {
+  flex-direction: row-reverse !important;
+}
+
+.ant-drawer .ant-drawer-close {
+  color: #EF4444;
+}
+.ant-drawer .ant-drawer-close:hover {
+  color: #C13939;
 }
 
 /*# sourceMappingURL=style.css.map */

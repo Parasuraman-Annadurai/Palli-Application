@@ -6,9 +6,9 @@
   font-family: "Roboto";
   -webkit-user-select: none;
   /* Safari */
+  -ms-user-select: none;
   /* IE 10 and IE 11 */
-  -moz-user-select: none;
-       user-select: none;
+  user-select: none;
   /* Standard syntax */
 }
 
@@ -487,10 +487,11 @@ li {
   text-decoration: underline;
   overflow: hidden;
   text-overflow: ellipsis;
-  width: 200px;
+  width: 320px;
   display: inline-block;
   cursor: pointer;
   font: 400 12px/16px "Roboto";
+  height: 15px;
 }
 .main-container .task-details-header-container .student-task-file-container {
   align-items: center;
@@ -680,4 +681,6 @@ li {
   height: 100%;
   opacity: 0;
   cursor: pointer;
-}/*# sourceMappingURL=StudentLogin.css.map */
+}
+
+/*# sourceMappingURL=StudentLogin.css.map */

@@ -57,8 +57,9 @@ const Comments = (props) => {
 
                           <div className="user-detail flex">
                             <div className="name">
-                              {comment.commentor_details.first_name} (
-                              {comment.commentor_details.role})
+                              {comment.commentor_details.first_name} 
+                              <span>(
+                              {comment.commentor_details.role})</span>
                               <div className="comment-date">
                                 {dayjs.utc(comment?.created_at).format("MMM DD YYYY hh:mm a")}
                               </div>
@@ -72,7 +73,13 @@ const Comments = (props) => {
                                     <>
                                       <img
                                         src="/icons/deleteIcon.svg"
-                                        alt=""
+                                        alt="delete-icon"
+                                        onMouseOver={(e)=>{
+                                          e.target.src ="/icons/delete-icon-hover.svg"
+                                        }}
+                                        onMouseOut={(e)=>{
+                                          e.target.src ="/icons/deleteIcon.svg"
+                                        }}
                                         onClick={() => handleDeleteComment(comment.id)}
                                       />
                                     </>}
@@ -86,7 +93,6 @@ const Comments = (props) => {
 
                         {isCommentEditId === comment.id ? (
                           <div className="edit-comment">
-                            <CustomIcons />
                             <ReactQuill
                               theme="snow"
                               modules={toolbarConfig}
@@ -98,11 +104,11 @@ const Comments = (props) => {
                                   handleSaveComment();
                                 }
                               }}
-                              placeholder="comment here..."
+                              placeholder="Comment here..."
                             />
                             <div className="cancel_save_btns">
-                            <button className="btn secondary-medium" onClick={handleCancelEdit}>Cancel</button> 
-                            <button className="btn primary-medium"  onClick={handleSaveComment}>Save</button>
+                            <button className="btn-small secondary-medium" onClick={handleCancelEdit}>Cancel</button> 
+                            <button className="btn-small primary-medium"  onClick={handleSaveComment}>Save</button>
                             </div>
                             
                           </div>
@@ -129,8 +135,7 @@ const Comments = (props) => {
             <>
               <div className="no-comments-container">
                 <img src="/icons/no-data.svg" alt="" />
-                {/* Ganesh change inline style to scss */}
-                <p style={{ textAlign: "center" }}>No comments here...</p>
+                <p>No comments here...</p>
               </div>
             </>
           )}
@@ -150,9 +155,8 @@ const Comments = (props) => {
             </div>
           </div>
 
-          <CustomIcons />
             <ReactQuill
-              placeholder="comment here..."
+              placeholder="Comment here..."
               theme="snow"
               modules={toolbarConfig}
               value={isCommentEditId ? "" : commentText}

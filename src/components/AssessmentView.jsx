@@ -423,7 +423,7 @@ const AssessmentView = ({
                     <p className="task-description-label">Description <span>*</span></p>
                     <div className="task-editor">
                       <>
-                        <CustomIcons />
+                        {/* <CustomIcons /> */}
                         <ReactQuill
                           placeholder="Type here"
                           className={`${
@@ -666,6 +666,7 @@ const AssessmentView = ({
                           {filteredUsers?.map((students, index) => {
                             return (
                               <>
+                                <div className="task-main-container">
                                 <div className="task-container" >
                                   <div className="task-user-list-container flex" key={index}>
                                     <div className="student-info flex">
@@ -882,6 +883,7 @@ const AssessmentView = ({
                                     </>
                                   )}
                                 </div>
+                                </div>
                               </>
                             )
                           })}
@@ -906,7 +908,11 @@ const AssessmentView = ({
                                 No Assignee has been assigned to this {type}
                                 <button className="btn primary-medium" style={{ marginTop: "10px" }} onClick={() => {
                                   setIsStudentScoreOpen(!isStudentScoreOpen)
-                                  setToggleAssigneeWeightage(0)
+                                  if(type === "assessment"){
+                                    setToggleAssigneeWeightage(1)
+                                  }else{
+                                    setToggleAssigneeWeightage(0)
+                                  }
                                   setIsMode("edit")
                                 }}>Add Assignee</button>
                               </p>

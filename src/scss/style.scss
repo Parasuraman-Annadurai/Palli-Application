@@ -1738,3 +1738,13 @@ color: #EF4444;
   color: #C13939;
 }
 }
+
+.ant-tooltip-content {
+  .ant-tooltip-inner {
+    color: white; /* Change to the desired color */
+    background-color: $font-secondary-color;
+  }
+}
+.ant-tooltip .ant-tooltip-arrow:before {
+  background: $font-secondary-color;
+}

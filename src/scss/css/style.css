@@ -1325,4 +1325,13 @@ tooltip[data-mode=link]::before {
   color: #C13939;
 }
 
+.ant-tooltip-content .ant-tooltip-inner {
+  color: white; /* Change to the desired color */
+  background-color: #969d88;
+}
+
+.ant-tooltip .ant-tooltip-arrow:before {
+  background: #969d88;
+}
+
 /*# sourceMappingURL=style.css.map */

@@ -707,7 +707,7 @@ const AssessmentModule = ({ type }) => {
         } else {
           // If it's a new comment, add it to the task
           assessment.task_users.map((users) => {
-            users.comments.unshift(updatedComment);
+            users.comments.push(updatedComment);
           });
         }
       }

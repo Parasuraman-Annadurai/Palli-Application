@@ -599,10 +599,11 @@ li {
         text-decoration: underline;
         overflow: hidden;
         text-overflow: ellipsis;
-        width: 200px;
+        width: 320px;
         display: inline-block;
         cursor: pointer;
         font: 400 12px/16px $font-Roboto;
+        height: 15px;
       }
     }
 

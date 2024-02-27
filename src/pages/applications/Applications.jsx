@@ -26,7 +26,7 @@ import "./scss/css/Applications.css";
 import { getPermission } from "../../utils/validate";
 
 const Applications = () => {
-  const filterFields = useFilter("applicant");
+  const filterFields = useFilter("applicant");  
   const { id: batchId } = useParams();
   const navigate = useNavigate();
   const { token, user } = useAuth();
@@ -162,7 +162,7 @@ const Applications = () => {
                   <div className="personal-detial-background">
                     <div className="details-section">
                       <p className="personal-detial-title">Gender</p>
-                      <p className="personal-detial-name">Male</p>
+                      <p className="personal-detial-name">--</p>
                     </div>
                   </div>
                   <div className="personal-detial-background">
@@ -401,13 +401,13 @@ const Applications = () => {
           <h1>Applications list</h1>
         </div>
         <div className="application-actions flex">
-          <div className="import">
+          {/* <div className="import">
             {getPermission(
               user.permissions,
               "create_Excel_Import",
               "create_Excel_Import"
             ) && <button className="btn primary-medium">Import</button>}
-          </div>
+          </div> */}
         </div>
       </div>
       {getPermission(user.permissions, "Applicant", "read") && (

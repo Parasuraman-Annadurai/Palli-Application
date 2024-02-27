@@ -297,7 +297,7 @@ li {
 
   .switch-batch-list-container {
     overflow: scroll;
-    height: calc(100vh - 110px);
+    // height: calc(100vh - 150px);
     overflow-y: auto;
     &::-webkit-scrollbar {
       width: 0;
@@ -374,7 +374,8 @@ li {
     }
   }
 }
-.dark-overlay {
-  background-color: black;
-  opacity: 0.4;
+
+:where(.css-dev-only-do-not-override-6j9yrn).ant-btn-default:not(:disabled):not(.ant-btn-disabled):hover {
+  color: $primary-color;
+  border-color: $primary-color;
 }

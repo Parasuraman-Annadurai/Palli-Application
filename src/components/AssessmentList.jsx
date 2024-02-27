@@ -61,9 +61,20 @@ const TaskCard = ({
                 <>
                     {getPermission(user.permissions, "Task", "update") && (
                   <img
-                        src={selectedAssessment === assessment.id && isMode == "edit" ? "/icons/edit-pencil-fill.svg" : "/icons/edit-pencil.svg"}
+                        src={selectedAssessment === assessment.id && isMode == "edit" ? "/icons/edit-pencil-fill.svg" : "/icons/edit-pencil-icon.svg"}
                         className="edit-icon"
                         alt="edit-icon"
+                        onMouseOver={(e)=>{
+                          if (!(selectedAssessment === assessment.id && isMode === "edit")) {
+                            e.target.src = "/icons/edit-icon-hover.svg";   
+                        }
+                        }}
+                        onMouseOut={(e)=>{
+                          if (!(selectedAssessment === assessment.id && isMode === "edit")) {
+                            e.target.src = "/icons/edit-pencil-icon.svg";
+                        }
+                        
+                        }}
                         onClick={(event) => {
                           event.stopPropagation();
                           setIsStudentScoreOpen(false)
@@ -78,6 +89,12 @@ const TaskCard = ({
                      src="/icons/deleteIcon.svg"
                      alt="delete-icon"
                      className="delete-icon"
+                     onMouseOver={(e)=>{
+                      e.target.src ="/icons/delete-icon-hover.svg"
+                    }}
+                    onMouseOut={(e)=>{
+                      e.target.src ="/icons/deleteIcon.svg"
+                    }}
                      id={assessment.id}
                      onClick={(e) => {
                        handleDelete(assessment.id);

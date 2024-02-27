@@ -352,7 +352,7 @@ const AssessmentView = ({
                     <p className="task-description-label">Description <span>*</span></p>
                     <div className="task-editor">
                       <>
-                        <CustomIcons />
+                        {/* <CustomIcons /> */}
                         <ReactQuill
                           placeholder="Type here"
                           className={`${
@@ -492,8 +492,8 @@ const AssessmentView = ({
                                         <div className="profile flex">
                                           <div className="profile-letter">
                                             <span>
-                                              {student?.first_name[0]}
-                                              {student?.last_name[0]}
+                                            {student?.first_name[0]?.toUpperCase()}
+                                            {student?.last_name[0]?.toUpperCase()} 
                                             </span>
                                           </div>
                                           <div className="assignee-name">
@@ -548,15 +548,18 @@ const AssessmentView = ({
                   className="search-icon"
                 />
 
-                <img
+                {/* <img
                   src="/icons/filterIcon.svg"
                   alt="filter-icon"
                   className="filter-icon"
-                />
+                /> */}
               </div>
             </div>
           )}
-          {currentAssessment?.task_users?.length > 0 ? (
+          <>
+        <div className="task-main-container">
+
+        {currentAssessment?.task_users?.length > 0 ? (
             currentAssessment.task_users.map((students, index) => {
               return (
                 <>
@@ -624,6 +627,12 @@ const AssessmentView = ({
                           src="/icons/comment-fill.svg"
                           onClick={() => setOpenComments(students.id)}
                           alt="comment-icon"
+                          onMouseOver={(e)=>{
+                            e.target.src = "/icons/comment-fill-hover.svg";
+                        }}
+                        onMouseOut={(e)=>{
+                            e.target.src = "/icons/comment-fill.svg";
+                        }}
                         />
                       </div>
                       <div className="student-work">
@@ -711,8 +720,7 @@ const AssessmentView = ({
                     {activeWeightageIndex === index && (
                       <>
                         <div
-                          className="applied-weightage-list-container flex"
-                          style={{ gap: "10px" }}
+                          className="applied-weightage-list-container flex" 
                         >
                           {currentAssessment.task_weightages &&
                             currentAssessment.task_weightages.map(
@@ -766,11 +774,14 @@ const AssessmentView = ({
                               )
                             )}
                         </div>
+                        <div className="main-error-msg">
                         <p className="error-message">
                           {formErrors["score"]
                             ? formErrors["score"]
                             : ""}
                         </p>
+                        </div>
+                      
                       </>
                     )}
                   </div>
@@ -795,6 +806,8 @@ const AssessmentView = ({
                   )}
                 </>
           )}
+        </div>
+            </>
         </main>
       )}
     </>

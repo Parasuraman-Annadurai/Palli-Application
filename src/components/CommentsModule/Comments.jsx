@@ -53,12 +53,16 @@ const Comments = (props) => {
                     <>
                       <div className="comments-main-container" key={index}>
                         <div className="comments-section flex">
-                          <div className="profile-image flex">GG</div>
+                          {/* <div className="profile-image flex">{comment.commentor_details.first_name}</div> */}
+                          <div className="profile-image flex">{comment.commentor_details.first_name.substring(0, 2).toUpperCase()}</div>
+
+                          {/* <div className="profile-image flex">{comment.commentor_details.first_name.substring(0, 2)}</div> */}
 
                           <div className="user-detail flex">
                             <div className="name">
-                              {comment.commentor_details.first_name} (
-                              {comment.commentor_details.role})
+                              {comment.commentor_details.first_name} 
+                              <span>(
+                              {comment.commentor_details.role})</span>
                               <div className="comment-date">
                                 {dayjs().format("MMMM DD YYYY h:mm A")}
                               </div>
@@ -72,7 +76,13 @@ const Comments = (props) => {
                                     <>
                                       <img
                                         src="/icons/deleteIcon.svg"
-                                        alt=""
+                                        alt="delete-icon"
+                                        onMouseOver={(e)=>{
+                                          e.target.src ="/icons/delete-icon-hover.svg"
+                                        }}
+                                        onMouseOut={(e)=>{
+                                          e.target.src ="/icons/deleteIcon.svg"
+                                        }}
                                         onClick={() => handleDeleteComment(comment.id)}
                                       />
                                     </>}
@@ -86,7 +96,7 @@ const Comments = (props) => {
 
                         {isCommentEditId === comment.id ? (
                           <div className="edit-comment">
-                            <CustomIcons />
+                            {/* <CustomIcons /> */}
                             <ReactQuill
                               theme="snow"
                               modules={toolbarConfig}
@@ -94,8 +104,8 @@ const Comments = (props) => {
                               onChange={(value) => setCommentText(value)}
                             />
                             <div className="cancel_save_btns">
-                            <button className="btn secondary-medium" onClick={handleCancelEdit}>Cancel</button> 
-                            <button className="btn primary-medium"  onClick={handleSaveComment}>Save</button>
+                            <button className="btn-small secondary-medium" onClick={handleCancelEdit}>Cancel</button> 
+                            <button className="btn-small primary-medium"  onClick={handleSaveComment}>Save</button>
                             </div>
                             
                           </div>
@@ -122,8 +132,7 @@ const Comments = (props) => {
             <>
               <div className="no-comments-container">
                 <img src="/icons/no-data.svg" alt="" />
-                {/* Ganesh change inline style to scss */}
-                <p style={{ textAlign: "center" }}>No comments here...</p>
+                <p>No comments here...</p>
               </div>
             </>
           )}
@@ -143,7 +152,7 @@ const Comments = (props) => {
             </div>
           </div>
 
-          <CustomIcons />
+          {/* <CustomIcons /> */}
           <ReactQuill theme="snow" modules={toolbarConfig} value={isCommentEditId ? "" : commentText} onChange={(value) => {
             if (commentErrors["Comments"]) {
               delete commentErrors["Comments"]

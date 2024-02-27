@@ -53,7 +53,7 @@ const Comments = (props) => {
                     <>
                       <div className="comments-main-container" key={index}>
                         <div className="comments-section flex">
-                          <div className="profile-image flex">{comment.commentor_details?.first_name[0]}{comment.commentor_details?.last_name[0]}</div>
+                          <div className="profile-image flex">{comment.commentor_details?.first_name[0]?.toUpperCase()}{comment.commentor_details?.last_name[0]?.toUpperCase()}</div>
 
                           <div className="user-detail flex">
                             <div className="name">

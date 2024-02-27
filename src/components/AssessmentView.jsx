@@ -798,7 +798,7 @@ const AssessmentView = ({
                                     {getPermission(user.permissions, "TaskComments", "read") && (
                                       <Comments
                                         comments={
-                                          currentAssessment.task_users.find(
+                                           currentAssessment?.task_users?.find(
                                             (student) => student.id === openComments
                                           )?.comments || []
                                         }

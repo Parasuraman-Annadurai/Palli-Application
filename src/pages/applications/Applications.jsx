@@ -64,13 +64,20 @@ const Applications = () => {
           setLoading(false);
         })
         .catch((error) => {
-          if (error.response.status == 401) {
-            notification.error({
-              message: "Error",
-              description: "Unauthorized User",
-              duration: 1,
+          setLoading(false);
+          if (
+            error.response.data.status === 400 ||
+            "errors" in error.response.data
+          ) {
+            const errorMessages = error.response.data.errors;
+  
+            Object.entries(errorMessages).forEach(([key, messages]) => {
+              notification.error({
+                message: `${key} Error`,
+                description: messages,
+                duration:1
+              })
             });
-            navigate("/login");
           }
         });
     }
@@ -401,41 +408,42 @@ const Applications = () => {
           <h1>Applications list</h1>
         </div>
         <div className="application-actions flex">
-          {/* <div className="import">
-            {getPermission(
+          <div className="import">
+            {/* {getPermission(
               user.permissions,
               "create_Excel_Import",
               "create_Excel_Import"
-            ) && <button className="btn primary-medium">Import</button>}
-          </div> */}
+            ) && <button className="btn primary-medium">Import</button>} */}
+          </div>
         </div>
       </div>
       {getPermission(user.permissions, "Applicant", "read") && (
         <>
           <div className="application-inner-container">
-            <div className="search-container">
-              <img src="/icons/searchIcon.svg" alt="" className="search-icon" />
-              <input
-                type="text"
-                value={applicationSearch}
-                placeholder="Search here"
-                onChange={(e) => setApplicationSearch(e.target.value)}
-              />
-
-              <Popover
-                placement="leftTop"
-                open={popoverVisible}
-                onOpenChange={(visible) => setPopoverVisible(visible)}
-                content={content}
-                trigger={["click"]}
-              >
-                <img
-                  src="/icons/filterIcon.svg"
-                  alt=""
-                  className="filter-icon"
-                />
-              </Popover>
-            </div>
+               <div className="search-container">
+               <img src="/icons/searchIcon.svg" alt="" className="search-icon" />
+               <input
+                 type="text"
+                 value={applicationSearch}
+                 placeholder="Search here"
+                 onChange={(e) => setApplicationSearch(e.target.value)}
+               />
+ 
+               <Popover
+                 placement="leftTop"
+                 open={popoverVisible}
+                 onOpenChange={(visible) => setPopoverVisible(visible)}
+                 content={content}
+                 trigger={["click"]}
+               >
+                 <img
+                   src="/icons/filterIcon.svg"
+                   alt=""
+                   className="filter-icon"
+                 />
+               </Popover>
+             </div>
+           
             <div className="filter-or-search-container">
               {applicationSearch.length > 0 ? (
                 <>
@@ -518,7 +526,7 @@ const Applications = () => {
                         </div>
                         <div className="application-gender">
                           <p>Gender</p>
-                          <span>Male</span>
+                          <span>-</span>
                         </div>
                         <div className="application-dob">
                           <p>Date of Birth</p>
@@ -544,8 +552,9 @@ const Applications = () => {
                     </div>
                   ))}
                   {applications?.data?.length === 0 && (
-                    <div className="flex no-data-container">
+                    <div className="flex no-data-container flex" style={{flexDirection:"column"}}>
                       <img src="/icons/no-data.svg" className="no-data-image" />
+                      <span>There are currently no data available.</span>
                     </div>
                   )}
                 </>

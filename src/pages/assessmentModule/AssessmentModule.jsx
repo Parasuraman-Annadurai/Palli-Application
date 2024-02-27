@@ -76,7 +76,20 @@ const AssessmentModule = ({ type }) => {
           }
         })
         .catch((error) => {
+          setLoading(false);
+
           console.log(error);
+          if (
+            error.response.data.status === 400 ||
+            "errors" in error.response.data
+          ) {
+            const errorMessages = error.response.data.errors;
+            notification.error({
+              message: error.response.data?.message,
+              description: errorMessages.detail,
+              duration:1
+            })
+          }
         });
     }
    
@@ -107,6 +120,7 @@ const AssessmentModule = ({ type }) => {
               const weightObject = {
                 weightage_percentage: weightage.weightage_percentage,
                 weightage: weightage.weightage,
+                taskScore : weightage.task_score
               };
 
               if ("id" in weightage) {
@@ -131,20 +145,34 @@ const AssessmentModule = ({ type }) => {
     }
 
     if(editId){
-      axios
-      .get(`${API_END_POINT}/api/applicant/${batchId}/list/students/?search=${assigneeSearch}`, {
-        headers,
-      })
-      .then((res) => {
-        if (res.status === 200 && res.data.message === "Success") {
+
+      if(getPermission(user.permissions,"TaskUser","create")){
+        axios
+        .get(`${API_END_POINT}/api/applicant/${batchId}/list/students/?search=${assigneeSearch}`, {
+          headers,
+        })
+        .then((res) => {
+          if (res.status === 200 && res.data.message === "Success") {
+            setIsAssigneeLoading(false)
+            setStudents(res.data.data);
+          }
+        })
+        .catch((error) => {
           setIsAssigneeLoading(false)
-          setStudents(res.data.data);
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-        setIsAssigneeLoading(false)
-      });
+          if (
+            error.response.data.status === 400 ||
+            "errors" in error.response.data
+          ) {
+            const errorMessages = error.response.data.errors;
+            notification.error({
+              message: error.response.data?.message,
+              description: errorMessages.detail,
+              duration:1
+            })
+          }
+        });
+      }
+     
     }
   }, [editId,assigneeSearch]);
 
@@ -189,6 +217,7 @@ const AssessmentModule = ({ type }) => {
           setEditId(updatedTasks.length > 0 ? updatedTasks[0].id : null);
         })
         .catch((error) => {
+          setIsDeleteModalOpen(false);
           console.log(error);
         });
     }
@@ -247,7 +276,6 @@ const AssessmentModule = ({ type }) => {
       data: currentAssessment,
     })
       .then((res) => {
-        console.log(res.message);
         notification.success({
           message: "Success",
           description: isNew
@@ -494,7 +522,7 @@ const AssessmentModule = ({ type }) => {
 
     copyAssessment = copyAssessment.map((assessment) => {
       if (assessment.id === editId) {
-        assessment.task_weightages[index][key] = Number(value);
+        assessment.task_weightages[index][key] = parseFloat(value);
       }
       return assessment;
     });
@@ -530,24 +558,15 @@ const AssessmentModule = ({ type }) => {
         setAssessmentList(copiedTaskStatusChangeStudents);
       })
       .catch((error) => {
+        setLoading(false)
         console.log(error);
       });
   };
 
   const handleAddScore = (studentScores) => {
     setLoading(true)
-    let statusChangeAfterScore = [...assessmentList];
-    statusChangeAfterScore = statusChangeAfterScore.map((assessment) => {
-      assessment.task_users = assessment.task_users.map((student) => {
-        studentScores.forEach((scores) => {
-          if (student.id === scores.task_user) {
-            student.task_status = "COMPLETED";
-          }
-        });
-        return student;
-      });
-      return assessment;
-    });
+   
+   
     //weightage open and score added only submit the score
     studentScores.map((scores) => {
       const url = `${API_END_POINT}/api/task/${batchId}/create/task_score/`;
@@ -562,6 +581,19 @@ const AssessmentModule = ({ type }) => {
             )
             .then((res) => {
               setLoading(false)
+              let statusChangeAfterScore = [...assessmentList];
+
+              statusChangeAfterScore = statusChangeAfterScore.map((assessment) => {
+                assessment.task_users = assessment.task_users.map((student) => {
+                  studentScores.forEach((scores) => {
+                    if (student.id === scores.task_user) {
+                      student.task_status = "COMPLETED";
+                    }
+                  });
+                  return student;
+                });
+                return assessment;
+              });
               setAssessmentList(statusChangeAfterScore);
               setActiveWeightageIndex(null);
               notification.success({
@@ -571,6 +603,8 @@ const AssessmentModule = ({ type }) => {
             })
             .catch((error) => {
               console.log(error);
+              setLoading(false)
+
             });
         })
         .catch((error) => {
@@ -739,6 +773,7 @@ const AssessmentModule = ({ type }) => {
               open={true}
               title={`${isDraft ? "Discard" : "Delete"} Confirmation`}
               onOk={handleConfirmDelete}
+              maskClosable={false}
               onCancel={() => {
                 setIsDeleteModalOpen(false);
                 setIsDraft(false);
@@ -814,6 +849,7 @@ const AssessmentModule = ({ type }) => {
                       setWeightageErros={setWeightageErros}
                       setAssigneeSearch ={setAssigneeSearch}
                       isAssigneeLoading={isAssigneeLoading}
+                      setIsMode={setIsMode}
                     />
                   );
                 }

@@ -10,7 +10,7 @@ import { notification } from "antd";
 
 import { useAuth } from "../../context/AuthContext";
 
-import { isEmailValid, isPasswordValid } from "../../utils/validate";
+import { fetchUserInfo, isEmailValid, isPasswordValid } from "../../utils/validate";
 
 import { API_END_POINT } from "../../../config";
 
@@ -31,82 +31,30 @@ const Login = () => {
     },
   });
   const handleLogin = (loginData) => {
+    setLoading(true);
+
     axios
       .post(`${API_END_POINT}/api/accounts/login/`, loginData)
       .then((res) => {
-        setLoading(true);
-        axios({
-          url: `${API_END_POINT}/api/accounts/get/user_info/`,
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${res.data.data.access}`,
-          },
-        })
-          .then((userData) => {
-            localStorage.setItem("token", JSON.stringify(res.data.data));
-            setToken(res.data.data);
-
-           
-
-            const formattedPermissions = {};
-            // Iterate through the permissions data and populate the object dynamically
-            userData.data.data.permissions.forEach(permission => {
-              const { module_name, access_level } = permission;
-              if (!formattedPermissions[module_name]) {
-                // If the key doesn't exist yet, initialize it with an array containing the access level
-                formattedPermissions[module_name] = [access_level];
-              } else {
-                // If the key already exists, push the access level to the existing array
-                formattedPermissions[module_name].push(access_level);
-              }
-            });
-
-            const formattedUserData ={
-              ...userData.data.data,
-              permissions : formattedPermissions
-            }
-            localStorage.setItem("user", JSON.stringify(formattedUserData));
-
-            setUser(formattedUserData);
-
-            setLoading(false);
-            //the if condition used for the admin,student,dckap user not contain any batches Im redirected to 232 batch
-            if (formattedUserData.role === "Student") {
-              navigate(`/batch/${formattedUserData.batch?.[0].id}/task`)
-            } else if(formattedUserData.role == "Trainer"){
-              navigate(`/batch/${formattedUserData.batch?.[0].id}/task`)
-            } 
-            else if(formattedUserData.role == "DckapUser"){
-              navigate(`/batch/${formattedUserData.batch?.[0].id}/task`)
-            } 
-            else {
-              navigate(`/batch/${formattedUserData.batch?.[0].id}/applications`);
-            }
-
-
-          })
-          .catch((error) => {
-            console.error("userData fetch Failed", err);
-            if (
-              error.response.data.status === 400 ||
-              "errors" in error.response.data
-            ) {
-              const errorMessages = error.response.data.errors;
-              notification.error({
-                message: `Permission denied Error`,
-                description: errorMessages.detail,
-                duration:1
-              })
-            }
-          });
+        setLoading(false)
+        fetchUserInfo(res.data.data, setToken, setUser, navigate, setLoading,true);
       })
-      .catch((err) => {
-        notification.error({
-          message: "Unauthorized",
-          description: `Credentials not found `,
-          duration: 3,
-        });
-        navigate("/login");
+      .catch((error) => {
+        setLoading(false)
+        if (
+          error.response.data.status === 400 ||
+          "errors" in error.response.data
+        ) {
+          const errorMessages = error.response.data.errors;
+
+          Object.entries(errorMessages).forEach(([key, messages]) => {
+            notification.error({
+              message: `${key} Error`,
+              description: messages,
+              duration:1
+            })
+          });
+        }
       });
   };
   const handleEyeIconLongPress = (field) => {

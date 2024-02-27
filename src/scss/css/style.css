@@ -935,6 +935,8 @@ body .container .assignee-and-weightage-container {
 body .container .assignee-and-weightage-container .title-section {
   max-width: 167px;
   width: 100%;
+  align-items: center;
+  gap: 25px;
 }
 body .container .assignee-and-weightage-container .title-section .selection {
   cursor: pointer;

@@ -3,6 +3,9 @@ import React from "react";
 import { Skeleton } from "antd";
 
 import dayjs from "dayjs";
+import utcPlugin from 'dayjs/plugin/utc';
+
+dayjs.extend(utcPlugin);
 
 import { getPermission } from "../utils/validate";
 
@@ -52,7 +55,7 @@ const TaskCard = ({
         ) : (
           <>
             <div className="task-icon flex">
-              <span>JS</span>
+                <span>{assessment?.task_title && assessment?.task_title?.split(" ").slice(0, 2).map(word => word[0].toUpperCase()).join("")}</span>
             </div>
 
             <div className="task-details">
@@ -112,7 +115,7 @@ const TaskCard = ({
                 )}
               </p>
               <span className="btn btn-deadline">
-                {dayjs(assessment.due_date).format("MMM,DD YYYY")}
+                {dayjs.utc(assessment.due_date).format('MMM DD YYYY')}
               </span>
             </div>
           </>
@@ -162,12 +165,20 @@ const AssessmentList = ({
               className="filter-icon"
             />
           )}
+
+
         </div>
+
+        {loading ? <Skeleton active /> : (
+          <>
         <div className="create-container">
           {getPermission(user.permissions, "Task", "create") && (
+           !loading && (
             <button className="btn create-btn" onClick={handleAdd}>
               <span>+</span>Create {mode}
             </button>
+           )
+
           )}
 
         </div>
@@ -189,6 +200,8 @@ const AssessmentList = ({
               />
             ))}
         </div>
+          </>
+        )}
       </section>
     </>
   );

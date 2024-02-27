@@ -6,7 +6,7 @@ import { useAuth } from "../../context/AuthContext";
 
 import ReactQuill from "react-quill";
 import "quill/dist/quill.snow.css";
-import { CustomIcons, toolbarConfig, valueTrim,getPermission } from "../../utils/validate";
+import { CustomIcons, toolbarConfig, validateComments,getPermission } from "../../utils/validate";
 
 import "./scss/Comments.css";
 
@@ -53,10 +53,7 @@ const Comments = (props) => {
                     <>
                       <div className="comments-main-container" key={index}>
                         <div className="comments-section flex">
-                          {/* <div className="profile-image flex">{comment.commentor_details.first_name}</div> */}
-                          <div className="profile-image flex">{comment.commentor_details.first_name.substring(0, 2).toUpperCase()}</div>
-
-                          {/* <div className="profile-image flex">{comment.commentor_details.first_name.substring(0, 2)}</div> */}
+                          <div className="profile-image flex">{comment.commentor_details?.first_name[0]}{comment.commentor_details?.last_name[0]}</div>
 
                           <div className="user-detail flex">
                             <div className="name">
@@ -64,7 +61,7 @@ const Comments = (props) => {
                               <span>(
                               {comment.commentor_details.role})</span>
                               <div className="comment-date">
-                                {dayjs().format("MMMM DD YYYY h:mm A")}
+                                {dayjs.utc(comment?.created_at).format("MMM DD YYYY hh:mm a")}
                               </div>
                             </div>
                             <div className="icons">
@@ -96,12 +93,18 @@ const Comments = (props) => {
 
                         {isCommentEditId === comment.id ? (
                           <div className="edit-comment">
-                            {/* <CustomIcons /> */}
                             <ReactQuill
                               theme="snow"
                               modules={toolbarConfig}
                               value={commentText}
                               onChange={(value) => setCommentText(value)}
+                              onKeyUp={(e) => {
+                                if (e.key === 'Enter') {
+                                  // Call your function here
+                                  handleSaveComment();
+                                }
+                              }}
+                              placeholder="Comment here..."
                             />
                             <div className="cancel_save_btns">
                             <button className="btn-small secondary-medium" onClick={handleCancelEdit}>Cancel</button> 
@@ -143,7 +146,7 @@ const Comments = (props) => {
        <div className="overall_input_send">
          <div className="Input-send">
           <div className="input-wrapper">
-            <div className="send"  onClick={() => valueTrim(commentText, "Comments", setCommentsErrors) && handleSendComment(commenterId)}>
+            <div className="send"  onClick={() => validateComments(commentText, "Comments", setCommentsErrors) && handleSendComment(commenterId)}>
               <img
                 src="/icons/Send.svg"
                 alt="Send-icon"
@@ -152,13 +155,20 @@ const Comments = (props) => {
             </div>
           </div>
 
-          {/* <CustomIcons /> */}
-          <ReactQuill theme="snow" modules={toolbarConfig} value={isCommentEditId ? "" : commentText} onChange={(value) => {
-            if (commentErrors["Comments"]) {
-              delete commentErrors["Comments"]
-            }
-            setCommentText(value)
-          }} />
+            <ReactQuill
+              placeholder="Comment here..."
+              theme="snow"
+              modules={toolbarConfig}
+              value={isCommentEditId ? "" : commentText}
+              onChange={(value) => {
+                if (commentErrors["Comments"]) {
+                  delete commentErrors["Comments"];
+                }
+                setCommentText(value);
+              }}
+              
+            />
+
           <p className="error-message">{commentErrors["Comments"] ? commentErrors["Comments"] : ""}</p>
         </div>
        </div>

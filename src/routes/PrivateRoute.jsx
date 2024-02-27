@@ -1,12 +1,17 @@
-import React from "react";
-import { Navigate, Outlet, useParams, useLocation } from "react-router-dom";
+import React, { useEffect,useState } from "react";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
 
 import { useAuth } from "../context/AuthContext";
 
 import Sidebar from "../layouts/Sidebar";
+import axios from "axios";
+import { API_END_POINT } from "../../config";
+
+import { jwtDecode } from "jwt-decode";
+import { Skeleton } from "antd";
 
 const PrivateRoute = () => {
-  const { token,user } = useAuth();
+  const { token, user, setToken } = useAuth();
   const {pathname} = useLocation()
 
   const auth = token["access"] ? true : false;
@@ -24,7 +29,6 @@ const PrivateRoute = () => {
   const filteredMenuList = menuList.filter(
     (menuItem) => !(user.role === "Student" && menuItem.id === "applications")
   );
-    
 
   return auth ? (
     <div className="container">

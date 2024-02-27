@@ -6,7 +6,6 @@ import "./scss/PasswordRequirement.css";
 const GetPasswordPopover = ({ password }) => {
  
   const requirementsList = trackPwdRequirement(password);
-  console.log(requirementsList);
   return (
     <ul>
       {requirementsList.map((item) => (

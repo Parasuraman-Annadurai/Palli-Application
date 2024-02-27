@@ -20,11 +20,11 @@ const Navbar = () => {
     axios
       .post(`${API_END_POINT}/api/accounts/logout/`, token, { headers })
       .then((res) => {
-        console.log("Logout Successfully");
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+        navigate("/login");
       });
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-    navigate("/login");
+    
   };
   const content = (
     <div>

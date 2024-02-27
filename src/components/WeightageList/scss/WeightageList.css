@@ -208,6 +208,11 @@ li {
   padding-bottom: 7.5px;
   padding-left: 5px;
   padding-right: 5px;
+  -moz-appearance: textfield;
+}
+.weightage-main-container .overall .weightage-adding-container .weight-inputs .weight-age-input .percentage .task-weight-value-selector::-webkit-inner-spin-button, .weightage-main-container .overall .weightage-adding-container .weight-inputs .weight-age-input .percentage .task-weight-value-selector::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 .weightage-main-container .overall .weightage-adding-container .weight-inputs .weight-age-input .weightage-unit-container .weightage-action {
   cursor: pointer;

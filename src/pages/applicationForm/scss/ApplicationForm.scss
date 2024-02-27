@@ -269,6 +269,7 @@ li {
             // background-color: red;
             .row-one {
               justify-content: space-between;
+              margin-bottom: 24px;
               .applicant-name {
                 p {
                   font: 400 12px/16px $font-Roboto;
@@ -336,7 +337,8 @@ li {
               }
             }
             .row-two {
-                justify-content: space-between;
+              justify-content: space-between;
+              margin-bottom: 24px;
               .applicant-email {
                 p {
                   font: 400 12px/16px $font-Roboto;
@@ -346,43 +348,250 @@ li {
                   }
                 }
                 input {
-                    margin-top: 6px;
-                    color: $font-primary-color;
-                    width: 100%;
-                    padding: 10px 331px 10px 10px;
-                    
-                    border-radius: 4px;
-                    border: 1px solid $border-color;
-                    &:focus {
-                      border: 1px solid $primary-color;
-                    }
-                    &::placeholder {
-                      color: $font-secondary-color;
-                    }
+                  margin-top: 6px;
+                  color: $font-primary-color;
+                  width: 100%;
+                  padding: 10px 331px 10px 10px;
+
+                  border-radius: 4px;
+                  border: 1px solid $border-color;
+                  &:focus {
+                    border: 1px solid $primary-color;
                   }
-              }
-              .applicant-contact-number{
-                p {
-                    font: 400 12px/16px $font-Roboto;
+                  &::placeholder {
                     color: $font-secondary-color;
-                    span {
-                      color: red;
-                    }
                   }
-                  input {
-                      margin-top: 6px;
-                      color: $font-primary-color;
-                      width: 100%;
-                      padding: 10px 79px 10px 10px;
-                      border-radius: 4px;
-                      border: 1px solid $border-color;
-                      &:focus {
-                        border: 1px solid $primary-color;
-                      }
-                      &::placeholder {
-                        color: $font-secondary-color;
-                      }
-                    }
+                }
+              }
+              .applicant-contact-number {
+                p {
+                  font: 400 12px/16px $font-Roboto;
+                  color: $font-secondary-color;
+                  span {
+                    color: red;
+                  }
+                }
+                input {
+                  margin-top: 6px;
+                  color: $font-primary-color;
+                  width: 100%;
+                  padding: 10px 79px 10px 10px;
+                  border-radius: 4px;
+                  border: 1px solid $border-color;
+                  &:focus {
+                    border: 1px solid $primary-color;
+                  }
+                  &::placeholder {
+                    color: $font-secondary-color;
+                  }
+                }
+              }
+            }
+            .row-three {
+              justify-content: space-between;
+              margin-bottom: 24px;
+              .applicant-whatsapp-number {
+                p {
+                  font: 400 12px/16px $font-Roboto;
+                  color: $font-secondary-color;
+                  span {
+                    color: red;
+                  }
+                }
+                input {
+                  margin-top: 6px;
+                  color: $font-primary-color;
+                  width: 100%;
+                  padding: 10px 79px 10px 10px;
+                  border-radius: 4px;
+                  border: 1px solid $border-color;
+                  &:focus {
+                    border: 1px solid $primary-color;
+                  }
+                  &::placeholder {
+                    color: $font-secondary-color;
+                  }
+                }
+              }
+              .applicant-address {
+                font: 400 12px/16px $font-Roboto;
+                color: $font-secondary-color;
+                span {
+                  color: red;
+                }
+                input {
+                  margin-top: 6px;
+                  color: $font-primary-color;
+                  width: 100%;
+                  padding: 10px 79px 10px 10px;
+                  border-radius: 4px;
+                  border: 1px solid $border-color;
+                  &:focus {
+                    border: 1px solid $primary-color;
+                  }
+                  &::placeholder {
+                    color: $font-secondary-color;
+                  }
+                }
+              }
+              .applicant-apartment {
+                font: 400 12px/16px $font-Roboto;
+                color: $font-secondary-color;
+                span {
+                  color: red;
+                }
+                input {
+                  margin-top: 6px;
+                  color: $font-primary-color;
+                  width: 100%;
+                  padding: 10px 79px 10px 10px;
+                  border-radius: 4px;
+                  border: 1px solid $border-color;
+                  &:focus {
+                    border: 1px solid $primary-color;
+                  }
+                  &::placeholder {
+                    color: $font-secondary-color;
+                  }
+                }
+              }
+            }
+            .row-four{
+              justify-content: space-between;
+              margin-bottom: 24px;
+              .applicant-postcode{
+                p {
+                  font: 400 12px/16px $font-Roboto;
+                  color: $font-secondary-color;
+                  span {
+                    color: red;
+                  }
+                }
+                input {
+                  margin-top: 6px;
+                  color: $font-primary-color;
+                  width: 100%;
+                  padding: 10px 79px 10px 10px;
+                  border-radius: 4px;
+                  border: 1px solid $border-color;
+                  &:focus {
+                    border: 1px solid $primary-color;
+                  }
+                  &::placeholder {
+                    color: $font-secondary-color;
+                  }
+                }
+              }
+              .applicant-city {
+                font: 400 12px/16px $font-Roboto;
+                color: $font-secondary-color;
+                span {
+                  color: red;
+                }
+                input {
+                  margin-top: 6px;
+                  color: $font-primary-color;
+                  width: 100%;
+                  padding: 10px 79px 10px 10px;
+                  border-radius: 4px;
+                  border: 1px solid $border-color;
+                  &:focus {
+                    border: 1px solid $primary-color;
+                  }
+                  &::placeholder {
+                    color: $font-secondary-color;
+                  }
+                }
+              }
+              .applicant-whatsapp-number {
+                font: 400 12px/16px $font-Roboto;
+                color: $font-secondary-color;
+                span {
+                  color: red;
+                }
+                input {
+                  margin-top: 6px;
+                  color: $font-primary-color;
+                  width: 100%;
+                  padding: 10px 79px 10px 10px;
+                  border-radius: 4px;
+                  border: 1px solid $border-color;
+                  &:focus {
+                    border: 1px solid $primary-color;
+                  }
+                  &::placeholder {
+                    color: $font-secondary-color;
+                  }
+                }
+              }
+            }
+            .row-five{
+              justify-content: space-between;
+              margin-bottom: 24px;
+              .applicant-postcode{
+                p {
+                  font: 400 12px/16px $font-Roboto;
+                  color: $font-secondary-color;
+                  span {
+                    color: red;
+                  }
+                }
+                input {
+                  margin-top: 6px;
+                  color: $font-primary-color;
+                  width: 100%;
+                  padding: 10px 79px 10px 10px;
+                  border-radius: 4px;
+                  border: 1px solid $border-color;
+                  &:focus {
+                    border: 1px solid $primary-color;
+                  }
+                  &::placeholder {
+                    color: $font-secondary-color;
+                  }
+                }
+              }
+              .applicant-city {
+                font: 400 12px/16px $font-Roboto;
+                color: $font-secondary-color;
+                span {
+                  color: red;
+                }
+                input {
+                  margin-top: 6px;
+                  color: $font-primary-color;
+                  width: 100%;
+                  padding: 10px 79px 10px 10px;
+                  border-radius: 4px;
+                  border: 1px solid $border-color;
+                  &:focus {
+                    border: 1px solid $primary-color;
+                  }
+                  &::placeholder {
+                    color: $font-secondary-color;
+                  }
+                }
+              }
+              .applicant-whatsapp-number {
+                font: 400 12px/16px $font-Roboto;
+                color: $font-secondary-color;
+                span {
+                  color: red;
+                }
+                input {
+                  margin-top: 6px;
+                  color: $font-primary-color;
+                  width: 100%;
+                  padding: 10px 79px 10px 10px;
+                  border-radius: 4px;
+                  border: 1px solid $border-color;
+                  &:focus {
+                    border: 1px solid $primary-color;
+                  }
+                  &::placeholder {
+                    color: $font-secondary-color;
+                  }
+                }
               }
             }
           }

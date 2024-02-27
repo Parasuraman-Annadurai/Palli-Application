@@ -218,6 +218,7 @@ li {
 }
 .application-form-main-container .sub-container .application-form-container .ant-tabs-content-holder .personal-container .personal-form .row-one {
   justify-content: space-between;
+  margin-bottom: 24px;
 }
 .application-form-main-container .sub-container .application-form-container .ant-tabs-content-holder .personal-container .personal-form .row-one .applicant-name p {
   font: 400 12px/16px "Roboto";
@@ -284,6 +285,7 @@ li {
 }
 .application-form-main-container .sub-container .application-form-container .ant-tabs-content-holder .personal-container .personal-form .row-two {
   justify-content: space-between;
+  margin-bottom: 24px;
 }
 .application-form-main-container .sub-container .application-form-container .ant-tabs-content-holder .personal-container .personal-form .row-two .applicant-email p {
   font: 400 12px/16px "Roboto";
@@ -325,6 +327,207 @@ li {
   border: 1px solid #49a843;
 }
 .application-form-main-container .sub-container .application-form-container .ant-tabs-content-holder .personal-container .personal-form .row-two .applicant-contact-number input::placeholder {
+  color: #969d88;
+}
+.application-form-main-container .sub-container .application-form-container .ant-tabs-content-holder .personal-container .personal-form .row-three {
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+.application-form-main-container .sub-container .application-form-container .ant-tabs-content-holder .personal-container .personal-form .row-three .applicant-whatsapp-number p {
+  font: 400 12px/16px "Roboto";
+  color: #969d88;
+}
+.application-form-main-container .sub-container .application-form-container .ant-tabs-content-holder .personal-container .personal-form .row-three .applicant-whatsapp-number p span {
+  color: red;
+}
+.application-form-main-container .sub-container .application-form-container .ant-tabs-content-holder .personal-container .personal-form .row-three .applicant-whatsapp-number input {
+  margin-top: 6px;
+  color: #12160a;
+  width: 100%;
+  padding: 10px 79px 10px 10px;
+  border-radius: 4px;
+  border: 1px solid #eaeaea;
+}
+.application-form-main-container .sub-container .application-form-container .ant-tabs-content-holder .personal-container .personal-form .row-three .applicant-whatsapp-number input:focus {
+  border: 1px solid #49a843;
+}
+.application-form-main-container .sub-container .application-form-container .ant-tabs-content-holder .personal-container .personal-form .row-three .applicant-whatsapp-number input::placeholder {
+  color: #969d88;
+}
+.application-form-main-container .sub-container .application-form-container .ant-tabs-content-holder .personal-container .personal-form .row-three .applicant-address {
+  font: 400 12px/16px "Roboto";
+  color: #969d88;
+}
+.application-form-main-container .sub-container .application-form-container .ant-tabs-content-holder .personal-container .personal-form .row-three .applicant-address span {
+  color: red;
+}
+.application-form-main-container .sub-container .application-form-container .ant-tabs-content-holder .personal-container .personal-form .row-three .applicant-address input {
+  margin-top: 6px;
+  color: #12160a;
+  width: 100%;
+  padding: 10px 79px 10px 10px;
+  border-radius: 4px;
+  border: 1px solid #eaeaea;
+}
+.application-form-main-container .sub-container .application-form-container .ant-tabs-content-holder .personal-container .personal-form .row-three .applicant-address input:focus {
+  border: 1px solid #49a843;
+}
+.application-form-main-container .sub-container .application-form-container .ant-tabs-content-holder .personal-container .personal-form .row-three .applicant-address input::placeholder {
+  color: #969d88;
+}
+.application-form-main-container .sub-container .application-form-container .ant-tabs-content-holder .personal-container .personal-form .row-three .applicant-apartment {
+  font: 400 12px/16px "Roboto";
+  color: #969d88;
+}
+.application-form-main-container .sub-container .application-form-container .ant-tabs-content-holder .personal-container .personal-form .row-three .applicant-apartment span {
+  color: red;
+}
+.application-form-main-container .sub-container .application-form-container .ant-tabs-content-holder .personal-container .personal-form .row-three .applicant-apartment input {
+  margin-top: 6px;
+  color: #12160a;
+  width: 100%;
+  padding: 10px 79px 10px 10px;
+  border-radius: 4px;
+  border: 1px solid #eaeaea;
+}
+.application-form-main-container .sub-container .application-form-container .ant-tabs-content-holder .personal-container .personal-form .row-three .applicant-apartment input:focus {
+  border: 1px solid #49a843;
+}
+.application-form-main-container .sub-container .application-form-container .ant-tabs-content-holder .personal-container .personal-form .row-three .applicant-apartment input::placeholder {
+  color: #969d88;
+}
+.application-form-main-container .sub-container .application-form-container .ant-tabs-content-holder .personal-container .personal-form .row-four {
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+.application-form-main-container .sub-container .application-form-container .ant-tabs-content-holder .personal-container .personal-form .row-four .applicant-postcode p {
+  font: 400 12px/16px "Roboto";
+  color: #969d88;
+}
+.application-form-main-container .sub-container .application-form-container .ant-tabs-content-holder .personal-container .personal-form .row-four .applicant-postcode p span {
+  color: red;
+}
+.application-form-main-container .sub-container .application-form-container .ant-tabs-content-holder .personal-container .personal-form .row-four .applicant-postcode input {
+  margin-top: 6px;
+  color: #12160a;
+  width: 100%;
+  padding: 10px 79px 10px 10px;
+  border-radius: 4px;
+  border: 1px solid #eaeaea;
+}
+.application-form-main-container .sub-container .application-form-container .ant-tabs-content-holder .personal-container .personal-form .row-four .applicant-postcode input:focus {
+  border: 1px solid #49a843;
+}
+.application-form-main-container .sub-container .application-form-container .ant-tabs-content-holder .personal-container .personal-form .row-four .applicant-postcode input::placeholder {
+  color: #969d88;
+}
+.application-form-main-container .sub-container .application-form-container .ant-tabs-content-holder .personal-container .personal-form .row-four .applicant-city {
+  font: 400 12px/16px "Roboto";
+  color: #969d88;
+}
+.application-form-main-container .sub-container .application-form-container .ant-tabs-content-holder .personal-container .personal-form .row-four .applicant-city span {
+  color: red;
+}
+.application-form-main-container .sub-container .application-form-container .ant-tabs-content-holder .personal-container .personal-form .row-four .applicant-city input {
+  margin-top: 6px;
+  color: #12160a;
+  width: 100%;
+  padding: 10px 79px 10px 10px;
+  border-radius: 4px;
+  border: 1px solid #eaeaea;
+}
+.application-form-main-container .sub-container .application-form-container .ant-tabs-content-holder .personal-container .personal-form .row-four .applicant-city input:focus {
+  border: 1px solid #49a843;
+}
+.application-form-main-container .sub-container .application-form-container .ant-tabs-content-holder .personal-container .personal-form .row-four .applicant-city input::placeholder {
+  color: #969d88;
+}
+.application-form-main-container .sub-container .application-form-container .ant-tabs-content-holder .personal-container .personal-form .row-four .applicant-whatsapp-number {
+  font: 400 12px/16px "Roboto";
+  color: #969d88;
+}
+.application-form-main-container .sub-container .application-form-container .ant-tabs-content-holder .personal-container .personal-form .row-four .applicant-whatsapp-number span {
+  color: red;
+}
+.application-form-main-container .sub-container .application-form-container .ant-tabs-content-holder .personal-container .personal-form .row-four .applicant-whatsapp-number input {
+  margin-top: 6px;
+  color: #12160a;
+  width: 100%;
+  padding: 10px 79px 10px 10px;
+  border-radius: 4px;
+  border: 1px solid #eaeaea;
+}
+.application-form-main-container .sub-container .application-form-container .ant-tabs-content-holder .personal-container .personal-form .row-four .applicant-whatsapp-number input:focus {
+  border: 1px solid #49a843;
+}
+.application-form-main-container .sub-container .application-form-container .ant-tabs-content-holder .personal-container .personal-form .row-four .applicant-whatsapp-number input::placeholder {
+  color: #969d88;
+}
+.application-form-main-container .sub-container .application-form-container .ant-tabs-content-holder .personal-container .personal-form .row-five {
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+.application-form-main-container .sub-container .application-form-container .ant-tabs-content-holder .personal-container .personal-form .row-five .applicant-postcode p {
+  font: 400 12px/16px "Roboto";
+  color: #969d88;
+}
+.application-form-main-container .sub-container .application-form-container .ant-tabs-content-holder .personal-container .personal-form .row-five .applicant-postcode p span {
+  color: red;
+}
+.application-form-main-container .sub-container .application-form-container .ant-tabs-content-holder .personal-container .personal-form .row-five .applicant-postcode input {
+  margin-top: 6px;
+  color: #12160a;
+  width: 100%;
+  padding: 10px 79px 10px 10px;
+  border-radius: 4px;
+  border: 1px solid #eaeaea;
+}
+.application-form-main-container .sub-container .application-form-container .ant-tabs-content-holder .personal-container .personal-form .row-five .applicant-postcode input:focus {
+  border: 1px solid #49a843;
+}
+.application-form-main-container .sub-container .application-form-container .ant-tabs-content-holder .personal-container .personal-form .row-five .applicant-postcode input::placeholder {
+  color: #969d88;
+}
+.application-form-main-container .sub-container .application-form-container .ant-tabs-content-holder .personal-container .personal-form .row-five .applicant-city {
+  font: 400 12px/16px "Roboto";
+  color: #969d88;
+}
+.application-form-main-container .sub-container .application-form-container .ant-tabs-content-holder .personal-container .personal-form .row-five .applicant-city span {
+  color: red;
+}
+.application-form-main-container .sub-container .application-form-container .ant-tabs-content-holder .personal-container .personal-form .row-five .applicant-city input {
+  margin-top: 6px;
+  color: #12160a;
+  width: 100%;
+  padding: 10px 79px 10px 10px;
+  border-radius: 4px;
+  border: 1px solid #eaeaea;
+}
+.application-form-main-container .sub-container .application-form-container .ant-tabs-content-holder .personal-container .personal-form .row-five .applicant-city input:focus {
+  border: 1px solid #49a843;
+}
+.application-form-main-container .sub-container .application-form-container .ant-tabs-content-holder .personal-container .personal-form .row-five .applicant-city input::placeholder {
+  color: #969d88;
+}
+.application-form-main-container .sub-container .application-form-container .ant-tabs-content-holder .personal-container .personal-form .row-five .applicant-whatsapp-number {
+  font: 400 12px/16px "Roboto";
+  color: #969d88;
+}
+.application-form-main-container .sub-container .application-form-container .ant-tabs-content-holder .personal-container .personal-form .row-five .applicant-whatsapp-number span {
+  color: red;
+}
+.application-form-main-container .sub-container .application-form-container .ant-tabs-content-holder .personal-container .personal-form .row-five .applicant-whatsapp-number input {
+  margin-top: 6px;
+  color: #12160a;
+  width: 100%;
+  padding: 10px 79px 10px 10px;
+  border-radius: 4px;
+  border: 1px solid #eaeaea;
+}
+.application-form-main-container .sub-container .application-form-container .ant-tabs-content-holder .personal-container .personal-form .row-five .applicant-whatsapp-number input:focus {
+  border: 1px solid #49a843;
+}
+.application-form-main-container .sub-container .application-form-container .ant-tabs-content-holder .personal-container .personal-form .row-five .applicant-whatsapp-number input::placeholder {
   color: #969d88;
 }
 

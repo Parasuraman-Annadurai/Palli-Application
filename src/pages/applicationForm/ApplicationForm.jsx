@@ -164,26 +164,29 @@ const ApplicationForm = () => {
                         </div>
 
 
-                        <div className="row-three">
+                        <div className="row-three flex">
                           <div className="applicant-whatsapp-number">
-                            <label>Whatsapp Phone Number</label>
+                            <p>Whatsapp Phone Number <span>*</span></p>
                             <input
+                             placeholder="Type here"
                               type="text"
                               name="whatsapp-number"
                               onChange={onchange}
                             />
                           </div>
                           <div className="applicant-address">
-                            <label>Street Address *</label>
+                            <p>Street Address <span>*</span></p>
                             <input
+                             placeholder="Type here"
                               type="text"
                               name="address"
                               onChange={onchange}
                             />
                           </div>
                           <div className="applicant-apartment">
-                            <label>Apartment, suite, etc *</label>
+                            <p>Apartment, suite, etc <span>*</span></p>
                             <input
+                             placeholder="Type here"
                               type="text"
                               name="apartment"
                               onChange={onchange}
@@ -192,26 +195,29 @@ const ApplicationForm = () => {
                         </div>
 
 
-                        <div className="row-four">
+                        <div className="row-four flex">
                           <div className="applicant-postcode">
-                            <label>ZIP / Postal Code *</label>
+                            <p>ZIP / Postal Code <span>*</span></p>
                             <input
+                              placeholder="Type here"
                               type="text"
                               name="post-code"
                               onChange={onchange}
                             />
                           </div>
                           <div className="applicant-city">
-                            <label>City</label>
+                            <p>City<span>*</span></p>
                             <input
+                              placeholder="Type here"
                               type="text"
                               name="city"
                               onChange={onchange}
                             />
                           </div>
                           <div className="applicant-whatsapp-number">
-                            <label>Country</label>
+                            <p>Country<span>*</span></p>
                             <input
+                             placeholder="Type here"
                               type="text"
                               name="country"
                               onChange={onchange}
@@ -220,10 +226,11 @@ const ApplicationForm = () => {
                         </div>
 
 
-                        <div className="row-five">
+                        <div className="row-five flex">
                           <div className="applicant-whatsapp-number">
                             <label>Aadhar Card Number *</label>
                             <input
+                              placeholder="Type here"
                               type="text"
                               name="aadhar-number"
                               onChange={onchange}
@@ -232,6 +239,7 @@ const ApplicationForm = () => {
                           <div className="applicant-postcode">
                             <label>Upload the Aadhar Card *</label>
                             <input
+                              placeholder="Type here"
                               type="file"
                               name="aadhar-doc"
                               onChange={onchange}

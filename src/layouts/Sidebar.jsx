@@ -151,7 +151,7 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
           <ul>
             {menuList.map((menu, index) => {
               // Check if the menu id is "applications" and the user has permission related to "Applicant"
-              if (menu.id === "applications" && getPermission(user.permissions, "Applicant", "create")) {
+              if (menu.id === "applications" && getPermission(user.permissions, "Applicant", "read")) {
                 return (
                   <li
                     key={index}

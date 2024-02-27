@@ -263,6 +263,8 @@ li {
   border: 1px solid #49a843;
   width: 125px;
   cursor: pointer;
+  display: flex;
+  align-items: center;
 }
 .main-container .module-header-section .comments:hover {
   color: var(--btn-hover-color);
@@ -275,7 +277,8 @@ li {
 }
 .main-container .module-header-section .comments img {
   width: 16px;
-  margin-left: 18px;
+  margin-left: 10px;
+  margin-right: 10px;
 }
 .main-container .module-header-section .comments .secondary-border-btn {
   height: 38px;

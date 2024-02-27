@@ -325,6 +325,8 @@ li {
       border: 1px solid $primary-color;
       width: 125px;
       cursor: pointer;
+      display: flex;
+      align-items: center;
       &:hover {
         color: var(--btn-hover-color);
         border: 1px solid var(--btn-hover-color);
@@ -337,7 +339,8 @@ li {
       }
       img {
         width: 16px;
-        margin-left: 18px;
+        margin-left: 10px;
+        margin-right: 10px;
       }
       .secondary-border-btn {
         height: 38px;

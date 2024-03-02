@@ -228,7 +228,7 @@ const ApplicationForm = () => {
 
                         <div className="row-five flex">
                           <div className="applicant-whatsapp-number">
-                            <label>Aadhar Card Number *</label>
+                            <p>Aadhar Card Number <span>*</span></p>
                             <input
                               placeholder="Type here"
                               type="text"
@@ -237,7 +237,7 @@ const ApplicationForm = () => {
                             />
                           </div>
                           <div className="applicant-postcode">
-                            <label>Upload the Aadhar Card *</label>
+                            <p>Upload the Aadhar Card <span>*</span></p>
                             <input
                               placeholder="Type here"
                               type="file"

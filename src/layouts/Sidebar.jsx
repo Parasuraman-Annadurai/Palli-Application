@@ -78,16 +78,6 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
         }
       })
   };
-  // const items = [
-  //   {
-  //     label: (
-  //       <button className="btn primary-medium" onClick={handleLogout}>
-  //         Logout
-  //       </button>
-  //     ),
-  //     key: "0",
-  //   },
-  // ];
 
 
 
@@ -190,7 +180,22 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
                   return null; // Skip rendering Task and Assessment if user doesn't have read permission for Task
                 }
               } else {
-                return null; // Skip rendering other menu items
+                // return null; // Skip rendering other menu items
+                return(
+                  <li
+                  key={index}
+                  onClick={() => setActive(menu.id)}
+                  className={`main-link ${menu.id === active ? "main-active" : ""}`}
+                >
+                  <Link
+                    to={isDashboardPage ? "/dashboard" : `/batch/${batchId}/${menu.id}`}
+                    className="flex"
+                  >
+                    <img src={menu.id === active ? "/icons/setting_active_icon.svg":"/icons/settings_icon.svg"} alt={menu.label} />
+                    <span>{menu.label}</span>
+                  </Link>
+                </li>
+                )
               }
             })}
 
@@ -202,12 +207,6 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
           {user.first_name[0]?.toUpperCase()}{user.last_name[0]?.toUpperCase()}
             {/* <img src="/icons/profile.svg" alt="" /> */}
           </div>
-
-          {/* <Dropdown
-            menu={{
-              items,
-            }}
-          > */}
             <div className="user-details">
               <p>{user.first_name} {user.last_name}</p>
                  <div className="logout-icon flex"
@@ -226,7 +225,6 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
               </Tooltip>
               </div>
             </div>
-          {/* </Dropdown> */}
         </div>
       </nav>
       {batchLoading ? <Skeleton active/> : (

@@ -19,7 +19,7 @@ const ADDTASK = "/batch/:id/module/add/task";
 const EDITTASK = "/batch/:id/module/edit/task/:taskId";
 const ADDQUIZ = "/batch/:id/module/add/quiz";
 const WEIGHTAGE = "/batch/:id/module/add/task/weightage";
-
+const SETTINGS = "/batch/:id/settings"
 export {
   DASHBOARD,
   LOGIN,
@@ -34,5 +34,6 @@ export {
   EDITTASK,
   TASKMODULE,
   ASSESSMENTMODULE,
-  APPLICATIONVIEW
+  APPLICATIONVIEW,
+  SETTINGS
 };

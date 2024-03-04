@@ -21,6 +21,7 @@ const PrivateRoute = () => {
     { label: "Applications", id: "applications" },
     { label: "Task", id: "task" },
     { label: "Assessment", id: "assessment" },
+    { label: "Settings", id: "settings" },
   ];
 
 

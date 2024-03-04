@@ -31,6 +31,7 @@ function Settings() {
     );
 
     if (validateField) {
+      setLoading(true);
       axios
         .post(
           `${API_END_POINT}/api/accounts/reset/password/`,

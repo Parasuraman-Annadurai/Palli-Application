@@ -295,8 +295,12 @@ li {
     }
   }
 }
-
-.main-container {
+.vertical-line{
+  width: 1px;
+  background-color: $border-color;
+  padding-bottom: 30px;
+}
+.main-container-settings {
   margin: 30px;
   width: 100%;
   border: 1px solid $border-color !important;
@@ -304,7 +308,7 @@ li {
   .change-password-menu-container {
     max-width: 400px;
     width: 100%;
-    padding: 15px;
+    padding: 30px;
     .menu-title{
       font: 500 16px/20px $font-Roboto;
       color: $font-primary-color;
@@ -325,6 +329,9 @@ li {
         border: 1px solid $border-color;
         padding: 10px 0px 10px 12px;
         border-radius: 4px;
+        &::placeholder{
+          font: 400 10px/14px $font-Roboto;
+        }
       }
       .input-field:focus {
         border: 1px solid $primary-color;
@@ -353,6 +360,9 @@ li {
         border: 1px solid $border-color;
         color: $font-primary-color;
         border-radius: 4px;
+        &::placeholder{
+          font: 400 10px/14px $font-Roboto;
+        }
 
         &:focus {
           border: 1px solid $primary-color;

@@ -24,7 +24,6 @@ function Settings() {
   };
   const handleChangePassword = (e) => {
     e.preventDefault();
-    setLoading(true);
     const validateField = validateNewpassword(
       { newPassword, confirmPassword },
       setPasswordError

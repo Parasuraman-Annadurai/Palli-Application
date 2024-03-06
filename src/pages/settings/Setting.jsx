@@ -32,7 +32,7 @@ function Settings() {
     if (validateField) {
       setLoading(true);
       axios
-        .post(
+        .put(
           `${API_END_POINT}/api/accounts/reset/password/`,
           { password: confirmPassword },
           { headers }

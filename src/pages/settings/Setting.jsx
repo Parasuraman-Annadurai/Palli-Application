@@ -32,7 +32,7 @@ function Settings() {
     if (validateField) {
       setLoading(true);
       axios
-        .post(
+        .put(
           `${API_END_POINT}/api/accounts/reset/password/`,
           { password: confirmPassword },
           { headers }
@@ -52,6 +52,20 @@ function Settings() {
         })
         .catch((error) => {
           setLoading(false);
+          if (
+            error.response.data.status === 400 ||
+            "errors" in error.response.data
+          ) {
+            const errorMessages = error.response.data.errors;
+  
+            Object.entries(errorMessages).forEach(([key, messages]) => {
+              notification.error({
+                message: `${key} Error`,
+                description: messages,
+                duration:1
+              })
+            });
+          }
         });
     }
   };
@@ -64,8 +78,8 @@ function Settings() {
             <div className="user-image-container">
               {/* <img src="" alt="" /> */}
               <p>
-                {user?.first_name?.[0]}
-                {user?.last_name?.[0]}
+                {user?.first_name?.[0].toUpperCase()}
+                {user?.last_name?.[0].toUpperCase()}
               </p>
             </div>
             <div className="name-and-email-info">
@@ -86,7 +100,10 @@ function Settings() {
           </div>
         </section>
       </div>
-      <div className="main-container">
+      <div className="vertical-line">
+        
+      </div>
+      <div className="main-container-settings">
         <div className="change-password-menu-container">
           <div className="menu-title">
             <p> Change Password</p>

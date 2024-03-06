@@ -246,69 +246,81 @@ li {
   width: 16px;
 }
 
-.main-container {
+.vertical-line {
+  width: 1px;
+  background-color: #eaeaea;
+  padding-bottom: 30px;
+}
+
+.main-container-settings {
   margin: 30px;
   width: 100%;
   border: 1px solid #eaeaea !important;
   border-radius: 4px;
 }
-.main-container .change-password-menu-container {
+.main-container-settings .change-password-menu-container {
   max-width: 400px;
   width: 100%;
-  padding: 15px;
+  padding: 30px;
 }
-.main-container .change-password-menu-container .menu-title {
+.main-container-settings .change-password-menu-container .menu-title {
   font: 500 16px/20px "Roboto";
   color: #12160a;
 }
-.main-container .inputs-section .new-password-input-section {
+.main-container-settings .inputs-section .new-password-input-section {
   position: relative;
   flex-direction: column;
   margin-bottom: 25px;
 }
-.main-container .inputs-section .new-password-input-section label {
+.main-container-settings .inputs-section .new-password-input-section label {
   font: 400 12px/16px "Roboto";
   color: #969d88;
   padding-bottom: 6px;
 }
-.main-container .inputs-section .new-password-input-section .input-field {
+.main-container-settings .inputs-section .new-password-input-section .input-field {
   color: #12160a;
   border: 1px solid #eaeaea;
   padding: 10px 0px 10px 12px;
   border-radius: 4px;
 }
-.main-container .inputs-section .new-password-input-section .input-field:focus {
+.main-container-settings .inputs-section .new-password-input-section .input-field::placeholder {
+  font: 400 10px/14px "Roboto";
+}
+.main-container-settings .inputs-section .new-password-input-section .input-field:focus {
   border: 1px solid #49a843;
   outline: none;
 }
-.main-container .inputs-section .new-password-input-section .eye-icon {
+.main-container-settings .inputs-section .new-password-input-section .eye-icon {
   width: 16px;
   position: absolute;
   top: 35px;
   right: 10px;
 }
-.main-container .inputs-section .confirm-password-input-section {
+.main-container-settings .inputs-section .confirm-password-input-section {
   position: relative;
   flex-direction: column;
   margin-bottom: 30px;
 }
-.main-container .inputs-section .confirm-password-input-section label {
+.main-container-settings .inputs-section .confirm-password-input-section label {
   font: 400 12px/16px "Roboto";
   color: #969d88;
   margin-bottom: 6px;
 }
-.main-container .inputs-section .confirm-password-input-section .input-field {
+.main-container-settings .inputs-section .confirm-password-input-section .input-field {
   width: 100%;
   padding: 10px 30px 10px 12px;
   border: 1px solid #eaeaea;
   color: #12160a;
   border-radius: 4px;
 }
-.main-container .inputs-section .confirm-password-input-section .input-field:focus {
+.main-container-settings .inputs-section .confirm-password-input-section .input-field::placeholder {
+  font: 400 10px/14px "Roboto";
+}
+.main-container-settings .inputs-section .confirm-password-input-section .input-field:focus {
   border: 1px solid #49a843;
   outline: none;
 }
-.main-container .inputs-section .confirm-password-input-section .eye-icon {
+.main-container-settings .inputs-section .confirm-password-input-section .eye-icon {
   width: 16px;
   position: absolute;
   top: 35px;

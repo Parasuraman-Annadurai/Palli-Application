@@ -179,7 +179,7 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
                 } else {
                   return null; // Skip rendering Task and Assessment if user doesn't have read permission for Task
                 }
-              } else {
+              } else if (menu.id == "settings") {
                 // return null; // Skip rendering other menu items
                 return(
                   <li

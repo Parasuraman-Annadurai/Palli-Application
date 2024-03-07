@@ -169,7 +169,7 @@ const Applications = () => {
                   <div className="personal-detial-background">
                     <div className="details-section">
                       <p className="personal-detial-title">Gender</p>
-                      <p className="personal-detial-name">--</p>
+                      <p className="personal-detial-name">{details?.gender?.charAt(0).toUpperCase()}{details?.gender?.slice(1).toLowerCase()}</p>
                     </div>
                   </div>
                   <div className="personal-detial-background">
@@ -484,6 +484,7 @@ const Applications = () => {
                       key={application.id}
                       onClick={() => handleViewMore(application.id)}
                     >
+                      {console.log(application)}
                       <div className="application-details-container flex">
                         <div className="application-info flex">
                           <div className="application-name-container">
@@ -526,7 +527,7 @@ const Applications = () => {
                         </div>
                         <div className="application-gender">
                           <p>Gender</p>
-                          <span>-</span>
+                          <span>{application?.gender?.charAt(0).toUpperCase()}{application?.gender?.slice(1).toLowerCase()}</span>
                         </div>
                         <div className="application-dob">
                           <p>Date of Birth</p>

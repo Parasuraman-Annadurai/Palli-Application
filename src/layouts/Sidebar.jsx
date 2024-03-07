@@ -51,7 +51,9 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
       
       const currentBatch = user?.batch.find(batch => batch.id === Number(batchId));
       setCurrentBatch(currentBatch);
-
+       
+      const remainingBatchLists = user?.batch?.filter((batch)=>batch?.id != Number(batchId));
+      setBatchList(remainingBatchLists)
       }
   }, [batchId]);
 
@@ -204,11 +206,12 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
 
         <div className="user-profile flex">
           <div className="profile-img">
-          {user.first_name[0]?.toUpperCase()}{user.last_name[0]?.toUpperCase()}
-            {/* <img src="/icons/profile.svg" alt="" /> */}
+            <p>
+            {user.first_name[0]?.toUpperCase()}{user.last_name[0]?.toUpperCase()}
+            </p>
           </div>
             <div className="user-details">
-              <p>{user.first_name} {user.last_name}</p>
+                <p>{`${user?.first_name}`} {user?.last_name?.length > 5 ? `${user?.last_name.slice(0, 4)}...` : user?.last_name}</p>
                  <div className="logout-icon flex"
                   onMouseOver={(e)=>{
                     e.target.src ="/icons/logout-hover.svg"
@@ -229,7 +232,7 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
       </nav>
       {batchLoading ? <Skeleton active/> : (
         <AddBatch
-        batchList={user?.batch} //all batches
+        batchList = { user && user.batch ? user.batch.filter(batch => batch && batch.id && batch.id !== Number(batchId)) : []} //all batches except current batch
         open={open} // drawer open
         setOpen={setOpen} // set drawer open state
         onClose={onClose}

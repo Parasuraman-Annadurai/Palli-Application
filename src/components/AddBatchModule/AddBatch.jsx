@@ -44,7 +44,8 @@ const AddBatch = (props) => {
       ),
       content: "Are you sure you want to Switch this Batch?",
       onOk: () => {
-        navigate(`/batch/${batch.id}/applications`);
+        const navigateUrl = getPermission(user.permissions,"Applicant","read") ? `/batch/${batch?.id}/applications` : `/batch/${batch?.id}/task`
+        navigate(navigateUrl);
         window.location.reload();
       },
     });
@@ -237,9 +238,14 @@ const AddBatch = (props) => {
               {!batchShow ? "Switch Batch" : editId ? "Edit Batch" : "Add Batch"}
             </div>
           }
-          onClose={()=>{props.onClose() }}
+          onClose={()=>{props.onClose(),
+            setBatchshow(false)
+          }}
           open={props.open}
           placement="left"
+          maskClosable={()=>{
+            setBatchshow(false)
+          }}
         >
         {props.open && (
           <div className="popup-container">

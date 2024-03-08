@@ -49,9 +49,7 @@ const AssessmentModule = ({ type }) => {
     setIsStudentScoreOpen(true)
     //this useEffect used to fetch task list and will re-run whenever filter or search is updated
     if(getPermission(user.permissions,"Task","create")){
-      const url = `${API_END_POINT}/api/task/${batchId}/list_task/?limit=10&page=1&filter_task_type=${
-        type === "task" ? 0 : 1
-      }&search=${assessmentSearchWord}`;
+      const url = `${API_END_POINT}/api/task/${batchId}/list_task/?limit=10&page=1&filter_task_type=${type}&search=${assessmentSearchWord}`;
       let assessmentId = editId;
 
       axios
@@ -343,7 +341,7 @@ const AssessmentModule = ({ type }) => {
       task_description: "",
       due_date: dayjs().format("YYYY-MM-DD HH:mm:ss"),
       draft: true,
-      task_type: type == "assessment" ? 1 : 0,
+      task_type: type,
     };
 
     const concatNewAssessment = [createAssessment, ...assessmentList];

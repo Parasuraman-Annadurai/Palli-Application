@@ -126,14 +126,17 @@ const AssessmentView = ({
 
 
   useEffect(() => {
-    setStudentLoading(true)
-    axios.get(`${API_END_POINT}/api/task/${batchId}/get/task/${taskId}`, { headers }).then((res) => {
-      setAssignedUsers(res.data.data)
-      setStudentLoading(false)
-    }).catch((error)=>{
-      setStudentLoading(false)
-      console.log(error);
-    })
+    if(!draft){
+      setStudentLoading(true)
+      axios.get(`${API_END_POINT}/api/task/${batchId}/get/task/${taskId}`, { headers }).then((res) => {
+        setAssignedUsers(res.data.data)
+        setStudentLoading(false)
+      }).catch((error)=>{
+        setStudentLoading(false)
+        console.log(error);
+      })
+    }
+   
   }, [taskId,isStudentScoreOpen])
 
   const handleCheckboxChange = (studentId) => {

@@ -229,7 +229,8 @@ const AssessmentModule = ({ type }) => {
 
     // Check if the task with the same task_title already exists
     const isDuplicateTask = assessmentList.some(
-      (existingAssessment, index) => index !== 0 &&
+      (existingAssessment) =>
+        existingAssessment.id !== assessment.id &&
         existingAssessment.task_title.trim().toLowerCase() === newTaskName
     );
     
@@ -351,6 +352,7 @@ const AssessmentModule = ({ type }) => {
 
     setEditId(uniqueId);
     setIsStudentScoreOpen(false);
+    setIsMode("edit");
   };
 
   const handleInputChange = (name, value) => {

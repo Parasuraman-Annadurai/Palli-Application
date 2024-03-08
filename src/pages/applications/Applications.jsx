@@ -207,7 +207,7 @@ const Applications = () => {
                       <p className="personal-detial-title">Aadhar Number</p>
                       <span className="personal-detial-name">
                         {details.aadhaar_number}
-                        <a>View document</a>
+                        <a href={details?.aadhar_card} target="_blank">View document</a>
                       </span>
                     </div>
                   </div>
@@ -266,7 +266,7 @@ const Applications = () => {
                       </p>
 
                       <p className="Guardian-detial-name">
-                        <a>View document</a>
+                        <a href={details?.family_card} target="_blank">View document</a>
                       </p>
                     </div>
                   </div>

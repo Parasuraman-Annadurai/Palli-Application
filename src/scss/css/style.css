@@ -436,7 +436,7 @@ body .container .side-nav-container .user-profile .profile-img p {
   color: #12160a;
   padding: 8px 9.5px;
   border-radius: 4px;
-  font: 400 12px/16px "Roboto";
+  font: 500 12px/16px "Roboto";
 }
 body .container .side-nav-container .user-profile .user-details p {
   font-size: 12px;
@@ -663,6 +663,9 @@ body .container .main-container {
 }
 body .container .main-container .module-header-section-container {
   padding-bottom: 5px;
+}
+body .container .main-container .module-header-section-container .title-message {
+  margin-bottom: 0px;
 }
 body .container .main-container .module-header-section-container .module-header-section {
   justify-content: space-between;

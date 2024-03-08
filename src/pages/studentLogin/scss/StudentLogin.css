@@ -232,104 +232,103 @@ li {
   font: 500 12px/16px "Roboto";
 }
 
-.main-container {
+.student-main-container {
   padding: 20px;
   width: 100%;
 }
-.main-container .module-header-section {
+.student-main-container .module-header-section {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 16px;
   font-size: 16px;
   font-weight: 500;
   font-family: "Roboto";
-  margin-bottom: 16px;
 }
-.main-container .module-header-section .module-title-section {
+.student-main-container .module-header-section .module-title-section {
   gap: 10px;
 }
-.main-container .module-header-section .module-title-section h3 {
+.student-main-container .module-header-section .module-title-section h3 {
   font-size: 16px;
   line-height: 24px;
   font-weight: 500;
   font-family: "Roboto";
 }
-.main-container .module-header-section .module-title-section img {
+.student-main-container .module-header-section .module-title-section img {
   width: 20px;
   height: 20px;
 }
-.main-container .module-header-section .comments {
+.student-main-container .module-header-section .comments {
   border-radius: 4px;
   border: 1px solid #49a843;
   width: 125px;
   cursor: pointer;
 }
-.main-container .module-header-section .comments:hover {
+.student-main-container .module-header-section .comments:hover {
   color: var(--btn-hover-color);
   border: 1px solid var(--btn-hover-color);
 }
-.main-container .module-header-section .comments:active {
+.student-main-container .module-header-section .comments:active {
   color: #49a843;
   border: 1px solid #49a843;
   opacity: 30%;
 }
-.main-container .module-header-section .comments img {
+.student-main-container .module-header-section .comments img {
   width: 16px;
   margin-left: 18px;
 }
-.main-container .module-header-section .comments .secondary-border-btn {
+.student-main-container .module-header-section .comments .secondary-border-btn {
   height: 38px;
   color: #49a843;
   background-color: white;
   cursor: pointer;
 }
-.main-container .module-header-section .comments .secondary-border-btn:hover {
+.student-main-container .module-header-section .comments .secondary-border-btn:hover {
   color: var(--btn-hover-color);
 }
-.main-container .module-header-section .comments .secondary-border-btn:active {
+.student-main-container .module-header-section .comments .secondary-border-btn:active {
   color: #49a843;
   opacity: 30%;
 }
-.main-container .task-list-container .task-card {
+.student-main-container .task-list-container .task-card {
   margin-top: 12px;
 }
-.main-container .task-details-header-container .background-div {
+.student-main-container .task-details-header-container .background-div {
   padding: 16px;
   border-radius: 4px;
   background-color: #f7f8f7;
   margin-bottom: 16px;
 }
-.main-container .task-details-header-container .task-label-container {
+.student-main-container .task-details-header-container .task-label-container {
   padding-bottom: 16px;
   align-items: center;
   gap: 11px;
 }
-.main-container .task-details-header-container .task-label-container h3 {
+.student-main-container .task-details-header-container .task-label-container h3 {
   font-size: 12px;
   line-height: 16px;
   font-family: "Roboto";
   font-weight: 400;
 }
-.main-container .task-details-header-container .task-label-container .horizon-line {
+.student-main-container .task-details-header-container .task-label-container .horizon-line {
   flex: 1;
   border-bottom: 1px solid #eaeaea;
 }
-.main-container .task-details-header-container .student-task-details-main-container {
-  gap: 70px;
+.student-main-container .task-details-header-container .student-task-details-main-container {
+  gap: 50px;
   padding-bottom: 20px;
 }
-.main-container .task-details-header-container .student-task-details-main-container p {
+.student-main-container .task-details-header-container .student-task-details-main-container p {
   font-size: 12px;
   font-family: "Roboto";
   color: #969d88;
   padding-bottom: 2px;
 }
-.main-container .task-details-header-container .student-task-details-main-container span {
-  font-size: 10px;
+.student-main-container .task-details-header-container .student-task-details-main-container span {
+  font-size: 12px;
   line-height: 16px;
   font-family: "Roboto";
 }
-.main-container .task-details-header-container .student-task-details-main-container select {
+.student-main-container .task-details-header-container .student-task-details-main-container select {
   padding: 2px 8px;
   outline: none;
   background-color: #e2e8f0;
@@ -339,97 +338,113 @@ li {
   width: 100%;
   font-family: "Roboto";
 }
-.main-container .task-details-header-container .student-task-details-main-container .student-task-trainer-name {
+.student-main-container .task-details-header-container .student-task-details-main-container .student-task-trainer-name {
   border-right: 2px solid #eaeaea;
   max-width: 180px;
   width: 100%;
 }
-.main-container .task-details-header-container .student-task-details-main-container .sudent-task-supporting-doc img {
+.student-main-container .task-details-header-container .student-task-details-main-container .student-task-trainer-name p span {
+  font: 400 12px/16px "Roboto";
+}
+.student-main-container .task-details-header-container .student-task-details-main-container .sudent-task-supporting-doc img {
   width: 16px;
   height: 16px;
 }
-.main-container .task-details-header-container .student-task-details-main-container .student-task-status {
+.student-main-container .task-details-header-container .student-task-details-main-container .student-task-status {
   border-right: 2px solid #eaeaea;
   max-width: 180px;
   width: 100%;
 }
-.main-container .task-details-header-container .student-task-details-main-container .student-task-status .students-status-TODO-status .students-status-TODO-status-selector {
+.student-main-container .task-details-header-container .student-task-details-main-container .student-task-status .students-status-TODO-status .students-status-TODO-status-selector {
   border: none;
   border-radius: 2px;
   background-color: #E2E8F0;
 }
-.main-container .task-details-header-container .student-task-details-main-container .student-task-status .students-status-TODO-status .students-status-TODO-status-selector .students-status-TODO-status-selection-item {
+.student-main-container .task-details-header-container .student-task-details-main-container .student-task-status .students-status-TODO-status .students-status-TODO-status-selector .students-status-TODO-status-selection-item {
   color: #64748B;
 }
-.main-container .task-details-header-container .student-task-details-main-container .student-task-status .students-status-INPROGRESS-status .students-status-INPROGRESS-status-selector {
+.student-main-container .task-details-header-container .student-task-details-main-container .student-task-status .students-status-INPROGRESS-status .students-status-INPROGRESS-status-selector {
   border: none;
   border-radius: 2px;
   height: 30px;
   background-color: #DBEAFE;
 }
-.main-container .task-details-header-container .student-task-details-main-container .student-task-status .students-status-INPROGRESS-status .students-status-INPROGRESS-status-selector .students-status-INPROGRESS-status-selection-item {
+.student-main-container .task-details-header-container .student-task-details-main-container .student-task-status .students-status-INPROGRESS-status .students-status-INPROGRESS-status-selector .students-status-INPROGRESS-status-selection-item {
   color: #3b82f6;
 }
-.main-container .task-details-header-container .student-task-details-main-container .student-task-status .students-status-COMPLETED-status .students-status-COMPLETED-status-selector {
+.student-main-container .task-details-header-container .student-task-details-main-container .student-task-status .students-status-COMPLETED-status .students-status-COMPLETED-status-selector {
   border: none;
   border-radius: 2px;
   height: 30px;
   background-color: #EEFDB0;
 }
-.main-container .task-details-header-container .student-task-details-main-container .student-task-status .students-status-COMPLETED-status .students-status-COMPLETED-status-selector .students-status-COMPLETED-status-selection-item {
+.student-main-container .task-details-header-container .student-task-details-main-container .student-task-status .students-status-COMPLETED-status .students-status-COMPLETED-status-selector .students-status-COMPLETED-status-selection-item {
   color: #49a843;
 }
-.main-container .task-details-header-container .student-task-details-main-container .student-task-status .students-status-SUBMITTED-status .students-status-SUBMITTED-status-selector {
+.student-main-container .task-details-header-container .student-task-details-main-container .student-task-status .students-status-SUBMITTED-status .students-status-SUBMITTED-status-selector {
   border: none;
   border-radius: 2px;
   height: 30px;
   background-color: #EEFDB0;
 }
-.main-container .task-details-header-container .student-task-details-main-container .student-task-status .students-status-SUBMITTED-status .students-status-SUBMITTED-status-selector .students-status-SUBMITTED-status-selection-item {
+.student-main-container .task-details-header-container .student-task-details-main-container .student-task-status .students-status-SUBMITTED-status .students-status-SUBMITTED-status-selector .students-status-SUBMITTED-status-selection-item {
   color: #49a843;
 }
-.main-container .task-details-header-container .student-task-details-main-container .student-task-status .students-status-REWORK-status .students-status-REWORK-status-selector {
+.student-main-container .task-details-header-container .student-task-details-main-container .student-task-status .students-status-REWORK-status .students-status-REWORK-status-selector {
   border: none;
   border-radius: 2px;
   background-color: #FEF3C7;
 }
-.main-container .task-details-header-container .student-task-details-main-container .student-task-status .students-status-REWORK-status .students-status-REWORK-status-selector .students-status-REWORK-status-selection-item {
+.student-main-container .task-details-header-container .student-task-details-main-container .student-task-status .students-status-REWORK-status .students-status-REWORK-status-selector .students-status-REWORK-status-selection-item {
   color: #F59E0B;
 }
-.main-container .task-details-header-container .task-editor-container p {
+.student-main-container .task-details-header-container .student-task-details-main-container .student-task-deadline {
+  border-right: 2px solid #eaeaea;
+  max-width: 130px;
+  width: 100%;
+}
+.student-main-container .task-details-header-container .student-task-details-main-container .student-task-supporting-document a {
+  color: #49a843;
+  text-decoration: underline;
+  font: 400 12px/16px roboto;
+}
+.student-main-container .task-details-header-container .task-editor-container p {
   padding-bottom: 6px;
   font-size: 12px;
   font-family: "Roboto";
   line-height: 16px;
   color: #969d88;
 }
-.main-container .task-details-header-container .task-editor-container .task-editor {
+.student-main-container .task-details-header-container .task-editor-container .task-editor {
   padding-bottom: 16px;
 }
-.main-container .task-details-header-container .task-editor-container .task-editor p {
+.student-main-container .task-details-header-container .task-editor-container .task-editor p {
   color: #12160a;
   font-family: "Roboto";
 }
-.main-container .task-details-header-container .task-editor-container .task-instruction p {
-  font-size: 12px;
-  line-height: 16px;
+.student-main-container .task-details-header-container .task-editor-container .task-instruction p {
   color: #12160a;
-  font: "Roboto";
+  font: 400 12px/16px "Roboto";
 }
-.main-container .task-details-header-container .task-editor-container .task-instruction ul {
+.student-main-container .task-details-header-container .task-editor-container .task-instruction a {
+  color: #3b82f6;
+  text-decoration: underline;
+  font: 400 12px/16px "Roboto";
+}
+.student-main-container .task-details-header-container .task-editor-container .task-instruction ul {
   margin-left: 20px;
   padding-bottom: 17px;
 }
-.main-container .task-details-header-container .task-editor-container .task-instruction ul li {
+.student-main-container .task-details-header-container .task-editor-container .task-instruction ul li {
   list-style: disc;
   font-size: 12px;
   line-height: 16px;
 }
-.main-container .task-details-header-container .student-weightage-list {
+.student-main-container .task-details-header-container .student-weightage-list {
   align-items: center;
   gap: 12px;
 }
-.main-container .task-details-header-container .student-weightage-list .student-weightage-card {
+.student-main-container .task-details-header-container .student-weightage-list .student-weightage-card {
   height: 28px;
   padding-right: 1px;
   padding-left: 8px;
@@ -438,18 +453,13 @@ li {
   background-color: #eaeaea;
   border-radius: 4px;
 }
-.main-container .task-details-header-container .student-weightage-list .student-weightage-card p {
-  font-family: "Roboto";
-  font-size: 12px;
-  line-height: 16px;
+.student-main-container .task-details-header-container .student-weightage-list .student-weightage-card p {
+  font: 400 12px/16px "Roboto";
 }
-.main-container .task-details-header-container .student-weightage-list .student-weightage-card .score {
+.student-main-container .task-details-header-container .student-weightage-list .student-weightage-card .score {
   color: #12160a;
   margin-left: 5px;
-  font-family: "Roboto";
-  font-size: 12px;
-  line-height: 16px;
-  font-weight: 500;
+  font: 500 12px/16px "Roboto";
   background-color: #F8FBF2;
   width: 23px;
   height: 26px;
@@ -458,31 +468,26 @@ li {
   align-items: center;
   border-radius: 3px;
 }
-.main-container .task-details-header-container .student-weightage-list .student-weightage-card span {
-  font-family: "Roboto";
-  font-size: 12px;
-  line-height: 16px;
+.student-main-container .task-details-header-container .student-weightage-list .student-weightage-card span {
+  font: 400 12px/16px "Roboto";
   margin-left: 3px;
   color: #12160a;
 }
-.main-container .task-details-header-container .submission-link-container .heading-line {
+.student-main-container .task-details-header-container .submission-link-container .heading-line {
   align-items: center;
   gap: 10px;
   padding-top: 16px;
   padding-bottom: 5px;
 }
-.main-container .task-details-header-container .submission-link-container h3 {
-  font-size: 12px;
-  line-height: 16px;
-  font-family: "Roboto";
+.student-main-container .task-details-header-container .submission-link-container h3 {
+  font: 400 12px/16px "Roboto";
   color: #12160a;
-  font-weight: 400;
 }
-.main-container .task-details-header-container .submission-link-container .horizon-line {
+.student-main-container .task-details-header-container .submission-link-container .horizon-line {
   flex: 1;
   border-bottom: 1px solid #eaeaea;
 }
-.main-container .task-details-header-container .submission-link-container a {
+.student-main-container .task-details-header-container .submission-link-container a {
   color: #3b82f6;
   text-decoration: underline;
   overflow: hidden;
@@ -493,39 +498,39 @@ li {
   font: 400 12px/16px "Roboto";
   height: 15px;
 }
-.main-container .task-details-header-container .student-task-file-container {
+.student-main-container .task-details-header-container .student-task-file-container {
   align-items: center;
   justify-content: space-between;
   padding-bottom: 20px;
 }
-.main-container .task-details-header-container .student-task-file-container .file-content-container {
+.student-main-container .task-details-header-container .student-task-file-container .file-content-container {
   align-items: center;
   gap: 4px;
 }
-.main-container .task-details-header-container .student-task-file-container .file-content-container img {
+.student-main-container .task-details-header-container .student-task-file-container .file-content-container img {
   width: 34px;
   height: 34px;
 }
-.main-container .task-details-header-container .student-task-file-container .file-content-container .file-details p {
+.student-main-container .task-details-header-container .student-task-file-container .file-content-container .file-details p {
   font-size: 12px;
   line-height: 16px;
   color: #12160a;
 }
-.main-container .task-details-header-container .student-task-file-container .file-content-container .file-details span {
+.student-main-container .task-details-header-container .student-task-file-container .file-content-container .file-details span {
   font-size: 10px;
   line-height: 14px;
   color: #969d88;
 }
-.main-container .task-details-header-container .student-task-file-container .file-download p {
+.student-main-container .task-details-header-container .student-task-file-container .file-download p {
   font-size: 12px;
   line-height: 16px;
   font-family: #12160a;
 }
-.main-container .task-details-header-container .student-task-file-container .file-download img {
+.student-main-container .task-details-header-container .student-task-file-container .file-download img {
   width: 16px;
   line-height: 16px;
 }
-.main-container .task-details-header-container .file-input-container {
+.student-main-container .task-details-header-container .file-input-container {
   position: relative;
   width: 100%;
   padding: 14px 0;
@@ -539,23 +544,23 @@ li {
   cursor: pointer;
   margin-bottom: 20px;
 }
-.main-container .task-details-header-container .file-input-container .upload-icon-container {
+.student-main-container .task-details-header-container .file-input-container .upload-icon-container {
   align-items: center;
   gap: 8px;
 }
-.main-container .task-details-header-container .file-input-container .upload-icon-container label {
+.student-main-container .task-details-header-container .file-input-container .upload-icon-container label {
   font-size: 12px;
   line-height: 16px;
   font-family: "Roboto";
 }
-.main-container .task-details-header-container .file-input-container .upload-icon-container label .highlight {
+.student-main-container .task-details-header-container .file-input-container .upload-icon-container label .highlight {
   color: #49a843;
 }
-.main-container .task-details-header-container .file-input-container .upload-icon-container .upload-icon {
+.student-main-container .task-details-header-container .file-input-container .upload-icon-container .upload-icon {
   width: 16px;
   height: 16px;
 }
-.main-container .task-details-header-container .file-input-container .file-input {
+.student-main-container .task-details-header-container .file-input-container .file-input {
   position: absolute;
   top: 0;
   left: 0;
@@ -564,33 +569,33 @@ li {
   opacity: 0;
   cursor: pointer;
 }
-.main-container .task-details-header-container .weightage-label-container {
+.student-main-container .task-details-header-container .weightage-label-container {
   align-items: center;
   gap: 11px;
   padding-bottom: 16px;
 }
-.main-container .task-details-header-container .weightage-label-container h3 {
+.student-main-container .task-details-header-container .weightage-label-container h3 {
   font-size: 12px;
   line-height: 16px;
   font-family: "Roboto";
 }
-.main-container .task-details-header-container .weightage-label-container .horizon-line {
+.student-main-container .task-details-header-container .weightage-label-container .horizon-line {
   flex: 1;
   border-bottom: 1px solid #eaeaea;
 }
-.main-container .task-details-header-container .weightage-adding-container .weight-input .weightage-select {
+.student-main-container .task-details-header-container .weightage-adding-container .weight-input .weightage-select {
   display: flex;
   gap: 10px;
   align-items: center;
 }
-.main-container .task-details-header-container .weightage-adding-container .weight-input p {
+.student-main-container .task-details-header-container .weightage-adding-container .weight-input p {
   font-size: 12px;
   font-family: "Roboto";
   color: #969d88;
   padding-bottom: 6px;
 }
-.main-container .task-details-header-container .weightage-adding-container .weight-input select,
-.main-container .task-details-header-container .weightage-adding-container .weight-input input {
+.student-main-container .task-details-header-container .weightage-adding-container .weight-input select,
+.student-main-container .task-details-header-container .weightage-adding-container .weight-input input {
   padding: 10px 14px;
   max-width: 200px;
   width: 100%;
@@ -603,10 +608,10 @@ li {
   background-color: white;
   font-family: "Roboto";
 }
-.main-container .task-details-header-container .weightage-adding-container .weight-input .weightage-action {
+.student-main-container .task-details-header-container .weightage-adding-container .weight-input .weightage-action {
   display: inline-flex;
 }
-.main-container .task-details-header-container .weightage-adding-container .weight-input .weightage-action span {
+.student-main-container .task-details-header-container .weightage-adding-container .weight-input .weightage-action span {
   padding: 8px;
   background-color: white;
   color: white;
@@ -619,31 +624,31 @@ li {
   display: inline-block;
   font-family: "Roboto";
 }
-.main-container .task-details-header-container .weightage-adding-container .weight-input .weightage-action .increment {
+.student-main-container .task-details-header-container .weightage-adding-container .weight-input .weightage-action .increment {
   border-right: none;
   border-radius: 4px 0px 0px 4px;
   font-family: "Roboto";
 }
-.main-container .task-details-header-container .weightage-adding-container .weight-input .weightage-action .decrement {
+.student-main-container .task-details-header-container .weightage-adding-container .weight-input .weightage-action .decrement {
   border-radius: 0px 4px 4px 0px;
   font-family: "Roboto";
 }
-.main-container .student-task-label-container {
+.student-main-container .student-task-label-container {
   align-items: center;
   gap: 11px;
   padding-bottom: 16px;
 }
-.main-container .student-task-label-container h3 {
+.student-main-container .student-task-label-container h3 {
   font-size: 12px;
   line-height: 16px;
   font-family: "Roboto";
   font-weight: 400;
 }
-.main-container .student-task-label-container .horizon-line {
+.student-main-container .student-task-label-container .horizon-line {
   flex: 1;
   border-bottom: 1px solid #eaeaea;
 }
-.main-container .file-input-container {
+.student-main-container .file-input-container {
   position: relative;
   width: 100%;
   padding: 14px 0;
@@ -657,23 +662,23 @@ li {
   cursor: pointer;
   margin-bottom: 20px;
 }
-.main-container .file-input-container .upload-icon-container {
+.student-main-container .file-input-container .upload-icon-container {
   align-items: center;
   gap: 8px;
 }
-.main-container .file-input-container .upload-icon-container label {
+.student-main-container .file-input-container .upload-icon-container label {
   font-size: 12px;
   line-height: 16px;
   font-family: "Roboto";
 }
-.main-container .file-input-container .upload-icon-container label .highlight {
+.student-main-container .file-input-container .upload-icon-container label .highlight {
   color: #49a843;
 }
-.main-container .file-input-container .upload-icon-container .upload-icon {
+.student-main-container .file-input-container .upload-icon-container .upload-icon {
   width: 16px;
   height: 16px;
 }
-.main-container .file-input-container .file-input {
+.student-main-container .file-input-container .file-input {
   position: absolute;
   top: 0;
   left: 0;

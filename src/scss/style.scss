@@ -564,7 +564,7 @@ body {
             color: $font-primary-color;
             padding: 8px 9.5px;
             border-radius: 4px;
-            font: 400 12px/16px $font-Roboto;
+            font: 500 12px/16px $font-Roboto;
           }
         }
 
@@ -843,7 +843,9 @@ body {
 
       .module-header-section-container {
         padding-bottom: 5px;
-
+          .title-message{
+            margin-bottom: 0px;
+          }
         .module-header-section {
           justify-content: space-between;
           align-items: center;

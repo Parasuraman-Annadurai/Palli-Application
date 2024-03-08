@@ -332,7 +332,7 @@ const StudentLogin = ({ type }) => {
             })}
         </div>
       </section>
-      <div className="main-container">
+      <div className="student-main-container">
         {isLoading ? <Skeleton active paragraph={6}/> : (
           <>
              {tasksLists.map((tasksList) => {
@@ -394,6 +394,12 @@ const StudentLogin = ({ type }) => {
                               "MMM,DD YYYY"
                             )}
                           </span>
+                        </div>
+                        <div className="student-task-supporting-document">
+                          <p>Supporting Document</p>
+                          <a href={tasksList?.task?.supporting_document} target="_blank">
+                            {tasksList?.task?.supporting_document ? "View document" : "-"}
+                          </a>
                         </div>
                       </div>
 

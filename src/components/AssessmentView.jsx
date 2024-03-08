@@ -386,7 +386,7 @@ const AssessmentView = ({
                     )} */}
                     </div>
                   </div>
-                  <p className="error-message">
+                  <p className="error-message title-message">
                     {formErrors["task_title"] ? formErrors["task_title"] : ""}
                   </p>
                 </div>

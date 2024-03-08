@@ -264,6 +264,9 @@ li {
         font: 500 12px/16px $font-Roboto;
         color: $font-primary-color;
         margin-bottom: 20px;
+        p{
+         margin-bottom: 2px; 
+        }
         .email {
           font: 400 10px/14px $font-Roboto;
           color: $font-secondary-color;

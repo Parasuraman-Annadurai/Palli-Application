@@ -460,7 +460,9 @@ const Applications = () => {
               {filterValues &&
                 Object.keys(filterValues).map((filterName) => (
                   <>
-                    <Tag color="#49a843">{`${filterName} : ${filterValues[
+                  {filterValues[filterName] && (
+                    <>
+                      <Tag color="#49a843">{`${filterName} : ${filterValues[
                       filterName
                     ].toLowerCase()} `}</Tag>
                     <img
@@ -469,6 +471,9 @@ const Applications = () => {
                       className="cancel-btn"
                       onClick={() => handleRemoveFilter(filterName)}
                     />
+                    </>
+                  )}
+                    
                   </>
                 ))}
             </div>

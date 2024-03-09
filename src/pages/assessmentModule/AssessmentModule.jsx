@@ -825,7 +825,7 @@ const AssessmentModule = ({ type }) => {
                       setSelectedStudents={setSelectedStudents}
                       handleSave={handleSave}
                       handleInputChange={handleInputChange}
-                      weightageShow={type === "task" ? false : true}
+                      weightageShow={type === "TASK" ? false : true}
                       handleSaveWeightage={handleSaveWeightage}
                       handleAddWeightage={handleAddWeightage}
                       handleWeightageChange={handleWeightageChange}

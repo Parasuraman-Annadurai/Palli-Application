@@ -154,7 +154,7 @@ const AssessmentList = ({
   return (
     <>
       <section className="listing-container">
-        <h1>{mode} list</h1>
+        <h1>{mode?.charAt(0)?.toUpperCase()}{mode?.slice(1).toLowerCase()} list</h1>
         <div className="search-container">
           <input
             type="input"
@@ -183,7 +183,7 @@ const AssessmentList = ({
               {getPermission(user.permissions, "Task", "create") && (
                 !loading && (
                   <button className="btn create-btn" onClick={handleAdd}>
-                    <span>+</span>Create {mode}
+                    <span>+</span>Create {mode?.charAt(0)?.toUpperCase()}{mode?.slice(1).toLowerCase()}
                   </button>
                 )
 

@@ -84,8 +84,7 @@ function Settings() {
             </div>
             <div className="name-and-email-info">
               <p>
-                {user?.first_name}
-                {user?.last_name}
+                {user?.first_name} {user?.last_name}
               </p>
               <p className="email">{user?.email}</p>
             </div>

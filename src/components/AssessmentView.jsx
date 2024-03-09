@@ -73,7 +73,7 @@ const AssessmentView = ({
   const [initialTitle, setInitialTitle] = useState("");
   const [studentScore, setStudentScore] = useState([]);
   const [toggleAssigneeWeightage, setToggleAssigneeWeightage] = useState(
-    type == "task" ? 0 : 1
+    type == "TASK" ? 0 : 1
   );
   const [assigneeloader, setAssigneeloader] = useState(false);
   const [assigneLoadingMessage,setAssigneLoadingMessage] = useState("")
@@ -126,14 +126,17 @@ const AssessmentView = ({
 
 
   useEffect(() => {
-    setStudentLoading(true)
-    axios.get(`${API_END_POINT}/api/task/${batchId}/get/task/${taskId}`, { headers }).then((res) => {
-      setAssignedUsers(res.data.data)
-      setStudentLoading(false)
-    }).catch((error)=>{
-      setStudentLoading(false)
-      console.log(error);
-    })
+    if(!draft){
+      setStudentLoading(true)
+      axios.get(`${API_END_POINT}/api/task/${batchId}/get/task/${taskId}`, { headers }).then((res) => {
+        setAssignedUsers(res.data.data)
+        setStudentLoading(false)
+      }).catch((error)=>{
+        setStudentLoading(false)
+        console.log(error);
+      })
+    }
+   
   }, [taskId,isStudentScoreOpen])
 
   const handleCheckboxChange = (studentId) => {
@@ -386,7 +389,7 @@ const AssessmentView = ({
                     )} */}
                     </div>
                   </div>
-                  <p className="error-message">
+                  <p className="error-message title-message">
                     {formErrors["task_title"] ? formErrors["task_title"] : ""}
                   </p>
                 </div>
@@ -912,7 +915,7 @@ const AssessmentView = ({
                             <div className="image-container ">
                               <img src="/icons/select-something.svg" alt="" />
                               <p className="select-something-heading">
-                                No Assignee has been assigned to this {type}
+                                No Assignee has been assigned to this {type?.charAt(0)?.toUpperCase()}{type?.slice(1).toLowerCase()}
                                 <button className="btn primary-medium" style={{ marginTop: "10px" }} onClick={() => {
                                   setIsStudentScoreOpen(!isStudentScoreOpen)
                                   if(type === "assessment"){

@@ -47,11 +47,11 @@ const App = () => {
 
         
           <Route path={TASKMODULE} element={<PrivateRoute />}>
-            <Route path={TASKMODULE} element={<AssessmentModule type="task"/>} />
+            <Route path={TASKMODULE} element={<AssessmentModule type="TASK"/>} />
           </Route>
 
           <Route path={ASSESSMENTMODULE} element={<PrivateRoute />}>
-            <Route path={ASSESSMENTMODULE} element={<AssessmentModule type="assessment"/>} />
+            <Route path={ASSESSMENTMODULE} element={<AssessmentModule type="ASSESSMENT"/>} />
           </Route>
 
           <Route path={SETTINGS} element={<PrivateRoute />}>

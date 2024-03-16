@@ -36,7 +36,8 @@ const AssessmentModule = ({ type }) => {
   const [formErrors, setFormErrors] = useState({});
   const [weightageErrors, setWeightageErros] = useState({});
   const [assigneeSearch,setAssigneeSearch] = useState("");
-  const [isAssigneeLoading,setIsAssigneeLoading] = useState(false)
+  const [isAssigneeLoading,setIsAssigneeLoading] = useState(false);
+  const [isAssessmentLoading,setIsAssessmentLoading] = useState(false);
   const headers = {
     Authorization: `Bearer ${token.access}`,
     "Content-type": "application/json",
@@ -58,13 +59,7 @@ const AssessmentModule = ({ type }) => {
           if (res.status === 200 && res.data.message === "Success") {
             //manipulate the assessment list task type assessment put the 1 otherwise 0 and remove duplicate
             let assessmentList = [...res.data.data];
-            assessmentList = assessmentList.map((assessment) => ({
-              ...assessment,
-              task_type: assessment.task_type === "ASSESSMENT" ? 1 : 0,
-            }));
-
             setAssessmentList(assessmentList);
-
             setLoading(false);
             assessmentId =
               res.data.data.length > 0 ? res.data.data[0].id : null;
@@ -222,7 +217,7 @@ const AssessmentModule = ({ type }) => {
   };
 
   const handleSave = (assessment) => {
-
+    setIsAssessmentLoading(true);
     const newTaskName = assessment.task_title.trim().toLowerCase();
 
     // Check if the task with the same task_title already exists
@@ -270,8 +265,8 @@ const AssessmentModule = ({ type }) => {
       url: apiEndpoint,
       headers: {
         Authorization: `Bearer ${token.access}`,
-        "Content-Type": "application/json",
-      },
+        'Content-Type': 'multipart/form-data'     
+       },
       data: currentAssessment,
     })
       .then((res) => {
@@ -283,7 +278,7 @@ const AssessmentModule = ({ type }) => {
           duration: 1,
         });
 
-
+        setIsAssessmentLoading(false)
         let cloneAssessmentList = [...assessmentList];
         //finding and filtering the assessment which is new create the assessment
 
@@ -292,11 +287,12 @@ const AssessmentModule = ({ type }) => {
             (assessment) => !("draft" in assessment)
           );
           currentAssessment["id"] = res.data.data.id;
+          currentAssessment["supporting_document"] = res.data?.data?.supporting_document
           cloneAssessmentList = [currentAssessment, ...cloneAssessmentList];
         } else {
           cloneAssessmentList = cloneAssessmentList.map((assessment) => {
             if (assessment.id === res.data.data.id) {
-              assessment = currentAssessment;
+              assessment = {...assessment,supporting_document:res.data?.data?.supporting_document}
             }
             return assessment;
           });
@@ -309,6 +305,7 @@ const AssessmentModule = ({ type }) => {
         );
       })
       .catch((error) => {
+        setIsAssessmentLoading(false)
         if (
           error.response.data.status === 400 ||
           "errors" in error.response.data
@@ -341,6 +338,7 @@ const AssessmentModule = ({ type }) => {
       task_description: "",
       due_date: dayjs().format("YYYY-MM-DD HH:mm:ss"),
       draft: true,
+      supporting_document:null,
       task_type: type,
     };
 
@@ -764,6 +762,16 @@ const AssessmentModule = ({ type }) => {
     })
   }
 
+  const handleRemoveFile = () => {
+    const updatedAssessmentList= [...assessmentList].map((assessment)=>{
+      if(assessment.id == editId){
+        return { ...assessment, supporting_document: null };
+      }
+      return assessment;
+    })
+    setAssessmentList(updatedAssessmentList);
+  };
+
   return (
     <>
       {getPermission(user.permissions,"Task","create") ? (
@@ -850,6 +858,8 @@ const AssessmentModule = ({ type }) => {
                       setAssigneeSearch ={setAssigneeSearch}
                       isAssigneeLoading={isAssigneeLoading}
                       setIsMode={setIsMode}
+                      handleRemoveFile={handleRemoveFile}
+                      isAssessmentLoading={isAssessmentLoading}
                     />
                   );
                 }

@@ -3,6 +3,8 @@ import React, { useEffect, useState } from "react";
 import ReactQuill from "react-quill";
 import "quill/dist/quill.snow.css";
 
+import { LoadingOutlined } from "@ant-design/icons";
+
 import {
   DatePicker,
   Dropdown,
@@ -13,7 +15,7 @@ import {
 } from "antd";
 
 import axios from "axios";
-import colorObject from "../utils/validate";
+import colorObject, { formatFileSize } from "../utils/validate";
 import dayjs from "dayjs";
 
 import { API_END_POINT } from "../../config";
@@ -64,13 +66,12 @@ const AssessmentView = ({
   isCommentEditId,
   setCommentText,
   setIsCommentEditId,
-  setIsMode
+  setIsMode,
+  handleRemoveFile,
+  isAssessmentLoading
 }) => {
   const { id: batchId } = useParams();
   const { token, user } = useAuth();
-  const [loading, setLoading] = useState(false);
-  const [isEditing, setIsEditing] = useState(false);
-  const [initialTitle, setInitialTitle] = useState("");
   const [studentScore, setStudentScore] = useState([]);
   const [toggleAssigneeWeightage, setToggleAssigneeWeightage] = useState(
     type == "TASK" ? 0 : 1
@@ -362,31 +363,12 @@ const AssessmentView = ({
                         onChange={(e) =>
                           handleInputChange("task_title", e.target.value)
                         }
-                        // onDoubleClick={onDoubleClick}
                         placeholder={"Untitled"}
                         className={` ${
                           formErrors["task_title"] ? "error-notify" : ""
                         } `}
-                        // readOnly={!isEditing}
                       />
-                      {/* {isEditing && (
-                      <div>
-                        <span className="yes-btn">
-                          <img
-                            src="/public/icons/tick.svg"
-                            alt=""
-                            onClick={handleTick}
-                          />
-                        </span>
-                        <span className="no-btn">
-                          <img
-                            src="/public/icons/remove.svg"
-                            alt=""
-                            onClick={handleCancelClick}
-                          />
-                        </span>
-                      </div>
-                    )} */}
+                      
                     </div>
                   </div>
                   <p className="error-message title-message">
@@ -447,13 +429,37 @@ const AssessmentView = ({
                       </>
                     </div>
                   </div>
-                  {/* <div className="link">
-                    <input
-                      className="submission-folder-link-container"
-                      type="link"
-                      placeholder="Paste your link here..."
-                    />
-                  </div> */}
+                <div class="student-task-label-container flex">
+                  <h3>Task File</h3>
+                  <div class="horizon-line">
+                  </div>
+                </div>
+                {currentAssessment?.supporting_document && (
+                  <div class="student-task-file-container flex">
+                    <div class="file-content-container flex">
+                      <img src="/icons/fileicon.svg" alt="" />
+                      <div class="file-details">
+                        {!currentAssessment?.supporting_document?.name && <a href={currentAssessment?.supporting_document} target="_blank">view document</a>}
+                        {currentAssessment?.supporting_document?.name && <p>{currentAssessment?.supporting_document?.name}</p>}
+                        {currentAssessment?.supporting_document?.size && <span>File size  {formatFileSize(currentAssessment?.supporting_document?.size)}</span>}
+                      </div>
+                    </div>
+                    <div class="file-download flex">
+                      {currentAssessment?.supporting_document?.name && <img src="/icons/Cancel.svg" alt="" onClick={handleRemoveFile} />}
+                    </div>
+                  </div>
+                )}
+
+                <div class="file-input-container">
+                  <div class="upload-icon-container flex">
+                    <img src="/icons/upload.svg" class="upload-icon" />
+                    <label for="file-input"
+                    >Drag your file or
+                      <span class="highlight"> click to upload your task</span></label
+                    >
+                  </div>
+                  <input type="file" class="file-input" onChange={(e) => handleInputChange("supporting_document", e.target.files[0])} />
+                </div>
                   <div className="task-create-btn-section flex">
                     <div className="main-create-btn">
                         {getPermission(user.permissions, "Task", "create") && (
@@ -464,9 +470,16 @@ const AssessmentView = ({
                               : "btn primary-medium"
                               }`}
                             onClick={() => !assigneeloader && validateTask(currentAssessment, setFormErrors) ? handleSave(currentAssessment) : null}
-
+                            disabled={isAssessmentLoading}
                           >
-                            {draft ? "Create" : "Update"}
+                        {isAssessmentLoading ? (
+                          <span>
+                            {draft ? "Creating" : "Updating"}
+                            <LoadingOutlined className="loader" />
+                          </span>
+                        ) : (
+                          draft ? "Create" : "Update"
+                        )}
                           </button>
                         )}
                     </div>

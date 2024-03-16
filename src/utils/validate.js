@@ -428,3 +428,8 @@ export const fetchUserInfo = (token, setToken, setUser, navigate, setLoading,red
       }
     });
 };
+
+export const formatFileSize = (sizeInBytes) => {
+  const fileSize = sizeInBytes < 1024 ? sizeInBytes / 1024 : sizeInBytes / (1024 * 1024);
+  return fileSize.toFixed(2) + (fileSize < 1 ? ' KB' : ' MB');
+};

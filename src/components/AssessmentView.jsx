@@ -8,15 +8,15 @@ import { LoadingOutlined } from "@ant-design/icons";
 import {
   DatePicker,
   Dropdown,
-  Modal,
   Skeleton,
   notification,
   Drawer,
 } from "antd";
 
 import axios from "axios";
-import colorObject, { formatFileSize } from "../utils/validate";
 import dayjs from "dayjs";
+
+import colorObject, { formatFileSize } from "../utils/validate";
 
 import { API_END_POINT } from "../../config";
 
@@ -25,10 +25,10 @@ import { useParams } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
 import WeightageList from "./WeightageList/WeightageList";
+
 import Comments from "./CommentsModule/Comments";
 
 import {
-  CustomIcons,
   toolbarConfig,
   validateTask,
   isScoreValidate,
@@ -408,7 +408,6 @@ const AssessmentView = ({
                     <p className="task-description-label">Description <span>*</span></p>
                     <div className="task-editor">
                       <>
-                        {/* <CustomIcons /> */}
                         <ReactQuill
                           placeholder="Type here"
                           className={`${
@@ -931,7 +930,7 @@ const AssessmentView = ({
                                 No Assignee has been assigned to this {type?.charAt(0)?.toUpperCase()}{type?.slice(1).toLowerCase()}
                                 <button className="btn primary-medium" style={{ marginTop: "10px" }} onClick={() => {
                                   setIsStudentScoreOpen(!isStudentScoreOpen)
-                                  if(type === "assessment"){
+                                  if(type === "ASSESSMENT"){
                                     setToggleAssigneeWeightage(1)
                                   }else{
                                     setToggleAssigneeWeightage(0)

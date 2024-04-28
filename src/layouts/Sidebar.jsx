@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useLocation, useParams, useNavigate, Link } from "react-router-dom";
 
 import axios from "axios";
-import { Dropdown, Skeleton, Tooltip,notification } from "antd";
+import {Skeleton, Tooltip,notification } from "antd";
 
 import { DASHBOARD } from "../routes/routes";
 import { useAuth } from "../context/AuthContext";
@@ -10,7 +10,7 @@ import { useAuth } from "../context/AuthContext";
 import AddBatch from "../components/AddBatchModule/AddBatch";
 
 import { API_END_POINT } from "../../config";
-import { fetchUserInfo, formatPermissions, getPermission } from '../utils/validate';
+import { fetchUserInfo, getPermission } from '../utils/validate';
 
 const Sidebar = ({ menuList, activeMenuItem }) => {
   const navigate = useNavigate();
@@ -22,9 +22,9 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
   const isDashboardPage = currentPath.includes(DASHBOARD);
 
   const [active, setActive] = useState(activeMenuItem);
-  const [batchList, setBatchList] = useState([]);
   const [currentBatch, setCurrentBatch] = useState(null);
   const [open, setOpen] = useState(false);
+  const [isBatchModelOpen,setIsBatchModelOpen] = useState(false)
   const [batchLoading,setBatchLoading] = useState(false)
 
   const showDrawer = () => {
@@ -52,8 +52,6 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
       const currentBatch = user?.batch.find(batch => batch.id === Number(batchId));
       setCurrentBatch(currentBatch);
        
-      const remainingBatchLists = user?.batch?.filter((batch)=>batch?.id != Number(batchId));
-      setBatchList(remainingBatchLists)
       }
   }, [batchId]);
 

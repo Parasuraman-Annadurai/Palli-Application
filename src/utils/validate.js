@@ -387,3 +387,12 @@ export const formatFileSize = (sizeInBytes) => {
   const fileSize = sizeInBytes < 1024 ? sizeInBytes / 1024 : sizeInBytes / (1024 * 1024);
   return fileSize.toFixed(2) + (fileSize < 1 ? ' KB' : ' MB');
 };
+
+
+// Function to capitalize the first letter of a given string
+export const capitalizeFirstLetter = (name) => {
+  if (!name) {
+    return ''
+  }; // Check for empty or undefined input
+  return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
+};

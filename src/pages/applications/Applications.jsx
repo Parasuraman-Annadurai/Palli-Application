@@ -23,7 +23,7 @@ import useFilter from "../../hooks/useFilter";
 
 import "./scss/css/Applications.css";
 
-import { getPermission,capitalizeFirstLetter } from "../../utils/validate";
+import { getPermission,capitalizeFirstChar } from "../../utils/validate";
 
 const Applications = () => {
   const filterFields = useFilter("applicant");  
@@ -532,7 +532,7 @@ const Applications = () => {
                         </div>
                         <div className="application-gender">
                           <p>Gender</p>
-                          <span>{capitalizeFirstLetter(application?.gender)}</span>
+                          <span>{capitalizeFirstChar(application?.gender)}</span>
                         </div>
                         <div className="application-dob">
                           <p>Date of Birth</p>

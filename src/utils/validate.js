@@ -390,7 +390,7 @@ export const formatFileSize = (sizeInBytes) => {
 
 
 // Function to capitalize the first letter of a given string
-export const capitalizeFirstLetter = (name) => {
+export const capitalizeFirstChar = (name) => {
   if (!name) {
     return ''
   }; // Check for empty or undefined input

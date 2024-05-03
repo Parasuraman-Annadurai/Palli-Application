@@ -117,7 +117,7 @@ const ApplicationForm = () => {
                               Student Name <span>*</span>
                             </p>
                             <input
-                            placeholder="Type here"
+                              placeholder="Type here"
                               type="text"
                               name="student-name"
                               onChange={onchange}
@@ -134,6 +134,7 @@ const ApplicationForm = () => {
                               Gender <span>*</span>
                             </p>
                             <input
+                              placeholder="Type here"
                               type="text"
                               name="gender"
                               onChange={onchange}
@@ -168,7 +169,7 @@ const ApplicationForm = () => {
                           <div className="applicant-whatsapp-number">
                             <p>Whatsapp Phone Number <span>*</span></p>
                             <input
-                             placeholder="Type here"
+                              placeholder="Type here"
                               type="text"
                               name="whatsapp-number"
                               onChange={onchange}
@@ -177,7 +178,7 @@ const ApplicationForm = () => {
                           <div className="applicant-address">
                             <p>Street Address <span>*</span></p>
                             <input
-                             placeholder="Type here"
+                              placeholder="Type here"
                               type="text"
                               name="address"
                               onChange={onchange}
@@ -186,7 +187,7 @@ const ApplicationForm = () => {
                           <div className="applicant-apartment">
                             <p>Apartment, suite, etc <span>*</span></p>
                             <input
-                             placeholder="Type here"
+                              placeholder="Type here"
                               type="text"
                               name="apartment"
                               onChange={onchange}
@@ -217,7 +218,7 @@ const ApplicationForm = () => {
                           <div className="applicant-whatsapp-number">
                             <p>Country<span>*</span></p>
                             <input
-                             placeholder="Type here"
+                              placeholder="Type here"
                               type="text"
                               name="country"
                               onChange={onchange}
@@ -267,25 +268,28 @@ const ApplicationForm = () => {
                       <div className="guardian-form">
                         <div className="row-one">
                           <div className="parent-name">
-                            <label>Guardian/Parent Name *</label>
+                            <label>Guardian/Parent Name <span>*</span></label>
                             <input
                               type="text"
+                              placeholder="Type here"
                               name="parent-name"
                               onChange={onchange}
                             />
                           </div>
                           <div className="parent-name">
-                            <label>Guardian/Parent Relationship *</label>
+                            <label>Guardian/Parent Relationship <span>*</span></label>
                             <input
                               type="text"
+                              placeholder="Type here"
                               name="guardian-relationship"
                               onChange={onchange}
                             />
                           </div>
                           <div className="parent-name">
-                            <label>Guardian/Parent Phone Number *</label>
+                            <label>Guardian/Parent Phone Number <span>*</span></label>
                             <input
                               type="text"
+                              placeholder="Type here"
                               name="guardian-number"
                               onChange={onchange}
                             />
@@ -293,17 +297,19 @@ const ApplicationForm = () => {
                         </div>
                         <div className="row-two">
                           <div className="annual-income">
-                            <label>Annual Family Income *</label>
+                            <label>Annual Family Income <span>*</span></label>
                             <input
                               type="text"
+                              placeholder="Type here"
                               name="annual-income"
                               onChange={onchange}
                             />
                           </div>
                           <div className="smart-card">
-                            <label>Upload the Smart Card *</label>
+                            <label>Upload the Smart Card <span>*</span></label>
                             <input
                               type="file"
+                              
                               name="smart-card-file"
                               onChange={onchange}
                             />
@@ -329,156 +335,182 @@ const ApplicationForm = () => {
                       <div className="education-form">
                         <div className="row-one">
                           <div className="current-education">
-                            <label>Currently Eductional Qualification *</label>
+                            <label>Currently Eductional Qualification <span>*</span></label>
                             <div className="education-options">
                               <div className="one">
-                                <label>Currently in 12th</label>
                                 <input
                                   type="radio"
                                   name="current-12"
                                   onChange={onchange}
                                 />
+                                <label>Currently in 12th</label>
+
                               </div>
                               <div className="two">
-                                <label>Completed 12th</label>
                                 <input
                                   type="radio"
                                   name="completed-12"
                                   onChange={onchange}
                                 />
+                                <label>Completed 12th</label>
+
                               </div>
                               <div className="three">
-                                <label>Currently pursuing Diploma</label>
                                 <input
                                   type="radio"
                                   name="pursuing-diploma"
                                   onChange={onchange}
                                 />
+                                <label>Currently pursuing Diploma</label>
+
                               </div>
                               <div className="four">
-                                <label>Completed Diploma</label>
                                 <input
                                   type="radio"
                                   name="completed-diploma"
                                   onChange={onchange}
                                 />
+                                <label>Completed Diploma</label>
+
                               </div>
                               <div className="five">
-                                <label>others</label>
                                 <input
                                   type="radio"
                                   name="others"
                                   onChange={onchange}
                                 />
+                                <label>others</label>
+
                               </div>
                             </div>
                           </div>
                         </div>
                         <div className="row-two">
-                          <h6>10th Standard Details</h6>
-                          <div className="10th">
-                            <label>10th: Medium of Instruction *</label>
-                            <select
-                              id=""
-                              name="10th-medium"
-                              onChange={onchange}
-                            >
-                              <option value=""></option>
-                            </select>
+                          <div className="heading">
+                            <h6>10th Standard Details</h6>
+                            <div className="hr-line"></div>
                           </div>
-                          <div className="10th">
-                            <label>10th: School Type *</label>
-                            <select
-                              id=""
-                              name="10th-school-type"
-                              onChange={onchange}
-                            >
-                              <option value=""></option>
-                            </select>
+                          <div className="tenth-container">
+                            <div className="tenth">
+                              <label>10th: Medium of Instruction <span>*</span></label>
+                              <select
+                                id=""
+                                name="10th-medium"
+                                onChange={onchange}
+                              >
+                                <option value="">Select</option>
+                              </select>
+                            </div>
+                            <div className="tenth">
+                              <label>10th: School Type <span>*</span></label>
+                              <select
+                                id=""
+                                name="10th-school-type"
+                                onChange={onchange}
+                              >
+                                <option value="">Select</option>
+                              </select>
+                            </div>
+                            <div className="tenth">
+                              <label>10th: Year of Completion <span>*</span></label>
+                              <select
+                                id=""
+                                name="10th-year-completion"
+                                onChange={onchange}
+                              >
+                                <option value="">Select</option>
+                              </select>
+                            </div>
                           </div>
-                          <div className="10th">
-                            <label>10th: Year of Completion *</label>
-                            <select
-                              id=""
-                              name="10th-year-completion"
-                              onChange={onchange}
-                            >
-                              <option value=""></option>
-                            </select>
-                          </div>
+
                         </div>
                         <div className="row-three">
-                          <div className="10th">
-                            <label>10th: Math & English Score *</label>
-                            <input
-                              type="text"
-                              name="English Score"
-                              onChange={onchange}
-                            />
-                            <input
-                              type="text"
-                              name="English Score"
-                              onChange={onchange}
-                            />
+                          <div className="tenth">
+                            <label>10th: Math & English Score <span>*</span></label>
+                            <div className="two-inputs">
+                              <input
+                                type="text"
+                                placeholder="Type here"
+                                name="English Score"
+                                onChange={onchange}
+                              />
+                              <input
+                                type="text"
+                                placeholder="Type here"
+                                name="English Score"
+                                onChange={onchange}
+                              />
+                            </div>
+
                           </div>
-                          <div className="10th">
-                            <label>Total Percentage *</label>
+                          <div className="tenth">
+                            <label>Total Percentage <span>*</span></label>
                             <input
                               type="text"
                               name="Percentage"
+                              placeholder="Type here"
                               onChange={onchange}
                             />
                           </div>
-                          <div className="10th">{/* mark sheet view*/}</div>
+                          <div className="tenth">{/* mark sheet view*/}</div>
                         </div>
                         <div className="row-four">
                           <div className="heading">
                             <h6>12th Standard or Diploma Details</h6>
                             <div className="hr-line"></div>
                           </div>
-                          <div className="10th">
-                            <label>Medium of Instruction *</label>
+                          <div className="three-inputs">
+                          <div className="tenth">
+                            <label>Medium of Instruction <span>*</span></label>
                             <select name="" id="">
-                              <option value=""></option>
+                              <option value="">Select</option>
                             </select>
                           </div>
-                          <div className="10th">
-                            <label>School Type *</label>
+                          <div className="tenth">
+                            <label>School Type <span>*</span></label>
                             <select name="" id="">
-                              <option value=""></option>
+                              <option value="">Select</option>
                             </select>
                           </div>
-                          <div className="10th">
-                            <label>Year of Completion *</label>
+                          <div className="tenth">
+                            <label>Year of Completion <span>*</span></label>
                             <select name="" id="">
-                              <option value=""></option>
+                              <option value="">Select</option>
                             </select>
                           </div>
+                          </div>
+                        
                         </div>
                         <div className="row-five">
                           <div className="match-english-score">
-                            <label>Math & English Score *</label>
+                            <label>Math & English Score <span>*</span></label>
+                            <div className="two-inputs">
                             <input
                               type="text"
+                              placeholder="Type here"
                               name="English Score"
                               onChange={onchange}
                             />
                             <input
                               type="text"
+                              placeholder="Type here"
                               name="English Score"
                               onChange={onchange}
                             />
+                            </div>
+                         
                           </div>
                           <div className="total-percentage">
-                            <label>Total Percentage *</label>
+                            <label>Total Percentage <span>*</span></label>
                             <input
                               type="text"
+                              placeholder="Type here"
                               name="Percentage"
                               onChange={onchange}
                             />
                           </div>
                           <div className="upload-mark-sheet">
-                            <label>Upload the Mark sheet *</label>
+                            <label>Upload the Mark sheet <span>*</span></label>
                             <input type="file" />
                           </div>
                         </div>
@@ -506,6 +538,7 @@ const ApplicationForm = () => {
                               </label>
                               <input
                                 type="text"
+                                placeholder="Type here"
                                 name="curricular"
                                 onChange={onchange}
                               />
@@ -517,6 +550,7 @@ const ApplicationForm = () => {
                               </label>
                               <input
                                 type="text"
+                                placeholder="Type here"
                                 name="Course-Completion"
                                 onChange={onchange}
                               />
@@ -536,7 +570,7 @@ const ApplicationForm = () => {
                               screening
                             </p>
                             <div className="device">
-                              <p>What device you / your family own? *</p>
+                              <p>What device you / your family own? <span>*</span></p>
                               <div className="options">
                                 <div className="option-row-one">
                                   <div className="sub-row-one">
@@ -588,20 +622,23 @@ const ApplicationForm = () => {
                           <div className="palli">
                             <label>
                               How did you come to know about DCKAP Palli
-                              Program? *
+                              Program? <span>*</span>
                             </label>
                             <select name="" id="">
-                              <option value=""></option>
+                              <option value="">Select</option>
                             </select>
                           </div>
                         </div>
                         <div className="row-four">
+
+                          <div className="training-inputs">
                           <div className="trainering">
                             <label>
-                              Why do you want to take up this training? *
+                              Why do you want to take up this training? <span>*</span>
                             </label>
                             <input
                               type="text"
+                              placeholder="Type here"
                               name="training"
                               onChange={onchange}
                             />
@@ -609,14 +646,17 @@ const ApplicationForm = () => {
                           <div className="trainering">
                             <label>
                               Please leave any additional information if you
-                              would like to share with us *
+                              would like to share with us <span>*</span>
                             </label>
                             <input
                               type="text"
+                              placeholder="Type here"
                               name="information"
                               onChange={onchange}
                             />
                           </div>
+                          </div>
+                      
                           <div className="agree-button">
                             <div className="agree">
                               <input type="checkbox" />
@@ -635,11 +675,11 @@ const ApplicationForm = () => {
             />
             <div
               className="save-per-button-section"
-              // style={{ display: "flex", justifyContent: "end" }}
+            // style={{ display: "flex", justifyContent: "end" }}
             >
               {currentTab !== "1" && (
                 <button
-                  className="btn secondary-medium"
+                  className="btn secondary-medium prevBtn"
                   onClick={handlePreviousTab}
                 >
                   Previous
@@ -647,7 +687,7 @@ const ApplicationForm = () => {
               )}
               {currentTab !== "4" && (
                 <button
-                  className="btn primary-medium"
+                  className="btn primary-medium nextBtn"
                   // style={{ width: "100px" }}
                   onClick={handleNextTab}
                 >

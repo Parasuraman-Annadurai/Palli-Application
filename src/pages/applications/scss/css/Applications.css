@@ -359,6 +359,8 @@ body .container .application-full-container .application-inner-container .applic
   font-size: 12px;
   line-height: 16px;
   font-weight: 500;
+  cursor: pointer;
+  padding-bottom: 4px;
 }
 body .container .application-full-container .application-inner-container .application-list-container .application-card-container .application-details-container .application-info .application-email-container .application-email {
   color: #969d88;
@@ -377,6 +379,7 @@ body .container .application-full-container .application-inner-container .applic
   color: #969d88;
   font-family: "Roboto";
   font-family: 400;
+  padding-bottom: 2px;
 }
 body .container .application-full-container .application-inner-container .application-list-container .application-card-container .application-details-container .application-gender span {
   color: #12160a;
@@ -393,6 +396,7 @@ body .container .application-full-container .application-inner-container .applic
   line-height: 16px;
   font-weight: 400;
   color: #969d88;
+  padding-bottom: 2px;
 }
 body .container .application-full-container .application-inner-container .application-list-container .application-card-container .application-details-container .application-dob span {
   font-size: 12px;
@@ -409,6 +413,7 @@ body .container .application-full-container .application-inner-container .applic
   line-height: 16px;
   font-weight: 400;
   color: #969d88;
+  padding-bottom: 2px;
 }
 body .container .application-full-container .application-inner-container .application-list-container .application-card-container .application-details-container .application-district .district-heading::first-letter {
   text-transform: uppercase;
@@ -430,6 +435,7 @@ body .container .application-full-container .application-inner-container .applic
   line-height: 16px;
   font-weight: 400;
   color: #969d88;
+  padding-bottom: 2px;
 }
 body .container .application-full-container .application-inner-container .application-list-container .application-card-container .application-details-container .application-qualification span {
   font-size: 12px;
@@ -446,6 +452,7 @@ body .container .application-full-container .application-inner-container .applic
   line-height: 16px;
   font-weight: 400;
   color: #969d88;
+  padding-bottom: 2px;
 }
 body .container .application-full-container .application-inner-container .application-list-container .application-card-container .application-details-container .application-mobile-no span {
   font-size: 12px;
@@ -472,6 +479,9 @@ body .container .application-full-container .application-inner-container .applic
   padding-top: 10px;
   justify-content: center;
   align-items: center;
+  position: fixed;
+  bottom: 54px;
+  left: 50%;
 }
 
 body .container .application-view-more-container {
@@ -491,6 +501,7 @@ body .container .application-view-more-container .left-side .top-section .applic
 body .container .application-view-more-container .left-side .top-section .application-name .heading {
   font: 400 16px/20px "Roboto";
   color: #969d88;
+  cursor: pointer;
 }
 body .container .application-view-more-container .left-side .top-section .application-name img {
   width: 16px;
@@ -522,268 +533,321 @@ body .container .application-view-more-container .left-side .personal-and-educat
   width: 0;
   height: 0;
 }
-body .container .application-view-more-container .left-side .personal-and-education-section .personal-details-heading-section {
+body .container .application-view-more-container .left-side .personal-and-education-section .main-personal-details {
+  padding: 16px 15px;
+  background-color: #f7f8f7;
+  border-radius: 4px;
+  margin-bottom: 20px;
+}
+body .container .application-view-more-container .left-side .personal-and-education-section .main-personal-details .personal-details-heading-section {
   align-items: center;
-  padding-bottom: 20px;
+  padding-bottom: 10px;
   gap: 10px;
 }
-body .container .application-view-more-container .left-side .personal-and-education-section .personal-details-heading-section .heading-name {
-  font: 400 12px/16px "Roboto";
+body .container .application-view-more-container .left-side .personal-and-education-section .main-personal-details .personal-details-heading-section .heading-name {
+  font: 500 14px/18px "Roboto";
   color: #12160a;
 }
-body .container .application-view-more-container .left-side .personal-and-education-section .personal-details-heading-section .horizon-line {
+body .container .application-view-more-container .left-side .personal-and-education-section .main-personal-details .personal-details-heading-section .horizon-line {
   flex: 1;
   height: 1px;
   background-color: #eaeaea;
 }
-body .container .application-view-more-container .left-side .personal-and-education-section .personal-details-section, body .container .application-view-more-container .left-side .personal-and-education-section .Guardian-details-section, body .container .application-view-more-container .left-side .personal-and-education-section .educational-details {
+body .container .application-view-more-container .left-side .personal-and-education-section .main-personal-details .personal-details-section,
+body .container .application-view-more-container .left-side .personal-and-education-section .main-personal-details .Guardian-details-section,
+body .container .application-view-more-container .left-side .personal-and-education-section .main-personal-details .educational-details {
   max-width: 100%;
   width: 100%;
   justify-content: space-between;
   padding-bottom: 20px;
   flex-wrap: wrap;
 }
-body .container .application-view-more-container .left-side .personal-and-education-section .personal-details-section > div, body .container .application-view-more-container .left-side .personal-and-education-section .Guardian-details-section > div, body .container .application-view-more-container .left-side .personal-and-education-section .educational-details > div {
+body .container .application-view-more-container .left-side .personal-and-education-section .main-personal-details .personal-details-section > div,
+body .container .application-view-more-container .left-side .personal-and-education-section .main-personal-details .Guardian-details-section > div,
+body .container .application-view-more-container .left-side .personal-and-education-section .main-personal-details .educational-details > div {
   flex: 1 0 15%;
   margin: 0;
   padding: 0;
 }
-body .container .application-view-more-container .left-side .personal-and-education-section .personal-details-section > div, body .container .application-view-more-container .left-side .personal-and-education-section .personal-details-section-two > div, body .container .application-view-more-container .left-side .personal-and-education-section .Guardian-details-section > div {
-  width: 220px;
-}
-body .container .application-view-more-container .left-side .personal-and-education-section .personal-details-section > div:not(:last-child), body .container .application-view-more-container .left-side .personal-and-education-section .personal-details-section-two > div:not(:last-child), body .container .application-view-more-container .left-side .personal-and-education-section .Guardian-details-section > div:not(:last-child) {
+body .container .application-view-more-container .left-side .personal-and-education-section .main-personal-details .personal-details-section > div:not(:last-child),
+body .container .application-view-more-container .left-side .personal-and-education-section .main-personal-details .personal-details-section-two > div:not(:last-child),
+body .container .application-view-more-container .left-side .personal-and-education-section .main-personal-details .Guardian-details-section > div:not(:last-child) {
   border-right: 1px solid lightgrey;
+  width: 213px;
 }
-body .container .application-view-more-container .left-side .personal-and-education-section .personal-details-section > div:not(:first-child), body .container .application-view-more-container .left-side .personal-and-education-section .personal-details-section-two > div:not(:first-child), body .container .application-view-more-container .left-side .personal-and-education-section .Guardian-details-section > div:not(:first-child) {
+body .container .application-view-more-container .left-side .personal-and-education-section .main-personal-details .personal-details-section > div:not(:first-child),
+body .container .application-view-more-container .left-side .personal-and-education-section .main-personal-details .personal-details-section-two > div:not(:first-child),
+body .container .application-view-more-container .left-side .personal-and-education-section .main-personal-details .Guardian-details-section > div:not(:first-child) {
   display: flex;
   padding: 0 25px;
 }
-body .container .application-view-more-container .left-side .personal-and-education-section .personal-details-section .personal-detial-background .details-section .personal-detial-title {
+body .container .application-view-more-container .left-side .personal-and-education-section .main-personal-details .personal-details-section .personal-detial-background .details-section .personal-detial-title {
+  padding-bottom: 2px;
   font: 400 12px/16px "Roboto";
   color: #969d88;
 }
-body .container .application-view-more-container .left-side .personal-and-education-section .personal-details-section .personal-detial-background .details-section .personal-detial-name {
+body .container .application-view-more-container .left-side .personal-and-education-section .main-personal-details .personal-details-section .personal-detial-background .details-section .personal-detial-name {
   font: 400 12px/16px "Roboto";
 }
-body .container .application-view-more-container .left-side .personal-and-education-section .personal-details-section .personal-detial-background .details-section .personal-detial-name a {
+body .container .application-view-more-container .left-side .personal-and-education-section .main-personal-details .personal-details-section .personal-detial-background .details-section .personal-detial-name a {
   color: #49a843;
   padding-left: 2px;
 }
-body .container .application-view-more-container .left-side .personal-and-education-section .personal-details-section-two {
-  justify-content: space-between;
+body .container .application-view-more-container .left-side .personal-and-education-section .main-personal-details .personal-details-section-two {
   max-width: 657px;
   width: 100%;
-  padding-bottom: 20px;
 }
-body .container .application-view-more-container .left-side .personal-and-education-section .personal-details-section-two p {
+body .container .application-view-more-container .left-side .personal-and-education-section .main-personal-details .personal-details-section-two p {
   font-size: 12px;
   line-height: 16px;
   font-family: "Roboto";
   color: #969d88;
 }
-body .container .application-view-more-container .left-side .personal-and-education-section .personal-details-section-two span {
+body .container .application-view-more-container .left-side .personal-and-education-section .main-personal-details .personal-details-section-two span {
   font-size: 12px;
   line-height: 16px;
   font-family: "Roboto";
   color: #12160a;
 }
-body .container .application-view-more-container .left-side .personal-and-education-section .personal-details-section-two span a {
+body .container .application-view-more-container .left-side .personal-and-education-section .main-personal-details .personal-details-section-two span a {
   margin-left: 5px;
   color: #49a843;
   text-decoration: underline;
 }
-body .container .application-view-more-container .left-side .personal-and-education-section .Guardian-details-heading-section {
+body .container .application-view-more-container .left-side .personal-and-education-section .main-Guardian-details {
+  padding: 16px 15px;
+  background-color: #f7f8f7;
+  border-radius: 4px;
+  margin-bottom: 20px;
+}
+body .container .application-view-more-container .left-side .personal-and-education-section .main-Guardian-details .Guardian-details-heading-section {
   display: flex;
   align-items: center;
   gap: 10px;
   padding-bottom: 20px;
 }
-body .container .application-view-more-container .left-side .personal-and-education-section .Guardian-details-heading-section .heading-name {
+body .container .application-view-more-container .left-side .personal-and-education-section .main-Guardian-details .Guardian-details-heading-section .heading-name {
   color: #12160a;
-  font-family: 400;
-  font-size: 12px;
-  line-height: 16px;
+  font: 500 14px/18px "Roboto";
 }
-body .container .application-view-more-container .left-side .personal-and-education-section .Guardian-details-heading-section .horizon-line {
+body .container .application-view-more-container .left-side .personal-and-education-section .main-Guardian-details .Guardian-details-heading-section .horizon-line {
   flex: 1;
   height: 1px;
   background-color: #eaeaea;
 }
-body .container .application-view-more-container .left-side .personal-and-education-section .Guardian-details-section {
+body .container .application-view-more-container .left-side .personal-and-education-section .main-Guardian-details .Guardian-details-section {
   justify-content: space-between;
-  padding-bottom: 25px;
 }
-body .container .application-view-more-container .left-side .personal-and-education-section .Guardian-details-section .Guardian-detial-background .details-section .Guardian-detial-title {
+body .container .application-view-more-container .left-side .personal-and-education-section .main-Guardian-details .Guardian-details-section > div:not(:last-child) {
+  border-right: 1px solid lightgrey;
+  width: 213px;
+}
+body .container .application-view-more-container .left-side .personal-and-education-section .main-Guardian-details .Guardian-details-section > div:not(:first-child) {
+  display: flex;
+  padding: 0 25px;
+}
+body .container .application-view-more-container .left-side .personal-and-education-section .main-Guardian-details .Guardian-details-section .Guardian-detial-background .details-section .Guardian-detial-title {
   font: 400 12px/16px "Roboto";
   color: #969d88;
+  padding-bottom: 2px;
 }
-body .container .application-view-more-container .left-side .personal-and-education-section .Guardian-details-section .Guardian-detial-background .details-section .Guardian-detial-name {
+body .container .application-view-more-container .left-side .personal-and-education-section .main-Guardian-details .Guardian-details-section .Guardian-detial-background .details-section .Guardian-detial-name {
   font: 400 12px/16px "Roboto";
 }
-body .container .application-view-more-container .left-side .personal-and-education-section .Guardian-details-section .Guardian-detial-background .details-section .Guardian-detial-name a {
+body .container .application-view-more-container .left-side .personal-and-education-section .main-Guardian-details .Guardian-details-section .Guardian-detial-background .details-section .Guardian-detial-name a {
   color: #49a843;
   margin-left: 4px;
   text-decoration: underline;
 }
-body .container .application-view-more-container .left-side .personal-and-education-section .Educational-details-heading-section {
+body .container .application-view-more-container .left-side .personal-and-education-section .main-Educational-details {
+  padding: 16px 15px;
+  background-color: #f7f8f7;
+  border-radius: 4px;
+  margin-bottom: 20px;
+}
+body .container .application-view-more-container .left-side .personal-and-education-section .main-Educational-details .Educational-details-heading-section {
   padding-bottom: 20px;
   display: flex;
   align-items: center;
   gap: 10px;
 }
-body .container .application-view-more-container .left-side .personal-and-education-section .Educational-details-heading-section .heading-name {
+body .container .application-view-more-container .left-side .personal-and-education-section .main-Educational-details .Educational-details-heading-section .heading-name {
   color: #12160a;
-  font-family: 400;
-  font-size: 12px;
-  line-height: 16px;
+  font: 500 14px/18px "Roboto";
 }
-body .container .application-view-more-container .left-side .personal-and-education-section .Educational-details-heading-section .horizon-line {
+body .container .application-view-more-container .left-side .personal-and-education-section .main-Educational-details .Educational-details-heading-section .horizon-line {
   flex: 1;
   height: 1px;
   background-color: #eaeaea;
 }
-body .container .application-view-more-container .left-side .personal-and-education-section .Educational-details-list-container .educational-background-one-container {
+body .container .application-view-more-container .left-side .personal-and-education-section .main-Educational-details .Educational-details-list-container .educational-background-one-container {
   padding-bottom: 20px;
 }
-body .container .application-view-more-container .left-side .personal-and-education-section .Educational-details-list-container .educational-background-one-container .curent-qul {
+body .container .application-view-more-container .left-side .personal-and-education-section .main-Educational-details .Educational-details-list-container .educational-background-one-container .curent-qul {
   padding-bottom: 16px;
 }
-body .container .application-view-more-container .left-side .personal-and-education-section .Educational-details-list-container .educational-background-one-container .curent-qul p {
+body .container .application-view-more-container .left-side .personal-and-education-section .main-Educational-details .Educational-details-list-container .educational-background-one-container .curent-qul p {
   color: #12160a;
   font-size: 12px;
   line-height: 16px;
   font-family: "Roboto";
   font-weight: 400;
 }
-body .container .application-view-more-container .left-side .personal-and-education-section .Educational-details-list-container .educational-background-one-container .curent-qul p a {
+body .container .application-view-more-container .left-side .personal-and-education-section .main-Educational-details .Educational-details-list-container .educational-background-one-container .curent-qul p a {
   color: #49a843;
 }
-body .container .application-view-more-container .left-side .personal-and-education-section .Educational-details-list-container .educational-background-one-container .educational-details {
+body .container .application-view-more-container .left-side .personal-and-education-section .main-Educational-details .Educational-details-list-container .educational-background-one-container .educational-details {
   width: 100%;
   justify-content: space-between;
 }
-body .container .application-view-more-container .left-side .personal-and-education-section .Educational-details-list-container .educational-background-one-container .educational-details span {
+body .container .application-view-more-container .left-side .personal-and-education-section .main-Educational-details .Educational-details-list-container .educational-background-one-container .educational-details span {
   color: #969d88;
   font-size: 12px;
   line-height: 16px;
   font-weight: 400;
   padding-bottom: 4px;
 }
-body .container .application-view-more-container .left-side .personal-and-education-section .Educational-details-list-container .educational-background-one-container .educational-details p {
+body .container .application-view-more-container .left-side .personal-and-education-section .main-Educational-details .Educational-details-list-container .educational-background-one-container .educational-details p {
   color: #12160a;
   font-size: 12px;
   font-weight: 400;
   line-height: 16px;
 }
-body .container .application-view-more-container .left-side .personal-and-education-section .Educational-details-list-container .educational-background-one-container .educational-details p a {
+body .container .application-view-more-container .left-side .personal-and-education-section .main-Educational-details .Educational-details-list-container .educational-background-one-container .educational-details p a {
   color: #49a843;
   margin-left: 2px;
   text-decoration: underline;
 }
-body .container .application-view-more-container .left-side .personal-and-education-section .Educational-details-list-container .educational-background-second-container {
+body .container .application-view-more-container .left-side .personal-and-education-section .main-Educational-details .Educational-details-list-container .educational-background-second-container {
   padding-bottom: 20px;
 }
-body .container .application-view-more-container .left-side .personal-and-education-section .Educational-details-list-container .educational-background-second-container .curent-qul {
+body .container .application-view-more-container .left-side .personal-and-education-section .main-Educational-details .Educational-details-list-container .educational-background-second-container .curent-qul {
   padding-bottom: 16px;
 }
-body .container .application-view-more-container .left-side .personal-and-education-section .Educational-details-list-container .educational-background-second-container .curent-qul p {
+body .container .application-view-more-container .left-side .personal-and-education-section .main-Educational-details .Educational-details-list-container .educational-background-second-container .curent-qul p {
   color: #12160a;
   font-size: 12px;
   line-height: 16px;
   font-family: "Roboto";
   font-weight: 400;
 }
-body .container .application-view-more-container .left-side .personal-and-education-section .Educational-details-list-container .educational-background-second-container .curent-qul p a {
+body .container .application-view-more-container .left-side .personal-and-education-section .main-Educational-details .Educational-details-list-container .educational-background-second-container .curent-qul p a {
   color: #49a843;
 }
-body .container .application-view-more-container .left-side .personal-and-education-section .Educational-details-list-container .educational-background-second-container .educational-details {
+body .container .application-view-more-container .left-side .personal-and-education-section .main-Educational-details .Educational-details-list-container .educational-background-second-container .educational-details {
   justify-content: space-between;
   padding-bottom: 20px;
 }
-body .container .application-view-more-container .left-side .personal-and-education-section .Educational-details-list-container .educational-background-second-container .educational-details span {
+body .container .application-view-more-container .left-side .personal-and-education-section .main-Educational-details .Educational-details-list-container .educational-background-second-container .educational-details span {
   color: #969d88;
   font-size: 12px;
   line-height: 16px;
   font-weight: 400;
   padding-bottom: 4px;
 }
-body .container .application-view-more-container .left-side .personal-and-education-section .Educational-details-list-container .educational-background-second-container .educational-details p {
+body .container .application-view-more-container .left-side .personal-and-education-section .main-Educational-details .Educational-details-list-container .educational-background-second-container .educational-details p {
   color: #12160a;
   font-size: 12px;
   font-weight: 400;
   line-height: 16px;
 }
-body .container .application-view-more-container .left-side .personal-and-education-section .Educational-details-list-container .educational-background-second-container .educational-details p a {
+body .container .application-view-more-container .left-side .personal-and-education-section .main-Educational-details .Educational-details-list-container .educational-background-second-container .educational-details p a {
   color: #49a843;
   text-decoration: underline;
 }
-body .container .application-view-more-container .left-side .personal-and-education-section .skillset-and-other-details {
+body .container .application-view-more-container .left-side .personal-and-education-section .main-skillset {
+  padding: 16px 15px;
+  background-color: #f7f8f7;
+  border-radius: 4px;
+  margin-bottom: 20px;
+}
+body .container .application-view-more-container .left-side .personal-and-education-section .main-skillset .skillset-and-other-details {
   padding-bottom: 20px;
   justify-content: space-between;
 }
-body .container .application-view-more-container .left-side .personal-and-education-section .skillset-and-other-details > div {
+body .container .application-view-more-container .left-side .personal-and-education-section .main-skillset .skillset-and-other-details > div {
   flex: 1;
 }
-body .container .application-view-more-container .left-side .personal-and-education-section .skillset-and-other-details .skillset-container .skillset-details-heading-section {
-  padding-bottom: 20px;
+body .container .application-view-more-container .left-side .personal-and-education-section .main-skillset .skillset-and-other-details .skillset-container .skillset-details-heading-section {
+  align-items: center;
+  padding-bottom: 10px;
+  gap: 10px;
 }
-body .container .application-view-more-container .left-side .personal-and-education-section .skillset-and-other-details .skillset-container .skillset-details-heading-section .heading-name {
+body .container .application-view-more-container .left-side .personal-and-education-section .main-skillset .skillset-and-other-details .skillset-container .skillset-details-heading-section .heading-name {
+  font: 500 14px/18px "Roboto";
   color: #12160a;
-  font-family: 400;
-  font-size: 12px;
-  line-height: 16px;
 }
-body .container .application-view-more-container .left-side .personal-and-education-section .skillset-and-other-details .skillset-container .skillset-detial-background-section {
+body .container .application-view-more-container .left-side .personal-and-education-section .main-skillset .skillset-and-other-details .skillset-container .skillset-details-heading-section .horizon-line {
+  flex: 1;
+  height: 1px;
+  background-color: #eaeaea;
+}
+body .container .application-view-more-container .left-side .personal-and-education-section .main-skillset .skillset-and-other-details .skillset-container .skillset-detial-background-section {
   padding-bottom: 10px;
 }
-body .container .application-view-more-container .left-side .personal-and-education-section .skillset-and-other-details .skillset-container .skillset-detial-background-section .details-section .skillset-detial-title {
+body .container .application-view-more-container .left-side .personal-and-education-section .main-skillset .skillset-and-other-details .skillset-container .skillset-detial-background-section .details-section .skillset-detial-title {
   font: 400 12px/16px "Roboto";
   color: #969d88;
 }
-body .container .application-view-more-container .left-side .personal-and-education-section .skillset-and-other-details .skillset-container .skillset-detial-background-section .details-section .skillset-detial-name {
+body .container .application-view-more-container .left-side .personal-and-education-section .main-skillset .skillset-and-other-details .skillset-container .skillset-detial-background-section .details-section .skillset-detial-name {
   font: 400 12px/16px "Roboto";
   color: #12160a;
 }
-body .container .application-view-more-container .left-side .personal-and-education-section .skillset-and-other-details .Learning-devices-section .Learning-details-heading-section {
-  padding-bottom: 20px;
+body .container .application-view-more-container .left-side .personal-and-education-section .main-skillset .skillset-and-other-details .Learning-devices-section .Learning-details-heading-section {
+  align-items: center;
+  padding-bottom: 10px;
+  gap: 10px;
 }
-body .container .application-view-more-container .left-side .personal-and-education-section .skillset-and-other-details .Learning-devices-section .Learning-details-heading-section .heading-name {
+body .container .application-view-more-container .left-side .personal-and-education-section .main-skillset .skillset-and-other-details .Learning-devices-section .Learning-details-heading-section .heading-name {
+  font: 500 14px/18px "Roboto";
   color: #12160a;
-  font-size: 12px;
-  font-weight: 400;
-  line-height: 16px;
-  font-family: "Roboto";
 }
-body .container .application-view-more-container .left-side .personal-and-education-section .skillset-and-other-details .Learning-devices-section .Learning-detial-background .details-section .Learning-detial-title {
+body .container .application-view-more-container .left-side .personal-and-education-section .main-skillset .skillset-and-other-details .Learning-devices-section .Learning-details-heading-section .horizon-line {
+  flex: 1;
+  height: 1px;
+  background-color: #eaeaea;
+}
+body .container .application-view-more-container .left-side .personal-and-education-section .main-skillset .skillset-and-other-details .Learning-devices-section .Learning-detial-background .details-section .Learning-detial-title {
   font: 400 12px/16px "Roboto";
   color: #969d88;
 }
-body .container .application-view-more-container .left-side .personal-and-education-section .skillset-and-other-details .Learning-devices-section .Learning-detial-background .details-section .Learning-detial-name {
+body .container .application-view-more-container .left-side .personal-and-education-section .main-skillset .skillset-and-other-details .Learning-devices-section .Learning-detial-background .details-section .Learning-detial-name {
   font: 400 12px/16px "Roboto";
   color: #12160a;
 }
-body .container .application-view-more-container .left-side .personal-and-education-section .genaral-details-section .genaral-details-heading-section {
-  padding-bottom: 20px;
+body .container .application-view-more-container .left-side .personal-and-education-section .main-general-details {
+  padding: 16px 15px;
+  background-color: #f7f8f7;
+  border-radius: 4px;
+  margin-bottom: 20px;
 }
-body .container .application-view-more-container .left-side .personal-and-education-section .genaral-details-section .genaral-details-heading-section .heading-name {
+body .container .application-view-more-container .left-side .personal-and-education-section .main-general-details .genaral-details-section .genaral-details-heading-section {
+  align-items: center;
+  padding-bottom: 10px;
+  gap: 10px;
+}
+body .container .application-view-more-container .left-side .personal-and-education-section .main-general-details .genaral-details-section .genaral-details-heading-section .heading-name {
+  font: 500 14px/18px "Roboto";
   color: #12160a;
-  font-size: 12px;
-  line-height: 16px;
-  font-family: "Roboto";
 }
-body .container .application-view-more-container .left-side .personal-and-education-section .genaral-details-section .general-details-list-container {
+body .container .application-view-more-container .left-side .personal-and-education-section .main-general-details .genaral-details-section .genaral-details-heading-section .horizon-line {
+  flex: 1;
+  height: 1px;
+  background-color: #eaeaea;
+}
+body .container .application-view-more-container .left-side .personal-and-education-section .main-general-details .genaral-details-section .general-details-list-container {
   justify-content: space-between;
 }
-body .container .application-view-more-container .left-side .personal-and-education-section .genaral-details-section .general-details-list-container > div {
+body .container .application-view-more-container .left-side .personal-and-education-section .main-general-details .genaral-details-section .general-details-list-container > div {
   flex: 1;
 }
-body .container .application-view-more-container .left-side .personal-and-education-section .genaral-details-section .general-details-list-container span {
+body .container .application-view-more-container .left-side .personal-and-education-section .main-general-details .genaral-details-section .general-details-list-container span {
   color: #969d88;
   font-size: 12px;
   line-height: 16px;
   font-family: 400;
 }
-body .container .application-view-more-container .left-side .personal-and-education-section .genaral-details-section .general-details-list-container p {
+body .container .application-view-more-container .left-side .personal-and-education-section .main-general-details .genaral-details-section .general-details-list-container p {
   color: #12160a;
   font-size: 12px;
   line-height: 16px;

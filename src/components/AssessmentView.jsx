@@ -22,7 +22,7 @@ import { useParams } from "react-router-dom";
 
 import { useAuth } from "../context/AuthContext";
 
-import WeightageList from "./WeightageList";
+import WeightageList from "./WeightageList/WeightageList";
 import Comments from "./CommentsModule/Comments";
 
 import {
@@ -64,6 +64,7 @@ const AssessmentView = ({
   isCommentEditId,
   setCommentText,
   setIsCommentEditId,
+  setIsMode
 }) => {
   const { id: batchId } = useParams();
   const { token, user } = useAuth();
@@ -75,9 +76,13 @@ const AssessmentView = ({
     type == "task" ? 0 : 1
   );
   const [assigneeloader, setAssigneeloader] = useState(false);
+  const [assigneLoadingMessage,setAssigneLoadingMessage] = useState("")
   const [weightageLists, setWeightageLists] = useState([]);
   const [openComments, setOpenComments] = useState(null);
   // const [formErrors, setFormErrors] = useState({});
+  const [studentLoading, setStudentLoading] = useState(false)
+  const [assignedUsers, setAssignedUsers] = useState([])
+  const [assginesUsersSeacrh,setAssignedUsersSearch] = useState("")
 
   const headers = {
     Authorization: `Bearer ${token.access}`,
@@ -92,7 +97,22 @@ const AssessmentView = ({
           const copyWeightageLists = [...res.data.data];
           setWeightageLists(copyWeightageLists);
         }
-      });
+      }).catch((error)=>{
+        if (
+          error.response.data.status === 400 ||
+          "errors" in error.response.data
+        ) {
+          const errorMessages = error.response.data.errors;
+
+          Object.entries(errorMessages).forEach(([key, messages]) => {
+            notification.error({
+              message: `${key} Error`,
+              description: messages,
+              duration:1
+            })
+          });
+        }
+      })
   }, []);
   // Destructure the current task
   const {
@@ -103,6 +123,18 @@ const AssessmentView = ({
     draft,
     task_weightages = [],
   } = currentAssessment;
+
+
+  useEffect(() => {
+    setStudentLoading(true)
+    axios.get(`${API_END_POINT}/api/task/${batchId}/get/task/${taskId}`, { headers }).then((res) => {
+      setAssignedUsers(res.data.data)
+      setStudentLoading(false)
+    }).catch((error)=>{
+      setStudentLoading(false)
+      console.log(error);
+    })
+  }, [taskId,isStudentScoreOpen])
 
   const handleCheckboxChange = (studentId) => {
     const isSelected = [...selectedStudents].includes(studentId);
@@ -129,10 +161,19 @@ const AssessmentView = ({
           }
         })
         .catch((error) => {
+          setAssigneeloader(false);
           console.log(error);
+          if (error.response && error.response.data && error.response.data.message) {
+            const errorMessage = error.response.data.message;
+            notification.error({
+              message: 'Error',
+              description: errorMessage,
+            });
+          }
         });
     } else {
       const updatedStudents = [...selectedStudents, studentId];
+      setAssigneLoadingMessage("Sending email to students...")
 
       //students add in task
       const url = `${API_END_POINT}/api/task/${batchId}/assign/task/${taskId}`;
@@ -145,8 +186,18 @@ const AssessmentView = ({
           });
           setAssigneeloader(false);
           setSelectedStudents(updatedStudents);
+          setAssigneLoadingMessage("")
+
         }
-      });
+      }).catch((error)=>{
+        if (error.response && error.response.data && error.response.data.message) {
+          const errorMessage = error.response.data.message;
+          notification.error({
+            message: 'Error',
+            description: errorMessage,
+          });
+        }
+      })
     }
   };
 
@@ -176,10 +227,20 @@ const AssessmentView = ({
           }
         })
         .catch((error) => {
+          setAssigneeloader(false);
           console.log(error);
+          if (error.response && error.response.data && error.response.data.message) {
+            const errorMessage = error.response.data.message;
+            notification.error({
+              message: 'Error',
+              description: errorMessage,
+            });
+          }
         });
     } else {
       //selectAll students in tasks
+      setAssigneLoadingMessage("Sending email to All students...")
+
       axios
         .post(
           `${API_END_POINT}/api/task/${batchId}/assign/task/${taskId}`,
@@ -195,10 +256,20 @@ const AssessmentView = ({
             });
             setSelectedStudents(allStudentIds);
             setAssigneeloader(false);
+            setAssigneLoadingMessage("")
+
           }
         })
         .catch((error) => {
+          setAssigneeloader(false);
           console.log(error, "error");
+          if (error.response && error.response.data && error.response.data.message) {
+            const errorMessage = error.response.data.message;
+            notification.error({
+              message: 'Error',
+              description: errorMessage,
+            });
+          }
         });
     }
   };
@@ -226,7 +297,6 @@ const AssessmentView = ({
   const handleScoreOnchange = (e, students, weightage) => {
     const scoreValue = e.target.value;
     const { name, value } = e.target;
-    console.log(e);
     if(formErrors[name]){
       delete formErrors[name];
     }
@@ -270,8 +340,9 @@ const AssessmentView = ({
   
   
   
-  
 
+
+ 
   return (
     <>
       {!isStudentScoreOpen ? (
@@ -352,7 +423,7 @@ const AssessmentView = ({
                     <p className="task-description-label">Description <span>*</span></p>
                     <div className="task-editor">
                       <>
-                        <CustomIcons />
+                        {/* <CustomIcons /> */}
                         <ReactQuill
                           placeholder="Type here"
                           className={`${
@@ -405,7 +476,11 @@ const AssessmentView = ({
               {getPermission(user.permissions, "TaskWeightage", "create") || getPermission(user.permissions, "TaskUser", "create") ? (
                 <section className="assignee-and-weightage-container">
                   {assigneeloader ? (
+                   <>
                     <Skeleton active={true} />
+                    <p style={{fontFamily:"roboto",fontSize:"16px",paddingTop:"15px"}}>{assigneLoadingMessage}</p>
+                   </>
+
                   ) : (
                     <>
                       <div className={`title-section flex`}>
@@ -444,71 +519,90 @@ const AssessmentView = ({
                         {toggleAssigneeWeightage === 0 ? (
                           <>
                         {getPermission(user.permissions, "TaskUser", "create") && (
-                              <div className="assign-listing-container">
-                            <div className="assignee-search-container">
-                              <input type="input" placeholder="search..." onChange={(e) => setAssigneeSearch(e.target.value)} />
-                              <img
-                                src="/icons/searchIcon.svg"
-                                alt="search-icon"
-                                className="search-icon"
-                              />
-
-
-                            </div>
-                            {isAssigneeLoading ? <Skeleton active paragraph={4} /> : (
                               <>
-                                <div className="select-all flex">
-                                  <input
-                                    className="global-checkbox"
-                                    type="checkbox"
-                                    onChange={handleAllCheckboxChange}
-                                    checked={selectedStudents.length == students.length}
-                                  />
-                                  <span>
-                                    {selectedStudents.length === students.length
-                                      ? "All Students Selected"
-                                      : selectedStudents.length == 0
-                                        ? "Select All Students"
-                                        : `${selectedStudents.length} Selected`}
-                                  </span>
-                                </div>
-                                <div className="assignee-card-listing-container">
-                                  {students.map((student) => {
-                                    return (
-                                      <div
-                                        className="individual-assignee-card flex"
-                                        key={student.id}
-                                      >
-                                        <input
-                                          className="student-checkbox "
-                                          type="checkbox"
-                                          onChange={() =>
-                                            handleCheckboxChange(student.id)
-                                          }
-                                          checked={selectedStudents.includes(
-                                            student.id
-                                          )}
-                                        />
-                                        <div className="profile flex">
-                                          <div className="profile-letter">
-                                            <span>
-                                              {student?.first_name[0]}
-                                              {student?.last_name[0]}
-                                            </span>
-                                          </div>
-                                          <div className="assignee-name">
-                                            <p>
-                                              {student.first_name} {student.last_name}
+                                <div className="assign-listing-container">
+                                   <div className="assignee-search-container">
+                                     <input type="input" placeholder="search..." onChange={(e) => setAssigneeSearch(e.target.value)} />
+                                     <img
+                                       src="/icons/searchIcon.svg"
+                                       alt="search-icon"
+                                       className="search-icon"
+                                     />
+       
+       
+                                   </div>
+                                   {isAssigneeLoading ? <Skeleton active paragraph={4} /> : (
+                                     <>
+                                      {students?.length > 0 ? (
+                                        <>
+                                          <div className="select-all flex">
+                                         <input
+                                           className="global-checkbox"
+                                           type="checkbox"
+                                           onChange={handleAllCheckboxChange}
+                                           checked={selectedStudents.length == students.length}
+                                         />
+                                         <span>
+                                           {selectedStudents.length === students.length
+                                             ? "All Students Selected"
+                                             : selectedStudents.length == 0
+                                               ? "Select All Students"
+                                               : `${selectedStudents.length} Selected`}
+                                         </span>
+                                       </div>
+                                       <div className="assignee-card-listing-container">
+                                         {students.map((student) => {
+                                           return (
+                                             <div
+                                               className="individual-assignee-card flex"
+                                               key={student.id}
+                                             >
+                                               <input
+                                                 className="student-checkbox "
+                                                 type="checkbox"
+                                                 onChange={() =>
+                                                   handleCheckboxChange(student.id)
+                                                 }
+                                                 checked={selectedStudents.includes(
+                                                   student.id
+                                                 )}
+                                               />
+                                               <div className="profile flex">
+                                                 <div className="profile-letter">
+                                                   <span>
+                                                     {student?.first_name[0]}
+                                                     {student?.last_name[0]}
+                                                   </span>
+                                                 </div>
+                                                 <div className="assignee-name">
+                                                   <p>
+                                                     {student.first_name} {student.last_name}
+                                                   </p>
+                                                 </div>
+                                               </div>
+                                             </div>
+                                           );
+                                         })}
+                                       </div>
+                                        </>
+                                      ) : (
+                                        <div className="select-something-container flex">
+                                          <div className="image-container ">
+                                            <img src="/icons/select-something.svg" alt="" />
+                                            <p className="select-something-heading">
+                                              No students Available in this batch
+
                                             </p>
                                           </div>
                                         </div>
-                                      </div>
-                                    );
-                                  })}
+                                      )}
+
+                                    </>
+                                  )}
                                 </div>
-                              </>
-                            )}
-                          </div>
+
+                          </>
+                         
                         )}
                         </>
                       ) : (
@@ -535,266 +629,312 @@ const AssessmentView = ({
           )}
         </>
       ) : (
-        <main className="main-container">
-          {currentAssessment?.task_users?.length > 0 && (
-            <div className="task-heading">
-              <p>{task_title}</p>
-
-              <div className="search-container">
-                <input type="input" placeholder="search..." />
-                <img
-                  src="/icons/searchIcon.svg"
-                  alt="search-icon"
-                  className="search-icon"
-                />
-
-                <img
-                  src="/icons/filterIcon.svg"
-                  alt="filter-icon"
-                  className="filter-icon"
-                />
-              </div>
-            </div>
-          )}
-          {currentAssessment?.task_users?.length > 0 ? (
-            currentAssessment.task_users.map((students, index) => {
-              return (
-                <>
-                  <div className="task-container">
-                    <div className="task-user-list-container flex" key={index}>
-                      <div className="student-info flex">
-                        <div className="student-name-container">
-                          <p>
-                            {students["user_details"][
-                              "first_name"
-                            ][0]?.toUpperCase()}
-                            {students["user_details"][
-                              "last_name"
-                            ][0]?.toUpperCase()}
-                          </p>
-                        </div>
-                        <div className="student-email-container">
-                          <p className="student-name">
-                            {students.user_details.first_name}{" "}
-                            {students.user_details.last_name}
-                          </p>
-                          <p className="student-email">
-                            {students.user_details.email}
-                          </p>{" "}
-                        </div>
-                      </div>
-                      <div className="student-status">
-                        <p>Status</p>
-                        <span
-                          style={{
-                            backgroundColor:
-                              colorObject[students?.task_status]
-                                ?.backgroundColor,
-                            color: colorObject[students?.task_status]?.color,
-                          }}
-                        >
-                          {students?.task_status}
-                        </span>{" "}
-                      </div>
-                      <div className="sumbitted-date">
-                        <p>Deadline</p>
-                        <span>
-                          {dayjs(students["task"]["due_date"]).format(
-                            "MMMM, DD YYYY"
-                          )}
-                        </span>
-                      </div>
-                      <div className="student-file">
-                        <p>Submission Link</p>
-                        <p>
-                          {students["submission_link"] !== null ? (
-                            <a
-                              href={`${students["submission_link"]}`}
-                              target="_blank"
-                            >
-                              {students["submission_link"]}
-                            </a>
-                          ) : (
-                            "N/A"
-                          )}
-                        </p>
-                      </div>
-                      <div className="student-comment">
-                        <img
-                          src="/icons/comment-fill.svg"
-                          onClick={() => setOpenComments(students.id)}
-                          alt="comment-icon"
-                        />
-                      </div>
-                      <div className="student-work">
-                        {weightageShow
-                          ? students["task_status"] === "SUBMITTED" && (
-                            <>
-                              {getPermission(user.permissions, "TaskScore", "create") && (
-                                <button
-                                  className="secondary-btn-sm"
-                                  onClick={(e) => {
-                                    setActiveWeightageIndex(index);
-                                    if (activeWeightageIndex === index) {
-                                      if (isScoreValidate(task_weightages, studentScore, setFormErrors)) {
-                                        handleAddScore(studentScore);
-                                      }
-                                    }
-                                  }}
-                                >
-                                  {activeWeightageIndex === index
-                                    ? "Submit"
-                                    : " Add mark"}
-                                </button>
-                              )}
-
-                            </>
-
-                            )
-                          : students["task_status"] === "SUBMITTED" && (
-                              <>
-                                {getPermission(user.permissions,"TaskScore","create") && (
-                                    <Dropdown
-                                    className="secondary-btn-sm"
-                                    menu={{ items: itemRenderer(students.id) }}
-                                    placement="bottomLeft"
-                                    trigger={["click"]}
-                                  >
-                                    <button
-                                      className="ant-dropdown-link secondary-btn-sm"
-                                      onClick={(e) => {
-                                        e.preventDefault();
-                                      }}
-                                    >
-                                      Take action
-                                    </button>
-                                  </Dropdown>
-                                )}
-                              </>
-                            )}
-                      </div>
-                    </div>
-                    {/* this modal open comment section for Admin  for functionality purpose*/}
-
-                      <Drawer
-                        title={<div>Comments</div>}
-                        onClose={() => {
-                          setOpenComments(null)
-                          setCommentText("")
-                          setIsCommentEditId(null)
-                        }}
-                        open={openComments !== null}
-                      >
-                        {/* Pass comments state to Comments component */}
-                        {getPermission(user.permissions,"TaskComments","read") && (
-                           <Comments
-                           comments={
-                            currentAssessment.task_users.find(
-                              (student) => student.id === openComments
-                            )?.comments || []
-                          }
-                            role={"Admin"}
-                            commenterId={openComments}
-                            commentText={commentText}
-                            isCommentEditId={isCommentEditId}
-                            setIsCommentEditId={setIsCommentEditId}
-                            setCommentText={setCommentText}
-                            handleSendComment={handleSendComment}
-                            handleDeleteComment={handleDeleteComment}
-                            commentErrors={formErrors}
-                            setCommentsErrors={setFormErrors}
-                          />
-                        )}
-                       
-                      </Drawer>
-
-                    {activeWeightageIndex === index && (
-                      <>
-                        <div
-                          className="applied-weightage-list-container flex"
-                          style={{ gap: "10px" }}
-                        >
-                          {currentAssessment.task_weightages &&
-                            currentAssessment.task_weightages.map(
-                              (weightage, weightageIndex) => (
-                                <div
-                                  key={weightageIndex}
-                                  className="applied-weightage-card flex"
-                                >
-                                  <div className="applied-weightage-name">
-                                    <p>
-                                      {weightageLists &&
-                                        weightageLists.length > 0 &&
-                                        (() => {
-                                          const foundWeightage =
-                                            weightageLists.find(
-                                              (weightageName) =>
-                                                weightageName.id ===
-                                                weightage.weightage
-                                            );
-
-                                          return (
-                                            foundWeightage && (
-                                              <>
-                                                <p>
-                                                  {foundWeightage.weightage}{" "}
-                                                  {Number(
-                                                    weightage.weightage_percentage
-                                                  )}
-                                                </p>
-                                              </>
-                                            )
-                                          );
-                                        })()}
-                                    </p>
-                                  </div>
-
-                                  <div className="weightage-checkbox">
-                                    <input
-                                      type="number"
-                                      name="score"
-                                      onChange={(e) => {
-                                        handleScoreOnchange(
-                                          e,
-                                          students,
-                                          weightage
-                                        );
-                                      }}
-                                    />
-                                  </div>
-                                </div>
-                              )
-                            )}
-                        </div>
-                        <p className="error-message">
-                          {formErrors["score"]
-                            ? formErrors["score"]
-                            : ""}
-                        </p>
-                      </>
-                    )}
-                  </div>
-                </>
-              );
-            })
-          ) : (
-                <>
-                  {!draft && (
-                    <div className="select-something-container flex">
-                      <div className="image-container ">
-                        <img src="/icons/select-something.svg" alt="" />
-                        <p className="select-something-heading">
-                          No Assignee has been assigned to this {type}
-                          <button className="btn primary-medium" style={{ marginTop: "10px" }} onClick={() => {
-                            setIsStudentScoreOpen(!isStudentScoreOpen)
-                            setToggleAssigneeWeightage(0)
-                          }}>Add Assignee</button>
-                        </p>
-                      </div>
+          <main className="main-container" >
+            {studentLoading ? <Skeleton active /> : (
+              <>
+                <div className="task-heading">
+                  <p>{assignedUsers[0]?.task_users?.length > 0 ? task_title :""}</p>
+                  {/* the fetch particular its return one array of object that's why I'm use 0 index hardcoded */}
+                  {assignedUsers[0]?.task_users && assignedUsers[0].task_users.length > 0 && (
+                    <div className="search-container">
+                      <input
+                        type="input"
+                        placeholder="Search..."
+                        onChange={(e) => setAssignedUsersSearch(e.target.value)}
+                      />
+                      <img
+                        src="/icons/searchIcon.svg"
+                        alt="Search icon"
+                        className="search-icon"
+                      />
                     </div>
                   )}
-                </>
-          )}
+                </div>
+                {assignedUsers?.map((taskAssignedUsers) => {
+                   const filteredUsers = taskAssignedUsers?.task_users?.filter((student) => {
+                    // Customize this condition according to your search requirements
+                    return (
+                      student.user_details.first_name.toLowerCase().includes(assginesUsersSeacrh.toLowerCase()) ||
+                      student.user_details.last_name.toLowerCase().includes(assginesUsersSeacrh.toLowerCase()) ||
+                      student.user_details.email.toLowerCase().includes(assginesUsersSeacrh.toLowerCase())
+                    );
+                  });
+                  return (
+                    <>
+                      <div className="task-main-container">
+                      {taskAssignedUsers?.task_users?.length > 0 ? (
+                        <>
+                          {filteredUsers?.map((students, index) => {
+                            return (
+                              <>
+   
+                                  <div className="task-container" >
+                                    <div className="task-user-list-container flex" key={index}>
+                                      <div className="student-info flex">
+                                        <div className="student-name-container">
+                                          <p>
+                                            {students["user_details"][
+                                              "first_name"
+                                            ][0]?.toUpperCase()}
+                                            {students["user_details"][
+                                              "last_name"
+                                            ][0]?.toUpperCase()}
+                                          </p>
+                                        </div>
+                                        <div className="student-email-container">
+                                          <p className="student-name">
+                                            {students.user_details.first_name}{" "}
+                                            {students.user_details.last_name}
+                                          </p>
+                                          <p className="student-email">
+                                            {students.user_details.email}
+                                          </p>{" "}
+                                        </div>
+                                      </div>
+                                      <div className="student-status">
+                                        <p>Status</p>
+                                        <span
+                                          style={{
+                                            backgroundColor:
+                                              colorObject[students?.task_status]
+                                                ?.backgroundColor,
+                                            color: colorObject[students?.task_status]?.color,
+                                          }}
+                                        >
+                                          {students?.task_status}
+                                        </span>{" "}
+                                      </div>
+                                      <div className="sumbitted-date">
+                                        <p>Deadline</p>
+                                        <span>
+                                          {dayjs(students["task"]["due_date"]).format(
+                                            "MMMM, DD YYYY"
+                                          )}
+                                        </span>
+                                      </div>
+                                      <div className="student-file">
+                                        <p>Submission Link</p>
+                                        <p>
+                                          {students["submission_link"] !== null ? (
+                                            <a
+                                              href={`${students["submission_link"]}`}
+                                              target="_blank"
+                                            >
+                                              {students["submission_link"]}
+                                            </a>
+                                          ) : (
+                                            "N/A"
+                                          )}
+                                        </p>
+                                      </div>
+                                      <div className="student-comment">
+                                        <img
+                                          src="/icons/comment-fill.svg"
+                                          onClick={() => setOpenComments(students.id)}
+                                          alt="comment-icon"
+                                          onMouseOver={(e)=>{
+                                            e.target.src = "/icons/comment-fill-hover.svg";
+                                           }}
+                                          onMouseOut={(e)=>{
+                                              e.target.src = "/icons/comment-fill.svg";
+                                          }}
+                                        />
+                                      </div>
+                                      <div className="student-work">
+
+                                        {weightageShow
+                                          ? students["task_status"] === "SUBMITTED" && (
+                                            <>
+                                              {getPermission(user.permissions, "TaskScore", "create") && (
+                                                <button
+                                                  className="secondary-btn-sm"
+                                                  onClick={(e) => {
+                                                    e.stopPropagation()
+                                                    setActiveWeightageIndex(index);
+                                                    if (activeWeightageIndex === index) {
+                                                      if (isScoreValidate(task_weightages, studentScore, setFormErrors)) {
+                                                        handleAddScore(studentScore);
+                                                      }
+                                                    }
+                                                  }}
+                                                >
+                                                  {activeWeightageIndex === index
+                                                    ? "Submit"
+                                                    : " Add Score"}
+                                                </button>
+                                              )}
+
+                                            </>
+
+                                          )
+                                          : students["task_status"] === "SUBMITTED" && (
+                                            <>
+                                              {getPermission(user.permissions, "TaskScore", "create") && (
+                                                <Dropdown
+                                                  className="secondary-btn-sm"
+                                                  menu={{ items: itemRenderer(students.id) }}
+                                                  placement="bottomLeft"
+                                                  trigger={["click"]}
+                                                >
+                                                  <button
+                                                    className="ant-dropdown-link secondary-btn-sm"
+                                                    onClick={(e) => {
+                                                      e.preventDefault();
+                                                    }}
+                                                  >
+                                                    Take action
+                                                  </button>
+                                                </Dropdown>
+                                              )}
+                                            </>
+                                          )}
+                                      </div>
+                                    </div>
+                                    {/* this modal open comment section for Admin  for functionality purpose*/}
+
+                                    <Drawer
+                                      title={<div style={{ fontWeight: 500, fontSize: "16px", fontFamily: "Roboto" }}>Comments</div>}
+                                      onClose={() => {
+                                        setOpenComments(null)
+                                        setCommentText("")
+                                        setIsCommentEditId(null)
+                                      }}
+                                      open={openComments !== null}
+                                    >
+                                      {/* Pass comments state to Comments component */}
+                                      {getPermission(user.permissions, "TaskComments", "read") && (
+                                        <Comments
+                                          comments={
+                                            currentAssessment?.task_users?.find(
+                                              (student) => student.id === openComments
+                                            )?.comments || []
+                                          }
+                                          role={"Admin"}
+                                          commenterId={openComments}
+                                          commentText={commentText}
+                                          isCommentEditId={isCommentEditId}
+                                          setIsCommentEditId={setIsCommentEditId}
+                                          setCommentText={setCommentText}
+                                          handleSendComment={handleSendComment}
+                                          handleDeleteComment={handleDeleteComment}
+                                          commentErrors={formErrors}
+                                          setCommentsErrors={setFormErrors}
+                                        />
+                                      )}
+
+                                    </Drawer>
+
+                                    {activeWeightageIndex === index && (
+                                      <>
+                                        <div
+                                          className="applied-weightage-list-container flex"
+                                          style={{ gap: "10px" }}
+                                        >
+                                          {currentAssessment.task_weightages &&
+                                            currentAssessment.task_weightages.map(
+                                              (weightage, weightageIndex) => (
+                                                <div
+                                                  key={weightageIndex}
+                                                  className="applied-weightage-card flex"
+                                                >
+                                                  <div className="applied-weightage-name">
+                                                    <p>
+                                                      {weightageLists &&
+                                                        weightageLists.length > 0 &&
+                                                        (() => {
+                                                          const foundWeightage =
+                                                            weightageLists.find(
+                                                              (weightageName) =>
+                                                                weightageName.id ===
+                                                                weightage.weightage
+                                                            );
+
+                                                          return (
+                                                            foundWeightage && (
+                                                              <>
+                                                                <p>
+                                                                  {foundWeightage.weightage}{" "}
+                                                                  {Number(
+                                                                    weightage.weightage_percentage
+                                                                  )}
+                                                                </p>
+                                                              </>
+                                                            )
+                                                          );
+                                                        })()}
+                                                    </p>
+                                                  </div>
+
+                                                  <div className="weightage-checkbox">
+                                                    <input
+                                                      type="number"
+                                                      name="score"
+                                                      onChange={(e) => {
+                                                        handleScoreOnchange(
+                                                          e,
+                                                          students,
+                                                          weightage
+                                                        );
+                                                      }}
+                                                    /> 
+                                                  </div>
+                                                </div>
+                                              )
+                                            )}
+                                        </div>
+                                        <p className="error-message">
+                                          {formErrors["score"]
+                                            ? formErrors["score"]
+                                            : ""}
+                                        </p>
+                                      </>
+                                    )}
+                                  </div>
+
+                              </>
+                            )
+                          })}
+                          {filteredUsers?.length === 0 && (
+                            <div className="select-something-container flex">
+                              <div className="image-container ">
+                                <img src="/icons/select-something.svg" alt="" />
+                                <p className="select-something-heading">
+                                  No search results found
+                                </p>
+                              </div>
+                            </div>
+                          )}
+                        </>
+                      ) : (
+                              <>
+                        {!draft && (
+                          <div className="select-something-container flex">
+                            <div className="image-container ">
+                              <img src="/icons/select-something.svg" alt="" />
+                              <p className="select-something-heading">
+                                No Assignee has been assigned to this {type}
+                                <button className="btn primary-medium" style={{ marginTop: "10px" }} onClick={() => {
+                                  setIsStudentScoreOpen(!isStudentScoreOpen)
+                                  if(type === "assessment"){
+                                    setToggleAssigneeWeightage(1)
+                                  }else{
+                                    setToggleAssigneeWeightage(0)
+                                  }
+                                  setIsMode("edit")
+                                }}>Add Assignee</button>
+                              </p>
+                            </div>
+                          </div>
+                        )}
+                      </>
+                      )}
+                      </div>
+                      
+                    </>
+                  )
+                })}
+              </>
+            )}
         </main>
       )}
     </>

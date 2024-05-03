@@ -79,11 +79,11 @@ input:focus {
   background-repeat: no-repeat;
 }
 
-a {
-  text-decoration: none;
-  color: $font-secondary-color;
-  font-family: $font-Roboto;
-}
+// a {
+//   text-decoration: none;
+//   color: $font-secondary-color;
+//   font-family: $font-Roboto;
+// }
 
 li {
   list-style: none;
@@ -105,13 +105,22 @@ li {
   border: none;
   font-family: $font-Roboto;
 }
+.btn-small{
+  padding: 5px 14px;
+  outline: none;
+  border-radius: 4px;
+  font: 400 12px/16px $font-Roboto;
+  cursor: pointer;
+  border: none;
+}
+//primary button section
 
 //primary button section
-.btn.primary-medium {
+.btn-small.primary-medium {
   background-color: $primary-color;
   color: #ffff;
   cursor: pointer;
-  // width: 100%;
+  width: 100%;
 
   &:hover {
     background-color: $btn-hover-color;
@@ -156,7 +165,7 @@ li {
 }
 
 //secondary button section
-.btn.secondary-medium {
+.btn-small.secondary-medium {
   color: $primary-color;
   border: 1px solid $primary-color;
   background-color: #ffff;
@@ -214,10 +223,11 @@ li {
 // code started line
 
 .comments-list-container {
-  height: 480px;
+  height: 395px;
   overflow-y: scroll;
   .comments-main-container {
-    padding-bottom: 24px;
+    position: relative;
+    margin-bottom: 24px;
     .comments-section {
       .profile-image {
         width: 32px;
@@ -235,6 +245,11 @@ li {
           font: 500 12px/16px $font-Roboto;
           color: $font-primary-color;
           margin-left: 10px;
+          span{
+            font: 400 10px/14px $font-Roboto;
+            color: $font-secondary-color;
+            margin-left: 5px;
+          }
         }
         .icons {
           display: flex;
@@ -252,54 +267,151 @@ li {
         }
       }
     }
+    .edit-comment{
+margin-top: 10px;
+    }
+    .cancel_save_btns{
+          display: flex;
+    max-width: 190px;
+    gap: 10px;
+    position: absolute;
+
+    bottom: 5px;
+    right: 5px;
+    }
     .comments {
       p {
         font: 400 12px/16px $font-Roboto;
         color: $font-primary-color;
         margin-top: 6px;
         margin-left: 42px;
-        max-width: 280px;
+        max-width: 350px;
         width: 100%;
+        overflow-wrap: break-word;
+        cursor: pointer;
       }
+      h1, h2, h3, h4, h5, h6{
+        margin-top: 6px;
+        margin-left: 42px;
+        font: 400 12px/16px $font-Roboto;
+        color: $font-primary-color;
+      }
+      a{
+        font: 400 12px/16px $font-Roboto;
+          text-decoration: underline;
+          font-family: $font-Roboto;
+          color: $highlight-blue;
+      }
+    }
+  }
+  .no-comments-container{
+    img{
+      width: 90%;
+    }
+    p{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font: 500 12px/16px $font-Roboto;
+      color: $font-primary-color;
     }
   }
 }
 
-.Input-send {
-  position: relative;
-  .input-wrapper {
-    display: flex;
-    justify-content: end;
-    margin-bottom: 5px;
-  }
-  .send {
-    background-color: #49a843;
-    padding: 7px;
-    border-radius: 4px;
-    cursor: pointer;
-    position: absolute;
-    top: 8px;
-    right: 3px;
-    img {
-      width: 16px;
+.overall_input_send{
+  position: fixed;
+  // bottom: 45px;
+  max-width: 407px;
+  width: 100%;
+  .Input-send {
+    position: relative;
+    .input-wrapper {
+      display: flex;
+      justify-content: end;
+      margin-bottom: 5px;
     }
-  }
-  textarea {
-    border: 1px solid $border-color;
-    height: auto;
-    padding: 10px 37px 10px 12px;
-    width: 100%;
-    color: $font-primary-color;
-    border-radius: 4px;
-    padding-left: 10px;
-    font: 400 12px/16px $font-Roboto;
-    &::placeholder {
-      color: $font-secondary-color;
+    .send {
+      background-color: $primary-color;
+      padding: 7px;
+      border-radius: 4px;
+      cursor: pointer;
+      position: absolute;
+      top: 8px;
+      right: 3px;
+      img {
+        width: 16px;
+      }
+    }
+    textarea {
+      border: 1px solid $border-color;
+      height: auto;
+      padding: 10px 37px 10px 12px;
+      width: 100%;
+      color: $font-primary-color;
+      border-radius: 4px;
+      padding-left: 10px;
       font: 400 12px/16px $font-Roboto;
-    }
-    &:focus {
-      border: 1px solid $primary-color;
-      outline: none;
+      &::placeholder {
+        color: $font-secondary-color;
+        font: 400 12px/16px $font-Roboto;
+      }
+      &:focus {
+        border: 1px solid $primary-color;
+        outline: none;
+      }
     }
   }
+}
+.quill{
+  .ql-toolbar.ql-snow + .ql-container.ql-snow {
+    border-top: 0px;
+    border-radius: 0px 0px 4px 4px !important;
+}
+  .ql-container .ql-snow{
+    // max-height: 80px;
+    min-height: 80px !important;
+  }
+  .ql-snow.ql-toolbar button:hover,
+  .ql-snow .ql-toolbar button:hover,
+  .ql-snow.ql-toolbar button:focus,
+  .ql-snow .ql-toolbar button:focus,
+  .ql-snow.ql-toolbar button.ql-active,
+  .ql-snow .ql-toolbar button.ql-active,
+  .ql-snow.ql-toolbar .ql-picker-label:hover,
+  .ql-snow .ql-toolbar .ql-picker-label:hover,
+  .ql-snow.ql-toolbar .ql-picker-label.ql-active,
+  .ql-snow .ql-toolbar .ql-picker-label.ql-active,
+  .ql-snow.ql-toolbar .ql-picker-item:hover,
+  .ql-snow .ql-toolbar .ql-picker-item:hover,
+  .ql-snow.ql-toolbar .ql-picker-item.ql-selected,
+  .ql-snow .ql-toolbar .ql-picker-item.ql-selected {
+    color: $primary-color;
+  }
+  .ql-snow.ql-toolbar .ql-picker-label {
+    color: $font-secondary-color;
+    .ql-stroke {
+      stroke: $font-secondary-color;
+    }
+    .ql-bold {
+      &:hover {
+        color: $primary-color;
+      }
+    }
+  }
+}
+.ql-toolbar.ql-snow{
+  background-color: white;
+  border-radius: 4px 4px 0px 0px;
+}
+.ant-drawer-content-wrapper{
+  width: 455px !important;
+}
+.ql-editor{
+  padding-bottom: 34px !important;
+  max-height: 400px ;
+  background-color: white;
+}
+.ql-tooltip .ql-editing{
+  left: 0px;
+    top: 45px;
 }

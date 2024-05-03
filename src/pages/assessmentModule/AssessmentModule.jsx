@@ -30,7 +30,7 @@ const AssessmentModule = ({ type }) => {
   const [isDraft, setIsDraft] = useState(false);
   const [isStudentScoreOpen, setIsStudentScoreOpen] = useState(true);
   const [activeWeightageIndex, setActiveWeightageIndex] = useState(null);
-  const [isMode,setIsMode] = useState("edit")
+  const [isMode,setIsMode] = useState("card")
   const [commentText,setCommentText] = useState("");
   const [isCommentEditId,setIsCommentEditId] = useState(null)
   const [formErrors, setFormErrors] = useState({});
@@ -44,6 +44,9 @@ const AssessmentModule = ({ type }) => {
 
   useEffect(() => {
     setLoading(true);
+    //I have used this condition to prevent that when I click on the edit icon where the task is and then click on the assessment again, the same edit icon is highlighted.
+    setIsMode("card")
+    setIsStudentScoreOpen(true)
     //this useEffect used to fetch task list and will re-run whenever filter or search is updated
     if(getPermission(user.permissions,"Task","create")){
       const url = `${API_END_POINT}/api/task/${batchId}/list_task/?limit=10&page=1&filter_task_type=${
@@ -73,7 +76,20 @@ const AssessmentModule = ({ type }) => {
           }
         })
         .catch((error) => {
+          setLoading(false);
+
           console.log(error);
+          if (
+            error.response.data.status === 400 ||
+            "errors" in error.response.data
+          ) {
+            const errorMessages = error.response.data.errors;
+            notification.error({
+              message: error.response.data?.message,
+              description: errorMessages.detail,
+              duration:1
+            })
+          }
         });
     }
    
@@ -104,6 +120,7 @@ const AssessmentModule = ({ type }) => {
               const weightObject = {
                 weightage_percentage: weightage.weightage_percentage,
                 weightage: weightage.weightage,
+                taskScore : weightage.task_score
               };
 
               if ("id" in weightage) {
@@ -128,20 +145,34 @@ const AssessmentModule = ({ type }) => {
     }
 
     if(editId){
-      axios
-      .get(`${API_END_POINT}/api/applicant/${batchId}/list/students/?search=${assigneeSearch}`, {
-        headers,
-      })
-      .then((res) => {
-        if (res.status === 200 && res.data.message === "Success") {
+
+      if(getPermission(user.permissions,"TaskUser","create")){
+        axios
+        .get(`${API_END_POINT}/api/applicant/${batchId}/list/students/?search=${assigneeSearch}`, {
+          headers,
+        })
+        .then((res) => {
+          if (res.status === 200 && res.data.message === "Success") {
+            setIsAssigneeLoading(false)
+            setStudents(res.data.data);
+          }
+        })
+        .catch((error) => {
           setIsAssigneeLoading(false)
-          setStudents(res.data.data);
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-        setIsAssigneeLoading(false)
-      });
+          if (
+            error.response.data.status === 400 ||
+            "errors" in error.response.data
+          ) {
+            const errorMessages = error.response.data.errors;
+            notification.error({
+              message: error.response.data?.message,
+              description: errorMessages.detail,
+              duration:1
+            })
+          }
+        });
+      }
+     
     }
   }, [editId,assigneeSearch]);
 
@@ -186,6 +217,7 @@ const AssessmentModule = ({ type }) => {
           setEditId(updatedTasks.length > 0 ? updatedTasks[0].id : null);
         })
         .catch((error) => {
+          setIsDeleteModalOpen(false);
           console.log(error);
         });
     }
@@ -244,7 +276,6 @@ const AssessmentModule = ({ type }) => {
       data: currentAssessment,
     })
       .then((res) => {
-        console.log(res.message);
         notification.success({
           message: "Success",
           description: isNew
@@ -319,6 +350,7 @@ const AssessmentModule = ({ type }) => {
     setAssessmentList(concatNewAssessment);
 
     setEditId(uniqueId);
+    setIsStudentScoreOpen(false);
   };
 
   const handleInputChange = (name, value) => {
@@ -490,7 +522,7 @@ const AssessmentModule = ({ type }) => {
 
     copyAssessment = copyAssessment.map((assessment) => {
       if (assessment.id === editId) {
-        assessment.task_weightages[index][key] = Number(value);
+        assessment.task_weightages[index][key] = parseFloat(value);
       }
       return assessment;
     });
@@ -526,24 +558,15 @@ const AssessmentModule = ({ type }) => {
         setAssessmentList(copiedTaskStatusChangeStudents);
       })
       .catch((error) => {
+        setLoading(false)
         console.log(error);
       });
   };
 
   const handleAddScore = (studentScores) => {
     setLoading(true)
-    let statusChangeAfterScore = [...assessmentList];
-    statusChangeAfterScore = statusChangeAfterScore.map((assessment) => {
-      assessment.task_users = assessment.task_users.map((student) => {
-        studentScores.forEach((scores) => {
-          if (student.id === scores.task_user) {
-            student.task_status = "COMPLETED";
-          }
-        });
-        return student;
-      });
-      return assessment;
-    });
+   
+   
     //weightage open and score added only submit the score
     studentScores.map((scores) => {
       const url = `${API_END_POINT}/api/task/${batchId}/create/task_score/`;
@@ -558,6 +581,19 @@ const AssessmentModule = ({ type }) => {
             )
             .then((res) => {
               setLoading(false)
+              let statusChangeAfterScore = [...assessmentList];
+
+              statusChangeAfterScore = statusChangeAfterScore.map((assessment) => {
+                assessment.task_users = assessment.task_users.map((student) => {
+                  studentScores.forEach((scores) => {
+                    if (student.id === scores.task_user) {
+                      student.task_status = "COMPLETED";
+                    }
+                  });
+                  return student;
+                });
+                return assessment;
+              });
               setAssessmentList(statusChangeAfterScore);
               setActiveWeightageIndex(null);
               notification.success({
@@ -567,6 +603,8 @@ const AssessmentModule = ({ type }) => {
             })
             .catch((error) => {
               console.log(error);
+              setLoading(false)
+
             });
         })
         .catch((error) => {
@@ -669,7 +707,7 @@ const AssessmentModule = ({ type }) => {
         } else {
           // If it's a new comment, add it to the task
           assessment.task_users.map((users) => {
-            users.comments.unshift(updatedComment);
+            users.comments.push(updatedComment);
           });
         }
       }
@@ -735,6 +773,7 @@ const AssessmentModule = ({ type }) => {
               open={true}
               title={`${isDraft ? "Discard" : "Delete"} Confirmation`}
               onOk={handleConfirmDelete}
+              maskClosable={false}
               onCancel={() => {
                 setIsDeleteModalOpen(false);
                 setIsDraft(false);
@@ -810,19 +849,23 @@ const AssessmentModule = ({ type }) => {
                       setWeightageErros={setWeightageErros}
                       setAssigneeSearch ={setAssigneeSearch}
                       isAssigneeLoading={isAssigneeLoading}
+                      setIsMode={setIsMode}
                     />
                   );
                 }
                 return null;
               })}
               {editId === null && (
-                <div className="select-something-container flex">
+                <div className="main-container">
+                  <div className="task-main-container">
+                  <div className="select-something-container flex">
                   <div className="image-container ">
                     <img src="/icons/select-something.svg" alt="" />
                     <p className="select-something-heading">
-                      Please Select any of the Available {type} or Create New
-                      {type}
+                      Please Select any of the Available {type} or Create New {type}
                     </p>
+                  </div>
+                </div>
                   </div>
                 </div>
               )}

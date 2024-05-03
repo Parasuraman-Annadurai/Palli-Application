@@ -3,6 +3,9 @@ import React from "react";
 import { Skeleton } from "antd";
 
 import dayjs from "dayjs";
+import utcPlugin from 'dayjs/plugin/utc';
+
+dayjs.extend(utcPlugin);
 
 import { getPermission } from "../utils/validate";
 
@@ -30,9 +33,8 @@ const TaskCard = ({
   return (
     <>
       <div
-        className={`task-card ${
-          assessment.id === selectedAssessment ? "active" : ""
-        } flex`}
+        className={`task-card ${assessment.id === selectedAssessment ? "active" : ""
+          } flex`}
         key={assessment.id}
         id={assessment.id}
         onClick={() => {
@@ -41,10 +43,10 @@ const TaskCard = ({
             handleEdit(assessment.id);
             setIsMode("edit")
           }else{
-          setIsStudentScoreOpen(true)
-          handleEdit(assessment.id);
-          setIsMode("card")
-        }
+            setIsStudentScoreOpen(true)
+            handleEdit(assessment.id);
+            setIsMode("card")
+          }
         }}
       >
         {loading ? (
@@ -52,7 +54,16 @@ const TaskCard = ({
         ) : (
           <>
             <div className="task-icon flex">
-              <span>JS</span>
+                <span>
+                  {assessment?.task_title &&
+                    assessment?.task_title
+                      .split(" ")
+                      .map((word) => word.trim()) // Trim any extra spaces
+                      .filter((word) => word) // Remove empty strings
+                      .map((word) => word[0].toUpperCase())
+                      .join("").slice(0,2)
+                      }
+                </span>
             </div>
 
             <div className="task-details">
@@ -60,10 +71,21 @@ const TaskCard = ({
                 <h2>{truncateText(assessment.task_title, 15)}</h2>
                 <>
                     {getPermission(user.permissions, "Task", "update") && (
-                  <img
-                        src={selectedAssessment === assessment.id && isMode == "edit" ? "/icons/edit-pencil-fill.svg" : "/icons/edit-pencil.svg"}
+                      <img
+                        src={selectedAssessment === assessment.id && isMode == "edit" ? "/icons/edit-pencil-fill.svg" : "/icons/edit-pencil-icon.svg"}
                         className="edit-icon"
                         alt="edit-icon"
+                        onMouseOver={(e)=>{
+                          if (!(selectedAssessment === assessment.id && isMode === "edit")) {
+                            e.target.src = "/icons/edit-icon-hover.svg";
+                        }
+                      }}
+                        onMouseOut={(e)=>{
+                          if (!(selectedAssessment === assessment.id && isMode === "edit")) {
+                            e.target.src = "/icons/edit-pencil-icon.svg";
+                        }
+
+                        }}
                         onClick={(event) => {
                           event.stopPropagation();
                           setIsStudentScoreOpen(false)
@@ -73,19 +95,25 @@ const TaskCard = ({
                       />
                     )}
 
-                  {getPermission(user.permissions,"Task","delete") && (
-                     <img
-                     src="/icons/deleteIcon.svg"
-                     alt="delete-icon"
-                     className="delete-icon"
-                     id={assessment.id}
-                     onClick={(e) => {
-                       handleDelete(assessment.id);
-                       e.stopPropagation();
-                     }}
-                   />
+                    {getPermission(user.permissions,"Task","delete") && (
+                      <img
+                        src="/icons/deleteIcon.svg"
+                        alt="delete-icon"
+                        className="delete-icon"
+                        onMouseOver={(e)=>{
+                          e.target.src ="/icons/delete-icon-hover.svg"
+                        }}
+                        onMouseOut={(e)=>{
+                          e.target.src ="/icons/deleteIcon.svg"
+                        }}
+                        id={assessment.id}
+                        onClick={(e) => {
+                          handleDelete(assessment.id);
+                          e.stopPropagation();
+                        }}
+                      />
                   )}
-                 
+
                 </>
               </div>
               <p className="task-description">
@@ -95,7 +123,7 @@ const TaskCard = ({
                 )}
               </p>
               <span className="btn btn-deadline">
-                {dayjs(assessment.due_date).format("MMM,DD YYYY")}
+                {dayjs.utc(assessment.due_date).format('MMM DD YYYY')}
               </span>
             </div>
           </>
@@ -145,33 +173,43 @@ const AssessmentList = ({
               className="filter-icon"
             />
           )}
-        </div>
-        <div className="create-container">
-          {getPermission(user.permissions, "Task", "create") && (
-            <button className="btn create-btn" onClick={handleAdd}>
-              <span>+</span>Create {mode}
-            </button>
-          )}
+
 
         </div>
-        <div className="task-list-container">
-          {assessmentList &&
-            assessmentList.map((assessment) => (
-              <TaskCard
-                key={assessment.id}
-                loading={loading}
-                assessment={assessment}
-                handleEdit={handleEdit}
-                handleDelete={handleDelete}
-                selectedAssessment={selectedAssessment}
-                setIsStudentScoreOpen={setIsStudentScoreOpen}
-                isStudentScoreOpen={isStudentScoreOpen}
-                isMode={isMode}
-                setIsMode={setIsMode}
-                currentAssessment={currentAssessment}
-              />
-            ))}
-        </div>
+
+        {loading ? <Skeleton active /> : (
+          <>
+            <div className="create-container">
+              {getPermission(user.permissions, "Task", "create") && (
+                !loading && (
+                  <button className="btn create-btn" onClick={handleAdd}>
+                    <span>+</span>Create {mode}
+                  </button>
+                )
+
+              )}
+
+            </div>
+            <div className="task-list-container">
+              {assessmentList &&
+                assessmentList.map((assessment) => (
+                  <TaskCard
+                    key={assessment.id}
+                    loading={loading}
+                    assessment={assessment}
+                    handleEdit={handleEdit}
+                    handleDelete={handleDelete}
+                    selectedAssessment={selectedAssessment}
+                    setIsStudentScoreOpen={setIsStudentScoreOpen}
+                    isStudentScoreOpen={isStudentScoreOpen}
+                    isMode={isMode}
+                    setIsMode={setIsMode}
+                    currentAssessment={currentAssessment}
+                  />
+                ))}
+            </div>
+          </>
+        )}
       </section>
     </>
   );

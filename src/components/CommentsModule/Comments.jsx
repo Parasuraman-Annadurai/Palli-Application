@@ -5,8 +5,8 @@ import dayjs from "dayjs";
 import { useAuth } from "../../context/AuthContext";
 
 import ReactQuill from "react-quill";
-
-import { CustomIcons, toolbarConfig, valueTrim,getPermission } from "../../utils/validate";
+import "quill/dist/quill.snow.css";
+import { CustomIcons, toolbarConfig, validateComments,getPermission } from "../../utils/validate";
 
 import "./scss/Comments.css";
 
@@ -53,14 +53,15 @@ const Comments = (props) => {
                     <>
                       <div className="comments-main-container" key={index}>
                         <div className="comments-section flex">
-                          <div className="profile-image flex">GG</div>
+                          <div className="profile-image flex">{comment.commentor_details?.first_name[0]?.toUpperCase()}{comment.commentor_details?.last_name[0]?.toUpperCase()}</div>
 
                           <div className="user-detail flex">
                             <div className="name">
-                              {comment.commentor_details.first_name} (
-                              {comment.commentor_details.role})
+                              {comment.commentor_details.first_name} 
+                              <span>(
+                              {comment.commentor_details.role})</span>
                               <div className="comment-date">
-                                {dayjs().format("MMMM DD YYYY h:mm A")}
+                                {dayjs.utc(comment?.created_at).format("MMM DD YYYY hh:mm a")}
                               </div>
                             </div>
                             <div className="icons">
@@ -72,7 +73,13 @@ const Comments = (props) => {
                                     <>
                                       <img
                                         src="/icons/deleteIcon.svg"
-                                        alt=""
+                                        alt="delete-icon"
+                                        onMouseOver={(e)=>{
+                                          e.target.src ="/icons/delete-icon-hover.svg"
+                                        }}
+                                        onMouseOut={(e)=>{
+                                          e.target.src ="/icons/deleteIcon.svg"
+                                        }}
                                         onClick={() => handleDeleteComment(comment.id)}
                                       />
                                     </>}
@@ -86,15 +93,24 @@ const Comments = (props) => {
 
                         {isCommentEditId === comment.id ? (
                           <div className="edit-comment">
-                            <CustomIcons />
                             <ReactQuill
                               theme="snow"
                               modules={toolbarConfig}
                               value={commentText}
                               onChange={(value) => setCommentText(value)}
+                              onKeyUp={(e) => {
+                                if (e.key === 'Enter') {
+                                  // Call your function here
+                                  handleSaveComment();
+                                }
+                              }}
+                              placeholder="Comment here..."
                             />
-                            <button className="btn secondary-medium" onClick={handleCancelEdit}>cancel</button>
-                            <button className="btn primary-medium" style={{ width: "100px" }} onClick={handleSaveComment}>save</button>
+                            <div className="cancel_save_btns">
+                            <button className="btn-small secondary-medium" onClick={handleCancelEdit}>Cancel</button> 
+                            <button className="btn-small primary-medium"  onClick={handleSaveComment}>Save</button>
+                            </div>
+                            
                           </div>
                         ) : (
                           <div
@@ -119,8 +135,7 @@ const Comments = (props) => {
             <>
               <div className="no-comments-container">
                 <img src="/icons/no-data.svg" alt="" />
-                {/* Ganesh change inline style to scss */}
-                <p style={{ textAlign: "center" }}>No comments here...</p>
+                <p>No comments here...</p>
               </div>
             </>
           )}
@@ -128,26 +143,35 @@ const Comments = (props) => {
         </div>
       </div>
       {getPermission(user.permissions, "TaskComments", "create") && (
-        <div className="Input-send">
+       <div className="overall_input_send">
+         <div className="Input-send">
           <div className="input-wrapper">
-            <div className="send">
+            <div className="send"  onClick={() => validateComments(commentText, "Comments", setCommentsErrors) && handleSendComment(commenterId)}>
               <img
                 src="/icons/Send.svg"
                 alt="Send-icon"
-                onClick={() => valueTrim(commentText, "comments", setCommentsErrors) && handleSendComment(commenterId)}
+               
               />
             </div>
           </div>
 
-          <CustomIcons />
-          <ReactQuill theme="snow" modules={toolbarConfig} value={commentText} onChange={(value) => {
-            if (commentErrors["comments"]) {
-              delete commentErrors["comments"]
-            }
-            setCommentText(value)
-          }} />
-          <p className="error-message">{commentErrors["comments"] ? commentErrors["comments"] : ""}</p>
+            <ReactQuill
+              placeholder="Comment here..."
+              theme="snow"
+              modules={toolbarConfig}
+              value={isCommentEditId ? "" : commentText}
+              onChange={(value) => {
+                if (commentErrors["Comments"]) {
+                  delete commentErrors["Comments"];
+                }
+                setCommentText(value);
+              }}
+              
+            />
+
+          <p className="error-message">{commentErrors["Comments"] ? commentErrors["Comments"] : ""}</p>
         </div>
+       </div>
       )}
 
     </>

@@ -46,6 +46,7 @@ const DashBoard = () => {
           setBatchList(res.data.data);
         })
         .catch((error) => {
+          setLoading(false);
           console.log(error);
         })
         .finally(() => {
@@ -190,6 +191,7 @@ const DashBoard = () => {
           });
         })
         .catch((error) => {
+          setLoading(false);
           console.log(error);
         })
         .finally(() => {
@@ -256,6 +258,7 @@ const DashBoard = () => {
           });
         })
         .catch((error) => {
+          setLoading(false);
           console.log(error);
         })
         .finally(() => {

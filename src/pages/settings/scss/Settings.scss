@@ -1,0 +1,380 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap");
+
+$font-Roboto: "Roboto";
+$side_bar_bg: #f8fbf2;
+$font-primary-color: #12160a;
+$font-secondary-color: #969d88;
+$border-color: #eaeaea;
+$primary-color: #49a843;
+$btn-hover-color: #33762f;
+$btn-default: #e6e6e6;
+$error-message: #ef4444;
+
+$highlight-yellow: #f59e0b;
+$highlight-yellow-bg: #fef3c7;
+
+$highlight-blue: #3b82f6;
+$highlight-blue-bg: #dbeafe;
+
+$completed-bg: #dbeafe;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: $font-Roboto;
+  outline: none;
+  border: none;
+  -webkit-user-select: none;
+  // /* Safari */
+  -ms-user-select: none;
+  // /* IE 10 and IE 11 */
+  user-select: none;
+}
+
+::-webkit-scrollbar {
+  width: 2px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: $primary-color;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: $primary-color;
+}
+
+::-webkit-scrollbar-track {
+  background: #ffff;
+}
+
+::-webkit-scrollbar-thumb:active {
+  background-color: $primary-color;
+}
+
+body {
+  background-color: #ffff;
+}
+
+img {
+  max-width: 100%;
+  width: 100%;
+  height: auto;
+  // display: inline-block;
+  vertical-align: middle;
+}
+
+input:focus {
+  outline: none;
+}
+
+.flex {
+  display: flex;
+}
+
+.background-props {
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+a {
+  text-decoration: none;
+  color: $font-secondary-color;
+  font-family: $font-Roboto;
+}
+
+li {
+  list-style: none;
+}
+
+.input-active {
+  border: 1px solid $primary-color;
+}
+
+.btn {
+  width: 90px;
+  height: 38px;
+  padding: 10px 24px;
+  outline: none;
+  border-radius: 4px;
+  font-size: 14px;
+  line-height: 18px;
+  cursor: pointer;
+  border: none;
+  font-family: $font-Roboto;
+}
+
+//primary button section
+.btn.primary-medium {
+  background-color: $primary-color;
+  color: #ffff;
+  cursor: pointer;
+  width: 100%;
+
+  &:hover {
+    background-color: $btn-hover-color;
+  }
+
+  &:active {
+    background-color: $btn-hover-color;
+    opacity: 30%;
+  }
+}
+
+.btn.primary-medium-default {
+  cursor: not-allowed;
+  background-color: $primary-color;
+  color: #ffff;
+}
+
+.btn.primary-medium-icon {
+  background-color: $primary-color;
+  color: #ffff;
+  cursor: pointer;
+  font-weight: 500;
+
+  &::before {
+    content: "+";
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    margin-right: 2px;
+    font-family: $font-Roboto;
+    font-weight: 500;
+  }
+
+  &:hover {
+    background-color: $btn-hover-color;
+  }
+
+  &:active {
+    background-color: $btn-hover-color;
+    opacity: 30%;
+  }
+}
+
+//secondary button section
+.btn.secondary-medium {
+  color: $primary-color;
+  border: 1px solid $primary-color;
+  background-color: #ffff;
+  cursor: pointer;
+
+  &:hover {
+    color: $btn-hover-color;
+    border: 1px solid $btn-hover-color;
+  }
+
+  &:active {
+    color: $primary-color;
+    border: 1px solid $primary-color;
+    opacity: 30%;
+  }
+}
+
+.btn.secondary-medium-default {
+  color: $font-secondary-color;
+  background-color: #ffff;
+  border: 1px solid$border-color;
+  border-radius: 4px;
+  cursor: not-allowed;
+}
+
+.btn.secondary-medium-icon {
+  background-color: #ffff;
+  color: $primary-color;
+  border: 1px solid$primary-color;
+  cursor: pointer;
+  font-weight: 500;
+
+  &::before {
+    content: "+";
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    margin-right: 2px;
+    font-family: $font-Roboto;
+    font-weight: 500;
+  }
+
+  &:hover {
+    border: 1px solid$btn-hover-color;
+    color: $btn-hover-color;
+  }
+
+  &:active {
+    border: 1px solid$btn-hover-color;
+    background-color: #ffff;
+    opacity: 30%;
+  }
+}
+
+//sec small
+
+@mixin secondary-btn-sm {
+  color: $primary-color;
+  border: 1px solid $primary-color;
+  background-color: #ffff;
+  padding: 8px 24px;
+  font-size: 12px;
+  line-height: 16px;
+  font-family: $font-Roboto;
+  outline: none;
+  border-radius: 4px;
+}
+
+.error-message {
+  padding-top: 6px;
+  height: 16px;
+  font-size: 12px;
+  line-height: 16px;
+  color: $error-message;
+}
+
+.error-notify {
+  border: 1px solid $error-message !important;
+  color: $error-message;
+  border-radius: 4px;
+}
+.main-listing-container {
+  border: 1px solid $border-color;
+  margin: 30px;
+  border-radius: 4px;
+  max-width: 242px;
+  width: 100%;
+  .listing-container {
+    border: 0 !important;
+    .user-info-container {
+      text-align: center;
+      .user-image-container {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 7.4px;
+        p {
+          width: 40px;
+          padding: 10px;
+          background-color: #d3f9cd;
+          font: 500 12px/16px $font-Roboto;
+          border-radius: 4px;
+        }
+      }
+      .name-and-email-info {
+        font: 500 12px/16px $font-Roboto;
+        color: $font-primary-color;
+        margin-bottom: 20px;
+        .email {
+          font: 400 10px/14px $font-Roboto;
+          color: $font-secondary-color;
+        }
+      }
+    }
+    .hl-line {
+      width: 100%;
+      height: 1px;
+      background-color: $border-color;
+    }
+  }
+
+  .menu-list {
+    ul {
+      margin-top: 27px;
+      .settings-nav {
+        background-color: #f2f9e4;
+        display: flex;
+        justify-content: space-between;
+        padding: 10px 13px;
+        margin-bottom: 10px;
+        font: 400 12px/16px $font-Roboto;
+        color: $font-primary-color;
+        img{
+          width: 16px;
+        }
+      }
+    }
+  }
+}
+.vertical-line{
+  width: 1px;
+  background-color: $border-color;
+  padding-bottom: 30px;
+}
+.main-container-settings {
+  margin: 30px;
+  width: 100%;
+  border: 1px solid $border-color !important;
+  border-radius: 4px;
+  .change-password-menu-container {
+    max-width: 400px;
+    width: 100%;
+    padding: 30px;
+    .menu-title{
+      font: 500 16px/20px $font-Roboto;
+      color: $font-primary-color;
+    }
+  }
+  .inputs-section {
+    .new-password-input-section {
+      position: relative;
+      flex-direction: column;
+      margin-bottom: 25px;
+      label {
+        font: 400 12px/16px $font-Roboto;
+        color: $font-secondary-color;
+        padding-bottom: 6px;
+      }
+      .input-field {
+        color: $font-primary-color;
+        border: 1px solid $border-color;
+        padding: 10px 0px 10px 12px;
+        border-radius: 4px;
+        &::placeholder{
+          font: 400 10px/14px $font-Roboto;
+        }
+      }
+      .input-field:focus {
+        border: 1px solid $primary-color;
+        outline: none;
+      }
+      .eye-icon {
+        width: 16px;
+        position: absolute;
+        top: 35px;
+        right: 10px;
+      }
+    }
+    .confirm-password-input-section {
+      position: relative;
+      flex-direction: column;
+      margin-bottom: 30px;
+
+      label {
+        font: 400 12px/16px $font-Roboto;
+        color: $font-secondary-color;
+        margin-bottom: 6px;
+      }
+      .input-field {
+        width: 100%;
+        padding: 10px 30px 10px 12px;
+        border: 1px solid $border-color;
+        color: $font-primary-color;
+        border-radius: 4px;
+        &::placeholder{
+          font: 400 10px/14px $font-Roboto;
+        }
+
+        &:focus {
+          border: 1px solid $primary-color;
+          outline: none;
+        }
+      }
+      .eye-icon {
+        width: 16px;
+        position: absolute;
+        top: 35px;
+        right: 10px;
+      }
+    }
+  }
+}

@@ -1,6 +1,5 @@
-import Quill from "quill";
 import { notification } from "antd";
-
+ export const assessmentMode = "TEST";
 
 export const valueTrim = (value,fieldName,setErrors)=>{
   let errors = {};

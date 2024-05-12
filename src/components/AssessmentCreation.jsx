@@ -6,13 +6,13 @@ import { DatePicker } from 'antd';
 import ReactQuill from "react-quill";
 import "quill/dist/quill.snow.css";
 
-import { toolbarConfig,getPermission, validateTask} from '../utils/validate';
+import { toolbarConfig,getPermission, validateTask,formatFileSize} from '../utils/validate';
 
 import { LoadingOutlined } from "@ant-design/icons";
 
 export default function AssessmentCreation(props) {
 
-  const {task_title,formErrors,due_date,task_description,draft,currentAssessment,user,assigneeloader,
+  const {formErrors,draft,currentAssessment,user,assigneeloader,
     isAssessmentLoading,setFormErrors,handleSave,handleInputChange,handleRemoveFile
   } = props
   return (
@@ -23,7 +23,7 @@ export default function AssessmentCreation(props) {
                   <div className="module-header-section flex">
                     <div className="module-title-section grid">
                       <input
-                        value={task_title ? task_title : ""}
+                        value={currentAssessment.task_title ? currentAssessment.task_title : ""}
                         name="task_title"
                         type="text"
                         onChange={(e) =>
@@ -53,7 +53,7 @@ export default function AssessmentCreation(props) {
                         prefixCls={`${
                           formErrors["due_date"] ? "error-notify" : ""
                         }`}
-                        value={due_date ? dayjs(due_date) : null}
+                        value={currentAssessment.due_date ? dayjs(currentAssessment.due_date) : null}
                         showTime={{ format: "HH:mm" }}
                         placeholder="Select here..."
                         format="YYYY-MM-DD HH:mm"
@@ -79,7 +79,7 @@ export default function AssessmentCreation(props) {
                           className={`${
                             formErrors["task_description"] ? "react-quill error-notify" : "react-quill"
                           }`}
-                          value={task_description ? task_description : ""}
+                          value={currentAssessment.task_description ? currentAssessment.task_description : ""}
                           modules={toolbarConfig}
                           theme="snow"
                           onChange={(value) =>

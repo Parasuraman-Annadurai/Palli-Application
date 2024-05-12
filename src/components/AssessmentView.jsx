@@ -1,20 +1,11 @@
-import React, { useEffect, useReducer, useState } from "react";
-
-import ReactQuill from "react-quill";
-import "quill/dist/quill.snow.css";
-
-import { LoadingOutlined } from "@ant-design/icons";
+import React, { useEffect, useReducer } from "react";
 
 import {
-  DatePicker,
-  Dropdown,
-  Skeleton,
   notification,
-  Drawer,
 } from "antd";
 
 import axios from "axios";
-import dayjs from "dayjs";
+
 
 
 import { API_END_POINT } from "../../config";
@@ -105,47 +96,32 @@ const AssessmentView = ({
         }
       })
   }, []);
-  // Destructure the current task
-  const {
-    id: taskId,
-    task_title,
-    task_description,
-    due_date,
-    draft,
-    task_weightages = [],
-  } = currentAssessment;
 
 
   useEffect(() => {
-    if(!draft){
-      // setStudentLoading(true)
+    if(!currentAssessment?.draft){
       dispatch({ type: "SET_STUDENT_LOADING", payload: true })
-
-      axios.get(`${API_END_POINT}/api/task/${batchId}/get/task/${taskId}`, { headers }).then((res) => {
-        // setAssignedUsers(res.data.data)
+      axios.get(`${API_END_POINT}/api/task/${batchId}/get/task/${currentAssessment?.id}`, { headers }).then((res) => {
         dispatch({ type: "SET_ASSIGNED_USERS", payload: res.data.data })
-
-        // setStudentLoading(false)
         dispatch({ type: "SET_STUDENT_LOADING", payload: false })
-
       }).catch((error)=>{
-        // setStudentLoading(false)
       dispatch({ type: "SET_STUDENT_LOADING", payload: false })
-        
         console.log(error);
       })
     }
    
-  }, [taskId,isStudentScoreOpen])
+  }, [currentAssessment?.id,isStudentScoreOpen])
 
   const handleCheckboxChange = (studentId) => {
     const isSelected = [...selectedStudents].includes(studentId);
-    setAssigneeloader(true);
+    // setAssigneeloader(true);
+    dispatch({ type: "SET_ASSIGNEELOADER", payload: true })
+
     if (isSelected) {
       let updateTheStudent = [...selectedStudents];
       updateTheStudent = updateTheStudent.filter((id) => id != studentId);
       //remove user API call
-      const url = `${API_END_POINT}/api/task/${batchId}/remove/user/${taskId}/`;
+      const url = `${API_END_POINT}/api/task/${batchId}/remove/user/${currentAssessment?.id}/`;
 
       const payload = { user: [studentId] };
       axios
@@ -157,13 +133,19 @@ const AssessmentView = ({
               description: `${res.data.message}`,
               duration: 1,
             });
-            setAssigneeloader(false);
+            // setAssigneeloader(false);
+            dispatch({ type: "SET_ASSIGNEELOADER", payload: false })
+
             //update the local state
             setSelectedStudents(updateTheStudent);
+             dispatch({ type: "SET_ASSIGNEELOADER", payload: true })
+
           }
         })
         .catch((error) => {
-          setAssigneeloader(false);
+          // setAssigneeloader(false);
+          dispatch({ type: "SET_ASSIGNEELOADER", payload: false })
+
           console.log(error);
           if (error.response && error.response.data && error.response.data.message) {
             const errorMessage = error.response.data.message;
@@ -175,10 +157,12 @@ const AssessmentView = ({
         });
     } else {
       const updatedStudents = [...selectedStudents, studentId];
-      setAssigneLoadingMessage("Sending email to students...")
+      // setAssigneLoadingMessage("Sending email to students...")
+      dispatch({ type: "SET_ASSIGNE_LOADING_MESSAGE", payload: "Sending email to students..." })
+
 
       //students add in task
-      const url = `${API_END_POINT}/api/task/${batchId}/assign/task/${taskId}`;
+      const url = `${API_END_POINT}/api/task/${batchId}/assign/task/${currentAssessment?.id}`;
       axios.post(url, { user: [studentId] }, { headers }).then((res) => {
         if (res.data.status === 200) {
           notification.success({
@@ -186,9 +170,14 @@ const AssessmentView = ({
             description: `${res.data.message}`,
             duration: 1,
           });
-          setAssigneeloader(false);
+          // setAssigneeloader(false);
+          dispatch({ type: "SET_ASSIGNEELOADER", payload: false })
+
           setSelectedStudents(updatedStudents);
-          setAssigneLoadingMessage("")
+          // setAssigneLoadingMessage("")
+          dispatch({ type: "SET_ASSIGNE_LOADING_MESSAGE", payload: "" })
+
+
 
         }
       }).catch((error)=>{
@@ -209,10 +198,12 @@ const AssessmentView = ({
     );
     const allStudentIds = [...students].map((student) => student.id);
 
-    setAssigneeloader(true);
+    // setAssigneeloader(true);
+    dispatch({ type: "SET_ASSIGNEELOADER", payload: true })
+
     if (isNotAllSelected) {
       //Deselect all students in tasks
-      const url = `${API_END_POINT}/api/task/${batchId}/remove/user/${taskId}/`;
+      const url = `${API_END_POINT}/api/task/${batchId}/remove/user/${currentAssessment?.id}/`;
 
       const payload = { user: allStudentIds };
       axios
@@ -225,11 +216,16 @@ const AssessmentView = ({
               duration: 1,
             });
             setSelectedStudents([]);
-            setAssigneeloader(false);
+            // setAssigneeloader(false);
+            dispatch({ type: "SET_ASSIGNEELOADER", payload: false })
+
+            
           }
         })
         .catch((error) => {
-          setAssigneeloader(false);
+          // setAssigneeloader(false);
+          dispatch({ type: "SET_ASSIGNEELOADER", payload: false })
+
           console.log(error);
           if (error.response && error.response.data && error.response.data.message) {
             const errorMessage = error.response.data.message;
@@ -241,11 +237,13 @@ const AssessmentView = ({
         });
     } else {
       //selectAll students in tasks
-      setAssigneLoadingMessage("Sending email to All students...")
+      // setAssigneLoadingMessage("Sending email to All students...")
+      dispatch({ type: "SET_ASSIGNE_LOADING_MESSAGE", payload: "Sending email to All students..."})
+
 
       axios
         .post(
-          `${API_END_POINT}/api/task/${batchId}/assign/task/${taskId}`,
+          `${API_END_POINT}/api/task/${batchId}/assign/task/${currentAssessment?.id}`,
           { user: allStudentIds },
           { headers: headers }
         )
@@ -257,13 +255,18 @@ const AssessmentView = ({
               duration: 1,
             });
             setSelectedStudents(allStudentIds);
-            setAssigneeloader(false);
-            setAssigneLoadingMessage("")
+            // setAssigneeloader(false);
+           dispatch({ type: "SET_ASSIGNEELOADER", payload: false})
+           dispatch({ type: "SET_ASSIGNE_LOADING_MESSAGE", payload: ""})
+            
+            // setAssigneLoadingMessage("")
 
           }
         })
         .catch((error) => {
-          setAssigneeloader(false);
+          // setAssigneeloader(false);
+          dispatch({ type: "SET_ASSIGNEELOADER", payload: false})
+
           console.log(error, "error");
           if (error.response && error.response.data && error.response.data.message) {
             const errorMessage = error.response.data.message;
@@ -310,7 +313,9 @@ const AssessmentView = ({
           score.task_user !== students.id ||
           score.task_weightage !== weightage.id
       );
-      setStudentScore(filteredStudentScores);
+      // setStudentScore(filteredStudentScores);
+      dispatch({ type: "SET_STUDENT_SCORE", payload: filteredStudentScores})
+
     } else {
       // If the score is a number, update or add the score to the state
       const updatedScore = {
@@ -330,10 +335,14 @@ const AssessmentView = ({
         const updatedStudentScores = [...studentScore];
         updatedStudentScores[existingScoreIndex].task_score =
           updatedScore.task_score;
-        setStudentScore(updatedStudentScores);
+        // setStudentScore(updatedStudentScores);
+      dispatch({ type: "SET_STUDENT_SCORE", payload: updatedStudentScores})
+
       } else {
         // If the score doesn't exist, add it to the state
-        setStudentScore([...studentScore, updatedScore]);
+        // setStudentScore([...studentScore, updatedScore]);
+      dispatch({ type: "SET_STUDENT_SCORE", payload: [...studentScore, updatedScore]})
+        
       }
     }
   };
@@ -350,11 +359,8 @@ const AssessmentView = ({
       {!isStudentScoreOpen ? (
         <>
          <AssessmentCreation
-          task_title={task_title}
           formErrors={formErrors}
-          due_date={due_date}
-          task_description={task_description}
-          draft={draft}
+          draft={currentAssessment.draft}
           currentAssessment={currentAssessment}
           user={user}
           assigneeloader={assigneeloader}
@@ -364,12 +370,14 @@ const AssessmentView = ({
           handleInputChange={handleInputChange}
           handleRemoveFile={handleRemoveFile}
          />
-          <WeightageAndAssignee draft={draft} user={user}
+          <WeightageAndAssignee 
+          draft={currentAssessment.draft} 
+          user={user}
           assigneeloader={assigneeloader}
           toggleAssigneeWeightage={toggleAssigneeWeightage}
           weightageShow={weightageShow}
-          taskId={taskId}
-          task_weightages={task_weightages}
+          taskId={currentAssessment?.id}
+          task_weightages={currentAssessment?.task_weightages}
           weightageLists={weightageLists}
           handleSaveWeightage={handleSaveWeightage}
           handleAddWeightage={handleAddWeightage}
@@ -384,14 +392,15 @@ const AssessmentView = ({
           setAssigneeSearch={setAssigneeSearch}     
           handleAllCheckboxChange={handleAllCheckboxChange}
           handleCheckboxChange={handleCheckboxChange}
-          setAssigneeloader={(isLoading)=>dispatch({ type: "SET_ASSIGNEELOADER", payload: isLoading })}     
+          assigneLoadingMessage={assigneLoadingMessage}
+          itemRenderer={itemRenderer}
           />
         </>
       ) : (
         <StudentEvaluation 
         studentLoading={studentLoading}
         assignedUsers={assignedUsers}
-        draft={draft}
+        draft={currentAssessment.draft}
         type={type}
         isStudentScoreOpen={isStudentScoreOpen}
         setIsStudentScoreOpen={setIsStudentScoreOpen}
@@ -415,6 +424,10 @@ const AssessmentView = ({
         setOpenComments={(isOpen)=>dispatch({ type: "SET_OPEN_COMMENTS", payload: isOpen })}
         setActiveWeightageIndex={setActiveWeightageIndex}
         handleAddScore={handleAddScore}
+        weightageLists={weightageLists}
+        handleScoreOnchange={handleScoreOnchange}
+        task_weightages={currentAssessment?.task_weightages}
+        studentScore={studentScore}
         />
       )}
     </>

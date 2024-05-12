@@ -7,8 +7,12 @@ function WeightageAndAssignee(props) {
 
   const { draft, user, assigneeloader, toggleAssigneeWeightage, weightageShow, weightageLists, taskId, task_weightages,
     handleSaveWeightage, handleAddWeightage, handleWeightageChange, handleDeleteWeightage, selectedStudents, weightageErrors, setWeightageErros, setToggleAssigneeWeightage,
-    isAssigneeLoading, students,setAssigneeSearch,handleAllCheckboxChange,handleCheckboxChange,setAssigneeloader
+    isAssigneeLoading, students,setAssigneeSearch,handleAllCheckboxChange,handleCheckboxChange,assigneLoadingMessage
   } = props
+
+  console.log('====================================');
+  console.log(weightageShow);
+  console.log('====================================');
   return (
     <>
       {!draft && (
@@ -84,10 +88,10 @@ function WeightageAndAssignee(props) {
                                       />
                                       <span>
                                         {selectedStudents.length === students.length
-                                          ? "All Students Selected"
+                                          ? "All Students Assigned"
                                           : !selectedStudents.length
-                                            ? "Select All Students"
-                                            : `${selectedStudents.length} Selected`}
+                                            ? "Assign All Students"
+                                            : `${selectedStudents.length} student Assigned`}
                                       </span>
                                     </div>
                                     <div className="assignee-card-listing-container">

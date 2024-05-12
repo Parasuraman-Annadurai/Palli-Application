@@ -56,9 +56,8 @@ const AssessmentModule = ({ type }) => {
   useEffect(() => {
     dispatch({ type: "SET_LOADING", payload: true });
     //I have used this condition to prevent that when I click on the edit icon where the task is and then click on the assessment again, the same edit icon is highlighted.
-    // setIsMode("card")
-    dispatch({ type: "SET_IS_MODE", payload: "card" });
-    dispatch({ type: "SET_IS_STUDENT_SCORE_OPEN", payload: true });
+    dispatch({ type: "SET_MODE", payload: "card" });
+    dispatch({ type: "SET_STUDENT_SCORE_OPEN", payload: true });
 
     //this useEffect used to fetch task list and will re-run whenever filter or search is updated
     if(getPermission(user.permissions,"Task","create")){
@@ -358,7 +357,7 @@ const AssessmentModule = ({ type }) => {
     dispatch({ type: "SET_EDIT_ID", payload: uniqueId });
     dispatch({ type: "SET_ASSESSMENT_LIST", payload: [createAssessment, ...assessmentList] });
     dispatch({ type: "SET_IS_STUDENT_SCORE_OPEN", payload: false });
-    dispatch({ type: "SET_IS_MODE", payload: "edit" });
+    dispatch({ type: "SET_MODE", payload: "edit" });
   };
 
   const handleInputChange = (name, value) => {

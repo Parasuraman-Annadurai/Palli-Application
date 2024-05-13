@@ -15,7 +15,6 @@ export const assessmentState = {
     isDraft: false,
     isStudentScoreOpen: true,
     activeWeightageIndex: null,
-    isMode: "card",
     commentText: "",
     isCommentEditId: null,
     formErrors: {},
@@ -36,6 +35,7 @@ export const assessmentState = {
     studentLoading: false,
     assignedUsers: [],
     assignedUsersSearch: "",
+    drawerContent : ""
   };
   
   

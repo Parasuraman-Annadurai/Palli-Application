@@ -1,21 +1,22 @@
-import React from 'react'
-import { Skeleton } from 'antd';
+import React,{useState} from 'react'
+import { Skeleton,Dropdown,Drawer } from 'antd';
 import dayjs from "dayjs";
 import { getPermission } from '../utils/validate';
 import colorObject from '../utils/validate';
 import Comments from './CommentsModule/Comments';
 import { assessmentMode } from '../utils/validate';
-import {Drawer} from 'antd';
 import { isScoreValidate } from '../utils/validate';
+
+
 const StudentEvaluation = (props) => {
     const {studentLoading,assignedUsers,draft,type,isStudentScoreOpen,setIsStudentScoreOpen
-    ,setToggleAssigneeWeightage,setIsMode,assginesUsersSeacrh,weightageShow,
+    ,setToggleAssigneeWeightage,assginesUsersSeacrh,weightageShow,
     openComments,user,currentAssessment,commentText,isCommentEditId,setIsCommentEditId,setCommentText,handleSendComment,
     handleDeleteComment,
     formErrors,setFormErrors,activeWeightageIndex,setAssignedUsersSearch,setOpenComments,setActiveWeightageIndex,handleAddScore,
     weightageLists,handleScoreOnchange,task_weightages,studentScore,itemRenderer
     } = props
-
+ 
     return (
         <main className="main-container" >
             {studentLoading ? <Skeleton active /> : (
@@ -189,7 +190,6 @@ const StudentEvaluation = (props) => {
                                                                 }}
                                                                 open={openComments !== null}
                                                             >
-                                                                {/* Pass comments state to Comments component */}
                                                                 {getPermission(user.permissions, "TaskComments", "read") && (
                                                                     <Comments
                                                                         comments={
@@ -308,7 +308,7 @@ const StudentEvaluation = (props) => {
                                                                 } else {
                                                                     setToggleAssigneeWeightage(0)
                                                                 }
-                                                                setIsMode("edit")
+                                                                setIsStudentScoreOpen(false)
                                                             }}>Add Assignee</button>
                                                         </p>
                                                     </div>

@@ -54,7 +54,6 @@ const AssessmentView = ({
   isCommentEditId,
   setCommentText,
   setIsCommentEditId,
-  setIsMode,
   handleRemoveFile,
   isAssessmentLoading
 }) => {
@@ -393,7 +392,7 @@ const AssessmentView = ({
           handleAllCheckboxChange={handleAllCheckboxChange}
           handleCheckboxChange={handleCheckboxChange}
           assigneLoadingMessage={assigneLoadingMessage}
-          itemRenderer={itemRenderer}
+          
           />
         </>
       ) : (
@@ -405,7 +404,6 @@ const AssessmentView = ({
         isStudentScoreOpen={isStudentScoreOpen}
         setIsStudentScoreOpen={setIsStudentScoreOpen}
         setToggleAssigneeWeightage={(toggleValue)=>dispatch({ type: "SET_TOGGLE_ASSIGNEE_WEIGHTAGE", payload: toggleValue })}
-        setIsMode={setIsMode}
         assginesUsersSeacrh={assignedUsersSearch}
         weightageShow={weightageShow}
         openComments={openComments}
@@ -428,6 +426,7 @@ const AssessmentView = ({
         handleScoreOnchange={handleScoreOnchange}
         task_weightages={currentAssessment?.task_weightages}
         studentScore={studentScore}
+        itemRenderer={itemRenderer}
         />
       )}
     </>

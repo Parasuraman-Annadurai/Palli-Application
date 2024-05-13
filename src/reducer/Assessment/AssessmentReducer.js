@@ -28,8 +28,6 @@ export const assessmentModuleReducer = (assessmentState, action) => {
         return { ...assessmentState, isStudentScoreOpen: action.payload };
       case "SET_ACTIVE_WEIGHTAGE_INDEX":
         return { ...assessmentState, activeWeightageIndex: action.payload };
-      case "SET_MODE":
-        return { ...assessmentState, isMode: action.payload };
       case "SET_COMMENT_TEXT":
         return { ...assessmentState, commentText: action.payload };
       case "SET_COMMENT_EDIT_ID":

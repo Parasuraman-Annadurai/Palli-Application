@@ -20,8 +20,7 @@ const TaskCard = ({
   handleEdit,
   handleDelete,
   setIsStudentScoreOpen,
-  isMode,
-  setIsMode,
+  isStudentScoreOpen,
   currentAssessment
 }) => {
   const truncateText = (text, maxLength) => {
@@ -41,11 +40,9 @@ const TaskCard = ({
           if(currentAssessment.draft){
             setIsStudentScoreOpen(false)
             handleEdit(assessment.id);
-            setIsMode("edit")
           }else{
             setIsStudentScoreOpen(true)
             handleEdit(assessment.id);
-            setIsMode("card")
           }
         }}
       >
@@ -72,16 +69,16 @@ const TaskCard = ({
                 <>
                     {getPermission(user.permissions, "Task", "update") && (
                       <img
-                        src={selectedAssessment === assessment.id && isMode == "edit" ? "/icons/edit-pencil-fill.svg" : "/icons/edit-pencil-icon.svg"}
+                        src={selectedAssessment === assessment.id && !isStudentScoreOpen ? "/icons/edit-pencil-fill.svg" : "/icons/edit-pencil-icon.svg"}
                         className="edit-icon"
                         alt="edit-icon"
                         onMouseOver={(e)=>{
-                          if (!(selectedAssessment === assessment.id && isMode === "edit")) {
+                          if (!(selectedAssessment === assessment.id && !isStudentScoreOpen)) {
                             e.target.src = "/icons/edit-icon-hover.svg";
                         }
                       }}
                         onMouseOut={(e)=>{
-                          if (!(selectedAssessment === assessment.id && isMode === "edit")) {
+                          if (!(selectedAssessment === assessment.id && !isStudentScoreOpen)) {
                             e.target.src = "/icons/edit-pencil-icon.svg";
                         }
 
@@ -90,7 +87,6 @@ const TaskCard = ({
                           event.stopPropagation();
                           setIsStudentScoreOpen(false)
                           handleEdit(assessment.id);
-                          setIsMode("edit")
                         }}
                       />
                     )}
@@ -145,8 +141,6 @@ const AssessmentList = ({
   selectedAssessment,
   isStudentScoreOpen,
   setIsStudentScoreOpen,
-  isMode,
-  setIsMode,
   currentAssessment
 }) => {
   const { user } = useAuth();
@@ -202,9 +196,8 @@ const AssessmentList = ({
                     selectedAssessment={selectedAssessment}
                     setIsStudentScoreOpen={setIsStudentScoreOpen}
                     isStudentScoreOpen={isStudentScoreOpen}
-                    isMode={isMode}
-                    setIsMode={setIsMode}
                     currentAssessment={currentAssessment}
+                    
                   />
                 ))}
             </div>

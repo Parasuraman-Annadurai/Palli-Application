@@ -42,7 +42,6 @@ const AssessmentModule = ({ type }) => {
     isDraft,
     isStudentScoreOpen,
     activeWeightageIndex,
-    isMode,
     commentText,
     isCommentEditId,
     formErrors,
@@ -56,7 +55,6 @@ const AssessmentModule = ({ type }) => {
   useEffect(() => {
     dispatch({ type: "SET_LOADING", payload: true });
     //I have used this condition to prevent that when I click on the edit icon where the task is and then click on the assessment again, the same edit icon is highlighted.
-    dispatch({ type: "SET_MODE", payload: "card" });
     dispatch({ type: "SET_STUDENT_SCORE_OPEN", payload: true });
 
     //this useEffect used to fetch task list and will re-run whenever filter or search is updated
@@ -354,10 +352,10 @@ const AssessmentModule = ({ type }) => {
       supporting_document:null,
       task_type: type,
     };
-    dispatch({ type: "SET_EDIT_ID", payload: uniqueId });
     dispatch({ type: "SET_ASSESSMENT_LIST", payload: [createAssessment, ...assessmentList] });
-    dispatch({ type: "SET_IS_STUDENT_SCORE_OPEN", payload: false });
-    dispatch({ type: "SET_MODE", payload: "edit" });
+    dispatch({ type: "SET_EDIT_ID", payload: uniqueId });
+    dispatch({ type: "SET_STUDENT_SCORE_OPEN", payload: false });
+
   };
 
   const handleInputChange = (name, value) => {
@@ -539,7 +537,8 @@ const AssessmentModule = ({ type }) => {
 
   const handleStatusChange = (studentId, status) => {
 
-    setLoading(true)
+    dispatch({ type: "SET_LOADING", payload: true });
+
     const url = `${API_END_POINT}/api/task/${batchId}/update/task/user/${studentId}`;
     const payload = { task_status: status };
 
@@ -549,7 +548,8 @@ const AssessmentModule = ({ type }) => {
     axios
       .put(url, payload, { headers })
       .then((res) => {
-        setLoading(false)
+        dispatch({ type: "SET_LOADING", payload: false });
+
         let copiedTaskStatusChangeStudents = assessmentList.map(
           (assessment) => {
             assessment["task_users"] = assessment.task_users.map((user) => {
@@ -567,7 +567,8 @@ const AssessmentModule = ({ type }) => {
 
       })
       .catch((error) => {
-        setLoading(false)
+        dispatch({ type: "SET_LOADING", payload: false });
+
         console.log(error);
       });
   };
@@ -587,7 +588,6 @@ const AssessmentModule = ({ type }) => {
               { headers }
             )
             .then((res) => {
-              // setLoading(false)
               dispatch({ type: "SET_LOADING", payload: false });
 
               let statusChangeAfterScore = [...assessmentList];
@@ -615,7 +615,6 @@ const AssessmentModule = ({ type }) => {
             })
             .catch((error) => {
               console.log(error);
-              // setLoading(false)
               dispatch({ type: "SET_LOADING", payload: false });
               
 
@@ -824,8 +823,6 @@ const handleRemoveFile = () => {
             selectedAssessment={editId}
             setIsStudentScoreOpen={(isOpen)=>dispatch({ type: "SET_STUDENT_SCORE_OPEN", payload: isOpen })}
             isStudentScoreOpen={isStudentScoreOpen}
-            isMode={isMode}
-            setIsMode={(mode)=>dispatch({ type: "SET_MODE", payload: mode })}
             currentAssessment={assessmentList.find((assessment)=>assessment.id == editId)}
           />
 
@@ -870,7 +867,6 @@ const handleRemoveFile = () => {
                       setWeightageErros={(weightageErrors)=>dispatch({ type: "SET_WEIGHTAGE_ERRORS", payload: weightageErrors })}
                       setAssigneeSearch ={(assgineeSearch)=>dispatch({ type: "SET_ASSIGNEE_SEARCH", payload: assgineeSearch })}
                       isAssigneeLoading={isAssigneeLoading}
-                      setIsMode={(mode)=>dispatch({ type: "SET_MODE", payload: mode })}
                       handleRemoveFile={handleRemoveFile}
                       isAssessmentLoading={isAssessmentLoading}
                     />

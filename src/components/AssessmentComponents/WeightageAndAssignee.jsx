@@ -1,5 +1,5 @@
 import React from 'react';
-import { getPermission } from '../utils/validate';
+import { getPermission } from '../../utils/validate';
 import { Skeleton } from 'antd';
 
 import WeightageList from './WeightageList/WeightageList';

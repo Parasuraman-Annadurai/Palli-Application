@@ -7,10 +7,10 @@ import utcPlugin from 'dayjs/plugin/utc';
 
 dayjs.extend(utcPlugin);
 
-import { getPermission } from "../utils/validate";
+import { getPermission } from "../../utils/validate";
 
 
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../../context/AuthContext";
 
 
 const TaskCard = ({

@@ -8,20 +8,20 @@ import axios from "axios";
 
 
 
-import { API_END_POINT } from "../../config";
+import { API_END_POINT } from "../../../config";
 
 import { useParams } from "react-router-dom";
 
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../../context/AuthContext";
 
 
 import StudentEvaluation from "./StudentEvaluation";
 import WeightageAndAssignee from "./WeightageAndAssignee";
 import AssessmentCreation from "./AssessmentCreation";
 
-import { assessmentViewState } from "../reducer/Assessment/AssessmentState";
+import { assessmentViewState } from "../../reducer/Assessment/AssessmentState";
 
-import { assessmentViewReducer } from "../reducer/Assessment/AssessmentReducer";
+import { assessmentViewReducer } from "../../reducer/Assessment/AssessmentReducer";
 
 const AssessmentView = ({
   weightageShow,

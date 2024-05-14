@@ -6,7 +6,7 @@ import { DatePicker } from 'antd';
 import ReactQuill from "react-quill";
 import "quill/dist/quill.snow.css";
 
-import { toolbarConfig,getPermission, validateTask,formatFileSize} from '../utils/validate';
+import { toolbarConfig,getPermission, validateTask,formatFileSize} from '../../utils/validate';
 
 import { LoadingOutlined } from "@ant-design/icons";
 

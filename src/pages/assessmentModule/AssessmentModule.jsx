@@ -7,13 +7,18 @@ import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
 import dayjs from "dayjs";
 
-import AssessmentList from "../../components/AssessmentList";
-import AssessmentView from "../../components/AssessmentView";
+
+import AssessmentList from "../../components/AssessmentComponents/AssessmentList";
+
+import AssessmentView from "../../components/AssessmentComponents/AssessmentView";
+
 import StudentLogin from "../studentLogin/StudentLogin";
+
 
 import { useAuth } from "../../context/AuthContext";
 
 import { API_END_POINT } from "../../../config";
+
 import { assessmentMode, getPermission } from "../../utils/validate";
 
 

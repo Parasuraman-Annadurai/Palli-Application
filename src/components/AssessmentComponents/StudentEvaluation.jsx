@@ -1,11 +1,11 @@
 import React,{useState} from 'react'
 import { Skeleton,Dropdown,Drawer } from 'antd';
 import dayjs from "dayjs";
-import { getPermission } from '../utils/validate';
-import colorObject from '../utils/validate';
-import Comments from './CommentsModule/Comments';
-import { assessmentMode } from '../utils/validate';
-import { isScoreValidate } from '../utils/validate';
+import { getPermission } from '../../utils/validate';
+import colorObject from '../../utils/validate';
+import Comments from '../CommentsModule/Comments';
+import { assessmentMode } from '../../utils/validate';
+import { isScoreValidate } from '../../utils/validate';
 
 
 const StudentEvaluation = (props) => {

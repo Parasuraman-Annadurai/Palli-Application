@@ -13,7 +13,8 @@ import { LoadingOutlined } from "@ant-design/icons";
 export default function AssessmentCreation(props) {
 
   const {formErrors,draft,currentAssessment,user,assigneeloader,
-    isAssessmentLoading,setFormErrors,handleSave,handleInputChange,handleRemoveFile
+    isAssessmentLoading,setFormErrors,handleSave,handleInputChange,
+    // handleRemoveFile do later
   } = props
   return (
     <>
@@ -94,7 +95,8 @@ export default function AssessmentCreation(props) {
                       </>
                     </div>
                   </div>
-                <div className="student-task-label-container flex">
+                   {/* it will work later */}
+                {/* <div className="student-task-label-container flex">
                   <h3>Task File</h3>
                   <div className="horizon-line">
                   </div>
@@ -113,9 +115,9 @@ export default function AssessmentCreation(props) {
                       {currentAssessment?.supporting_document?.name && <img src="/icons/Cancel.svg" alt="" onClick={handleRemoveFile} />}
                     </div>
                   </div>
-                )}
-
-                <div className="file-input-container">
+                )} */}
+               
+                {/* <div className="file-input-container">
                   <div className="upload-icon-container flex">
                     <img src="/icons/upload.svg" className="upload-icon" />
                     <label for="file-input"
@@ -124,7 +126,7 @@ export default function AssessmentCreation(props) {
                     >
                   </div>
                   <input type="file" className="file-input" onChange={(e) => handleInputChange("supporting_document", e.target.files[0])} />
-                </div>
+                </div> */}
                   <div className="task-create-btn-section flex">
                     <div className="main-create-btn">
                         {getPermission(user.permissions, "Task", "create") && (

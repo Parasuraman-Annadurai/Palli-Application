@@ -16,7 +16,7 @@ import { useAuth } from "../../context/AuthContext";
 const TaskCard = ({
   loading,
   assessment,
-  selectedAssessment,
+  selectedAssessmentId,
   handleEdit,
   handleDelete,
   setIsStudentScoreOpen,
@@ -32,12 +32,12 @@ const TaskCard = ({
   return (
     <>
       <div
-        className={`task-card ${assessment.id === selectedAssessment ? "active" : ""
+        className={`task-card ${assessment.id === selectedAssessmentId ? "active" : ""
           } flex`}
         key={assessment.id}
         id={assessment.id}
         onClick={() => {
-          if(currentAssessment.draft){
+          if(currentAssessment?.draft){
             setIsStudentScoreOpen(false)
             handleEdit(assessment.id);
           }else{
@@ -69,16 +69,16 @@ const TaskCard = ({
                 <>
                     {getPermission(user.permissions, "Task", "update") && (
                       <img
-                        src={selectedAssessment === assessment.id && !isStudentScoreOpen ? "/icons/edit-pencil-fill.svg" : "/icons/edit-pencil-icon.svg"}
+                        src={selectedAssessmentId === assessment.id && !isStudentScoreOpen ? "/icons/edit-pencil-fill.svg" : "/icons/edit-pencil-icon.svg"}
                         className="edit-icon"
                         alt="edit-icon"
                         onMouseOver={(e)=>{
-                          if (!(selectedAssessment === assessment.id && !isStudentScoreOpen)) {
+                          if (!(selectedAssessmentId === assessment.id && !isStudentScoreOpen)) {
                             e.target.src = "/icons/edit-icon-hover.svg";
                         }
                       }}
                         onMouseOut={(e)=>{
-                          if (!(selectedAssessment === assessment.id && !isStudentScoreOpen)) {
+                          if (!(selectedAssessmentId === assessment.id && !isStudentScoreOpen)) {
                             e.target.src = "/icons/edit-pencil-icon.svg";
                         }
 
@@ -138,7 +138,7 @@ const AssessmentList = ({
   loading,
   handleDelete,
   handleAdd,
-  selectedAssessment,
+  selectedAssessmentId,
   isStudentScoreOpen,
   setIsStudentScoreOpen,
   currentAssessment
@@ -193,7 +193,7 @@ const AssessmentList = ({
                     assessment={assessment}
                     handleEdit={handleEdit}
                     handleDelete={handleDelete}
-                    selectedAssessment={selectedAssessment}
+                    selectedAssessmentId={selectedAssessmentId}
                     setIsStudentScoreOpen={setIsStudentScoreOpen}
                     isStudentScoreOpen={isStudentScoreOpen}
                     currentAssessment={currentAssessment}

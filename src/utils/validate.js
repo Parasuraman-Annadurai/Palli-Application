@@ -1,5 +1,5 @@
 import { notification } from "antd";
- export const assessmentMode = "TASK";
+ export const assessmentMode = "task";
 
 export const valueTrim = (value,fieldName,setErrors)=>{
   let errors = {};

@@ -64,7 +64,7 @@ const AssessmentModule = ({ type }) => {
 
     //this useEffect used to fetch task list and will re-run whenever filter or search is updated
     if(getPermission(user.permissions,"Task","create")){
-      const url = `${API_END_POINT}/api/task/${batchId}/list_task/?limit=10&page=1&filter_task_type=${type}&search=${assessmentSearchWord}`;
+      const url = `${API_END_POINT}/api/task/${batchId}/list_task/?limit=10&page=1&filter_task_type=${type.toUpperCase()}&search=${assessmentSearchWord}`;
       let assessmentId = editId;
 
       axios
@@ -100,7 +100,6 @@ const AssessmentModule = ({ type }) => {
   }, [assessmentSearchWord, type]);
 
   useEffect(() => {
-    // setIsAssigneeLoading(true)
     dispatch({ type: "SET_ASSIGNEE_LOADING", payload: true });
 
     if (editId && assessmentList.length > 0) {
@@ -166,7 +165,6 @@ const AssessmentModule = ({ type }) => {
           }
         })
         .catch((error) => {
-          // setIsAssigneeLoading(false)
           dispatch({ type: "SET_ASSIGNEE_LOADING", payload: false });
           if (
             error.response.data.status === 400 ||
@@ -210,11 +208,7 @@ const AssessmentModule = ({ type }) => {
 
     } else {
       axios
-        .delete(`${API_END_POINT}/api/task/${batchId}/delete_task/${editId}`, {
-          headers: {
-            Authorization: `Bearer ${token.access}`,
-          },
-        })
+        .delete(`${API_END_POINT}/api/task/${batchId}/delete_task/${editId}`, {headers})
         .then((res) => {
           notification.success({
             message: "Success",
@@ -230,8 +224,6 @@ const AssessmentModule = ({ type }) => {
         })
         .catch((error) => {
           dispatch({ type: "SET_DELETE_MODAL_OPEN", payload: false });
-
-          console.log(error);
         });
     }
   };
@@ -284,10 +276,7 @@ const AssessmentModule = ({ type }) => {
     axios({
       method: method,
       url: apiEndpoint,
-      headers: {
-        Authorization: `Bearer ${token.access}`,
-        'Content-Type': 'multipart/form-data'     
-       },
+      headers: headers,
       data: currentAssessment,
     })
       .then((res) => {
@@ -299,7 +288,8 @@ const AssessmentModule = ({ type }) => {
           duration: 1,
         });
 
-        setIsAssessmentLoading(false)
+       dispatch({ type: "SET_ASSESSMENT_LOADING", payload: false });
+
         let cloneAssessmentList = [...assessmentList];
         //finding and filtering the assessment which is new create the assessment
 
@@ -355,7 +345,7 @@ const AssessmentModule = ({ type }) => {
       due_date: dayjs().format("YYYY-MM-DD HH:mm:ss"),
       draft: true,
       supporting_document:null,
-      task_type: type,
+      task_type: type.toUpperCase(),
     };
     dispatch({ type: "SET_ASSESSMENT_LIST", payload: [createAssessment, ...assessmentList] });
     dispatch({ type: "SET_EDIT_ID", payload: uniqueId });
@@ -384,10 +374,7 @@ const AssessmentModule = ({ type }) => {
   const makePostRequest = async (url, data, method) => {
     const response = await axios(url, {
       method: method,
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token.access}`,
-      },
+      headers: headers,
       data: data,
     });
     return response;
@@ -672,7 +659,8 @@ const AssessmentModule = ({ type }) => {
               message: "Success",
               description: `${res.data.message}`,
             });
-            setAssessmentList(updatedAssessmentList);
+            dispatch({ type: "SET_ASSESSMENT_LIST", payload: updatedAssessmentList });
+
           }
         })
         .catch((error) => {
@@ -776,15 +764,17 @@ const AssessmentModule = ({ type }) => {
     })
   }
 
-const handleRemoveFile = () => {
-    const updatedAssessmentList= [...assessmentList].map((assessment)=>{
-      if(assessment.id == editId){
-        return { ...assessment, supporting_document: null };
-      }
-      return assessment;
-    })
-    dispatch({ type: "SET_ASSESSMENT_LIST", payload: updatedAssessmentList });
-};
+  // do later
+
+// const handleRemoveFile = () => {
+//     const updatedAssessmentList= [...assessmentList].map((assessment)=>{
+//       if(assessment.id == editId){
+//         return { ...assessment, supporting_document: null };
+//       }
+//       return assessment;
+//     })
+//     dispatch({ type: "SET_ASSESSMENT_LIST", payload: updatedAssessmentList });
+// };
 
   return (
     <>
@@ -821,14 +811,14 @@ const handleRemoveFile = () => {
             filterShow={false}
             handleEdit={(editId) => dispatch({ type: "SET_EDIT_ID", payload: editId })}
             assessmentList={assessmentList}
-            setAssessmentSearchWord={(searchWord)=>dispatch({ type: "SET_ASSESSMENT_LIST", payload: searchWord })}
+            setAssessmentSearchWord={(searchWord)=>dispatch({ type: "SET_ASSESSMENT_SEARCH_WORD", payload: searchWord })}
             loading={loading}
             handleDelete={handleDeleteAssessment}
             handleAdd={handleAdd}
-            selectedAssessment={editId}
+            selectedAssessmentId={editId}
             setIsStudentScoreOpen={(isOpen)=>dispatch({ type: "SET_STUDENT_SCORE_OPEN", payload: isOpen })}
             isStudentScoreOpen={isStudentScoreOpen}
-            currentAssessment={assessmentList.find((assessment)=>assessment.id == editId)}
+            currentAssessment={assessmentList.find((assessment)=>assessment?.id == editId)}
           />
 
           {loading ? (
@@ -872,7 +862,7 @@ const handleRemoveFile = () => {
                       setWeightageErros={(weightageErrors)=>dispatch({ type: "SET_WEIGHTAGE_ERRORS", payload: weightageErrors })}
                       setAssigneeSearch ={(assgineeSearch)=>dispatch({ type: "SET_ASSIGNEE_SEARCH", payload: assgineeSearch })}
                       isAssigneeLoading={isAssigneeLoading}
-                      handleRemoveFile={handleRemoveFile}
+                      // handleRemoveFile={handleRemoveFile} do later
                       isAssessmentLoading={isAssessmentLoading}
                     />
                   );

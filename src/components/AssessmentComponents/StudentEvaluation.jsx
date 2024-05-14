@@ -300,7 +300,7 @@ const StudentEvaluation = (props) => {
                                                     <div className="image-container ">
                                                         <img src="/icons/select-something.svg" alt="" />
                                                         <p className="select-something-heading">
-                                                            No Assignee has been assigned to this {type?.charAt(0)?.toUpperCase()}{type?.slice(1).toLowerCase()}
+                                                            No Assignee has been assigned to this {type}
                                                             <button className="btn primary-medium" style={{ marginTop: "10px" }} onClick={() => {
                                                                 setIsStudentScoreOpen(!isStudentScoreOpen)
                                                                 if (type != assessmentMode) {

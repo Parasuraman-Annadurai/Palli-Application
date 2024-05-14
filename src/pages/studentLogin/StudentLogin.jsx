@@ -15,7 +15,7 @@ import { useParams, useNavigate } from "react-router-dom";
 
 import "../studentLogin/scss/StudentLogin.css";
 
-import colorObject, { validUrl } from "../../utils/validate";
+import colorObject, { assessmentMode, validUrl } from "../../utils/validate";
 import Comments from "../../components/CommentsModule/Comments";
 
 import { valueTrim } from "../../utils/validate";
@@ -104,7 +104,7 @@ const StudentLogin = ({ type }) => {
     setIsLoading(true);
     axios
       .get(
-        `${API_END_POINT}/api/task/${batchId}/list/user/task/?filter_task_type=${type == "TASK" ? 0 : 1}&search=${taskSearch}`,
+        `${API_END_POINT}/api/task/${batchId}/list/user/task/?filter_task_type=${type.toUpperCase()}&search=${taskSearch}`,
         { headers }
       )
       .then((res) => {
@@ -410,7 +410,7 @@ const StudentLogin = ({ type }) => {
                           ></span>
                         </div>
                       </div>
-                      {type !== "TASK" && (
+                      {type !== assessmentMode && (
                         <>
                           <div className="weightage-label-container flex">
                             <h3>Weightage Details</h3>
@@ -563,8 +563,8 @@ const StudentLogin = ({ type }) => {
                 <img src="/icons/select-something.svg" alt="" />
                 <p className="select-something-heading">
                   {selectedTaskId !== null
-                    ? `Please Select any of the Available ${type?.charAt(0)?.toUpperCase()}${type?.slice(1).toLowerCase()}`
-                    : `No ${type?.charAt(0)?.toUpperCase()}${type?.slice(1).toLowerCase()} are currently available here.`}
+                    ? `Please Select any of the Available ${type}`
+                    : `No ${type} are currently available here.`}
                 </p>
               </div>
             </div>

@@ -54,7 +54,7 @@ const AssessmentView = ({
   isCommentEditId,
   setCommentText,
   setIsCommentEditId,
-  handleRemoveFile,
+  // handleRemoveFile, do later
   isAssessmentLoading
 }) => {
   const { id: batchId } = useParams();
@@ -75,7 +75,6 @@ const AssessmentView = ({
       .then((res) => {
         if (res.status === 200 && res.data.message === "Success") {
           const copyWeightageLists = [...res.data.data];
-          // setWeightageLists(copyWeightageLists);
           dispatch({ type: "SET_WEIGHTAGE_LISTS", payload: copyWeightageLists })
         }
       }).catch((error)=>{
@@ -113,9 +112,7 @@ const AssessmentView = ({
 
   const handleCheckboxChange = (studentId) => {
     const isSelected = [...selectedStudents].includes(studentId);
-    // setAssigneeloader(true);
     dispatch({ type: "SET_ASSIGNEELOADER", payload: true })
-
     if (isSelected) {
       let updateTheStudent = [...selectedStudents];
       updateTheStudent = updateTheStudent.filter((id) => id != studentId);
@@ -132,20 +129,12 @@ const AssessmentView = ({
               description: `${res.data.message}`,
               duration: 1,
             });
-            // setAssigneeloader(false);
             dispatch({ type: "SET_ASSIGNEELOADER", payload: false })
-
-            //update the local state
             setSelectedStudents(updateTheStudent);
-             dispatch({ type: "SET_ASSIGNEELOADER", payload: true })
-
           }
         })
         .catch((error) => {
-          // setAssigneeloader(false);
           dispatch({ type: "SET_ASSIGNEELOADER", payload: false })
-
-          console.log(error);
           if (error.response && error.response.data && error.response.data.message) {
             const errorMessage = error.response.data.message;
             notification.error({
@@ -169,17 +158,15 @@ const AssessmentView = ({
             description: `${res.data.message}`,
             duration: 1,
           });
-          // setAssigneeloader(false);
           dispatch({ type: "SET_ASSIGNEELOADER", payload: false })
-
           setSelectedStudents(updatedStudents);
-          // setAssigneLoadingMessage("")
           dispatch({ type: "SET_ASSIGNE_LOADING_MESSAGE", payload: "" })
 
 
 
         }
       }).catch((error)=>{
+        dispatch({ type: "SET_ASSIGNEELOADER", payload: false })
         if (error.response && error.response.data && error.response.data.message) {
           const errorMessage = error.response.data.message;
           notification.error({
@@ -197,7 +184,6 @@ const AssessmentView = ({
     );
     const allStudentIds = [...students].map((student) => student.id);
 
-    // setAssigneeloader(true);
     dispatch({ type: "SET_ASSIGNEELOADER", payload: true })
 
     if (isNotAllSelected) {
@@ -215,14 +201,12 @@ const AssessmentView = ({
               duration: 1,
             });
             setSelectedStudents([]);
-            // setAssigneeloader(false);
             dispatch({ type: "SET_ASSIGNEELOADER", payload: false })
 
             
           }
         })
         .catch((error) => {
-          // setAssigneeloader(false);
           dispatch({ type: "SET_ASSIGNEELOADER", payload: false })
 
           console.log(error);
@@ -236,10 +220,7 @@ const AssessmentView = ({
         });
     } else {
       //selectAll students in tasks
-      // setAssigneLoadingMessage("Sending email to All students...")
       dispatch({ type: "SET_ASSIGNE_LOADING_MESSAGE", payload: "Sending email to All students..."})
-
-
       axios
         .post(
           `${API_END_POINT}/api/task/${batchId}/assign/task/${currentAssessment?.id}`,
@@ -254,19 +235,12 @@ const AssessmentView = ({
               duration: 1,
             });
             setSelectedStudents(allStudentIds);
-            // setAssigneeloader(false);
            dispatch({ type: "SET_ASSIGNEELOADER", payload: false})
            dispatch({ type: "SET_ASSIGNE_LOADING_MESSAGE", payload: ""})
-            
-            // setAssigneLoadingMessage("")
-
           }
         })
         .catch((error) => {
-          // setAssigneeloader(false);
           dispatch({ type: "SET_ASSIGNEELOADER", payload: false})
-
-          console.log(error, "error");
           if (error.response && error.response.data && error.response.data.message) {
             const errorMessage = error.response.data.message;
             notification.error({
@@ -367,7 +341,7 @@ const AssessmentView = ({
           setFormErrors={setFormErrors}
           handleSave={handleSave}
           handleInputChange={handleInputChange}
-          handleRemoveFile={handleRemoveFile}
+          // handleRemoveFile={handleRemoveFile} do later
          />
           <WeightageAndAssignee 
           draft={currentAssessment.draft} 

@@ -27,7 +27,7 @@ export const assessmentState = {
 
  export const assessmentViewState = {
     studentScore: [],
-    toggleAssigneeWeightage: "TASK" === assessmentMode ? 0 : 1,
+    toggleAssigneeWeightage: "task" === assessmentMode ? 0 : 1,
     assigneeloader: false,
     assigneLoadingMessage: "",
     weightageLists: [],

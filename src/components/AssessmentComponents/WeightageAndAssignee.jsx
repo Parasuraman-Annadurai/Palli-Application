@@ -9,10 +9,6 @@ function WeightageAndAssignee(props) {
     handleSaveWeightage, handleAddWeightage, handleWeightageChange, handleDeleteWeightage, selectedStudents, weightageErrors, setWeightageErros, setToggleAssigneeWeightage,
     isAssigneeLoading, students,setAssigneeSearch,handleAllCheckboxChange,handleCheckboxChange,assigneLoadingMessage
   } = props
-
-  console.log('====================================');
-  console.log(weightageShow);
-  console.log('====================================');
   return (
     <>
       {!draft && (

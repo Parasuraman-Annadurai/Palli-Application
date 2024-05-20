@@ -2,9 +2,6 @@ import { assessmentMode } from "../../utils/validate";
 
 
 export const assessmentState = {
-    token: null,
-    user: null,
-    batchId: null,
     editId: null,
     assessmentList: [],
     assessmentSearchWord: "",
@@ -27,7 +24,7 @@ export const assessmentState = {
 
  export const assessmentViewState = {
     studentScore: [],
-    toggleAssigneeWeightage: "task" === assessmentMode ? 0 : 1,
+    toggleAssigneeWeightage: 0,
     assigneeloader: false,
     assigneLoadingMessage: "",
     weightageLists: [],

@@ -2,12 +2,6 @@
 
 export const assessmentModuleReducer = (assessmentState, action) => {
     switch (action.type) {
-      case "SET_TOKEN":
-        return { ...assessmentState, token: action.payload };
-      case "SET_USER":
-        return { ...assessmentState, user: action.payload };
-      case "SET_BATCH_ID":
-        return { ...assessmentState, batchId: action.payload };
       case "SET_EDIT_ID":
         return { ...assessmentState, editId: action.payload };
       case "SET_ASSESSMENT_LIST":

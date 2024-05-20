@@ -869,7 +869,7 @@ const AssessmentModule = ({ type }) => {
                 }
                 return null;
               })}
-              {editId === null && (
+              {!editId && (
                 <div className="main-container">
                   <div className="task-main-container">
                   <div className="select-something-container flex">

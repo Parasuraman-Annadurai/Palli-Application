@@ -22,6 +22,7 @@ import AssessmentCreation from "./AssessmentCreation";
 import { assessmentViewState } from "../../reducer/Assessment/AssessmentState";
 
 import { assessmentViewReducer } from "../../reducer/Assessment/AssessmentReducer";
+import { assessmentMode } from "../../utils/validate";
 
 const AssessmentView = ({
   weightageShow,
@@ -70,6 +71,7 @@ const AssessmentView = ({
 
   const {studentScore,toggleAssigneeWeightage, assigneeloader,assigneLoadingMessage, weightageLists, openComments,studentLoading, assignedUsers, assignedUsersSearch} = state;
   useEffect(() => {
+    dispatch({ type: "SET_TOGGLE_ASSIGNEE_WEIGHTAGE", payload: type === assessmentMode ? 0 :1 })
     axios
       .get(`${API_END_POINT}/api/task/${batchId}/list/weightage`, { headers })
       .then((res) => {

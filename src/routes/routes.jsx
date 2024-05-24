@@ -13,6 +13,7 @@ const MODULE = "/batch/:id/module";
 const APPLICATIONVIEW = "/batch/:id/application/view/more"
 const TASKMODULE = "/batch/:id/task";
 const ASSESSMENTMODULE = "/batch/:id/assessment";
+const APPLICATIONFORM = "/application/form";
 //
 
 const ADDTASK = "/batch/:id/module/add/task";
@@ -35,5 +36,6 @@ export {
   TASKMODULE,
   ASSESSMENTMODULE,
   APPLICATIONVIEW,
+  APPLICATIONFORM,
   SETTINGS
 };

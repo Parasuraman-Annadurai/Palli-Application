@@ -12,7 +12,7 @@ import { LoadingOutlined } from "@ant-design/icons";
 
 export default function AssessmentCreation(props) {
 
-  const {formErrors,draft,currentAssessment,user,assigneeloader,
+  const {formErrors,currentAssessment,user,assigneeloader,
     isAssessmentLoading,setFormErrors,handleSave,handleInputChange,
     // handleRemoveFile do later
   } = props
@@ -141,11 +141,11 @@ export default function AssessmentCreation(props) {
                           >
                         {isAssessmentLoading ? (
                           <span>
-                            {draft ? "Creating" : "Updating"}
+                            {currentAssessment?.draft ? "Creating" : "Updating"}
                             <LoadingOutlined className="loader" />
                           </span>
                         ) : (
-                          draft ? "Create" : "Update"
+                          currentAssessment?.draft ? "Create" : "Update"
                         )}
                           </button>
                         )}

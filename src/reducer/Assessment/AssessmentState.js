@@ -1,4 +1,3 @@
-import { assessmentMode } from "../../utils/validate";
 
 
 export const assessmentState = {

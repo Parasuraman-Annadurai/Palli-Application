@@ -68,7 +68,6 @@ const AssessmentView = ({
   };
 
   const [state, dispatch] = useReducer(assessmentViewReducer, assessmentViewState);
-
   const {studentScore,toggleAssigneeWeightage, assigneeloader,assigneLoadingMessage, weightageLists, openComments,studentLoading, assignedUsers, assignedUsersSearch} = state;
   useEffect(() => {
     dispatch({ type: "SET_TOGGLE_ASSIGNEE_WEIGHTAGE", payload: type === assessmentMode ? 0 :1 })
@@ -335,7 +334,6 @@ const AssessmentView = ({
         <>
          <AssessmentCreation
           formErrors={formErrors}
-          draft={currentAssessment.draft}
           currentAssessment={currentAssessment}
           user={user}
           assigneeloader={assigneeloader}
@@ -346,13 +344,10 @@ const AssessmentView = ({
           // handleRemoveFile={handleRemoveFile} do later
          />
           <WeightageAndAssignee 
-          draft={currentAssessment.draft} 
           user={user}
+          currentAssessment={currentAssessment}
           assigneeloader={assigneeloader}
           toggleAssigneeWeightage={toggleAssigneeWeightage}
-          weightageShow={weightageShow}
-          taskId={currentAssessment?.id}
-          task_weightages={currentAssessment?.task_weightages}
           weightageLists={weightageLists}
           handleSaveWeightage={handleSaveWeightage}
           handleAddWeightage={handleAddWeightage}
@@ -375,13 +370,10 @@ const AssessmentView = ({
         <StudentEvaluation 
         studentLoading={studentLoading}
         assignedUsers={assignedUsers}
-        draft={currentAssessment.draft}
-        type={type}
         isStudentScoreOpen={isStudentScoreOpen}
         setIsStudentScoreOpen={setIsStudentScoreOpen}
         setToggleAssigneeWeightage={(toggleValue)=>dispatch({ type: "SET_TOGGLE_ASSIGNEE_WEIGHTAGE", payload: toggleValue })}
         assginesUsersSeacrh={assignedUsersSearch}
-        weightageShow={weightageShow}
         openComments={openComments}
         user={user}
         currentAssessment={currentAssessment}
@@ -400,7 +392,6 @@ const AssessmentView = ({
         handleAddScore={handleAddScore}
         weightageLists={weightageLists}
         handleScoreOnchange={handleScoreOnchange}
-        task_weightages={currentAssessment?.task_weightages}
         studentScore={studentScore}
         itemRenderer={itemRenderer}
         />

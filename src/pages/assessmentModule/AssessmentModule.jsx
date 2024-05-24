@@ -554,7 +554,6 @@ const AssessmentModule = ({ type }) => {
           }
         );
 
-        // setAssessmentList(copiedTaskStatusChangeStudents);
         dispatch({ type: "SET_ASSESSMENT_LIST", payload: copiedTaskStatusChangeStudents });
 
       })
@@ -595,11 +594,9 @@ const AssessmentModule = ({ type }) => {
                 });
                 return assessment;
               });
-              // setAssessmentList(statusChangeAfterScore);
               dispatch({ type: "SET_ASSESSMENT_LIST", payload: statusChangeAfterScore });
               dispatch({ type: "SET_ACTIVE_WEIGHTAGE_INDEX", payload: null });
 
-              // setActiveWeightageIndex(null);
               notification.success({
                 message:"Success",
                 description:"Score Added Successfully"
@@ -787,11 +784,8 @@ const AssessmentModule = ({ type }) => {
               onOk={handleConfirmDelete}
               maskClosable={false}
               onCancel={() => {
-                // setIsDeleteModalOpen(false);
                 dispatch({ type: "SET_DELETE_MODAL_OPEN", payload: false });
                 dispatch({ type: "SET_DRAFT", payload: false });
-
-                // setIsDraft(false);
               }}
               okButtonProps={{
                 style: { background: "#49a843", borderColor: "#EAEAEA" },
@@ -838,7 +832,6 @@ const AssessmentModule = ({ type }) => {
                       setSelectedStudents={(selectedStudents)=>dispatch({ type: "SET_SELECTED_STUDENTS", payload: selectedStudents })}
                       handleSave={handleSave}
                       handleInputChange={handleInputChange}
-                      weightageShow={type === assessmentMode ? false : true}
                       handleSaveWeightage={handleSaveWeightage}
                       handleAddWeightage={handleAddWeightage}
                       handleWeightageChange={handleWeightageChange}

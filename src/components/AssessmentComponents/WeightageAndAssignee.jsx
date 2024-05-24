@@ -1,17 +1,17 @@
 import React from 'react';
-import { getPermission } from '../../utils/validate';
+import { getPermission, assessmentMode } from '../../utils/validate';
 import { Skeleton } from 'antd';
 
 import WeightageList from './WeightageList/WeightageList';
 function WeightageAndAssignee(props) {
 
-  const { draft, user, assigneeloader, toggleAssigneeWeightage, weightageShow, weightageLists, taskId, task_weightages,
+  const {currentAssessment, user, assigneeloader, toggleAssigneeWeightage, weightageLists,
     handleSaveWeightage, handleAddWeightage, handleWeightageChange, handleDeleteWeightage, selectedStudents, weightageErrors, setWeightageErros, setToggleAssigneeWeightage,
     isAssigneeLoading, students,setAssigneeSearch,handleAllCheckboxChange,handleCheckboxChange,assigneLoadingMessage
   } = props
   return (
     <>
-      {!draft && (
+      {!currentAssessment?.draft && (
         <>
           {getPermission(user.permissions, "TaskWeightage", "create") || getPermission(user.permissions, "TaskUser", "create") ? (
             <section className="assignee-and-weightage-container">
@@ -28,7 +28,7 @@ function WeightageAndAssignee(props) {
                       className={`weightage-title selection ${toggleAssigneeWeightage === 1 ? "active" : ""
                         }`}
                     >
-                      {weightageShow && (
+                      {currentAssessment?.task_type != assessmentMode && (
                         <h4
                           onClick={() => setToggleAssigneeWeightage(1)}
                           className={
@@ -146,10 +146,10 @@ function WeightageAndAssignee(props) {
                       )}
                     </>
                   ) : (
-                    weightageShow && (
+                    currentAssessment?.task_type != assessmentMode && (
                       <WeightageList
-                        taskId={taskId}
-                        taskWeightages={task_weightages}
+                        taskId={currentAssessment?.id}
+                        taskWeightages={currentAssessment?.task_weightages}
                         handleSaveWeightage={handleSaveWeightage}
                         handleAddWeightage={handleAddWeightage}
                         handleWeightageChange={handleWeightageChange}

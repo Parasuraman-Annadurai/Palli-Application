@@ -1,30 +1,27 @@
-import React,{useState} from 'react'
+import React from 'react'
 import { Skeleton,Dropdown,Drawer } from 'antd';
 import dayjs from "dayjs";
-import { getPermission } from '../../utils/validate';
+import { getPermission, assessmentMode,isScoreValidate } from '../../utils/validate';
 import colorObject from '../../utils/validate';
 import Comments from '../CommentsModule/Comments';
-import { assessmentMode } from '../../utils/validate';
-import { isScoreValidate } from '../../utils/validate';
 
 
 const StudentEvaluation = (props) => {
-    const {studentLoading,assignedUsers,draft,type,isStudentScoreOpen,setIsStudentScoreOpen
-    ,setToggleAssigneeWeightage,assginesUsersSeacrh,weightageShow,
+    const {studentLoading,assignedUsers,isStudentScoreOpen,setIsStudentScoreOpen
+    ,setToggleAssigneeWeightage,assginesUsersSeacrh,
     openComments,user,currentAssessment,commentText,isCommentEditId,setIsCommentEditId,setCommentText,handleSendComment,
     handleDeleteComment,
-    formErrors,setFormErrors,activeWeightageIndex,setAssignedUsersSearch,setOpenComments,setActiveWeightageIndex,handleAddScore,
-    weightageLists,handleScoreOnchange,task_weightages,studentScore,itemRenderer
+    formErrors,setFormErrors,activeWeightageIndex,setAssignedUsersSearch,setOpenComments,setActiveWeightageIndex,handleAddScore
+    ,handleScoreOnchange,studentScore,itemRenderer
     } = props
- 
     return (
         <main className="main-container" >
             {studentLoading ? <Skeleton active /> : (
                 <>
                     <div className="task-heading">
-                        <p>{assignedUsers[0]?.task_users?.length ? currentAssessment.task_title : ""}</p>
+                        <p>{currentAssessment?.task_users?.length ? currentAssessment.task_title : ""}</p>
                         {/* the fetch particular its return one array of object that's why I'm use 0 index hardcoded */}
-                        {assignedUsers[0]?.task_users && assignedUsers[0].task_users.length && (
+                        {currentAssessment?.task_users && currentAssessment.task_users.length && (
                             <div className="search-container">
                                 <input
                                     type="input"
@@ -131,17 +128,18 @@ const StudentEvaluation = (props) => {
                                                                 </div>
                                                                 <div className="student-work">
 
-                                                                    {weightageShow
+                                                                    {currentAssessment?.task_type != assessmentMode
                                                                         ? students["task_status"] === "SUBMITTED" && (
                                                                             <>
                                                                                 {getPermission(user.permissions, "TaskScore", "create") && (
+                                                                                    <>
                                                                                     <button
                                                                                         className="secondary-btn-sm"
                                                                                         onClick={(e) => {
                                                                                             e.stopPropagation()
                                                                                             setActiveWeightageIndex(index);
                                                                                             if (activeWeightageIndex === index) {
-                                                                                                if (isScoreValidate(task_weightages, studentScore, setFormErrors)) {
+                                                                                                if (isScoreValidate(currentAssessment?.task_weightages, studentScore, setFormErrors)) {
                                                                                                     handleAddScore(studentScore);
                                                                                                 }
                                                                                             }
@@ -151,6 +149,7 @@ const StudentEvaluation = (props) => {
                                                                                             ? "Submit"
                                                                                             : " Add Score"}
                                                                                     </button>
+                                                                                    </>
                                                                                 )}
 
                                                                             </>
@@ -218,41 +217,20 @@ const StudentEvaluation = (props) => {
                                                                         className="applied-weightage-list-container flex"
                                                                         style={{ gap: "10px" }}
                                                                     >
-                                                                        {currentAssessment.task_weightages &&
-                                                                            currentAssessment.task_weightages.map(
-                                                                                (weightage, weightageIndex) => (
-                                                                                    <div
-                                                                                        key={weightageIndex}
-                                                                                        className="applied-weightage-card flex"
-                                                                                    >
+                                                                        {students?.weightage_details?.map((weightage) => {
+                                                                            return (
+                                                                                <>
+                                                                                    <div className="applied-weightage-card flex">
                                                                                         <div className="applied-weightage-name">
                                                                                             <p>
-                                                                                                {weightageLists &&
-                                                                                                    weightageLists.length &&
-                                                                                                    (() => {
-                                                                                                        const foundWeightage =
-                                                                                                            weightageLists.find(
-                                                                                                                (weightageName) =>
-                                                                                                                    weightageName.id ===
-                                                                                                                    weightage.weightage
-                                                                                                            );
-
-                                                                                                        return (
-                                                                                                            foundWeightage && (
-                                                                                                                <>
-                                                                                                                    <p>
-                                                                                                                        {foundWeightage.weightage}{" "}
-                                                                                                                        {Number(
-                                                                                                                            weightage.weightage_percentage
-                                                                                                                        )}
-                                                                                                                    </p>
-                                                                                                                </>
-                                                                                                            )
-                                                                                                        );
-                                                                                                    })()}
+                                                                                                <p>
+                                                                                                    {weightage.weightage_details.weightage}{" "}
+                                                                                                    {Number(
+                                                                                                        weightage.weightage_percentage
+                                                                                                    )}
+                                                                                                </p>
                                                                                             </p>
                                                                                         </div>
-
                                                                                         <div className="weightage-checkbox">
                                                                                             <input
                                                                                                 type="number"
@@ -267,8 +245,9 @@ const StudentEvaluation = (props) => {
                                                                                             />
                                                                                         </div>
                                                                                     </div>
-                                                                                )
-                                                                            )}
+                                                                                </>
+                                                                            )
+                                                                        })}
                                                                     </div>
                                                                     <p className="error-message">
                                                                         {formErrors["score"]
@@ -295,15 +274,15 @@ const StudentEvaluation = (props) => {
                                         </>
                                     ) : (
                                         <>
-                                            {!draft && (
+                                            {!currentAssessment?.draft && (
                                                 <div className="select-something-container flex">
                                                     <div className="image-container ">
                                                         <img src="/icons/select-something.svg" alt="" />
                                                         <p className="select-something-heading">
-                                                            No Assignee has been assigned to this {type}
+                                                            No Assignee has been assigned to this {currentAssessment?.task_type?.toLowerCase()}
                                                             <button className="btn primary-medium" style={{ marginTop: "10px" }} onClick={() => {
                                                                 setIsStudentScoreOpen(!isStudentScoreOpen)
-                                                                if (type != assessmentMode) {
+                                                                if (currentAssessment?.task_type != assessmentMode) {
                                                                     setToggleAssigneeWeightage(1)
                                                                 } else {
                                                                     setToggleAssigneeWeightage(0)

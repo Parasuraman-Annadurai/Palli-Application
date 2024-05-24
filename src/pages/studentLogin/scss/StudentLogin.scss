@@ -289,7 +289,7 @@ li {
   }
 }
 
-.main-container {
+.student-main-container {
   padding: 20px;
   width: 100%;
 
@@ -303,7 +303,6 @@ li {
     font-size: 16px;
     font-weight: 500;
     font-family: $font-Roboto;
-    margin-bottom: 16px;
 
     .module-title-section {
       gap: 10px;
@@ -394,7 +393,7 @@ li {
     }
 
     .student-task-details-main-container {
-      gap: 70px;
+      gap: 50px;
       // justify-content: space-between;
       padding-bottom: 20px;
 
@@ -407,7 +406,7 @@ li {
 
       span {
       
-        font-size: 10px;
+        font-size: 12px;
         line-height: 16px;
         font-family: $font-Roboto;
       }
@@ -422,11 +421,14 @@ li {
         width: 100%;
         font-family: $font-Roboto;
       }
-.student-task-trainer-name{
-  border-right: 2px solid #eaeaea;
-  max-width: 180px;
-  width: 100%;
-}
+      .student-task-trainer-name{
+        border-right: 2px solid #eaeaea;
+        max-width: 180px;
+        width: 100%;
+        p span{
+          font: 400 12px/16px $font-Roboto;
+        }
+      }
       .sudent-task-supporting-doc {
         img {
           width: 16px;
@@ -491,6 +493,18 @@ li {
           }
         }
       }
+      .student-task-deadline{
+        border-right: 2px solid #eaeaea;
+        max-width: 130px;
+        width: 100%;
+      }
+      .student-task-supporting-document{
+        a{
+          color: $primary-color;
+          text-decoration: underline;
+          font: 400 12px/16px roboto;
+        }
+      }
     }
 
     .task-editor-container {
@@ -513,10 +527,13 @@ li {
 
       .task-instruction {
         p {
-          font-size: 12px;
-          line-height: 16px;
           color: $font-primary-color;
-          font: $font-Roboto;
+          font: 400 12px/16px $font-Roboto;
+        }
+        a {
+          color: $highlight-blue;
+          text-decoration: underline;
+          font: 400 12px/16px $font-Roboto;
         }
 
         ul {
@@ -546,17 +563,12 @@ li {
         border-radius: 4px;
 
         p {
-          font-family: $font-Roboto;
-          font-size: 12px;
-          line-height: 16px;
+          font: 400 12px/16px $font-Roboto;
         }
         .score{
           color: $font-primary-color;
           margin-left: 5px;
-          font-family: $font-Roboto;
-          font-size: 12px;
-          line-height: 16px;
-          font-weight: 500;
+          font: 500 12px/16px $font-Roboto;
           background-color: #F8FBF2;
           width: 23px;
           height: 26px;
@@ -567,10 +579,7 @@ li {
        
         }
         span {
-          font-family: $font-Roboto;
-          font-size: 12px;
-          line-height: 16px;
-          // font-weight: 500;
+          font: 400 12px/16px $font-Roboto;
           margin-left: 3px;
           color: $font-primary-color;
         }
@@ -584,11 +593,9 @@ li {
         padding-bottom: 5px;
       }
       h3 {
-        font-size: 12px;
-        line-height: 16px;
-        font-family: $font-Roboto;
+        font: 400 12px/16px $font-Roboto;
         color: $font-primary-color;
-        font-weight: 400;
+     
       }
       .horizon-line {
         flex: 1;
@@ -698,9 +705,7 @@ li {
       padding-bottom: 16px;
 
       h3 {
-        font-size: 12px;
-        line-height: 16px;
-        font-family: $font-Roboto;
+        font: 400 12px/16px $font-Roboto;
       }
 
       .horizon-line {

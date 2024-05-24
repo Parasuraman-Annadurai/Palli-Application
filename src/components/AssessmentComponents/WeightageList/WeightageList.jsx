@@ -1,7 +1,7 @@
 import React from "react";
 
 import {  Select, Tooltip } from "antd";
-import { isWeightageValid } from "../../utils/validate";
+import { isWeightageValid } from "../../../utils/validate";
 
 import "./scss/WeightageList.css"
 const WeightageList = ({

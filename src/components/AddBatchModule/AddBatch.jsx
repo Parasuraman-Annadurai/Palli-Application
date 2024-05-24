@@ -16,7 +16,7 @@ import "./scss/AddBatch.css";
 import { getPermission } from "../../utils/validate";
 
 const AddBatch = (props) => {
-  const { batchList} =
+  const { batchList,setOpen} =
     props;
 
   const { user, token, setUser } = useAuth();
@@ -44,8 +44,9 @@ const AddBatch = (props) => {
       ),
       content: "Are you sure you want to Switch this Batch?",
       onOk: () => {
-        navigate(`/batch/${batch.id}/applications`);
-        window.location.reload();
+        const navigateUrl = getPermission(user.permissions,"Applicant","read") ? `/batch/${batch?.id}/applications` : `/batch/${batch?.id}/task`
+        navigate(navigateUrl);
+        setOpen(false)
       },
     });
   };
@@ -237,9 +238,12 @@ const AddBatch = (props) => {
               {!batchShow ? "Switch Batch" : editId ? "Edit Batch" : "Add Batch"}
             </div>
           }
-          onClose={()=>{props.onClose() }}
+          onClose={()=>{props.onClose(),
+            setBatchshow(false)
+          }}
           open={props.open}
           placement="left"
+          maskClosable={false}
         >
         {props.open && (
           <div className="popup-container">

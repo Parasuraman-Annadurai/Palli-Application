@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useLocation, useParams, useNavigate, Link } from "react-router-dom";
 
 import axios from "axios";
-import { Dropdown, Skeleton, Tooltip,notification } from "antd";
+import {Skeleton, Tooltip,notification } from "antd";
 
 import { DASHBOARD } from "../routes/routes";
 import { useAuth } from "../context/AuthContext";
@@ -10,7 +10,7 @@ import { useAuth } from "../context/AuthContext";
 import AddBatch from "../components/AddBatchModule/AddBatch";
 
 import { API_END_POINT } from "../../config";
-import { fetchUserInfo, formatPermissions, getPermission } from '../utils/validate';
+import { fetchUserInfo, getPermission } from '../utils/validate';
 
 const Sidebar = ({ menuList, activeMenuItem }) => {
   const navigate = useNavigate();
@@ -22,9 +22,9 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
   const isDashboardPage = currentPath.includes(DASHBOARD);
 
   const [active, setActive] = useState(activeMenuItem);
-  const [batchList, setBatchList] = useState([]);
   const [currentBatch, setCurrentBatch] = useState(null);
   const [open, setOpen] = useState(false);
+  const [isBatchModelOpen,setIsBatchModelOpen] = useState(false)
   const [batchLoading,setBatchLoading] = useState(false)
 
   const showDrawer = () => {
@@ -51,7 +51,7 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
       
       const currentBatch = user?.batch.find(batch => batch.id === Number(batchId));
       setCurrentBatch(currentBatch);
-
+       
       }
   }, [batchId]);
 
@@ -85,9 +85,7 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
     <>
       <nav className="side-nav-container flex">
         <div className="logo" style={{ cursor: "pointer" }}>
-          <Link to="/dashboard">
-            <img src="/images/dckap_palli_logo_sm.svg" alt="DCKAP Palli logo" />
-          </Link>
+          <img src="/images/dckap_palli_logo_sm.svg" alt="DCKAP Palli logo" />
         </div>
 
         {!isDashboardPage && (
@@ -204,11 +202,12 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
 
         <div className="user-profile flex">
           <div className="profile-img">
-          {user.first_name[0]?.toUpperCase()}{user.last_name[0]?.toUpperCase()}
-            {/* <img src="/icons/profile.svg" alt="" /> */}
+            <p>
+            {user.first_name[0]?.toUpperCase()}{user.last_name[0]?.toUpperCase()}
+            </p>
           </div>
             <div className="user-details">
-              <p>{user.first_name} {user.last_name}</p>
+                <p>{`${user?.first_name}`} {user?.last_name?.length > 5 ? `${user?.last_name.slice(0, 4)}...` : user?.last_name}</p>
                  <div className="logout-icon flex"
                   onMouseOver={(e)=>{
                     e.target.src ="/icons/logout-hover.svg"
@@ -229,7 +228,7 @@ const Sidebar = ({ menuList, activeMenuItem }) => {
       </nav>
       {batchLoading ? <Skeleton active/> : (
         <AddBatch
-        batchList={user?.batch} //all batches
+        batchList = { user && user.batch ? user.batch.filter(batch => batch && batch.id && batch.id !== Number(batchId)) : []} //all batches except current batch
         open={open} // drawer open
         setOpen={setOpen} // set drawer open state
         onClose={onClose}

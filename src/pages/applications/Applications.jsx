@@ -23,7 +23,7 @@ import useFilter from "../../hooks/useFilter";
 
 import "./scss/css/Applications.css";
 
-import { getPermission } from "../../utils/validate";
+import { getPermission,capitalizeFirstChar } from "../../utils/validate";
 
 const Applications = () => {
   const filterFields = useFilter("applicant");  
@@ -169,7 +169,7 @@ const Applications = () => {
                   <div className="personal-detial-background">
                     <div className="details-section">
                       <p className="personal-detial-title">Gender</p>
-                      <p className="personal-detial-name">--</p>
+                      <p className="personal-detial-name">{details?.gender?.charAt(0).toUpperCase()}{details?.gender?.slice(1).toLowerCase()}</p>
                     </div>
                   </div>
                   <div className="personal-detial-background">
@@ -207,7 +207,7 @@ const Applications = () => {
                       <p className="personal-detial-title">Aadhar Number</p>
                       <span className="personal-detial-name">
                         {details.aadhaar_number}
-                        <a>View document</a>
+                        <a href={details?.aadhar_card} target="_blank">View document</a>
                       </span>
                     </div>
                   </div>
@@ -266,7 +266,7 @@ const Applications = () => {
                       </p>
 
                       <p className="Guardian-detial-name">
-                        <a>View document</a>
+                        <a href={details?.family_card} target="_blank">View document</a>
                       </p>
                     </div>
                   </div>
@@ -460,7 +460,9 @@ const Applications = () => {
               {filterValues &&
                 Object.keys(filterValues).map((filterName) => (
                   <>
-                    <Tag color="#49a843">{`${filterName} : ${filterValues[
+                  {filterValues[filterName] && (
+                    <>
+                      <Tag color="#49a843">{`${filterName} : ${filterValues[
                       filterName
                     ].toLowerCase()} `}</Tag>
                     <img
@@ -469,6 +471,9 @@ const Applications = () => {
                       className="cancel-btn"
                       onClick={() => handleRemoveFilter(filterName)}
                     />
+                    </>
+                  )}
+                    
                   </>
                 ))}
             </div>
@@ -484,6 +489,7 @@ const Applications = () => {
                       key={application.id}
                       onClick={() => handleViewMore(application.id)}
                     >
+                      {console.log(application)}
                       <div className="application-details-container flex">
                         <div className="application-info flex">
                           <div className="application-name-container">
@@ -526,7 +532,7 @@ const Applications = () => {
                         </div>
                         <div className="application-gender">
                           <p>Gender</p>
-                          <span>-</span>
+                          <span>{capitalizeFirstChar(application?.gender)}</span>
                         </div>
                         <div className="application-dob">
                           <p>Date of Birth</p>

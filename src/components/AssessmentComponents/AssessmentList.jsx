@@ -7,21 +7,20 @@ import utcPlugin from 'dayjs/plugin/utc';
 
 dayjs.extend(utcPlugin);
 
-import { getPermission } from "../utils/validate";
+import { getPermission } from "../../utils/validate";
 
 
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../../context/AuthContext";
 
 
 const TaskCard = ({
   loading,
   assessment,
-  selectedAssessment,
+  selectedAssessmentId,
   handleEdit,
   handleDelete,
   setIsStudentScoreOpen,
-  isMode,
-  setIsMode,
+  isStudentScoreOpen,
   currentAssessment
 }) => {
   const truncateText = (text, maxLength) => {
@@ -33,19 +32,17 @@ const TaskCard = ({
   return (
     <>
       <div
-        className={`task-card ${assessment.id === selectedAssessment ? "active" : ""
+        className={`task-card ${assessment.id === selectedAssessmentId ? "active" : ""
           } flex`}
         key={assessment.id}
         id={assessment.id}
         onClick={() => {
-          if(currentAssessment.draft){
+          if(currentAssessment?.draft){
             setIsStudentScoreOpen(false)
             handleEdit(assessment.id);
-            setIsMode("edit")
           }else{
             setIsStudentScoreOpen(true)
             handleEdit(assessment.id);
-            setIsMode("card")
           }
         }}
       >
@@ -72,16 +69,16 @@ const TaskCard = ({
                 <>
                     {getPermission(user.permissions, "Task", "update") && (
                       <img
-                        src={selectedAssessment === assessment.id && isMode == "edit" ? "/icons/edit-pencil-fill.svg" : "/icons/edit-pencil-icon.svg"}
+                        src={selectedAssessmentId === assessment.id && !isStudentScoreOpen ? "/icons/edit-pencil-fill.svg" : "/icons/edit-pencil-icon.svg"}
                         className="edit-icon"
                         alt="edit-icon"
                         onMouseOver={(e)=>{
-                          if (!(selectedAssessment === assessment.id && isMode === "edit")) {
+                          if (!(selectedAssessmentId === assessment.id && !isStudentScoreOpen)) {
                             e.target.src = "/icons/edit-icon-hover.svg";
                         }
                       }}
                         onMouseOut={(e)=>{
-                          if (!(selectedAssessment === assessment.id && isMode === "edit")) {
+                          if (!(selectedAssessmentId === assessment.id && !isStudentScoreOpen)) {
                             e.target.src = "/icons/edit-pencil-icon.svg";
                         }
 
@@ -90,7 +87,6 @@ const TaskCard = ({
                           event.stopPropagation();
                           setIsStudentScoreOpen(false)
                           handleEdit(assessment.id);
-                          setIsMode("edit")
                         }}
                       />
                     )}
@@ -142,11 +138,9 @@ const AssessmentList = ({
   loading,
   handleDelete,
   handleAdd,
-  selectedAssessment,
+  selectedAssessmentId,
   isStudentScoreOpen,
   setIsStudentScoreOpen,
-  isMode,
-  setIsMode,
   currentAssessment
 }) => {
   const { user } = useAuth();
@@ -154,7 +148,7 @@ const AssessmentList = ({
   return (
     <>
       <section className="listing-container">
-        <h1>{mode} list</h1>
+        <h1>{mode?.charAt(0)?.toUpperCase()}{mode?.slice(1).toLowerCase()} list</h1>
         <div className="search-container">
           <input
             type="input"
@@ -183,7 +177,7 @@ const AssessmentList = ({
               {getPermission(user.permissions, "Task", "create") && (
                 !loading && (
                   <button className="btn create-btn" onClick={handleAdd}>
-                    <span>+</span>Create {mode}
+                    <span>+</span>Create {mode?.charAt(0)?.toUpperCase()}{mode?.slice(1).toLowerCase()}
                   </button>
                 )
 
@@ -199,12 +193,11 @@ const AssessmentList = ({
                     assessment={assessment}
                     handleEdit={handleEdit}
                     handleDelete={handleDelete}
-                    selectedAssessment={selectedAssessment}
+                    selectedAssessmentId={selectedAssessmentId}
                     setIsStudentScoreOpen={setIsStudentScoreOpen}
                     isStudentScoreOpen={isStudentScoreOpen}
-                    isMode={isMode}
-                    setIsMode={setIsMode}
                     currentAssessment={currentAssessment}
+                    
                   />
                 ))}
             </div>

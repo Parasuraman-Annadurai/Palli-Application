@@ -15,7 +15,7 @@ import { useParams, useNavigate } from "react-router-dom";
 
 import "../studentLogin/scss/StudentLogin.css";
 
-import colorObject, { validUrl } from "../../utils/validate";
+import colorObject, { assessmentMode, validUrl } from "../../utils/validate";
 import Comments from "../../components/CommentsModule/Comments";
 
 import { valueTrim } from "../../utils/validate";
@@ -104,9 +104,7 @@ const StudentLogin = ({ type }) => {
     setIsLoading(true);
     axios
       .get(
-        `${API_END_POINT}/api/task/${batchId}/list/user/task/?filter_task_type=${
-          type === "assessment" ? 1 : 0
-        }&search=${taskSearch}`,
+        `${API_END_POINT}/api/task/${batchId}/list/user/task/?filter_task_type=${type.toUpperCase()}&search=${taskSearch}`,
         { headers }
       )
       .then((res) => {
@@ -189,7 +187,6 @@ const StudentLogin = ({ type }) => {
         {
           task_status: changeStatus,
           submission_link: submissionLink,
-          reviewer: 62,
         },
         { headers }
       )
@@ -308,7 +305,7 @@ const StudentLogin = ({ type }) => {
   return (
     <>
       <section className="listing-container">
-        <h1>{type} list</h1>
+        <h1>{type?.charAt(0)?.toUpperCase()}{type?.slice(1).toLowerCase()} list</h1>
         <div className="search-container">
           <input type="input" placeholder="search..." onChange={(e)=>setTaskSearch(e.target.value)}/>{" "}
           <img
@@ -332,7 +329,7 @@ const StudentLogin = ({ type }) => {
             })}
         </div>
       </section>
-      <div className="main-container">
+      <div className="student-main-container">
         {isLoading ? <Skeleton active paragraph={6}/> : (
           <>
              {tasksLists.map((tasksList) => {
@@ -341,7 +338,7 @@ const StudentLogin = ({ type }) => {
                 <>
                   <div className="module-header-section flex" key={tasksList.id}>
                     <div className="module-title-section flex">
-                      <h3>{tasksList.task.task_title}</h3>
+                      <h3>{tasksList.task.task_title?.charAt(0)?.toUpperCase()}{tasksList.task.task_title?.slice(1)?.toLowerCase()}</h3>
                     </div>
                     <div className="comments" onClick={()=>setOpenCommentSection(true)}>
                       <img src="/icons/comment-border.svg" alt="" />
@@ -395,6 +392,11 @@ const StudentLogin = ({ type }) => {
                             )}
                           </span>
                         </div>
+                        <div className="student-task-supporting-document">
+                          <p>Supporting Document</p>
+                          {tasksList?.task?.supporting_document ? <a href={tasksList?.task?.supporting_document} target="_blank">View Document</a> : <span>N/A</span>}
+                         
+                        </div>
                       </div>
 
                       <div className="task-editor-container">
@@ -408,7 +410,7 @@ const StudentLogin = ({ type }) => {
                           ></span>
                         </div>
                       </div>
-                      {type !== "task" && (
+                      {type !== assessmentMode && (
                         <>
                           <div className="weightage-label-container flex">
                             <h3>Weightage Details</h3>

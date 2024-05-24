@@ -221,6 +221,9 @@ li {
   color: #12160a;
   margin-bottom: 20px;
 }
+.main-listing-container .listing-container .user-info-container .name-and-email-info p {
+  margin-bottom: 2px;
+}
 .main-listing-container .listing-container .user-info-container .name-and-email-info .email {
   font: 400 10px/14px "Roboto";
   color: #969d88;
